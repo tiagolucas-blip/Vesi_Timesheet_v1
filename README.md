@@ -133,7 +133,7 @@ The mockup improves from being used. It is published as a private Artifact on cl
 - **Claude answers from the page itself**, on the viewer's own Claude account, with the same functions and instructions as `api/chat.js` (both read `api/_prompt.js`). No API key is needed there. If Claude is unavailable or declined, the local interpreter answers, as on Vercel
 - **Every conversation is kept** in the Artifact's database, one document per visit under `conversations/`: what was typed, which engine read it, the function and arguments chosen, the answers, whether the card was confirmed or cancelled. The header shows `Learning mode` while this is on
 - **Each answer has 👍/👎.** 👎 asks what the assistant should have done, which is the most useful line for the review
-- **Every night (22:35, Lisbon)** a scheduled task reads the conversations since the last run, finds what went wrong, adds a case to `tests/assistant-cases.json` for each failure it fixes, corrects `app.js` or `api/_prompt.js`, runs the whole suite and opens a pull request (or adds to the one already open). Nothing reaches `main` without a merge
+- **Every night (22:37, Lisbon)** a scheduled task reads the conversations since the last run, finds what went wrong, adds a case to `tests/assistant-cases.json` for each failure it fixes, corrects `app.js` or `api/_prompt.js`, runs the whole suite and opens a pull request (or adds to the one already open). Nothing reaches `main` without a merge
 - **After a merge**, the next run republishes the Artifact from `main`. Progress is kept in the Artifact's `meta/improve` document
 
 On Vercel or a local copy none of this is active: nothing is recorded and the page behaves as before.
