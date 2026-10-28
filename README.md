@@ -91,7 +91,8 @@ Everything below works, with no server and no real data.
 - Summary per project and receiver object before submission
 - Approval screen with bulk approval and exceptions singled out
 
-**CATS mapping**
+**SAP mapping, in Settings**
+- A technical reference rather than a working screen, so it has no tab: Settings opens it for any profile, and Back returns to where you were
 - Field-by-field table, state chain through to transfer
 - Live generation of CATS records from the filled week, as a table or as a payload
 - Hours and allowances in the same record set: `CATSHOURS` with `BEGUZ` and `ENDUZ`, or `LGART` with `ANZHL`

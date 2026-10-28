@@ -797,6 +797,7 @@
      messages are a separate follow-up, not covered here yet. */
   var I18N = {
     en: {
+      settings_reference:"Technical reference", btn_open_mapping:"Open the SAP mapping", text_mapping_hint:"Field by field, what each screen writes to CATS and to the standard Leave Request, with the records and payloads generated live.",
       label_test:"Test", aria_change_test:"Change the test: company and profile",
       profile_employee:"Employee", profile_pm:"Project manager", profile_manager:"Line manager",
       setup_title:"What are you testing?", setup_language:"Language", setup_company:"Company", setup_profile:"Profile", setup_leader:"Project and manager",
@@ -1297,6 +1298,7 @@
       row_confirm_cell:"Confirm cell and move down", row_show_list:"Show this list"
     },
     pt: {
+      settings_reference:"Referência técnica", btn_open_mapping:"Abrir o mapeamento SAP", text_mapping_hint:"Campo a campo, o que cada ecrã grava no CATS e no Leave Request standard, com os registos e os payloads gerados em tempo real.",
       label_test:"Teste", aria_change_test:"Mudar o teste: empresa e perfil",
       profile_employee:"Colaborador", profile_pm:"Gestor de projeto", profile_manager:"Chefia hierárquica",
       setup_title:"O que vais testar?", setup_language:"Idioma", setup_company:"Empresa", setup_profile:"Perfil", setup_leader:"Projeto e gestor",
@@ -1790,6 +1792,7 @@
       row_confirm_cell:"Confirmar célula e descer", row_show_list:"Mostrar esta lista"
     },
     fr: {
+      settings_reference:"Référence technique", btn_open_mapping:"Ouvrir le mapping SAP", text_mapping_hint:"Champ par champ, ce que chaque écran enregistre dans CATS et dans le Leave Request standard, avec les enregistrements et payloads générés en direct.",
       label_test:"Test", aria_change_test:"Changer le test : entreprise et profil",
       profile_employee:"Collaborateur", profile_pm:"Chef de projet", profile_manager:"Responsable hiérarchique",
       setup_title:"Que voulez-vous tester ?", setup_language:"Langue", setup_company:"Entreprise", setup_profile:"Profil", setup_leader:"Projet et chef de projet",
@@ -5500,20 +5503,29 @@
     toast(t("toast_timesheets_approved", {n: n}));
   };
 
+  /* One way to change screen, from the tabs, the assistant or Settings. The
+     SAP mapping has no tab: it's a technical reference, opened from
+     Settings, with a Back button to wherever the person was. */
+  function showScreen(s){
+    if(s === "cats" && state.screen !== "cats") state.prevScreen = state.screen;
+    Array.prototype.forEach.call(document.querySelectorAll(".nav button"), function(x){ x.setAttribute("aria-current", x.dataset.screen === s ? "true" : "false"); });
+    ["home","semana","leave","team","aprov","cats"].forEach(function(k){ $("screen-"+k).hidden = k !== s; });
+    state.screen = s;
+    placeAssistant(s);
+    if(s === "cats"){ renderCats(); renderLeaveMap(); }
+    if(s === "team") renderTeam();
+    if(s === "leave") renderLeave();
+    if(s === "home") renderHome();
+    window.scrollTo({top:0});
+  }
   Array.prototype.forEach.call(document.querySelectorAll(".nav button"), function(b){
-    b.onclick = function(){
-      var s = b.dataset.screen;
-      Array.prototype.forEach.call(document.querySelectorAll(".nav button"), function(x){ x.setAttribute("aria-current", x === b ? "true" : "false"); });
-      ["home","semana","leave","team","aprov","cats"].forEach(function(k){ $("screen-"+k).hidden = k !== s; });
-      state.screen = s;
-      placeAssistant(s);
-      if(s === "cats"){ renderCats(); renderLeaveMap(); }
-      if(s === "team") renderTeam();
-      if(s === "leave") renderLeave();
-      if(s === "home") renderHome();
-      window.scrollTo({top:0});
-    };
+    b.onclick = function(){ showScreen(b.dataset.screen); };
   });
+  if($("openMapping")) $("openMapping").onclick = function(){ $("dlgSettings").close(); showScreen("cats"); };
+  if($("catsBack")) $("catsBack").onclick = function(){
+    var back = state.prevScreen && profileHasScreen(state.prevScreen) ? state.prevScreen : "home";
+    showScreen(back);
+  };
 
   /* ---------- Leave Request, a mask over the standard ----------
      The application has no absence logic of its own. Every read and write
@@ -6327,10 +6339,7 @@
     if(isClock()) seedClock();
     render();
   }
-  function clickNav(key){
-    var b = document.querySelector('.nav button[data-screen="' + key + '"]');
-    if(b) b.click();
-  }
+  function clickNav(key){ showScreen(key); }
   /* A count on the Leave Request tab for whoever is acting as manager:
      the same alert the assistant gives, visible from any screen. */
   function renderNavBadges(){
@@ -6358,9 +6367,9 @@
      across changes, so a request sent as the employee can be approved as
      the line manager in the same session. */
   var PROFILE_TABS = {
-    employee: ["home","semana","leave","cats"],
-    pm:       ["home","team","aprov","cats"],
-    manager:  ["home","leave","cats"]
+    employee: ["home","semana","leave"],
+    pm:       ["home","team","aprov"],
+    manager:  ["home","leave"]
   };
   function currentActor(){
     if(state.role === "pm") return {name: leaderById(state.leader).name, label: t("profile_pm")};
@@ -6381,10 +6390,11 @@
     /* the project manager under test is fixed; Team's own picker follows it */
     var ls = $("leadSel");
     if(ls){ ls.value = state.leader; ls.disabled = state.role === "pm"; }
-    if(tabs.indexOf(state.screen) === -1) clickNav("home");
+    if(!profileHasScreen(state.screen)) clickNav("home");
   }
+  /* the SAP mapping is reference material, open to every profile from Settings */
   function profileHasScreen(key){
-    return (PROFILE_TABS[state.role] || PROFILE_TABS.employee).indexOf(key) !== -1;
+    return key === "cats" || (PROFILE_TABS[state.role] || PROFILE_TABS.employee).indexOf(key) !== -1;
   }
   function applyTestSetup(co, role, leader, quiet){
     if(!PROFILE_TABS[role]) role = "employee";
@@ -7340,8 +7350,7 @@
       botChips([t("chip_change_test")]);
       return;
     }
-    var b = document.querySelector('.nav button[data-screen="'+key+'"]');
-    if(b) b.click();
+    showScreen(key);
     if(key !== "home") botToggle(true);
     botSay("bot",t("bot_switched_to", {screen: label}));
   }

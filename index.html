@@ -22,7 +22,7 @@
   <button type="button" class="btn sm ctxbtn" id="ctxBtn" data-i18n-aria="aria_change_test" aria-label="Change the test: company and profile">
     <span class="ctxk" data-i18n="label_test">Test</span><b id="ctxTxt">PT01 · Employee · Tiago Leal</b><span aria-hidden="true">&#9662;</span>
   </button>
-  <button class="btn sm" id="settingsBtn" data-i18n-aria="aria_settings" aria-label="Language settings">
+  <button class="btn sm" id="settingsBtn" data-i18n-aria="btn_settings" aria-label="Settings">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
   </button>
   <button class="btn sm" id="helpBtn" data-i18n="btn_shortcuts" data-i18n-aria="aria_shortcuts" aria-label="Keyboard shortcuts">Shortcuts</button>
@@ -34,7 +34,6 @@
   <button role="tab" id="tab-leave" aria-current="false" data-screen="leave" data-i18n="nav_leave">Leave Request</button>
   <button role="tab" id="tab-team" data-screen="team" data-i18n="nav_team">Team (mass entry)</button>
   <button role="tab" id="tab-aprov" data-screen="aprov" data-i18n="nav_approval">Approval (manager)</button>
-  <button role="tab" id="tab-cats" data-screen="cats" data-i18n="nav_cats">CATS mapping</button>
 </nav>
 
 <div class="wrap">
@@ -437,6 +436,7 @@
   <section id="screen-cats" hidden>
     <div class="pagehead">
       <div class="top">
+        <button type="button" class="btn sm" id="catsBack">&#8249; <span data-i18n="btn_back">Back</span></button>
         <div class="weeknav"><span class="label" data-i18n="label_cats_header">From the interface to CATS</span></div>
         <span class="chip grey" data-i18n="chip_annex_a">Annex A of the specification</span>
         <span style="margin-left:auto"></span>
@@ -752,6 +752,11 @@
         <button type="button" id="langEN" data-lang="en">English</button>
         <button type="button" id="langFR" data-lang="fr">Français</button>
       </div>
+    </div>
+    <div class="field">
+      <label data-i18n="settings_reference">Technical reference</label>
+      <p class="sub" style="margin:0" data-i18n="text_mapping_hint">Field by field, what each screen writes to CATS and to the standard Leave Request.</p>
+      <div><button type="button" class="btn" id="openMapping" data-i18n="btn_open_mapping">Open the SAP mapping</button></div>
     </div>
   </div>
   <footer><button class="btn primary" id="settingsClose" data-i18n="btn_close">Close</button></footer>

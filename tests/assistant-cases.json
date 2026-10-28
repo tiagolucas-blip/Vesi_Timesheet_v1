@@ -535,6 +535,23 @@
           ]
         }
       ]
+    },
+    {
+      "id": "mapping-from-chat-any-profile",
+      "lang": "en",
+      "role": "manager",
+      "why": "the SAP mapping left the tabs for Settings but stays reachable for every profile",
+      "steps": [
+        {
+          "say": "open cats mapping",
+          "expect": [
+            "CATS mapping"
+          ],
+          "absent": [
+            "isn't part of this profile"
+          ]
+        }
+      ]
     }
   ]
 }
