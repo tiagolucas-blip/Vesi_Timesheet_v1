@@ -11,6 +11,22 @@ Documents that accompany this repository:
 
 Everything below works, with no server and no real data.
 
+**The assistant is the way in**
+- The app opens on the assistant: the conversation is the main area, and the week and the absences sit in a secondary column on the same screen, updated after every action
+- From that column, the full timesheet and the Leave Request screen are one click away, for anyone who prefers to check or edit directly
+- On every other screen the assistant goes back to being the floating panel (button or `J`), with the same conversation
+- `View as` in the header switches between the employee (Tiago Leal) and their direct manager from the org structure (Sofia Almeida for PT01, Patrícia Gomes for PT02), to walk a request from submission to approval in one session
+
+**Leave Request, a mask over the standard**
+- Request an absence from the assistant (`vacation 3 to 6 November`, `doctor tomorrow 14h to 17h`) or from the Leave Request screen: vacation, medical appointment, sick leave, training, justified absence, whole days or part of a day
+- Part of a day follows the company's profile: hours for `Z_CONS`, start and end for `Z_BSRV`
+- Checked while it's filled, not only on submit: overlap with another request, vacation balance, closed period, part-day rules
+- The direct manager approves or rejects, one level, from the assistant or the screen, with the team's overlaps in view. A rejection needs a reason
+- The manager gets the alerts: the assistant's greeting says what's waiting (leave requests and timesheets), and the Leave Request tab carries a counter
+- The employee hears about the decision the next time they use the app
+- Withdrawing a pending request is immediate; cancelling an approved one is itself a request, back to the manager
+- The data follows the standard service's model (`HCMFAB_LEAVE_REQUEST_CR_SRV`, workflow `WS12300111`, `TASKPROCESSING`, `RPTARQPOST` to `IT2001`), and the mapping screen shows the field-by-field mapping and the payload of the last request sent
+
 **Recording**
 - Weekly grid with inline editing, accepts `1.5`, `1:30` and `90m`, rounded to 15 minutes
 - Calendar view (7 days) with project blocks and external events to convert
@@ -19,10 +35,11 @@ Everything below works, with no server and no real data.
 - Week navigation (arrows or `←`/`→`) across a multi-week sample per company: PT01 (`Z_CONS`) spans weeks 32–44, PT02 (`Z_BSRV`) spans weeks 36–41, each range mixing posted weeks, one submitted and in approval, the current draft, and upcoming ones with an empty grid
 
 **Absences, read from the leave request**
+- Every request shows in the timesheet the moment it's sent, as pending; once approved it closes the day or reduces its capacity; rejected or withdrawn, it disappears. Nothing is entered twice
 - An approved full-day absence closes that day to time entry, in both the grid and the calendar
 - A partial absence reduces day capacity and the week's expected total
 - A pending request raises a warning, doesn't block
-- The `Simulate approval` button shows the conflict that arises when a request is approved after hours were already recorded, with assisted resolution
+- The `Simulate approval` button on a pending day approves the underlying request, and shows the conflict that arises when a request is approved after hours were already recorded, with assisted resolution
 - Suggestions that fall on days with an approved absence aren't proposed
 
 **Allowances against a project**
@@ -54,6 +71,8 @@ Everything below works, with no server and no real data.
 
 **Conversational assistant, Joule pattern**
 - Recording by conversation, checking the week's status, checking absences, copying the week, applying suggestions, submitting
+- Requesting, checking and cancelling absences, and for the manager, seeing what's waiting and approving or rejecting leave requests
+- The local interpreter reads leave requests in Portuguese, English and French: absence type, date ranges (`3 to 7 November`, `de 3 a 7 de novembro`, `du 3 au 7 novembre`, `03/11`), relative days, part-day windows
 - Interpreted by Claude (`api/chat.js`, function calling), with the browser's regex interpreter as an automatic fallback when the key isn't configured or the call fails
 - Never saves without explicit confirmation, and always shows the receiver object and activity type before saving
 - Refuses days with an approved absence and proposes the next free day
@@ -110,7 +129,10 @@ There's no real data. Employee, projects, WBS, cost centers and absences are mad
 
 ## Known limits, by design
 
-- Week navigation covers a fixed sample range per company (PT01: weeks 32–44, PT02: weeks 36–41), mixing posted, submitted, current-draft and upcoming empty weeks; going further back or forward than that is out of sample, not simulated
+- Week navigation covers a fixed sample range per company (PT01: weeks 32–53, PT02: weeks 36–53), mixing posted, submitted, current-draft and upcoming weeks; the weeks after 44 (PT01) and 41 (PT02) are empty, there so a leave request for November or December lands somewhere the timesheet can show it
+- Leave requests live in memory: they're gone on reload, like the hours. Public holidays aren't modelled, so a request counts Monday to Friday; in the system the factory calendar removes them
+- The two companies' sample histories reuse the same request numbers, since it's the same employee opened under either company; every lookup is scoped to the company IT0001 currently reads
+- The OData entity and field names on the mapping screen follow the standard HCM Fiori apps bundle service; confirm them against the client system's `$metadata` before development
 - Whether the standard `CAT6` transfer maps `CATSAMOUNT` to `IT2010 BETRG` automatically, or needs configuring, is flagged as an open question in the payload, not solved
 - Without `ANTHROPIC_API_KEY` configured, the natural-language interpreter is deterministic, based on regular expressions. It recognizes duration, day and project prefix, and nothing else. See the next section to connect Claude
 - Each request to the assistant is independent, with no memory of the previous turn
@@ -125,7 +147,7 @@ There's no real data. Employee, projects, WBS, cost centers and absences are mad
 
 Without the key, the function returns 501 and the client automatically falls back to the browser's regex interpreter, without breaking the demo.
 
-The engine picks one of six closed functions (`registar_horas`, `consultar_semana`, `listar_ausencias`, `copiar_semana`, `aplicar_sugestoes`, `submeter_semana`) based on the context the client sends with every question: the projects the person is allocated to, the week's absences and capacity per day. It never writes to the timesheet, it only returns the function and its arguments; saving and confirmation stay on the client side, exactly as in the local interpreter.
+The engine picks one of a closed set of functions, for hours (`registar_horas`, `consultar_semana`, `listar_ausencias`, `copiar_semana`, `aplicar_sugestoes`, `submeter_semana` and the team ones) and for leave (`pedir_ausencia`, `consultar_ausencias`, `cancelar_ausencia`, `listar_pendentes_aprovacao`, `decidir_ausencia`, `ir_para_ausencias`, `ver_como`), based on the context the client sends with every question: the projects the person is allocated to, the week's absences and capacity per day, the person's leave requests and balance, and for the manager the requests waiting. It never writes to the timesheet nor sends a request, it only returns the function and its arguments; saving, sending and confirmation stay on the client side, exactly as in the local interpreter.
 
 ## What's missing for the assistant to be real in an SAP production setting
 

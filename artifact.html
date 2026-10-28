@@ -11,6 +11,9 @@
       <option value="PT02">PT02 · Building Solutions</option>
     </select>
   </label>
+  <label class="coswitch" for="roleSel"><span data-i18n="label_view_as">View as</span>
+    <select id="roleSel" data-i18n-aria="aria_view_as" aria-label="View the app as the employee or as their direct manager"></select>
+  </label>
   <button class="btn sm" id="settingsBtn" data-i18n-aria="aria_settings" aria-label="Language settings">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
   </button>
@@ -18,7 +21,9 @@
 </header>
 
 <nav class="nav" role="tablist">
-  <button role="tab" id="tab-semana" aria-current="true" data-screen="semana" data-i18n="nav_my_timesheet">My Timesheet</button>
+  <button role="tab" id="tab-home" aria-current="true" data-screen="home" data-i18n="nav_home">Assistant</button>
+  <button role="tab" id="tab-semana" aria-current="false" data-screen="semana" data-i18n="nav_my_timesheet">My Timesheet</button>
+  <button role="tab" id="tab-leave" aria-current="false" data-screen="leave" data-i18n="nav_leave">Leave Request</button>
   <button role="tab" id="tab-team" data-screen="team" data-i18n="nav_team">Team (mass entry)</button>
   <button role="tab" id="tab-aprov" data-screen="aprov" data-i18n="nav_approval">Approval (manager)</button>
   <button role="tab" id="tab-cats" data-screen="cats" data-i18n="nav_cats">CATS mapping</button>
@@ -26,8 +31,16 @@
 
 <div class="wrap">
 
+  <!-- ============ E16, the assistant as the entry point ============ -->
+  <section id="screen-home">
+    <div class="home">
+      <div class="homechat" id="homeChat"></div>
+      <aside class="homeside" id="homeSide" aria-live="polite"></aside>
+    </div>
+  </section>
+
   <!-- ============ E1 / E2 / E3 / E4 ============ -->
-  <section id="screen-semana">
+  <section id="screen-semana" hidden>
     <div class="pagehead">
       <div class="top">
         <div class="weeknav">
@@ -164,6 +177,8 @@
         <div><code>E12</code><span data-i18n="spec_e12">Allowances against a project, wage type and quantity, bonus with an amount</span><em>CATSDB LGART, ANZHL and CATSAMOUNT</em></div>
         <div><code>E13</code><span data-i18n="spec_e13">Start and end by data entry profile, derived from IT0001</span><em>BEGUZ and ENDUZ</em></div>
         <div><code>E14</code><span data-i18n="spec_e14">Team leader mass entry with partial save and on-behalf-of trace</span><em>sap.ui.table with row states</em></div>
+        <div><code>E15</code><span data-i18n="spec_e15">Leave request and approval, a mask over the standard service</span><em>HCMFAB_LEAVE_REQUEST_CR_SRV</em></div>
+        <div><code>E16</code><span data-i18n="spec_e16">Assistant as the entry point, with the data as a secondary view</span><em>Joule capability</em></div>
       </div>
     </details>
   </section>
@@ -319,6 +334,59 @@
     </div>
   </section>
 
+  <!-- ============ E15, Leave Request ============ -->
+  <section id="screen-leave" hidden>
+    <div class="pagehead">
+      <div class="top">
+        <div class="weeknav"><span class="label" id="lvTitle">My leave requests</span></div>
+        <span class="chip grey" data-i18n="chip_lr_standard">Standard Leave Request, PTARQ</span>
+        <div class="spacer"></div>
+        <label class="coswitch" id="lvActingWrap" hidden><span data-i18n="label_acting_as">Acting as</span><b id="lvActingAs"></b></label>
+        <button class="btn primary" id="lvNew" data-i18n="btn_new_leave">New leave request</button>
+      </div>
+      <p class="sub" id="lvSub" style="margin:0; font-size:var(--fs-sm); color:var(--ink-3)"></p>
+      <div class="kpis" id="lvKpis"></div>
+    </div>
+
+    <div class="panel" id="lvMinePanel" style="margin-top:16px">
+      <header><h2 data-i18n="hdr_my_leave_requests">My leave requests</h2><span class="chip grey" id="lvMineCount">0 requests</span></header>
+      <div class="tablescroll">
+        <table class="lr">
+          <thead><tr>
+            <th data-i18n="th_request">Request</th><th data-i18n="th_type">Type</th><th data-i18n="th_period">Period</th>
+            <th style="text-align:right" data-i18n="th_duration">Duration</th><th data-i18n="th_status">Status</th><th data-i18n="th_approver">Approver</th><th></th>
+          </tr></thead>
+          <tbody id="lvMineBody"></tbody>
+        </table>
+      </div>
+      <div class="privacy" data-i18n="privacy_leave_sync">Requests go through the standard Leave Request service and its approval workflow, never through the timesheet.</div>
+    </div>
+
+    <div class="panel" id="lvTeamPanel" style="margin-top:16px" hidden>
+      <header><h2 data-i18n="hdr_leave_to_approve">Leave requests to approve</h2><span class="chip grey" id="lvTeamCount">0 requests</span><span class="chip grey" data-i18n="chip_my_inbox">Decision through My Inbox, TASKPROCESSING</span></header>
+      <div class="tablescroll">
+        <table class="lr">
+          <thead><tr>
+            <th data-i18n="th_employee">Employee</th><th data-i18n="th_type">Type</th><th data-i18n="th_period">Period</th>
+            <th style="text-align:right" data-i18n="th_duration">Duration</th><th style="text-align:right" data-i18n="th_balance_after">Balance after</th>
+            <th data-i18n="th_overlap">Team overlap</th><th></th>
+          </tr></thead>
+          <tbody id="lvTeamBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel" id="lvDonePanel" style="margin-top:16px" hidden>
+      <header><h2 data-i18n="hdr_leave_decided">Decided in this session</h2></header>
+      <div class="tablescroll">
+        <table class="lr">
+          <thead><tr><th data-i18n="th_employee">Employee</th><th data-i18n="th_type">Type</th><th data-i18n="th_period">Period</th><th data-i18n="th_decision">Decision</th><th data-i18n="th_when">When</th></tr></thead>
+          <tbody id="lvDoneBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ E7 ============ -->
   <section id="screen-aprov" hidden>
     <div class="pagehead">
@@ -419,6 +487,37 @@
       <pre class="payload" id="catsPayload" hidden></pre>
       <div class="gridfoot"><button type="button" class="hinttip" data-i18n-title="hint_cats_table" title="Generated live from the grid on the My Timesheet screen. LTXA1 is truncated to 40 characters, the field's real limit.">?</button></div>
     </div>
+
+    <div class="panel" style="margin-top:16px">
+      <header><h2 data-i18n="hdr_lr_mapping">Leave Request, standard PTARQ</h2><span class="chip grey num" data-i18n="chip_lr_service">HCMFAB_LEAVE_REQUEST_CR_SRV</span></header>
+      <div class="flow">
+        <div class="step"><b data-i18n="lr_step_sent">Sent</b><span data-i18n="lr_step_sent_sub">PTREQ_HEADER, SENT</span></div><span class="sep">&#8594;</span>
+        <div class="step"><b data-i18n="lr_step_approved">Approved</b><span data-i18n="lr_step_approved_sub">WS12300111, My Inbox</span></div><span class="sep">&#8594;</span>
+        <div class="step"><b data-i18n="lr_step_posted">Posted</b><span data-i18n="lr_step_posted_sub">RPTARQPOST, IT2001</span></div><span class="sep">&#8594;</span>
+        <div class="step post"><b data-i18n="lr_step_read">In the timesheet</b><span data-i18n="lr_step_read_sub">capacity, CATS</span></div>
+      </div>
+      <div class="msgs">
+        <div class="msg i"><span class="ic">RULE</span><span data-i18n="lr_rule_1">The application only creates, reads and withdraws through the standard service.</span></div>
+        <div class="msg i"><span class="ic">RULE</span><span data-i18n="lr_rule_2">A request appears in the timesheet as soon as it's sent, as pending.</span></div>
+        <div class="msg i"><span class="ic">RULE</span><span data-i18n="lr_rule_3">Cancelling an approved request is itself a request.</span></div>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:16px">
+      <header><h2 data-i18n="hdr_lr_fields">Leave Request field by field</h2></header>
+      <div class="tablescroll">
+        <table class="maptbl">
+          <thead><tr><th data-i18n="th_interface_element">Interface element</th><th>OData</th><th data-i18n="th_sap_concept">SAP concept</th><th data-i18n="th_where_lives">Where it lives</th></tr></thead>
+          <tbody id="lrMapBody"></tbody>
+        </table>
+      </div>
+      <div class="gridfoot"><button type="button" class="hinttip" data-i18n-title="hint_lr_fields" title="Entity and field names follow the standard HCM Fiori apps bundle service.">?</button></div>
+    </div>
+
+    <div class="panel" style="margin-top:16px">
+      <header><h2 data-i18n="hdr_lr_payload">Last request sent, as the standard service receives it</h2></header>
+      <pre class="payload" id="lrPayload"></pre>
+    </div>
   </section>
 </div>
 
@@ -436,14 +535,14 @@
   <div class="jlog" id="jlog" aria-live="polite"></div>
   <div class="jchips" id="jchips"></div>
   <form class="jform" id="jform">
-    <input type="text" id="jinput" autocomplete="off" data-i18n-placeholder="placeholder_chat" placeholder="2h BNK payroll testing yesterday">
+    <input type="text" id="jinput" autocomplete="off" data-i18n-placeholder="placeholder_chat_home" placeholder="2h BNK payroll testing yesterday, or vacation 3 to 6 Nov">
     <button type="button" class="btn sm" id="jMicLang" aria-label="Voice input language, click to switch">PT</button>
     <button type="button" class="btn sm" id="jMic" data-i18n-aria="aria_dictate" data-i18n-title="aria_dictate" aria-label="Dictate by voice" title="Dictate by voice">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
     </button>
     <button class="btn primary" type="submit" id="jsend" data-i18n="btn_send">Send</button>
   </form>
-  <div class="jfoot" data-i18n-html="jfoot_text">Never saves without confirmation. Entries created here are marked with origin <span class="num">Joule</span> and go through the same validations.</div>
+  <div class="jfoot" data-i18n-html="jfoot_text_home">Never saves without confirmation. Entries created here are marked with origin <span class="num">Joule</span> and go through the same validations.</div>
 </section>
 
 
@@ -464,6 +563,44 @@
   <footer>
     <button class="btn" id="alCancel" value="cancel" data-i18n="btn_cancel">Cancel</button>
     <button class="btn primary" id="alSave" value="save" data-i18n="btn_record_allowance">Record allowance</button>
+  </footer>
+</form></dialog>
+
+<dialog id="dlgLeave"><form class="dlg" method="dialog">
+  <header><h3 data-i18n="dlg_new_leave_title">New leave request</h3><span class="chip grey num">LeaveRequestSet</span></header>
+  <div class="body">
+    <div class="field"><label for="lvType" data-i18n="label_absence_type">Absence type</label><select id="lvType"></select></div>
+    <div class="two">
+      <div class="field"><label for="lvStart" data-i18n="label_from">From</label><input type="date" id="lvStart"></div>
+      <div class="field"><label for="lvEnd" data-i18n="label_to">To</label><input type="date" id="lvEnd"></div>
+    </div>
+    <label class="lvchk"><input type="checkbox" id="lvPartial"> <span data-i18n="label_partial_day">Part of the day</span></label>
+    <div class="two" id="lvHoursWrap" hidden>
+      <div class="field"><label for="lvHours" data-i18n="label_hours">Hours</label><input type="text" id="lvHours" inputmode="decimal" value="4"></div>
+    </div>
+    <div class="two" id="lvClockWrap" hidden>
+      <div class="field"><label for="lvBeg" data-i18n="label_start">Start</label><input type="time" id="lvBeg" value="09:00"></div>
+      <div class="field"><label for="lvFin" data-i18n="label_end">End</label><input type="time" id="lvFin" value="13:00"></div>
+    </div>
+    <div class="field"><label for="lvNote" data-i18n="label_note">Note</label><input type="text" id="lvNote" maxlength="120" data-i18n-placeholder="placeholder_leave_note" placeholder="Optional, the manager sees it"></div>
+    <div class="lvsum" id="lvSummary"></div>
+    <div class="msgs" id="lvMsgs"></div>
+  </div>
+  <footer>
+    <button class="btn" id="lvCancel" value="cancel" formnovalidate data-i18n="btn_cancel">Cancel</button>
+    <button class="btn primary" id="lvSubmit" value="save" data-i18n="btn_send_request">Send request</button>
+  </footer>
+</form></dialog>
+
+<dialog id="dlgReject"><form class="dlg" method="dialog">
+  <header><h3 data-i18n="dlg_reject_title">Reject leave request</h3></header>
+  <div class="body">
+    <p id="rjWho" style="margin:0; font-weight:600"></p>
+    <div class="field"><label for="rjReason" data-i18n="label_reason">Reason</label><textarea id="rjReason" maxlength="200" data-i18n-placeholder="placeholder_reject_reason" placeholder="Required, the employee sees it"></textarea></div>
+  </div>
+  <footer>
+    <button class="btn" id="rjCancel" value="cancel" formnovalidate data-i18n="btn_cancel">Cancel</button>
+    <button class="btn primary" id="rjOk" value="save" disabled data-i18n="btn_reject">Reject</button>
   </footer>
 </form></dialog>
 

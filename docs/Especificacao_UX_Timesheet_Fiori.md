@@ -73,10 +73,14 @@ Mapeamento para floorplans Fiori:
 | E7. Aprovação de timesheets | List Report com seleção múltipla, integrado com My Inbox e SAP Task Center | P2 |
 | E8. Cobertura de registo | Analytical List Page | P3 |
 | E9. Registo em nome de | Reutiliza E1 com contexto de colaborador e banner de auditoria | P3 |
-| E10. Ausências da semana | Painel lateral com cartões, leitura do Time Management | P1 |
-| E11. Assistente conversacional | Painel flutuante, padrão Joule | P1 |
+| E10. Ausências da semana | Marcadores no cabeçalho do dia, alimentados pelo Leave Request | P1 |
+| E11. Assistente conversacional | Ecrã de entrada, com painel flutuante nos restantes ecrãs, padrão Joule | P1, P2 |
+| E15. Leave Request | List Report sobre o serviço standard, com diálogo de pedido e fila de aprovação da chefia direta | P1, chefia direta |
+| E16. Entrada pelo assistente | Página com a conversa como área principal e a semana e as ausências como coluna secundária | P1, chefia direta |
 
 Entrada na aplicação: tile no launchpad com KPI dinâmico, mostrando horas registadas contra horas esperadas na semana corrente. O estado do tile é o primeiro nudge, antes de qualquer email.
+
+A aplicação abre no assistente (E16). A conversa é a forma principal de registar horas e pedir ausências, e os dados ficam visíveis no mesmo ecrã, numa coluna secundária que se atualiza a cada ação. A grelha, o calendário e o ecrã de ausências continuam disponíveis para quem quer consultar ou editar diretamente, mas deixam de ser o ponto de partida.
 
 ---
 
@@ -235,7 +239,9 @@ Analytical List Page com o cruzamento colaborador por semana, semáforo de cober
 
 ## 13A. E10. Ausências da semana
 
-As ausências chegam do pedido de ausência e são **leitura apenas** nesta aplicação. Nunca se cria nem se altera uma ausência a partir da timesheet, porque isso duplicaria o processo de aprovação que já existe no Time Management.
+As ausências chegam do pedido de ausência e são **leitura apenas** na timesheet. Nunca se cria nem se altera uma ausência a partir da grelha ou do calendário. O pedido é feito no ecrã de ausências (E15) ou pelo assistente, e ambos usam o serviço standard do Leave Request com o seu workflow de aprovação, por isso continua a existir um só processo de aprovação, o do Time Management.
+
+Um pedido aparece na timesheet assim que é enviado, como pendente. Quando a chefia direta o aprova passa a aprovado e fecha o dia, ou reduz a capacidade se for parte do dia. Rejeitado ou retirado, desaparece. A timesheet não espera pelo lançamento no IT2001 para refletir a aprovação.
 
 ### Modelo de capacidade
 
@@ -268,7 +274,7 @@ O caso que tem de estar desenhado antes do desenvolvimento: o colaborador regist
 
 ## 13B. E11. Assistente conversacional, padrão Joule
 
-Painel flutuante, aberto pelo botão no canto inferior direito ou pela tecla `J`. O objetivo não é substituir a grelha, é cobrir o caso em que a pessoa se lembra do que fez enquanto está a fazer outra coisa.
+O assistente é a porta de entrada da aplicação (E16): ao abrir, a conversa ocupa a área principal e a semana e as ausências ficam numa coluna secundária no mesmo ecrã. Nos restantes ecrãs volta a ser o painel flutuante, aberto pelo botão no canto inferior direito ou pela tecla `J`, com a mesma conversa. A grelha não desaparece: é para quem prefere consultar ou editar diretamente.
 
 ### Capacidades
 
@@ -280,6 +286,11 @@ Painel flutuante, aberto pelo botão no canto inferior direito ou pela tecla `J`
 | Copiar semana | `copiar a semana passada` | Confirmação e criação das linhas sem durações |
 | Aplicar sugestões | `aplicar as de confiança alta` | Confirmação com a lista antes de aplicar |
 | Submeter | `submeter a semana` | Valida primeiro. Com erros, explica o primeiro e não submete |
+| Pedir ausência | `férias de 3 a 6 de novembro`, `consulta amanhã das 14h às 17h` | Cartão com tipo e AWART, período, duração, saldo depois, aprovador e serviço standard. Só envia depois de confirmar |
+| Consultar pedidos e saldo | `os meus pedidos de ausência`, `quantos dias de férias me restam` | Pedidos marcados e pendentes, saldo de férias |
+| Retirar ou cancelar | `cancela a consulta de amanhã` | Pendente: retira logo. Aprovado: pede o cancelamento, que volta à chefia |
+| Alertas da chefia | `o que tenho para aprovar` | Pedidos de ausência e timesheets à espera, com o mais próximo em destaque. Também na saudação, ao abrir |
+| Aprovar ou rejeitar ausências | `aprova o pedido da Ana`, `rejeita o do Bruno porque` | Cartão com as sobreposições na equipa. A rejeição exige motivo |
 
 ### Regras não negociáveis
 
@@ -294,6 +305,26 @@ Painel flutuante, aberto pelo botão no canto inferior direito ou pela tecla `J`
 ### Nota de produto
 
 No cenário SAP, isto deve ser exposto como capacidade do Joule, com o Joule Studio no SAP Build, e não como um chat próprio dentro da aplicação. A pessoa deve ter um assistente no launchpad, não um por aplicação. O protótipo imita o padrão de interação para o poder validar com utilizadores antes de investir na integração.
+
+---
+
+## 13C. E15. Leave Request, máscara sobre o standard
+
+A aplicação não tem lógica própria de ausências. É uma interface sobre o Leave Request standard do S/4HANA, transação de administração `PTARQ`, e usa os mesmos serviços da app standard My Leave Requests:
+
+| Ação | Serviço standard |
+|---|---|
+| Criar, consultar e retirar pedidos, ler tipos de ausência e saldos | `HCMFAB_LEAVE_REQUEST_CR_SRV` |
+| Aprovar ou rejeitar | Workflow standard `WS12300111`, um passo, decisão pelo `TASKPROCESSING` (My Inbox) |
+| Lançamento no infotipo de ausências | Report `RPTARQPOST`, de `APPROVED` para `POSTED`, escreve o `IT2001` |
+
+### Regras
+
+- **Aprovador:** a chefia direta na estrutura organizativa (OM), num só nível. Não é o responsável do projeto: esse âmbito é o das horas
+- **Validação no pedido, não só no envio:** sobreposição com outro pedido, saldo de férias, período fechado, parte do dia só num dia e só para tipos que a permitem, com as três severidades da timesheet
+- **Parte do dia segue o perfil da empresa:** `Z_CONS` regista horas, `Z_BSRV` regista hora de início e de fim, coerente com o registo de horas
+- **Cancelar um pedido aprovado é também um pedido,** decidido pela mesma chefia no mesmo passo do workflow
+- **Alertas:** a chefia vê o que tem para aprovar na saudação do assistente e num contador no separador de ausências. O colaborador é avisado da decisão na próxima vez que usa a aplicação
 
 ---
 
@@ -435,6 +466,7 @@ Regra de sequência: nada da fase 2 entra antes de o MVP atingir os KPIs de temp
 | Qualidade da sugestão | Sugestão errada é pior que sugestão nenhuma | Lançar apenas acima de um limiar de precisão medido em piloto |
 | Sincronização das ausências | Ausência aprovada depois do registo cria conflito silencioso | Conflito explícito com resolução assistida, ver E10. Leitura das ausências em tempo real, não em cópia diária |
 | Assistente sem grounding | Um modelo sem a lista de alocações inventa códigos de projeto | Function calling com esquema fechado e validação dos argumentos antes de executar |
+| Leave Request com lógica própria | Duplicar regras de ausência fora do standard cria dois processos de aprovação | Máscara sobre `HCMFAB_LEAVE_REQUEST_CR_SRV` e o workflow `WS12300111`, sem tabelas próprias. Confirmar nomes de entidades e campos no `$metadata` do cliente |
 | Multi país | Regras de janela horária em alguns países | Início e fim como campos condicionais por país desde o modelo de dados |
 
 ---

@@ -176,10 +176,12 @@ A leitura das ausências não é um extra de conveniência, é o que evita que a
 
 | Decisão | Opção escolhida | Porquê |
 |---|---|---|
-| Direção do fluxo | Leitura apenas, do Time Management para a timesheet | Um só processo de aprovação de ausências. Criar ausências aqui duplicaria o workflow |
+| Direção do fluxo | Leitura apenas, do Time Management para a timesheet. O pedido é feito pelo serviço standard do Leave Request, no ecrã de ausências ou pelo assistente, nunca pela grelha | Um só processo de aprovação de ausências, o workflow standard. A aplicação é uma máscara sobre ele |
+| Pedido de ausência | `HCMFAB_LEAVE_REQUEST_CR_SRV` para criar, ler, retirar, saldos e tipos; `WS12300111` com decisão pelo `TASKPROCESSING`; `RPTARQPOST` para o `IT2001` | São os serviços da app standard My Leave Requests. Nenhuma tabela é escrita diretamente |
 | Momento da leitura | Em tempo real na abertura da semana, não por cópia diária | Uma cópia diária deixa passar aprovações do próprio dia, que é exatamente quando o conflito aparece |
 | Granularidade | Dia inteiro e parcial, com capacidade por dia | Meio dia de ausência é o caso comum, e um modelo só de dia inteiro força o utilizador a mentir no registo |
-| Pedidos pendentes | Visíveis, não bloqueiam | Bloquear com base num pedido não aprovado impede registo legítimo |
+| Pedidos pendentes | Visíveis assim que enviados, não bloqueiam | Bloquear com base num pedido não aprovado impede registo legítimo |
+| Pedido aprovado ainda por lançar | Fecha o dia logo na aprovação, sem esperar pelo `RPTARQPOST` | O job corre em ciclos, e uma aprovação do próprio dia não pode ficar invisível até ao ciclo seguinte |
 | Conflito por aprovação posterior | Erro explícito com resolução assistida | O silêncio aqui produz horas perdidas e discussões de utilização impossíveis de reconstituir |
 
 Objetos envolvidos: pedido de ausência e respetivo workflow, infotipo de ausências, plano de trabalho do colaborador para a capacidade, e o calendário de fábrica para feriados. Confirmar no cliente se a capacidade vem do plano de trabalho ou de uma regra própria, porque isso decide o cálculo do esperado da semana.
@@ -251,6 +253,7 @@ Lista objetiva para a equipa funcional, antes do primeiro sprint:
 12. Origem da capacidade diária, plano de trabalho ou regra própria, e tipos de ausência que fecham o dia
 13. Disponibilidade do Joule no cliente e licenciamento, para decidir entre capacidade Joule e chat próprio
 14. Base legal e avaliação de impacto para a captura de sinais, com o DPO
+15. Versão do Leave Request ativa no cliente (HCM Fiori apps bundle, `HCMFAB_LEAVE_REQUEST_CR_SRV`), nomes de entidades e campos no `$metadata`, grupo de regras (`WEBMO`), workflow de aprovação em uso e periodicidade do `RPTARQPOST`
 
 ---
 

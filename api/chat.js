@@ -8,12 +8,62 @@
  *   - nunca escreve na timesheet, apenas devolve a função escolhida e os argumentos
  *   - a confirmação do utilizador acontece no cliente, antes de qualquer escrita
  *   - nunca inventa projetos fora da lista dada no contexto
+ *   - nunca envia um pedido de ausência nem decide uma aprovação: devolve a
+ *     função, e o cartão de confirmação no cliente é que envia
  *   - nenhum dado de cliente vai no prompt além do contexto necessário à tarefa
  */
 
 import Anthropic from "@anthropic-ai/sdk";
 
 const FUNCTIONS = [
+  {
+    name: "pedir_ausencia",
+    description: "Preparar um pedido de ausência da própria pessoa (férias, consulta médica, doença, formação, falta justificada), que segue pelo serviço standard do Leave Request para a chefia direta aprovar. O cliente mostra um cartão de confirmação; nada é enviado sem a pessoa confirmar. Para parte de um dia, indicar 'horas' ou 'hora_inicio'/'hora_fim', e só um dia.",
+    parameters: {
+      type: "object",
+      properties: {
+        tipo: { type: "string", enum: ["0100", "0210", "0200", "0300", "0400"], description: "código AWART, da lista 'tipos_ausencia' no contexto: 0100 férias, 0210 consulta médica, 0200 doença, 0300 formação, 0400 falta justificada" },
+        data_inicio: { type: "string", description: "data ISO, YYYY-MM-DD" },
+        data_fim: { type: "string", description: "data ISO, YYYY-MM-DD; igual a data_inicio para um só dia" },
+        horas: { type: "number", description: "só para parte do dia: número de horas, múltiplo de 0,25, abaixo de 8" },
+        hora_inicio: { type: "string", description: "só para parte do dia: HH:MM" },
+        hora_fim: { type: "string", description: "só para parte do dia: HH:MM" },
+        nota: { type: "string", maxLength: 120, description: "nota opcional para a chefia" }
+      },
+      required: []
+    }
+  },
+  {
+    name: "consultar_ausencias",
+    description: "Mostrar os pedidos de ausência da própria pessoa (marcados e pendentes) ou, com 'saldo', o saldo de férias",
+    parameters: { type: "object", properties: { saldo: { type: "boolean", description: "true quando a pergunta for sobre dias de férias disponíveis ou saldo" } }, required: [] }
+  },
+  {
+    name: "cancelar_ausencia",
+    description: "Retirar um pedido de ausência ainda pendente, ou pedir o cancelamento de um já aprovado (que volta à chefia para aprovação, como no standard). Só pedidos com 'pode_cancelar' verdadeiro em 'pedidos_ausencia'.",
+    parameters: { type: "object", properties: { pedido: { type: "string", description: "número do pedido, de 'pedidos_ausencia'" }, data: { type: "string", description: "alternativa ao número: uma data ISO que o pedido abranja" } }, required: [] }
+  },
+  { name: "listar_pendentes_aprovacao", description: "Só para a chefia: mostrar o que está à espera de aprovação, pedidos de ausência e timesheets", parameters: { type: "object", properties: {} } },
+  {
+    name: "decidir_ausencia",
+    description: "Só para a chefia ('papel' = 'chefia'): aprovar ou rejeitar pedidos de ausência de 'pedidos_para_aprovar'. Uma rejeição precisa sempre de motivo; se a pessoa não o deu, não chames a função e pergunta o motivo.",
+    parameters: {
+      type: "object",
+      properties: {
+        pedido: { type: "string", description: "número do pedido, ou 'todos'" },
+        pessoa: { type: "string", description: "alternativa ao número: nome da pessoa, como aparece em 'pedidos_para_aprovar'" },
+        decisao: { type: "string", enum: ["aprovar", "rejeitar"] },
+        motivo: { type: "string", maxLength: 200, description: "obrigatório para rejeitar" }
+      },
+      required: ["decisao"]
+    }
+  },
+  { name: "ir_para_ausencias", description: "Mudar para o ecrã de Ausências (Leave Request)", parameters: { type: "object", properties: {} } },
+  {
+    name: "ver_como",
+    description: "Mudar quem está a usar a demonstração: o colaborador, ou a sua chefia direta na estrutura organizativa",
+    parameters: { type: "object", properties: { perfil: { type: "string", enum: ["colaborador", "chefia"] } }, required: ["perfil"] }
+  },
   {
     name: "registar_horas",
     description: "Registar a mesma duração num dia, ou em vários dias específicos, contra um projeto onde a pessoa está alocada",
@@ -155,6 +205,7 @@ function buildSystemPrompt(contexto, idioma) {
     "'semanas_anteriores' no contexto é só consulta, semanas já fechadas ou fora da semana visível, nunca escreves lá. Usa-o para responder a perguntas sobre o que a pessoa registou antes ('que projeto usei a semana passada', 'quantas horas fiz na semana 37'). Se o pedido pedir para repetir algo de uma semana anterior num dia da semana visível, usa o projeto encontrado aí como argumento de 'registar_horas' para esse dia, em vez de dizeres que não consegues.",
     "Uma data ou pedido fora do que as funções cobrem nunca é um beco sem saída: explica em uma frase porque não dá para já (por exemplo, o dia pedido cair fora da semana visível), e propõe sempre a alternativa mais próxima que consegues mesmo fazer (outro dia dentro da semana, copiar a semana anterior, mudar de ecrã), em vez de só recusares.",
     "Assim que tiveres dia, duração e projeto claros (mesmo que tenhas acabado de os esclarecer numa pergunta anterior), chama a função de imediato, no mesmo turno, em vez de descreveres o registo em texto e esperares por um 'sim' à parte: o cartão de confirmação que aparece no ecrã depois de chamares a função É o passo de confirmação, uma segunda confirmação em texto antes disso só atrasa e arrisca perder o contexto. Quando chamares 'registar_horas' ou 'registar_horas_equipa', o campo dia/dias é sempre uma data ISO completa e com zero à esquerda (ex.: '2026-09-15'), nunca só o número do dia.",
+    "Ausências e Leave Request: a app é uma máscara sobre o Leave Request standard do SAP (serviço HCMFAB_LEAVE_REQUEST_CR_SRV, workflow de um passo com a chefia direta, decisão pelo My Inbox). Para a pessoa pedir uma ausência usa 'pedir_ausencia' com o código de 'tipos_ausencia' e datas ISO; resolve datas relativas ('amanhã', 'próxima semana', 'de 3 a 7 de novembro') a partir de 'hoje' no contexto, e quando o ano não é dito usa o próximo em que essa data ainda não passou. Se faltar o tipo ou as datas, pergunta só o que falta, em texto, sem chamar a função; se 'pedido_ausencia_por_completar' estiver preenchido, a mensagem atual completa esse pedido. Um pedido enviado aparece logo na timesheet como pendente, e depois de aprovado fecha o dia; não é preciso registar nada à parte. Para ver os pedidos ou o saldo usa 'consultar_ausencias'; para retirar ou cancelar, 'cancelar_ausencia'. 'listar_ausencias' continua a ser só as ausências da semana visível. Só quem tem 'papel' = 'chefia' aprova: usa 'listar_pendentes_aprovacao' quando perguntar o que tem para aprovar, e 'decidir_ausencia' para aprovar ou rejeitar pedidos de 'pedidos_para_aprovar' (uma rejeição precisa de motivo; se 'rejeicao_sem_motivo' estiver preenchido, a mensagem atual é o motivo). Se 'papel' for 'colaborador' e pedir para aprovar uma ausência, explica que só a chefia direta ('chefia_direta') aprova e que pode experimentar com 'Ver como' no topo. Aprovar um timesheet continua a ser 'aprovar'; se o nome existir nas duas listas e o pedido não disser qual, pergunta.",
     "Contexto atual da semana, incluindo projetos onde a pessoa está alocada, ausências, capacidade por dia, semanas anteriores, a equipa do líder atual (se aplicável) e os timesheets pendentes de aprovação (se aplicável):",
     JSON.stringify(contexto || {}, null, 2)
   ].join("\n");
