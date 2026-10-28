@@ -167,7 +167,15 @@
     {pernr:"00104531", name:"Bruno Alves",     role:"Technician",        bukrs:"PT02", projs:[5],   abs:{2:"Vacation"}, already:[8,0,8,0,0,0,0]},
     {pernr:"00104532", name:"Carla Sousa",     role:"Senior technician", bukrs:"PT02", projs:[5],   abs:{}, already:[0,8,8,8,0,0,0]},
     {pernr:"00104533", name:"Daniel Matos",    role:"Technician",        bukrs:"PT02", projs:[5],   abs:{}, dailyHours:6, already:[6,6,0,0,0,0,0]},
-    {pernr:"00104534", name:"Elsa Carvalho",   role:"Technician",        bukrs:"PT02", projs:[5],   abs:{0:"Medical appointment"}, already:[0,8,8,0,0,0,0]}
+    {pernr:"00104534", name:"Elsa Carvalho",   role:"Technician",        bukrs:"PT02", projs:[5],   abs:{0:"Medical appointment"}, already:[0,8,8,0,0,0,0]},
+    /* The project managers themselves: they record their own hours too, and
+       can do it here, in the same mass entry as their team. When the one
+       under test does, the hours also land in their own My Timesheet. */
+    {pernr:"00104540", name:"Ricardo Nunes",   role:"Project manager",   bukrs:"PT01", projs:[1,3], abs:{}, already:[4,4,4,0,0,0,0], leaderOf:"RN"},
+    {pernr:"00104541", name:"Pedro Alves",     role:"Project manager",   bukrs:"PT01", projs:[2],   abs:{}, already:[8,4,0,0,0,0,0], leaderOf:"PA"},
+    {pernr:"00104401", name:"Ana Ferreira",    role:"Project manager",   bukrs:"PT01", projs:[0],   abs:{}, already:[8,8,4,0,0,0,0], leaderOf:"AF"},
+    {pernr:"00104542", name:"Carlos Pinto",    role:"Project manager",   bukrs:"PT02", projs:[4],   abs:{}, already:[8,4,8,0,0,0,0], leaderOf:"CP"},
+    {pernr:"00104543", name:"Marco Silva",     role:"Project manager",   bukrs:"PT02", projs:[5],   abs:{}, already:[4,8,0,0,0,0,0], leaderOf:"MS"}
   ];
   function leaderById(id){ return LEADERS.filter(function(l){ return l.id === id; })[0] || LEADERS[0]; }
   function teamOf(leaderId){
@@ -225,6 +233,8 @@
      authored gaps in TEAM[].already, deliberately including someone already
      at capacity so the "day already full" case is visible without more clicks. */
   function alreadyHoursFor(m, weekNum){
+    /* the project manager under test: their own sheet is the record */
+    if(isSelfMember(m) && weekNum === WEEKS[weekIdx].num) return [0,1,2,3,4,5,6].map(function(d){ return dayTotal(d); });
     var base;
     if(weekNum >= 38) base = (m.already || [0,0,0,0,0,0,0]).slice();
     else base = [0,1,2,3,4].reduce(function(acc,d){ acc[d] = m.abs[d] ? 0 : 8; return acc; }, [0,0,0,0,0,0,0]);
@@ -797,6 +807,7 @@
      messages are a separate follow-up, not covered here yet. */
   var I18N = {
     en: {
+      label_you:"you",
       filter_pending:"To approve", filter_all:"All", aria_ap_filter:"Which timesheets to show", text_ap_none_pending:"Nothing left to approve. Choose All to see the approved ones.", btn_select_clean_one:"Select the {n} without warnings", btn_select_clean_other:"Select the {n} without warnings",
       settings_reference:"Technical reference", btn_open_mapping:"Open the SAP mapping", text_mapping_hint:"Field by field, what each screen writes to CATS and to the standard Leave Request, with the records and payloads generated live.",
       label_test:"Test", aria_change_test:"Change the test: company and profile",
@@ -806,11 +817,11 @@
       setup_co_hint_pt01:"Consulting. Profile Z_CONS: hours are recorded as a duration, month by month.",
       setup_co_hint_pt02:"Building Solutions. Profile Z_BSRV: hours are recorded with a start and an end time, week by week.",
       setup_employee_desc:"Records their own time and requests absences.",
-      setup_pm_desc:"Records time for the project team and approves its timesheets.",
+      setup_pm_desc:"Records their own time and the project team's, and approves the team's timesheets.",
       setup_manager_desc:"Approves the absence requests of their direct reports, from the org structure.",
       btn_start_test:"Start",
       text_approval_sub_pm:"Timesheets of the people allocated to {projects}, the projects you own. Approval follows project ownership, not the org structure.",
-      bot_greeting_pm:"Hi {name}! You're testing as the project manager of {projects}. I can record hours or allowances for the team, fill in the days still missing, and approve the timesheets.",
+      bot_greeting_pm:"Hi {name}! You're testing as the project manager of {projects}. I can record your own hours, record hours or allowances for the team (you included), fill in the days still missing, and approve the timesheets.",
       bot_alert_ts_pm_one:"You have {n} timesheet to approve, {x} with exceptions.", bot_alert_ts_pm_other:"You have {n} timesheets to approve, {x} with exceptions.",
       bot_ts_only_pm:"Timesheets are approved by the project manager, who owns the project. To try it, change the test to the project manager profile.",
       bot_team_only_pm:"Recording for the team is done by the project manager. To try it, change the test to the project manager profile.",
@@ -1299,6 +1310,7 @@
       row_confirm_cell:"Confirm cell and move down", row_show_list:"Show this list"
     },
     pt: {
+      label_you:"tu",
       filter_pending:"Por aprovar", filter_all:"Todas", aria_ap_filter:"Que timesheets mostrar", text_ap_none_pending:"Nada por aprovar. Escolhe Todas para ver as aprovadas.", btn_select_clean_one:"Selecionar a {n} sem avisos", btn_select_clean_other:"Selecionar as {n} sem avisos",
       settings_reference:"Referência técnica", btn_open_mapping:"Abrir o mapeamento SAP", text_mapping_hint:"Campo a campo, o que cada ecrã grava no CATS e no Leave Request standard, com os registos e os payloads gerados em tempo real.",
       label_test:"Teste", aria_change_test:"Mudar o teste: empresa e perfil",
@@ -1308,11 +1320,11 @@
       setup_co_hint_pt01:"Consultoria. Perfil Z_CONS: as horas registam-se como duração, mês a mês.",
       setup_co_hint_pt02:"Building Solutions. Perfil Z_BSRV: as horas registam-se com hora de início e de fim, semana a semana.",
       setup_employee_desc:"Regista as próprias horas e pede ausências.",
-      setup_pm_desc:"Lança horas para a equipa do projeto e aprova as timesheets.",
+      setup_pm_desc:"Regista as próprias horas e as da equipa do projeto, e aprova as timesheets da equipa.",
       setup_manager_desc:"Aprova os pedidos de ausência dos colaboradores diretos, de acordo com a estrutura organizativa.",
       btn_start_test:"Começar",
       text_approval_sub_pm:"Timesheets das pessoas alocadas a {projects}, os projetos de que és responsável. A aprovação segue a responsabilidade pelo projeto, não a estrutura organizativa.",
-      bot_greeting_pm:"Olá, {name}! Estás a testar como gestor de projeto de {projects}. Posso lançar horas ou abonos para a equipa, preencher os dias em falta e aprovar as timesheets.",
+      bot_greeting_pm:"Olá, {name}! Estás a testar como gestor de projeto de {projects}. Posso registar as tuas horas, lançar horas ou abonos para a equipa (incluindo para ti), preencher os dias em falta e aprovar as timesheets.",
       bot_alert_ts_pm_one:"Tens {n} timesheet para aprovar, {x} com exceções.", bot_alert_ts_pm_other:"Tens {n} timesheets para aprovar, {x} com exceções.",
       bot_ts_only_pm:"As timesheets são aprovadas pelo gestor de projeto, o responsável pelo projeto. Para experimentar, muda o teste para o perfil de gestor de projeto.",
       bot_team_only_pm:"O lançamento para a equipa é feito pelo gestor de projeto. Para experimentar, muda o teste para o perfil de gestor de projeto.",
@@ -1794,6 +1806,7 @@
       row_confirm_cell:"Confirmar célula e descer", row_show_list:"Mostrar esta lista"
     },
     fr: {
+      label_you:"vous",
       filter_pending:"À approuver", filter_all:"Toutes", aria_ap_filter:"Feuilles de temps à afficher", text_ap_none_pending:"Plus rien à approuver. Choisissez Toutes pour voir celles approuvées.", btn_select_clean_one:"Sélectionner la {n} sans avertissement", btn_select_clean_other:"Sélectionner les {n} sans avertissement",
       settings_reference:"Référence technique", btn_open_mapping:"Ouvrir le mapping SAP", text_mapping_hint:"Champ par champ, ce que chaque écran enregistre dans CATS et dans le Leave Request standard, avec les enregistrements et payloads générés en direct.",
       label_test:"Test", aria_change_test:"Changer le test : entreprise et profil",
@@ -1803,11 +1816,11 @@
       setup_co_hint_pt01:"Conseil. Profil Z_CONS : les heures se saisissent en durée, mois par mois.",
       setup_co_hint_pt02:"Building Solutions. Profil Z_BSRV : les heures se saisissent avec une heure de début et de fin, semaine par semaine.",
       setup_employee_desc:"Saisit ses propres heures et demande des absences.",
-      setup_pm_desc:"Saisit les heures de l'équipe du projet et approuve ses feuilles de temps.",
+      setup_pm_desc:"Saisit ses propres heures et celles de l'équipe du projet, et approuve les feuilles de temps de l'équipe.",
       setup_manager_desc:"Approuve les demandes d'absence de ses collaborateurs directs, selon la structure organisationnelle.",
       btn_start_test:"Commencer",
       text_approval_sub_pm:"Feuilles de temps des personnes affectées à {projects}, les projets dont vous êtes responsable. L'approbation suit la responsabilité du projet, pas la structure organisationnelle.",
-      bot_greeting_pm:"Bonjour {name} ! Vous testez en tant que chef de projet de {projects}. Je peux saisir des heures ou des indemnités pour l'équipe, compléter les jours manquants et approuver les feuilles de temps.",
+      bot_greeting_pm:"Bonjour {name} ! Vous testez en tant que chef de projet de {projects}. Je peux saisir vos heures, saisir des heures ou des indemnités pour l'équipe (vous compris), compléter les jours manquants et approuver les feuilles de temps.",
       bot_alert_ts_pm_one:"Vous avez {n} feuille de temps à approuver, dont {x} avec exceptions.", bot_alert_ts_pm_other:"Vous avez {n} feuilles de temps à approuver, dont {x} avec exceptions.",
       bot_ts_only_pm:"Les feuilles de temps sont approuvées par le chef de projet, responsable du projet. Pour essayer, passez le test au profil chef de projet.",
       bot_team_only_pm:"La saisie pour l'équipe est faite par le chef de projet. Pour essayer, passez le test au profil chef de projet.",
@@ -3869,7 +3882,26 @@
     if(!state.staged[pernr].t) state.staged[pernr].t = [null,null,null,null,null,null,null];
     return state.staged[pernr];
   }
-  function memberBlocked(m, day){ return !!m.abs[day]; }
+  function memberBlocked(m, day){ return isSelfMember(m) ? isBlocked(day) : !!m.abs[day]; }
+  /* The absence that closes a member's day, as a label: from the sample
+     roster for the team, from their own sheet for the manager under test. */
+  function memberAbsLabel(m, day){
+    if(isSelfMember(m)){ var a = absOn(day, "approved")[0]; return a ? absTypeLabel(a) : t("text_absence_generic"); }
+    return m.abs[day] || "";
+  }
+  /* The project manager under test, as a member of their own team. */
+  function isSelfMember(m){ return state.role === "pm" && !!m.leaderOf && m.leaderOf === state.leader; }
+  /* What the project manager records for themselves in mass entry is their
+     own time: it goes into their own sheet too, on the project's row (a
+     new row when the project has none yet, or, for start and end profiles,
+     when that day already holds a window on that row). */
+  function addToOwnSheet(pIdx, day, hours, slotT){
+    var row = state.rows.filter(function(r){ return r.p === pIdx && !(slotT && r.t && r.t[day]); })[0];
+    if(!row){ row = {id:nextId++, p:pIdx, desc:"", h:[0,0,0,0,0,0,0], origin:"Mass entry"}; state.rows.push(row); }
+    row.h[day] = round15((row.h[day] || 0) + hours);
+    if(slotT && slotT.b !== null && slotT.e !== null) setSlot(row, day, {b: slotT.b, e: slotT.e});
+    state.needsSave = true;
+  }
   /* Most of the roster is a standard 8h/day schedule; a few named people
      carry their own reduced dailyHours (see TEAM above), the same idea as
      My week's own daily cap, just per person instead of a single value. */
@@ -3928,7 +3960,7 @@
         var pendingNow = pendingHours[i] || 0;
         if(stagedNow || pendingNow) cls += " staged";
         var cell = el("div", cls, total ? fmt(total) : "–");
-        if(memberBlocked(m,i)) cell.title = t("tip_approved_type", {type: m.abs[i].toLowerCase()});
+        if(memberBlocked(m,i)) cell.title = t("tip_approved_type", {type: memberAbsLabel(m, i).toLowerCase()});
         else if(stagedNow && pendingNow) cell.title = fmt(v - pendingNow) + " h already · " + fmt(pendingNow) + " h recorded, " + fmt(stagedNow) + " h staged - Save to finish";
         else if(pendingNow) cell.title = fmt(v - pendingNow) + " h already · " + fmt(pendingNow) + " h recorded, not yet saved";
         else if(stagedNow) cell.title = fmt(v) + " h already · " + fmt(stagedNow) + " h staged now";
@@ -3986,7 +4018,7 @@
         var info = fmtAllowCell(lines);
         var cls = "already-cell" + dayExtraClass(i) + (memberBlocked(m,i) ? " abs" : "");
         var cell = el("div", cls, info.text);
-        if(memberBlocked(m,i)) cell.title = t("tip_approved_type", {type: m.abs[i].toLowerCase()});
+        if(memberBlocked(m,i)) cell.title = t("tip_approved_type", {type: memberAbsLabel(m, i).toLowerCase()});
         else if(lines.length) cell.title = info.title;
         if(lines.length){
           lines.forEach(function(l){ units[wt(l.code).unit] = (units[wt(l.code).unit]||0) + l.qty; });
@@ -4073,11 +4105,13 @@
       /* teamOf() only lists people allocated to the project selected above,
          so everyone in this loop already qualifies - no need to spell out
          which project(s), the roster itself is the answer. */
-      var sub = m.role + " · " + m.bukrs + " · " + profileFor(WORKDATES[0], m.bukrs).code;
+      var sub = m.role + (isSelfMember(m) ? " · " + t("label_you") : "") + " · " + m.bukrs + " · " + profileFor(WORKDATES[0], m.bukrs).code;
       if(m.dailyHours) sub += " · " + fmt(m.dailyHours) + "h/dia";
-      var absDays = Object.keys(m.abs).map(Number).sort(function(a,b){ return a-b; });
+      var absDays = isSelfMember(m)
+        ? [0,1,2,3,4].filter(function(d){ return memberBlocked(m, d); })
+        : Object.keys(m.abs).map(Number).sort(function(a,b){ return a-b; });
       if(absDays.length){
-        sub += " · " + absDays.map(function(d){ return DAYS[d] + " " + m.abs[d].toLowerCase(); }).join(", ");
+        sub += " · " + absDays.map(function(d){ return DAYS[d] + " " + memberAbsLabel(m, d).toLowerCase(); }).join(", ");
       }
       if(m.locked) sub += " · week already approved";
       var s = el("div","s", sub);
@@ -4112,7 +4146,7 @@
           if(!slotT){
             var ph = el("div","cell computed" + dayExtraClass(i), "–");
             ph.title = t("tip_clock_use_fields");
-            if(memberBlocked(m,i)){ ph.classList.add("abs"); ph.title = t("tip_approved_type", {type: m.abs[i].toLowerCase()}); }
+            if(memberBlocked(m,i)){ ph.classList.add("abs"); ph.title = t("tip_approved_type", {type: memberAbsLabel(m, i).toLowerCase()}); }
             if(!periodOpen(WORKDATES[i], m.bukrs)){ ph.classList.add("closed"); ph.title = t("tip_closed_period_short"); }
             row.appendChild(ph);
             return;
@@ -4129,7 +4163,7 @@
           });
           box.appendChild(el("div","cdur", v ? fmt(v) + " h" : "–"));
           box.title = PROJECTS[massProject()].code + " · " + fmtClock(slotT.b) + "–" + fmtClock(slotT.e);
-          if(memberBlocked(m,i)){ box.classList.add("abs"); box.title = t("tip_approved_type", {type: m.abs[i].toLowerCase()}); }
+          if(memberBlocked(m,i)){ box.classList.add("abs"); box.title = t("tip_approved_type", {type: memberAbsLabel(m, i).toLowerCase()}); }
           if(!periodOpen(WORKDATES[i], m.bukrs)){ box.classList.add("closed"); box.title = t("tip_closed_period_short"); }
           row.appendChild(box);
           return;
@@ -4142,7 +4176,7 @@
         inp.disabled = m.locked || memberBlocked(m,i) || !periodOpen(WORKDATES[i], m.bukrs);
         inp.title = v ? (PROJECTS[massProject()].code + " · " + fmt(v) + " h") : "";
         inp.setAttribute("aria-label","Hours for "+m.name+", "+DAYS[i]);
-        if(memberBlocked(m,i)){ inp.classList.add("abs"); inp.title = "Approved "+m.abs[i].toLowerCase(); }
+        if(memberBlocked(m,i)){ inp.classList.add("abs"); inp.title = "Approved "+memberAbsLabel(m, i).toLowerCase(); }
         if(!periodOpen(WORKDATES[i], m.bukrs)){ inp.classList.add("closed"); inp.title = "Closed period"; }
         inp.addEventListener("change", function(){
           var parsed = parseDur(inp.value);
@@ -4272,6 +4306,7 @@
      unrelated staged hours from an earlier, still-unconfirmed manual batch
      never get swept into a save the person never saw or confirmed. */
   function saveMass(onlyPernrs, silent){
+    var ownSheetChanged = false;
     var leader = leaderById(state.leader);
     var members = teamOf(state.leader);
     if(onlyPernrs) members = members.filter(function(m){ return onlyPernrs.indexOf(m.pernr) !== -1; });
@@ -4289,7 +4324,7 @@
         var cap = teamDailyCap(m);
         for(var d=0; d<7; d++){
           if(!st.h[d]) continue;
-          if(memberBlocked(m,d)){ err = DAYS[d] + " has an approved " + m.abs[d].toLowerCase() + "."; break; }
+          if(memberBlocked(m,d)){ err = DAYS[d] + " has an approved " + memberAbsLabel(m, d).toLowerCase() + "."; break; }
           if(!periodOpen(WORKDATES[d], m.bukrs)){ err = DAYS[d] + " falls in a closed period."; break; }
           if(st.h[d] > 24){ err = DAYS[d] + " is above 24 hours."; break; }
           /* The authoritative capacity gate: every path that stages hours
@@ -4316,6 +4351,7 @@
           profile: profileFor(WORKDATES[i], m.bukrs).code,
           beg: st.t[i] ? st.t[i].b : null, end: st.t[i] ? st.t[i].e : null
         });
+        if(isSelfMember(m)){ addToOwnSheet(pIdx, i, st.h[i], st.t[i]); ownSheetChanged = true; }
         saved++;
       }
       savedPeople++;
@@ -4325,7 +4361,7 @@
        Submit vs Save on My Timesheet. The header Save button is what
        actually reflects this in the database. */
     if(saved) state.teamNeedsSave = true;
-    renderTeam();
+    if(ownSheetChanged) render(); else renderTeam();
     if(silent) return saved;
     var who = savedPeople + (savedPeople === 1 ? " person" : " people");
     var left = kept + (kept === 1 ? " line stayed" : " lines stayed");
@@ -6409,7 +6445,7 @@
      the line manager in the same session. */
   var PROFILE_TABS = {
     employee: ["home","semana","leave"],
-    pm:       ["home","team","aprov"],
+    pm:       ["home","semana","team","aprov"],
     manager:  ["home","leave"]
   };
   function currentActor(){

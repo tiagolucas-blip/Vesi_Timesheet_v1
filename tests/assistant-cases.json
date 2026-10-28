@@ -625,6 +625,54 @@
           ]
         }
       ]
+    },
+    {
+      "id": "pm-en-own-hours",
+      "lang": "en",
+      "role": "pm",
+      "leader": "RN",
+      "why": "comment: the project manager also records their own hours",
+      "steps": [
+        {
+          "say": "2h RTL testing yesterday",
+          "expect": [
+            "Retail, Time Tracking",
+            "2.0 h"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pm-en-self-in-mass-entry",
+      "lang": "en",
+      "role": "pm",
+      "leader": "RN",
+      "why": "comment: the project manager can include themselves in mass entry",
+      "steps": [
+        {
+          "say": "2h for Ricardo on Monday",
+          "expect": [
+            "Ricardo Nunes",
+            "2.0 h"
+          ],
+          "expectContext": {
+            "equipa[].nome": [
+              "João Costa",
+              "Inês Braga",
+              "Vera Antunes",
+              "Gonçalo Pinheiro",
+              "Teresa Correia",
+              "Ricardo Nunes"
+            ]
+          }
+        },
+        {
+          "confirm": true,
+          "expect": [
+            "Ricardo"
+          ]
+        }
+      ]
     }
   ]
 }

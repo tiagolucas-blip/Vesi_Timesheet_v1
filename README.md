@@ -14,7 +14,7 @@ Everything below works, with no server and no real data.
 **The test setup comes first**
 - A window opens before anything else: the company (PT01 Consulting, durations by month; PT02 Building Solutions, start and end by week) and the profile under test
 - **Employee** (Tiago Leal) records their own time and requests absences: Assistant, My Timesheet, Leave Request
-- **Project manager** (one of the company's project owners, picked in the same window) records for the project team and approves its timesheets, never their own: Assistant, Team, Approval
+- **Project manager** (one of the company's project owners, picked in the same window) records their own time like any employee, records for the project team (themselves included, in mass entry, which also fills their own sheet) and approves the team's timesheets, never their own: Assistant, My Timesheet, Team, Approval. In this mockup the own sheet reuses the sample weeks of the employee profile
 - **Line manager** (Sofia Almeida for PT01, Patrícia Gomes for PT02, from the org structure) approves absences: Assistant, Leave Request
 - Each profile only sees its screens, and the assistant follows the same split: alerts, greeting and permissions (an employee asking to approve a timesheet is told who does it)
 - The Test button in the header reopens the window at any time. Data stays across changes, so a request sent as the employee can be approved as the line manager in the same session
