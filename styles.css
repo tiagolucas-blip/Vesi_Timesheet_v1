@@ -512,11 +512,11 @@
   .hsweeknav .arrow{width:26px; height:26px}
   .hschips{display:flex; gap:6px; flex-wrap:wrap; padding:10px 14px 0}
   .hsdays{display:grid; gap:6px; padding:10px 14px}
-  .hsday{display:grid; grid-template-columns:62px minmax(40px,1fr) 78px; grid-template-areas:"d bar h" "a a a"; column-gap:10px; align-items:center; font-size:var(--fs-sm)}
+  .hsday{display:grid; grid-template-columns:62px minmax(40px,1fr) auto; grid-template-areas:"d bar h" "a a a"; column-gap:10px; align-items:center; font-size:var(--fs-sm)}
   .hsday .d{grid-area:d; color:var(--ink-2)}
   .hsday .bar{grid-area:bar; min-width:0}
   .hsday .bar i.over{background:var(--crit)}
-  .hsday .h{grid-area:h; text-align:right; color:var(--ink-2)}
+  .hsday .h{grid-area:h; text-align:right; color:var(--ink-2); white-space:nowrap}
   .hsday .a{grid-area:a}
   .hsday .a:empty{display:none}
   .hsday .a .chip{font-size:var(--fs-label); padding:1px 8px; margin-top:2px}
@@ -553,3 +553,22 @@
   .jfbform{display:flex; gap:6px; flex:1; min-width:0}
   .jfbform input[type=text]{flex:1; min-width:0; padding:4px 8px; font-size:var(--fs-sm)}
   .jfbdone{font-size:var(--fs-label); color:var(--ink-3)}
+
+  /* ---------- the test setup: company and profile ----------
+     The first window on screen, and the Test button that reopens it. */
+  .ctxbtn{display:inline-flex; align-items:center; gap:8px; max-width:100%}
+  .ctxbtn .ctxk{font-size:var(--fs-label); text-transform:uppercase; letter-spacing:.08em; color:var(--ink-3); font-weight:600}
+  .ctxbtn b{font-weight:600; color:var(--accent-ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0}
+  dialog#dlgSetup{width:min(640px, calc(100vw - 32px))}
+  .dlg.setup > header{flex-wrap:wrap}
+  .setupco{display:flex; flex-wrap:wrap}
+  .setupco button{flex:1 1 200px}
+  .setupcards{display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:10px}
+  @media (max-width:600px){ .setupcards{grid-template-columns:minmax(0,1fr)} }
+  .setupcard{display:grid; gap:6px; align-content:start; text-align:left; padding:12px; border:1px solid var(--line); border-radius:var(--radius); background:var(--surface); color:var(--ink); min-width:0}
+  .setupcard:hover{border-color:var(--accent)}
+  .setupcard[aria-checked="true"]{border-color:var(--accent); box-shadow:inset 0 0 0 1px var(--accent); background:var(--accent-soft)}
+  .setupcard b{font-size:var(--fs-body)}
+  .setupcard span{font-size:var(--fs-sm); color:var(--ink-2)}
+  .setupcard em{font-style:normal; font-size:var(--fs-sm); color:var(--accent-ink); font-weight:600; margin-top:auto}
+  .jdivider{justify-self:center; font-size:var(--fs-label); text-transform:uppercase; letter-spacing:.08em; color:var(--ink-3); border-top:1px solid var(--line-soft); padding-top:8px; width:100%; text-align:center}

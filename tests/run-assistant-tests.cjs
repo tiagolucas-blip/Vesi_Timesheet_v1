@@ -76,10 +76,11 @@ async function runCase(browser, base, c) {
     pendingIntent = null;
     return route.fulfill({ status: 200, contentType: "application/json", body });
   });
-  await page.goto(base + "/index.html?today=" + TODAY);
+  /* company, profile and project manager go in the address, which skips
+     the test setup window: role is "employee" (default), "pm" or "manager" */
+  const setup = "&company=" + (c.company || "PT01") + "&profile=" + (c.role || "employee") + (c.leader ? "&leader=" + c.leader : "");
+  await page.goto(base + "/index.html?today=" + TODAY + setup);
   await page.waitForSelector(BOT);
-  if (c.company) { await page.selectOption("#coSel", c.company); await page.waitForTimeout(250); }
-  if (c.role) { await page.selectOption("#roleSel", c.role); await page.waitForTimeout(250); }
 
   const results = [];
   for (const step of c.steps) {

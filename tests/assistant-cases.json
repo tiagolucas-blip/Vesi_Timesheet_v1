@@ -1,5 +1,5 @@
 {
-  "about": "Conversations the assistant must keep handling. Each step's last answer must contain every 'expect' string and none of the 'absent' ones (case-insensitive). 'confirm' clicks the open card. 'intent' stands in for Claude's decision for that message. 'today' pins the date relative phrases are read against. Add a case for every failure fixed from the conversation log, with 'why' saying where it came from.",
+  "about": "Conversations the assistant must keep handling. Each step's last answer must contain every 'expect' string and none of the 'absent' ones (case-insensitive). 'confirm' clicks the open card. 'intent' stands in for Claude's decision for that message. 'role' is the profile under test (employee by default, pm with 'leader', manager), 'company' PT01 or PT02. 'today' pins the date relative phrases are read against. Add a case for every failure fixed from the conversation log, with 'why' saying where it came from.",
   "today": "20261028",
   "cases": [
     {
@@ -197,8 +197,10 @@
           "say": "what do I have to approve?",
           "expect": [
             "leave requests to approve",
-            "Ana Ferreira",
-            "timesheets waiting"
+            "Ana Ferreira"
+          ],
+          "absent": [
+            "timesheets"
           ]
         }
       ]
@@ -225,19 +227,6 @@
           "confirm": true,
           "expect": [
             "Rejected"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "manager-en-approve-ambiguous",
-      "lang": "en",
-      "role": "manager",
-      "steps": [
-        {
-          "say": "approve Ana",
-          "expect": [
-            "Which one?"
           ]
         }
       ]
@@ -309,7 +298,7 @@
         {
           "say": "ver como chefia",
           "expect": [
-            "Sofia Almeida",
+            "Sofia",
             "pedidos de ausência para aprovar"
           ]
         }
@@ -402,6 +391,147 @@
           "expect": [
             "9 Nov 2026 a 13 Nov 2026",
             "5 dias úteis"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "manager-en-name-means-leave",
+      "lang": "en",
+      "role": "manager",
+      "why": "the line manager only approves absences, so a bare name is a leave request",
+      "steps": [
+        {
+          "say": "approve Ana",
+          "expect": [
+            "Approve this request?",
+            "Ana Ferreira"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pm-en-greeting",
+      "lang": "en",
+      "role": "pm",
+      "leader": "RN",
+      "steps": [
+        {
+          "say": "what do I have to approve?",
+          "expect": [
+            "timesheets to approve",
+            "Bruno Matos"
+          ],
+          "absent": [
+            "Diogo Sousa",
+            "leave requests"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pm-en-approve-timesheet",
+      "lang": "en",
+      "role": "pm",
+      "leader": "RN",
+      "steps": [
+        {
+          "say": "approve Bruno",
+          "expect": [
+            "Bruno Matos"
+          ]
+        },
+        {
+          "confirm": true,
+          "expect": [
+            "Bruno Matos"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pm-en-cannot-approve-leave",
+      "lang": "en",
+      "role": "pm",
+      "leader": "RN",
+      "steps": [
+        {
+          "say": "approve Ana's leave request",
+          "expect": [
+            "Only the direct manager"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pm-en-own-sheet-not-in-queue",
+      "lang": "en",
+      "role": "pm",
+      "leader": "AF",
+      "why": "a project manager never approves their own timesheet",
+      "steps": [
+        {
+          "say": "what do I have to approve?",
+          "expect": [
+            "Diogo Sousa"
+          ],
+          "absent": [
+            "Ana Ferreira"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "employee-en-cannot-approve-timesheets",
+      "lang": "en",
+      "steps": [
+        {
+          "say": "approve all timesheets",
+          "expect": [
+            "project manager"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "employee-en-cannot-enter-for-team",
+      "lang": "en",
+      "steps": [
+        {
+          "say": "4h for João today",
+          "expect": [
+            "project manager"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "employee-en-team-screen-not-in-profile",
+      "lang": "en",
+      "steps": [
+        {
+          "say": "go to team",
+          "expect": [
+            "isn't part of this profile"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pm-pt02-greeting",
+      "lang": "pt",
+      "company": "PT02",
+      "role": "pm",
+      "leader": "CP",
+      "steps": [
+        {
+          "say": "o que tenho para aprovar?",
+          "expect": [
+            "timesheets para aprovar",
+            "Nuno Dias"
+          ],
+          "absent": [
+            "Ana Pires"
           ]
         }
       ]

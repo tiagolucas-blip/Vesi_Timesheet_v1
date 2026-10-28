@@ -4,15 +4,9 @@
 <header class="shellbar">
   <div class="brand"><strong data-i18n="brand_title">Time Recording</strong><span data-i18n="brand_subtitle">Fiori Prototype</span></div>
   <div class="capture" id="capture"><span class="dot"></span><span id="captureTxt">Suggestions on, private timeline</span></div>
-  <label class="coswitch" for="coSel"><span>IT0001</span>
-    <select id="coSel" data-i18n-aria="aria_it0001" aria-label="Company of the employee, from IT0001">
-      <option value="PT01">PT01 · Consulting</option>
-      <option value="PT02">PT02 · Building Solutions</option>
-    </select>
-  </label>
-  <label class="coswitch" for="roleSel"><span data-i18n="label_view_as">View as</span>
-    <select id="roleSel" data-i18n-aria="aria_view_as" aria-label="View the app as the employee or as their direct manager"></select>
-  </label>
+  <button type="button" class="btn sm ctxbtn" id="ctxBtn" data-i18n-aria="aria_change_test" aria-label="Change the test: company and profile">
+    <span class="ctxk" data-i18n="label_test">Test</span><b id="ctxTxt">PT01 · Employee · Tiago Leal</b><span aria-hidden="true">&#9662;</span>
+  </button>
   <button class="btn sm" id="settingsBtn" data-i18n-aria="aria_settings" aria-label="Language settings">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
   </button>
@@ -563,6 +557,47 @@
   <footer>
     <button class="btn" id="alCancel" value="cancel" data-i18n="btn_cancel">Cancel</button>
     <button class="btn primary" id="alSave" value="save" data-i18n="btn_record_allowance">Record allowance</button>
+  </footer>
+</form></dialog>
+
+<dialog id="dlgSetup"><form class="dlg setup" method="dialog">
+  <header>
+    <h3 data-i18n="setup_title">What are you testing?</h3>
+    <div class="seg" role="group" id="setupLang" data-i18n-aria="setup_language" aria-label="Language">
+      <button type="button" data-lang="pt">PT</button><button type="button" data-lang="en">EN</button><button type="button" data-lang="fr">FR</button>
+    </div>
+  </header>
+  <div class="body">
+    <p class="sub" style="margin:0" data-i18n="setup_intro">Choose the company and the profile.</p>
+    <div class="field">
+      <label data-i18n="setup_company">Company</label>
+      <div class="seg setupco" role="group" id="setupCo">
+        <button type="button" data-co="PT01">PT01 · Consulting</button>
+        <button type="button" data-co="PT02">PT02 · Building Solutions</button>
+      </div>
+      <p class="sub" style="margin:0" id="setupCoHint"></p>
+    </div>
+    <div class="field">
+      <label data-i18n="setup_profile">Profile</label>
+      <div class="setupcards" id="setupRoles" role="radiogroup">
+        <button type="button" class="setupcard" role="radio" data-role="employee" aria-checked="true">
+          <b data-i18n="profile_employee">Employee</b><span data-i18n="setup_employee_desc">Records their own time and requests absences.</span><em id="setupWhoEmp">Tiago Leal</em>
+        </button>
+        <button type="button" class="setupcard" role="radio" data-role="pm" aria-checked="false">
+          <b data-i18n="profile_pm">Project manager</b><span data-i18n="setup_pm_desc">Records time for the project team and approves its timesheets.</span><em id="setupWhoPm"></em>
+        </button>
+        <button type="button" class="setupcard" role="radio" data-role="manager" aria-checked="false">
+          <b data-i18n="profile_manager">Line manager</b><span data-i18n="setup_manager_desc">Approves the absence requests of their direct reports.</span><em id="setupWhoMgr"></em>
+        </button>
+      </div>
+    </div>
+    <div class="field" id="setupLeaderWrap" hidden>
+      <label for="setupLeader" data-i18n="setup_leader">Project and manager</label>
+      <select id="setupLeader"></select>
+    </div>
+  </div>
+  <footer>
+    <button class="btn primary" id="setupGo" value="go" data-i18n="btn_start_test">Start</button>
   </footer>
 </form></dialog>
 

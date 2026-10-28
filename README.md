@@ -11,11 +11,19 @@ Documents that accompany this repository:
 
 Everything below works, with no server and no real data.
 
+**The test setup comes first**
+- A window opens before anything else: the company (PT01 Consulting, durations by month; PT02 Building Solutions, start and end by week) and the profile under test
+- **Employee** (Tiago Leal) records their own time and requests absences: Assistant, My Timesheet, Leave Request
+- **Project manager** (one of the company's project owners, picked in the same window) records for the project team and approves its timesheets, never their own: Assistant, Team, Approval
+- **Line manager** (Sofia Almeida for PT01, Patrícia Gomes for PT02, from the org structure) approves absences: Assistant, Leave Request
+- Each profile only sees its screens, and the assistant follows the same split: alerts, greeting and permissions (an employee asking to approve a timesheet is told who does it)
+- The Test button in the header reopens the window at any time. Data stays across changes, so a request sent as the employee can be approved as the line manager in the same session
+- `?company=PT02&profile=pm&leader=CP` in the address skips the window (profile `employee`, `pm` or `manager`), which is how the test suite opens each case
+
 **The assistant is the way in**
 - The app opens on the assistant: the conversation is the main area, and the week and the absences sit in a secondary column on the same screen, updated after every action
 - From that column, the full timesheet and the Leave Request screen are one click away, for anyone who prefers to check or edit directly
 - On every other screen the assistant goes back to being the floating panel (button or `J`), with the same conversation
-- `View as` in the header switches between the employee (Tiago Leal) and their direct manager from the org structure (Sofia Almeida for PT01, Patrícia Gomes for PT02), to walk a request from submission to approval in one session
 
 **Leave Request, a mask over the standard**
 - Request an absence from the assistant (`vacation 3 to 6 November`, `doctor tomorrow 14h to 17h`) or from the Leave Request screen: vacation, medical appointment, sick leave, training, justified absence, whole days or part of a day

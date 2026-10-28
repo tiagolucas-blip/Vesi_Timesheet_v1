@@ -797,6 +797,26 @@
      messages are a separate follow-up, not covered here yet. */
   var I18N = {
     en: {
+      label_test:"Test", aria_change_test:"Change the test: company and profile",
+      profile_employee:"Employee", profile_pm:"Project manager", profile_manager:"Line manager",
+      setup_title:"What are you testing?", setup_language:"Language", setup_company:"Company", setup_profile:"Profile", setup_leader:"Project and manager",
+      setup_intro:"Choose the company and the profile. You can change both at any time with the Test button at the top. What you record stays, so a request sent as the employee can be approved as the line manager.",
+      setup_co_hint_pt01:"Consulting. Profile Z_CONS: hours are recorded as a duration, month by month.",
+      setup_co_hint_pt02:"Building Solutions. Profile Z_BSRV: hours are recorded with a start and an end time, week by week.",
+      setup_employee_desc:"Records their own time and requests absences.",
+      setup_pm_desc:"Records time for the project team and approves its timesheets.",
+      setup_manager_desc:"Approves the absence requests of their direct reports, from the org structure.",
+      btn_start_test:"Start",
+      text_approval_sub_pm:"Timesheets of the people allocated to {projects}, the projects you own. Approval follows project ownership, not the org structure.",
+      bot_greeting_pm:"Hi {name}! You're testing as the project manager of {projects}. I can record hours or allowances for the team, fill in the days still missing, and approve the timesheets.",
+      bot_alert_ts_pm_one:"You have {n} timesheet to approve, {x} with exceptions.", bot_alert_ts_pm_other:"You have {n} timesheets to approve, {x} with exceptions.",
+      bot_ts_only_pm:"Timesheets are approved by the project manager, who owns the project. To try it, change the test to the project manager profile.",
+      bot_team_only_pm:"Recording for the team is done by the project manager. To try it, change the test to the project manager profile.",
+      bot_screen_not_in_profile:"{screen} isn't part of this profile. Change the test to get there.",
+      chip_change_test:"Change test", bot_setup_opened:"Choose the new test in the window that just opened.",
+      bot_test_changed:"Test changed: {co}, {profile}, {name}.",
+      hdr_home_team_week:"Team {project}", btn_open_team:"Open team entry",
+      text_acting_as_pm:"Acting as {name}, project manager of {projects}. Change it with the Test button at the top.",
       chip_conversation_log:"Learning mode", title_conversation_log:"This conversation is saved in the artifact so the assistant can be improved. Mockup data only.",
       fb_helpful:"Helpful", fb_not_helpful:"Not helpful", fb_placeholder:"What should it have done?", fb_send:"Send", fb_thanks:"Thanks", fb_noted:"Noted, it will be looked at in the next round of improvements.",
       /* Leave Request and the assistant as the entry point */
@@ -839,7 +859,7 @@
       btn_open_leave_approvals:"Open leave approvals", hdr_home_timesheets:"To approve: timesheets",
       text_home_ts_pending:"{n} timesheets waiting, {x} with exceptions that need a closer look.", btn_open_ts_approvals:"Open timesheet approval",
       hdr_home_team_away:"Team away, next 60 days", text_nobody_away:"Nobody in the team has approved absences coming up.",
-      text_acting_as_manager:"Acting as {name}, direct manager in the org structure. Switch back with View as, at the top.",
+      text_acting_as_manager:"Acting as {name}, direct manager in the org structure. Change it with the Test button at the top.",
       chip_lr_standard:"Standard Leave Request, PTARQ", chip_my_inbox:"Decision through My Inbox, TASKPROCESSING",
       th_request:"Request", th_type:"Type", th_period:"Period", th_duration:"Duration", th_approver:"Approver",
       th_balance_after:"Balance after", th_overlap:"Team overlap", th_decision:"Decision", th_when:"When",
@@ -884,7 +904,7 @@
       bot_alert_ts_one:"And {n} timesheet waiting, {x} with exceptions.", bot_alert_ts_other:"And {n} timesheets waiting, {x} with exceptions.",
       chip_pending_approvals:"What do I have to approve?", chip_approve_leave_of:"Approve {name}'s leave request", chip_approve_ts_of:"Approve {name}'s timesheet",
       chip_approve_clean_ts:"Approve all timesheets without exceptions", chip_view_as_employee:"View as employee", chip_view_as_manager:"View as manager",
-      bot_leave_only_manager:"Only the direct manager approves leave requests. To try it, switch View as to {name}.",
+      bot_leave_only_manager:"Only the direct manager approves leave requests. To try it, change the test to the line manager profile ({name}).",
       bot_leave_decide_who:"Whose request? Tell me the name or the request number, or say all.",
       bot_leave_reason_needed:"What's the reason for rejecting {name}'s request? The employee will see it.",
       bot_leave_overlap_warn:"Overlaps in the team: {list}.",
@@ -1277,6 +1297,26 @@
       row_confirm_cell:"Confirm cell and move down", row_show_list:"Show this list"
     },
     pt: {
+      label_test:"Teste", aria_change_test:"Mudar o teste: empresa e perfil",
+      profile_employee:"Colaborador", profile_pm:"Gestor de projeto", profile_manager:"Chefia hierárquica",
+      setup_title:"O que vais testar?", setup_language:"Idioma", setup_company:"Empresa", setup_profile:"Perfil", setup_leader:"Projeto e gestor",
+      setup_intro:"Escolhe a empresa e o perfil. Podes mudar os dois a qualquer momento no botão Teste, no topo. O que registas fica guardado, por isso um pedido enviado como colaborador pode ser aprovado como chefia.",
+      setup_co_hint_pt01:"Consultoria. Perfil Z_CONS: as horas registam-se como duração, mês a mês.",
+      setup_co_hint_pt02:"Building Solutions. Perfil Z_BSRV: as horas registam-se com hora de início e de fim, semana a semana.",
+      setup_employee_desc:"Regista as próprias horas e pede ausências.",
+      setup_pm_desc:"Lança horas para a equipa do projeto e aprova as timesheets.",
+      setup_manager_desc:"Aprova os pedidos de ausência dos colaboradores diretos, de acordo com a estrutura organizativa.",
+      btn_start_test:"Começar",
+      text_approval_sub_pm:"Timesheets das pessoas alocadas a {projects}, os projetos de que és responsável. A aprovação segue a responsabilidade pelo projeto, não a estrutura organizativa.",
+      bot_greeting_pm:"Olá, {name}! Estás a testar como gestor de projeto de {projects}. Posso lançar horas ou abonos para a equipa, preencher os dias em falta e aprovar as timesheets.",
+      bot_alert_ts_pm_one:"Tens {n} timesheet para aprovar, {x} com exceções.", bot_alert_ts_pm_other:"Tens {n} timesheets para aprovar, {x} com exceções.",
+      bot_ts_only_pm:"As timesheets são aprovadas pelo gestor de projeto, o responsável pelo projeto. Para experimentar, muda o teste para o perfil de gestor de projeto.",
+      bot_team_only_pm:"O lançamento para a equipa é feito pelo gestor de projeto. Para experimentar, muda o teste para o perfil de gestor de projeto.",
+      bot_screen_not_in_profile:"{screen} não faz parte deste perfil. Muda o teste para lá chegar.",
+      chip_change_test:"Mudar teste", bot_setup_opened:"Escolhe o novo teste na janela que acabou de abrir.",
+      bot_test_changed:"Teste mudado: {co}, {profile}, {name}.",
+      hdr_home_team_week:"Equipa {project}", btn_open_team:"Abrir lançamento em massa",
+      text_acting_as_pm:"A atuar como {name}, gestor de projeto de {projects}. Muda no botão Teste, no topo.",
       chip_conversation_log:"Modo aprendizagem", title_conversation_log:"Esta conversa fica guardada no artifact para melhorar o assistente. Só dados fictícios do mockup.",
       fb_helpful:"Útil", fb_not_helpful:"Não ajudou", fb_placeholder:"O que devia ter feito?", fb_send:"Enviar", fb_thanks:"Obrigado", fb_noted:"Registado, vai ser analisado na próxima ronda de melhorias.",
       /* Leave Request e o assistente como porta de entrada */
@@ -1319,7 +1359,7 @@
       btn_open_leave_approvals:"Abrir aprovação de ausências", hdr_home_timesheets:"Para aprovar: timesheets",
       text_home_ts_pending:"{n} timesheets à espera, {x} com exceções que pedem uma análise mais atenta.", btn_open_ts_approvals:"Abrir aprovação de timesheets",
       hdr_home_team_away:"Equipa ausente, próximos 60 dias", text_nobody_away:"Ninguém da equipa tem ausências aprovadas para os próximos dias.",
-      text_acting_as_manager:"A atuar como {name}, chefia direta na estrutura organizativa. Volta atrás em Ver como, no topo.",
+      text_acting_as_manager:"A atuar como {name}, chefia direta na estrutura organizativa. Muda no botão Teste, no topo.",
       chip_lr_standard:"Leave Request standard, PTARQ", chip_my_inbox:"Decisão pelo My Inbox, TASKPROCESSING",
       th_request:"Pedido", th_type:"Tipo", th_period:"Período", th_duration:"Duração", th_approver:"Aprovador",
       th_balance_after:"Saldo depois", th_overlap:"Sobreposição na equipa", th_decision:"Decisão", th_when:"Quando",
@@ -1364,7 +1404,7 @@
       bot_alert_ts_one:"E {n} timesheet à espera, {x} com exceções.", bot_alert_ts_other:"E {n} timesheets à espera, {x} com exceções.",
       chip_pending_approvals:"O que tenho para aprovar?", chip_approve_leave_of:"Aprovar o pedido de ausência de {name}", chip_approve_ts_of:"Aprovar a timesheet de {name}",
       chip_approve_clean_ts:"Aprovar todas as timesheets sem exceções", chip_view_as_employee:"Ver como colaborador", chip_view_as_manager:"Ver como chefia",
-      bot_leave_only_manager:"Só a chefia direta aprova pedidos de ausência. Para experimentar, muda Ver como para {name}.",
+      bot_leave_only_manager:"Só a chefia direta aprova pedidos de ausência. Para experimentar, muda o teste para o perfil de chefia ({name}).",
       bot_leave_decide_who:"De quem é o pedido? Diz-me o nome ou o número do pedido, ou diz todos.",
       bot_leave_reason_needed:"Qual é o motivo para rejeitar o pedido de {name}? O colaborador vai vê-lo.",
       bot_leave_overlap_warn:"Sobreposições na equipa: {list}.",
@@ -1750,6 +1790,26 @@
       row_confirm_cell:"Confirmar célula e descer", row_show_list:"Mostrar esta lista"
     },
     fr: {
+      label_test:"Test", aria_change_test:"Changer le test : entreprise et profil",
+      profile_employee:"Collaborateur", profile_pm:"Chef de projet", profile_manager:"Responsable hiérarchique",
+      setup_title:"Que voulez-vous tester ?", setup_language:"Langue", setup_company:"Entreprise", setup_profile:"Profil", setup_leader:"Projet et chef de projet",
+      setup_intro:"Choisissez l'entreprise et le profil. Vous pouvez changer les deux à tout moment avec le bouton Test, en haut. Ce que vous saisissez est conservé : une demande envoyée en tant que collaborateur peut être approuvée en tant que responsable.",
+      setup_co_hint_pt01:"Conseil. Profil Z_CONS : les heures se saisissent en durée, mois par mois.",
+      setup_co_hint_pt02:"Building Solutions. Profil Z_BSRV : les heures se saisissent avec une heure de début et de fin, semaine par semaine.",
+      setup_employee_desc:"Saisit ses propres heures et demande des absences.",
+      setup_pm_desc:"Saisit les heures de l'équipe du projet et approuve ses feuilles de temps.",
+      setup_manager_desc:"Approuve les demandes d'absence de ses collaborateurs directs, selon la structure organisationnelle.",
+      btn_start_test:"Commencer",
+      text_approval_sub_pm:"Feuilles de temps des personnes affectées à {projects}, les projets dont vous êtes responsable. L'approbation suit la responsabilité du projet, pas la structure organisationnelle.",
+      bot_greeting_pm:"Bonjour {name} ! Vous testez en tant que chef de projet de {projects}. Je peux saisir des heures ou des indemnités pour l'équipe, compléter les jours manquants et approuver les feuilles de temps.",
+      bot_alert_ts_pm_one:"Vous avez {n} feuille de temps à approuver, dont {x} avec exceptions.", bot_alert_ts_pm_other:"Vous avez {n} feuilles de temps à approuver, dont {x} avec exceptions.",
+      bot_ts_only_pm:"Les feuilles de temps sont approuvées par le chef de projet, responsable du projet. Pour essayer, passez le test au profil chef de projet.",
+      bot_team_only_pm:"La saisie pour l'équipe est faite par le chef de projet. Pour essayer, passez le test au profil chef de projet.",
+      bot_screen_not_in_profile:"{screen} ne fait pas partie de ce profil. Changez de test pour y accéder.",
+      chip_change_test:"Changer de test", bot_setup_opened:"Choisissez le nouveau test dans la fenêtre qui vient de s'ouvrir.",
+      bot_test_changed:"Test modifié : {co}, {profile}, {name}.",
+      hdr_home_team_week:"Équipe {project}", btn_open_team:"Ouvrir la saisie d'équipe",
+      text_acting_as_pm:"Vous agissez en tant que {name}, chef de projet de {projects}. Changez-le avec le bouton Test, en haut.",
       chip_conversation_log:"Mode apprentissage", title_conversation_log:"Cette conversation est enregistrée dans l'artifact pour améliorer l'assistant. Données fictives uniquement.",
       fb_helpful:"Utile", fb_not_helpful:"Pas utile", fb_placeholder:"Qu'aurait-il dû faire ?", fb_send:"Envoyer", fb_thanks:"Merci", fb_noted:"Noté, ce sera examiné lors de la prochaine série d'améliorations.",
       /* Leave Request et l'assistant comme point d'entrée */
@@ -1792,7 +1852,7 @@
       btn_open_leave_approvals:"Ouvrir l'approbation des absences", hdr_home_timesheets:"À approuver : feuilles de temps",
       text_home_ts_pending:"{n} feuilles de temps en attente, dont {x} avec des exceptions à examiner de plus près.", btn_open_ts_approvals:"Ouvrir l'approbation des feuilles de temps",
       hdr_home_team_away:"Équipe absente, 60 prochains jours", text_nobody_away:"Personne dans l'équipe n'a d'absence approuvée à venir.",
-      text_acting_as_manager:"Vous agissez en tant que {name}, responsable direct dans la structure organisationnelle. Revenez en arrière avec Voir en tant que, en haut.",
+      text_acting_as_manager:"Vous agissez en tant que {name}, responsable direct dans la structure organisationnelle. Changez-le avec le bouton Test, en haut.",
       chip_lr_standard:"Leave Request standard, PTARQ", chip_my_inbox:"Décision via My Inbox, TASKPROCESSING",
       th_request:"Demande", th_type:"Type", th_period:"Période", th_duration:"Durée", th_approver:"Approbateur",
       th_balance_after:"Solde après", th_overlap:"Chevauchement dans l'équipe", th_decision:"Décision", th_when:"Quand",
@@ -1837,7 +1897,7 @@
       bot_alert_ts_one:"Et {n} feuille de temps en attente, dont {x} avec exceptions.", bot_alert_ts_other:"Et {n} feuilles de temps en attente, dont {x} avec exceptions.",
       chip_pending_approvals:"Qu'est-ce que j'ai à approuver ?", chip_approve_leave_of:"Approuver la demande d'absence de {name}", chip_approve_ts_of:"Approuver la feuille de temps de {name}",
       chip_approve_clean_ts:"Approuver toutes les feuilles de temps sans exception", chip_view_as_employee:"Voir en tant que collaborateur", chip_view_as_manager:"Voir en tant que manager",
-      bot_leave_only_manager:"Seul le responsable direct approuve les demandes d'absence. Pour essayer, passez Voir en tant que sur {name}.",
+      bot_leave_only_manager:"Seul le responsable direct approuve les demandes d'absence. Pour essayer, passez le test au profil responsable ({name}).",
       bot_leave_decide_who:"La demande de qui ? Donnez-moi le nom ou le numéro de la demande, ou dites toutes.",
       bot_leave_reason_needed:"Quel est le motif du refus de la demande de {name} ? Le collaborateur le verra.",
       bot_leave_overlap_warn:"Chevauchements dans l'équipe : {list}.",
@@ -2304,7 +2364,8 @@
     syncVoiceLangBtn();
     applyLocaleArrays();
     applyI18n();
-    renderRoleOptions();
+    renderContextButton();
+    renderSetup();
     render();
     if($("screen-team") && !$("screen-team").hidden) renderTeam();
     if($("screen-aprov") && !$("screen-aprov").hidden) renderApprovals();
@@ -2385,9 +2446,12 @@
        one when the wording alone is ambiguous */
     screen: "home",
     approvals: APPROVALS_PT01,
-    /* whose eyes the app is seen through: the employee, or their direct
-       manager from the org structure ("View as" in the header) */
+    /* whose eyes the app is seen through, chosen in the test setup:
+       "employee", "pm" (project manager: team entry and timesheet
+       approval) or "manager" (line manager: leave approval) */
     role: "employee",
+    /* true once the test setup has been confirmed; nothing is greeted before */
+    setupDone: false,
     /* decisions on the employee's own requests, waiting to be told to them
        the next time the employee is the one using the app */
     leaveNotices: [],
@@ -4672,10 +4736,28 @@
      approvals list itself) and on language, so this runs from both
      switchCompany and applyI18n rather than being a one-shot data-i18n. */
   function updateApproverChrome(){
+    /* Timesheets are approved by project ownership: the project manager
+       being tested sees the people on the projects they own, never their
+       own sheet. */
+    if(state.role === "pm"){
+      var l = leaderById(state.leader);
+      if($("apActingAs")) $("apActingAs").textContent = l.name + " · " + t("profile_pm") + ", " + pmProjectsLabel();
+      if($("apSubText")) $("apSubText").textContent = t("text_approval_sub_pm", {projects: pmProjectsLabel()});
+      return;
+    }
     if($("apActingAs")) $("apActingAs").textContent = IT0001.bukrs === "PT02" ? "Patrícia Gomes · Operations Manager, Building Solutions" : "Sofia Almeida · Delivery Manager, Consulting";
     if($("apSubText")) $("apSubText").textContent = t(IT0001.bukrs === "PT02" ? "text_approval_sub_pt02" : "text_approval_sub");
   }
-  function switchCompany(bukrs){
+  function tsQueue(){
+    if(state.role !== "pm") return state.approvals;
+    var l = leaderById(state.leader);
+    var codes = l.projs.map(function(i){ return PROJECTS[i].code; });
+    return state.approvals.filter(function(a){ return codes.indexOf(a.proj) !== -1 && a.who !== l.name; });
+  }
+  function pmProjectsLabel(){
+    return leaderById(state.leader).projs.map(function(i){ return PROJECTS[i].code; }).join(", ");
+  }
+  function switchCompany(bukrs, quiet){
     if(bukrs === IT0001.bukrs) return;
     saveCurrentWeek();
     var curNum = WEEKS[weekIdx].num;
@@ -4693,9 +4775,10 @@
     loadWeek(match ? WEEKS.indexOf(match) : 0);
     if(isClock()) seedClock();
     renderLeaderOptions();
-    renderRoleOptions();
+    renderContextButton();
     clearMass();
     render();
+    if(quiet) return;
     var pf = profileFor(WORKDATES[0]);
     toast(t("toast_it0001_changed", {bukrs: bukrs, code: pf.code, fields: pf.fields.toLowerCase()}));
   }
@@ -5204,13 +5287,13 @@
     var body = $("apBody");
     if(!body) return;
     body.innerHTML = "";
-    var clean = state.approvals.filter(function(a){ return !a.warn; });
-    var flagged = state.approvals.filter(function(a){ return a.warn; });
+    var clean = tsQueue().filter(function(a){ return !a.warn; });
+    var flagged = tsQueue().filter(function(a){ return a.warn; });
     var apHours = $("apHours");
-    if(apHours) apHours.innerHTML = fmt(state.approvals.reduce(function(a,x){ return a+x.tot; }, 0)) + "<small> h</small>";
+    if(apHours) apHours.innerHTML = fmt(tsQueue().reduce(function(a,x){ return a+x.tot; }, 0)) + "<small> h</small>";
     var apDev = $("apDev");
     if(apDev){
-      var dev = state.approvals.reduce(function(a,x){ return a+x.dev; }, 0);
+      var dev = tsQueue().reduce(function(a,x){ return a+x.dev; }, 0);
       apDev.innerHTML = (dev>0?"+":"") + fmt(dev) + "<small> h</small>";
     }
 
@@ -5270,10 +5353,10 @@
     group(t("hdr_no_warnings_group"), clean);
     group(t("hdr_exceptions_group"), flagged);
 
-    var sel = state.approvals.filter(function(a){ return a.sel; }).length;
+    var sel = tsQueue().filter(function(a){ return a.sel; }).length;
     $("apSel").textContent = plural(sel, "n_selected");
     $("apApprove").disabled = sel === 0;
-    var pend = state.approvals.filter(function(a){ return !a.approved; }).length;
+    var pend = tsQueue().filter(function(a){ return !a.approved; }).length;
     $("apPend").textContent = pend;
     $("apWarn").textContent = flagged.filter(function(a){ return !a.approved; }).length;
   }
@@ -5403,16 +5486,16 @@
 
   $("apAll").onchange = function(){
     var on = $("apAll").checked;
-    state.approvals.forEach(function(a){ if(!a.warn) a.sel = on; });
+    tsQueue().forEach(function(a){ if(!a.warn) a.sel = on; });
     renderApprovals();
   };
   $("apSelClean").onclick = function(){
-    state.approvals.forEach(function(a){ if(!a.warn) a.sel = true; });
+    tsQueue().forEach(function(a){ if(!a.warn) a.sel = true; });
     renderApprovals();
   };
   $("apApprove").onclick = function(){
     var n = 0;
-    state.approvals.forEach(function(a){ if(a.sel){ a.approved = true; a.sel = false; n++; } });
+    tsQueue().forEach(function(a){ if(a.sel){ a.approved = true; a.sel = false; n++; } });
     renderApprovals();
     toast(t("toast_timesheets_approved", {n: n}));
   };
@@ -6079,6 +6162,7 @@
     if(!side) return;
     side.innerHTML = "";
     if(state.role === "manager"){ renderHomeManager(side); return; }
+    if(state.role === "pm"){ renderHomePM(side); return; }
 
     /* the week */
     var nav = el("div","hsweeknav","");
@@ -6167,14 +6251,6 @@
     ap.appendChild(f1);
     side.appendChild(ap);
 
-    var pendTs = state.approvals.filter(function(a){ return !a.approved; });
-    var exc = pendTs.filter(function(a){ return a.warn; }).length;
-    var ts = hsPanel("hsTs", t("hdr_home_timesheets"), el("span","chip " + (pendTs.length ? "amber" : "green"), String(pendTs.length)));
-    ts.appendChild(el("p","hstot", pendTs.length ? t("text_home_ts_pending", {n: pendTs.length, x: exc}) : t("bot_approval_nothing")));
-    var f2 = el("div","gridfoot","");
-    f2.appendChild(btn(t("btn_open_ts_approvals"), "btn", function(){ clickNav("aprov"); }));
-    ts.appendChild(f2);
-    side.appendChild(ts);
 
     /* who is away soon, so a decision is taken with the team in view */
     var away = LEAVE_TEAM[IT0001.bukrs].concat(myLeave()).filter(function(r){
@@ -6195,6 +6271,54 @@
     aw.appendChild(el("div","privacy", t("text_acting_as_manager", {name: mgr.name})));
     side.appendChild(aw);
   }
+  /* The project manager: the timesheets waiting on the projects they own,
+     and how far the team has got with this week, person by person. */
+  function renderHomePM(side){
+    var l = leaderById(state.leader);
+    var pend = tsQueue().filter(function(a){ return !a.approved; });
+    var ap = hsPanel("hsTsPm", t("hdr_home_timesheets"), el("span","chip " + (pend.length ? "amber" : "green"), String(pend.length)));
+    var list = el("div","hslist","");
+    if(!pend.length) list.appendChild(el("p","sub", t("bot_approval_nothing")));
+    pend.slice(0, 6).forEach(function(a){
+      var it = el("div","hsitem","");
+      var left = el("div","","");
+      left.appendChild(el("b","", a.who));
+      left.appendChild(el("div","sub", a.proj + " · " + fmt(a.tot) + " h"));
+      it.appendChild(left);
+      it.appendChild(el("span","chip " + (a.warn ? "amber" : "blue"), a.warn ? approvalNoteLabel(a.note) : t("chip_in_approval")));
+      list.appendChild(it);
+    });
+    ap.appendChild(list);
+    var f1 = el("div","gridfoot","");
+    f1.appendChild(btn(t("btn_open_ts_approvals"), "btn primary", function(){ clickNav("aprov"); }));
+    ap.appendChild(f1);
+    side.appendChild(ap);
+
+    var pr = PROJECTS[massProject()] || PROJECTS[l.projs[0]];
+    var tm = hsPanel("hsTeam", t("hdr_home_team_week", {project: pr.code}), el("span","chip grey", weekLabelFor(WORKDATES, WEEKS[weekIdx].num)));
+    var days = el("div","hsdays","");
+    teamOf(state.leader).forEach(function(m){
+      var already = alreadyHoursFor(m, WEEKS[weekIdx].num), cap = 0, tot = 0;
+      for(var d=0; d<5; d++){ tot += already[d] || 0; if(!memberBlocked(m, d)) cap += teamDailyCap(m); }
+      var row = el("div","hsday","");
+      row.appendChild(el("span","d", m.name.split(" ")[0]));
+      var bar = el("div","bar","");
+      var fill = document.createElement("i");
+      fill.style.width = (cap ? Math.min(100, Math.round(tot / cap * 100)) : 0) + "%";
+      if(tot > cap) fill.className = "over"; else if(cap && tot >= cap) fill.className = "ok";
+      bar.appendChild(fill);
+      row.appendChild(bar);
+      row.appendChild(el("span","h num", fmt(tot) + " / " + fmt(cap)));
+      row.appendChild(el("span","a",""));
+      days.appendChild(row);
+    });
+    tm.appendChild(days);
+    var f2 = el("div","gridfoot","");
+    f2.appendChild(btn(t("btn_open_team"), "btn", function(){ clickNav("team"); }));
+    tm.appendChild(f2);
+    tm.appendChild(el("div","privacy", t("text_acting_as_pm", {name: l.name, projects: pmProjectsLabel()})));
+    side.appendChild(tm);
+  }
   function homeStepWeek(delta){
     var next = weekIdx + delta;
     if(next < 0 || next >= WEEKS.length) return;
@@ -6210,37 +6334,132 @@
   /* A count on the Leave Request tab for whoever is acting as manager:
      the same alert the assistant gives, visible from any screen. */
   function renderNavBadges(){
-    var b = $("tab-leave");
+    setNavBadge("tab-leave", state.role === "manager" ? leaveQueue().length : 0);
+    setNavBadge("tab-aprov", state.role === "pm" ? tsQueue().filter(function(a){ return !a.approved; }).length : 0);
+  }
+  function setNavBadge(id, n){
+    var b = $(id);
     if(!b) return;
-    var n = state.role === "manager" ? leaveQueue().length : 0;
     var badge = b.querySelector(".navbadge");
     if(!n){ if(badge) badge.remove(); return; }
     if(!badge){ badge = el("span","navbadge",""); b.appendChild(badge); }
     badge.textContent = String(n);
   }
 
-  /* ---------- who is using the app ----------
-     The employee by default. "View as" switches to the direct manager from
-     the org structure, to walk a request from submission to approval in
-     one session. It changes whose inbox the app reads, nothing else. */
-  function renderRoleOptions(){
-    var sel = $("roleSel");
-    if(!sel) return;
-    var mgr = lineManager();
-    sel.innerHTML = "";
-    [["employee", EMPLOYEE_NAME + " · " + t("role_employee")], ["manager", mgr.name + " · " + t("role_manager")]].forEach(function(o){
-      var op = document.createElement("option");
-      op.value = o[0]; op.textContent = o[1];
-      sel.appendChild(op);
-    });
-    sel.value = state.role;
+  /* ---------- the test being run ----------
+     Chosen when the app opens, and changed from the Test button in the
+     header: the company (IT0001) and whose eyes the app is seen through.
+     Three profiles, each with its own job, as in the real process: the
+     employee records time and requests absences; the project manager
+     records for the project team and approves its timesheets (approval by
+     project ownership); the line manager, from the org structure, approves
+     absences. Each profile only sees the screens it uses, and the
+     assistant's alerts and permissions follow the same split. Data stays
+     across changes, so a request sent as the employee can be approved as
+     the line manager in the same session. */
+  var PROFILE_TABS = {
+    employee: ["home","semana","leave","cats"],
+    pm:       ["home","team","aprov","cats"],
+    manager:  ["home","leave","cats"]
+  };
+  function currentActor(){
+    if(state.role === "pm") return {name: leaderById(state.leader).name, label: t("profile_pm")};
+    if(state.role === "manager") return {name: lineManager().name, label: t("profile_manager")};
+    return {name: EMPLOYEE_NAME, label: t("profile_employee")};
   }
-  function switchRole(role){
-    if(role === state.role) return;
+  function renderContextButton(){
+    var b = $("ctxTxt");
+    if(!b) return;
+    var a = currentActor();
+    b.textContent = IT0001.bukrs + " · " + a.label + " · " + a.name;
+  }
+  function applyProfileChrome(){
+    var tabs = PROFILE_TABS[state.role] || PROFILE_TABS.employee;
+    Array.prototype.forEach.call(document.querySelectorAll(".nav button"), function(b){
+      b.hidden = tabs.indexOf(b.dataset.screen) === -1;
+    });
+    /* the project manager under test is fixed; Team's own picker follows it */
+    var ls = $("leadSel");
+    if(ls){ ls.value = state.leader; ls.disabled = state.role === "pm"; }
+    if(tabs.indexOf(state.screen) === -1) clickNav("home");
+  }
+  function profileHasScreen(key){
+    return (PROFILE_TABS[state.role] || PROFILE_TABS.employee).indexOf(key) !== -1;
+  }
+  function applyTestSetup(co, role, leader, quiet){
+    if(!PROFILE_TABS[role]) role = "employee";
+    var changed = co !== IT0001.bukrs || role !== state.role || (role === "pm" && leader !== state.leader);
+    if(co === "PT01" || co === "PT02") switchCompany(co, true);
     state.role = role;
-    renderRoleOptions();
+    if(role === "pm"){
+      var mine = leadersForCompany(IT0001.bukrs).filter(function(l){ return l.id === leader; })[0];
+      if(mine && mine.id !== state.leader){
+        state.leader = mine.id;
+        var pj = $("mProj"); if(pj) pj.dataset.for = "";
+        clearMass();
+      }
+    }
+    renderLeaderOptions();
+    applyProfileChrome();
+    updateApproverChrome();
+    renderContextButton();
     render();
-    if(typeof chat !== "undefined" && chat.greeted) assistantRoleChanged();
+    try{ localStorage.setItem("vesiTest", JSON.stringify({co: IT0001.bukrs, role: state.role, leader: state.leader})); }catch(e){}
+    if(!state.setupDone){ state.setupDone = true; assistantEnsureGreeted(); }
+    else if(changed && !quiet && typeof chat !== "undefined" && chat.greeted) assistantRoleChanged();
+  }
+  /* kept for the assistant's own "view as" requests */
+  function switchRole(role){ applyTestSetup(IT0001.bukrs, role, state.leader); }
+
+  /* The setup window: the first thing on screen, prefilled with the last
+     test this browser ran (a convenience only, the app works without it). */
+  var setupDraft = null;
+  function openSetup(){
+    var saved = null;
+    try{ saved = JSON.parse(localStorage.getItem("vesiTest") || "null"); }catch(e){}
+    setupDraft = state.setupDone || !saved
+      ? {co: IT0001.bukrs, role: state.role, leader: state.leader}
+      : {co: saved.co === "PT02" ? "PT02" : "PT01", role: PROFILE_TABS[saved.role] ? saved.role : "employee", leader: saved.leader || state.leader};
+    renderSetup();
+    $("dlgSetup").showModal();
+  }
+  function renderSetup(){
+    var d = setupDraft;
+    if(!d) return;
+    Array.prototype.forEach.call(document.querySelectorAll("#setupCo button"), function(b){
+      b.setAttribute("aria-pressed", b.dataset.co === d.co ? "true" : "false");
+    });
+    $("setupCoHint").textContent = t(d.co === "PT02" ? "setup_co_hint_pt02" : "setup_co_hint_pt01");
+    Array.prototype.forEach.call(document.querySelectorAll("#setupRoles .setupcard"), function(b){
+      b.setAttribute("aria-checked", b.dataset.role === d.role ? "true" : "false");
+    });
+    var leaders = leadersForCompany(d.co);
+    if(!leaders.some(function(l){ return l.id === d.leader; })) d.leader = leaders[0].id;
+    var sel = $("setupLeader");
+    sel.innerHTML = "";
+    leaders.forEach(function(l){
+      var o = document.createElement("option");
+      o.value = l.id; o.textContent = l.name + " · " + l.label;
+      sel.appendChild(o);
+    });
+    sel.value = d.leader;
+    $("setupWhoEmp").textContent = EMPLOYEE_NAME;
+    $("setupWhoPm").textContent = leaderById(d.leader).name;
+    $("setupWhoMgr").textContent = LINE_MANAGER[d.co].name;
+    $("setupLeaderWrap").hidden = d.role !== "pm";
+    Array.prototype.forEach.call(document.querySelectorAll("#setupLang button"), function(b){
+      b.setAttribute("aria-pressed", b.dataset.lang === state.lang ? "true" : "false");
+    });
+  }
+  /* ?company=PT02&profile=pm&leader=CP skips the window: for the test suite,
+     and for a link straight into one scenario. */
+  function setupFromUrl(){
+    var q = (window.location && window.location.search) || "";
+    var get = function(k){ var m = new RegExp("[?&]" + k + "=([A-Za-z0-9]+)").exec(q); return m ? m[1] : null; };
+    var role = get("profile");
+    if(!role || !PROFILE_TABS[role]) return false;
+    applyTestSetup(get("company") || IT0001.bukrs, role, get("leader") || state.leader, true);
+    return true;
   }
 
   /* ---------- SAP mapping of the Leave Request ----------
@@ -6393,19 +6612,25 @@
   }
 
   /* ---------- the manager's side: alerts and decisions ---------- */
+  /* The line manager is told about absences, the project manager about
+     timesheets: each approves one thing, as in the real process. */
   function managerAlertText(){
     var q = leaveQueue();
-    var ts = state.approvals.filter(function(a){ return !a.approved; });
-    var exc = ts.filter(function(a){ return a.warn; }).length;
-    if(!q.length && !ts.length) return t("bot_nothing_pending");
-    var out = [];
-    if(q.length){
-      out.push(plural(q.length, "bot_alert_leave"));
-      var first = q[0];
-      out.push(t("bot_alert_soonest", {name: first.EmployeeName, type: (first.cancelRequested ? t("text_cancellation").toLowerCase() + ", " : "") + absTypeLabel(first).toLowerCase(), when: leaveWhenLabel(first)}));
-    }
-    if(ts.length) out.push(plural(ts.length, "bot_alert_ts", {x: exc}));
-    return out.join(" ");
+    if(!q.length) return t("bot_nothing_pending");
+    var first = q[0];
+    return plural(q.length, "bot_alert_leave") + " " +
+      t("bot_alert_soonest", {name: first.EmployeeName, type: (first.cancelRequested ? t("text_cancellation").toLowerCase() + ", " : "") + absTypeLabel(first).toLowerCase(), when: leaveWhenLabel(first)});
+  }
+  function pmAlertText(){
+    var ts = tsQueue().filter(function(a){ return !a.approved; });
+    if(!ts.length) return t("bot_approval_nothing");
+    return plural(ts.length, "bot_alert_ts_pm", {x: ts.filter(function(a){ return a.warn; }).length});
+  }
+  function pmChips(){
+    var list = [t("chip_pending_approvals")];
+    if(tsQueue().some(function(a){ return !a.approved && !a.warn; })) list.push(t("chip_approve_clean_ts"));
+    list.push(t("chip_change_test"));
+    return list;
   }
   /* "starting today", "starting in 3 days", or, for a request still
      waiting although its days are behind us, "already in the past". */
@@ -6419,11 +6644,12 @@
     var q = leaveQueue(), list = [];
     if(q.length) list.push(t("chip_pending_approvals"));
     if(q.length) list.push(t("chip_approve_leave_of", {name: q[0].EmployeeName.split(" ")[0]}));
-    if(state.approvals.some(function(a){ return !a.approved && !a.warn; })) list.push(t("chip_approve_clean_ts"));
-    list.push(t("chip_view_as_employee"));
+    list.push(t("chip_change_test"));
     return list;
   }
   function showPendingApprovals(){
+    if(state.role === "employee"){ showMyLeave(); return; }
+    if(state.role === "pm"){ showTimesheetQueue(); return; }
     var q = leaveQueue();
     var node = el("div","jlist","");
     q.forEach(function(r){
@@ -6432,6 +6658,15 @@
     });
     botSay("bot", managerAlertText(), q.length ? node : null);
     botChips(managerChips());
+  }
+  function showTimesheetQueue(){
+    var q = tsQueue().filter(function(a){ return !a.approved; });
+    var node = el("div","jlist","");
+    q.forEach(function(a){
+      node.appendChild(el("div","jrow2", a.who + " · " + a.proj + " · " + fmt(a.tot) + " h" + (a.warn ? " · " + approvalNoteLabel(a.note) : "")));
+    });
+    botSay("bot", pmAlertText(), q.length ? node : null);
+    botChips(pmChips());
   }
   function matchLeaveTargets(txt){
     var low = String(txt || "").toLowerCase(), q = leaveQueue();
@@ -6490,24 +6725,27 @@
       botChips(managerChips());
       return;
     }
+    if(state.role === "pm"){
+      botSay("bot", t("bot_greeting_pm", {name: leaderById(state.leader).name.split(" ")[0], projects: pmProjectsLabel()}) + " " + pmAlertText());
+      botChips(pmChips());
+      return;
+    }
     botSay("bot", t("bot_greeting_home", {name: EMPLOYEE_NAME.split(" ")[0]}));
     flushLeaveNotices();
     botChips([t("chip_hours_i_have"), t("chip_request_vacation"), t("chip_my_leave"), t("chip_submit_week")]);
   }
   function assistantEnsureGreeted(){
-    if(chat.greeted) return;
+    /* nobody is greeted before the test has been chosen */
+    if(chat.greeted || !state.setupDone) return;
     chat.greeted = true;
     assistantGreet();
   }
   function assistantRoleChanged(){
-    if(state.role === "manager"){
-      botSay("bot", t("bot_now_manager", {name: lineManager().name}) + " " + managerAlertText());
-      botChips(managerChips());
-    } else {
-      botSay("bot", t("bot_now_employee", {name: EMPLOYEE_NAME}));
-      flushLeaveNotices();
-      botChips([t("chip_my_leave"), t("chip_hours_i_have"), t("chip_view_as_manager")]);
-    }
+    var a = currentActor();
+    var log = $("jlog");
+    if(log) log.appendChild(el("div","jdivider", IT0001.bukrs + " · " + a.label + " · " + a.name));
+    botSay("bot", t("bot_test_changed", {co: IT0001.bukrs, profile: a.label.toLowerCase(), name: a.name}));
+    assistantGreet();
   }
   /* What the manager decided reaches the employee the next time the
      employee is the one using the app, the way a workflow notification
@@ -6670,7 +6908,9 @@
   /* Returns true when the message was about leave and has been answered. */
   function handleLeaveLocal(txt){
     var low = txt.toLowerCase();
-    if(/ver como (a )?(chefia|gestor|manager)|view as (the )?manager|voir en tant que (manager|responsable)/.test(low)){ switchRole("manager"); return true; }
+    if(/mudar (o )?teste|change (the )?test|changer (de |le )?test/.test(low)){ openSetup(); botSay("bot", t("bot_setup_opened")); return true; }
+    if(/ver como (o )?gestor de projeto|view as (the )?project manager|voir en tant que chef de projet/.test(low)){ switchRole("pm"); return true; }
+    if(/ver como (a )?(chefia|manager)|view as (the )?(line )?manager|voir en tant que (manager|responsable)/.test(low)){ switchRole("manager"); return true; }
     if(/ver como (o )?colaborador|view as (the )?employee|voir en tant que (collaborateur|employ[ée])/.test(low)){ switchRole("employee"); return true; }
     if(/formul[áa]rio|request form|open the form|formulaire/.test(low)){ openLeaveDialog(chat.leaveFormPrefill || chat.leaveDraft || null); chat.leaveFormPrefill = null; chat.leaveDraft = null; botSay("bot", t("bot_leave_form_opened")); return true; }
 
@@ -6680,7 +6920,7 @@
 
     /* the manager's inbox */
     if(/para aprovar|por aprovar|pendentes?\b|pending|to approve|[àa] approuver|en attente|o que (é que )?tenho|what do i have|qu'est-ce que j'ai/.test(low) && !tsWord){
-      if(state.role === "manager" || hasLeave){ showPendingApprovals(); return true; }
+      if(state.role !== "employee" || hasLeave){ showPendingApprovals(); return true; }
     }
     var targets = matchLeaveTargets(txt);
     /* "all" on its own still means the timesheets, as it always has; it
@@ -6689,7 +6929,9 @@
     var reject = /\brejeita(r)?\b|\brecusa(r)?\b|\breject\b|\bdecline\b|\brefuse[rz]?\b|\brejette[rz]?\b/.test(low);
     var approve = /\baprova(r)?\b|\baprove\b|\bapprove\b|\bapprouve[rz]?\b|\bvalide[rz]?\b/.test(low);
     if((reject || approve) && !tsWord && (hasLeave || /\b45\d{5}\b/.test(low) || (named.length && state.role === "manager"))){
-      var tsHit = matchApprovalTargets(txt);
+      /* the project manager approves timesheets: a bare name means theirs */
+      if(state.role === "pm" && !hasLeave && !/\b45\d{5}\b/.test(low)) return false;
+      var tsHit = state.role === "pm" ? matchApprovalTargets(txt) : null;
       if(!hasLeave && approve && tsHit && tsHit.one && targets.length === 1 && targets[0].EmployeeName.split(" ")[0] === tsHit.one.who.split(" ")[0]){
         var first = targets[0].EmployeeName.split(" ")[0];
         botSay("bot", t("bot_leave_ambiguous", {name: first}));
@@ -7093,6 +7335,11 @@
     botChips([t("chip_hours_i_have"),t("chip_my_absences"),t("chip_copy_last_week"),t("chip_submit_week")]);
   }
   function goToScreen(key, label){
+    if(!profileHasScreen(key)){
+      botSay("bot", t("bot_screen_not_in_profile", {screen: label}));
+      botChips([t("chip_change_test")]);
+      return;
+    }
     var b = document.querySelector('.nav button[data-screen="'+key+'"]');
     if(b) b.click();
     if(key !== "home") botToggle(true);
@@ -7352,7 +7599,8 @@
           contexto: {
             ecra_atual: {home:"Assistant", semana:"My Timesheet", leave:"Leave Request", team:"Team", aprov:"Approval", cats:"CATS mapping"}[state.screen] || "My Timesheet",
             hoje: isoToInput(todayISO()),
-            papel: state.role === "manager" ? "chefia" : "colaborador",
+            papel: {employee:"colaborador", pm:"gestor_projeto", manager:"chefia"}[state.role] || "colaborador",
+            gestor_projeto_em_teste: state.role === "pm" ? {nome: leaderById(state.leader).name, projetos: pmProjectsLabel()} : null,
             chefia_direta: lineManager().name,
             tipos_ausencia: ABSENCE_TYPES.map(function(ty){ return {codigo: ty.code, nome: t("abs_" + ty.code), parte_do_dia: ty.partial, desconta_ferias: ty.quota}; }),
             saldo_ferias: (function(){ var b = leaveBalance(); return {direito: b.total, gozados: b.used, pedidos: b.requested, disponivel: b.available}; })(),
@@ -7417,7 +7665,7 @@
                 regista: profileFor(WORKDATES[0], m.bukrs).clock ? "relogio" : "duracao"
               };
             }),
-            aprovacoes: state.approvals.map(function(a){ return {nome: a.who, tem_excecao: !!a.warn, nota: a.note || null, aprovado: !!a.approved}; }),
+            aprovacoes: tsQueue().map(function(a){ return {nome: a.who, tem_excecao: !!a.warn, nota: a.note || null, aprovado: !!a.approved}; }),
             pedido_por_confirmar: chat.pending === "entry" && chat.draft
               ? {dia: DAYS[chat.draft.day], duracao_horas: chat.draft.dur, projeto: PROJECTS[chat.draft.p].code.split("-")[0], descricao: chat.draft.desc}
               : null
@@ -7484,6 +7732,27 @@
     });
     return pIdx;
   }
+  function dispatchTeamAllowance(intent){
+        var al = intent.argumentos || {};
+        var teamMembersAl = teamOf(state.leader);
+        var targetsAl = /^(todos|toda a equipa|equipa toda)$/i.test(String(al.pessoa || "").trim())
+          ? teamMembersAl
+          : teamMembersAl.filter(function(m){ return m.name.toLowerCase().indexOf(String(al.pessoa || "").toLowerCase()) !== -1; });
+        var wAl = wt(al.rubrica);
+        var rawDaysAl = Array.isArray(al.dias) && al.dias.length ? al.dias : (al.dia ? [al.dia] : []);
+        var daysAl = rawDaysAl.map(function(d){ return resolveDayArg(d); }).filter(function(i){ return i !== -1; });
+        var qtyAl = round15(Number(al.quantidade));
+        var hasAmountAl = !!(qtyAl && qtyAl > 0);
+        if(!targetsAl.length || !wAl || !daysAl.length || !hasAmountAl){
+          var msgAl = intent.texto || teamActionProblem(al.pessoa, targetsAl.length > 0, daysAl.length > 0, hasAmountAl, t("label_the_quantity"));
+          if(!intent.texto && !wAl) msgAl += " " + t("bot_also_unrecognized_wage_type");
+          botSay("bot", msgAl);
+          botChips([t("chip_help")]);
+          return true;
+        }
+        offerTeamAllowance(targetsAl, daysAl, al.rubrica, qtyAl, String(al.nota || "").trim());
+        return true;
+  }
   /* maps Claude's response (function + arguments) to the same bot actions */
   function botDispatch(intent){
     var la = intent.argumentos || {};
@@ -7518,7 +7787,7 @@
         return true;
       case "ir_para_ausencias": goToScreen("leave", t("nav_leave")); return true;
       case "ver_como":
-        switchRole(la.perfil === "chefia" ? "manager" : "employee");
+        switchRole(la.perfil === "chefia" ? "manager" : la.perfil === "gestor_projeto" ? "pm" : "employee");
         if(!chat.greeted) assistantEnsureGreeted();
         return true;
       case "listar_ausencias": showAbsences(); return true;
@@ -7530,6 +7799,16 @@
       case "copiar_semana": offerCopyWeek(); return true;
       case "submeter_semana": offerSubmit(); return true;
       case "registar_horas_equipa":
+      case "preencher_horas_em_falta_equipa":
+      case "registar_allowance_equipa":
+        if(state.role !== "pm"){ botSay("bot", t("bot_team_only_pm")); botChips([t("chip_change_test")]); return true; }
+        if(intent.funcao === "preencher_horas_em_falta_equipa"){
+          var fp0 = intent.argumentos || {};
+          var durFp0 = round15(Number(fp0.duracao_horas));
+          offerFillMissingTeam(fp0.pessoa, durFp0 > 0 ? durFp0 : 0);
+          return true;
+        }
+        if(intent.funcao === "registar_allowance_equipa") return dispatchTeamAllowance(intent);
         var ae = intent.argumentos || {};
         var teamMembersE = teamOf(state.leader);
         var targetsE = /^(todos|toda a equipa|equipa toda)$/i.test(String(ae.pessoa || "").trim())
@@ -7553,35 +7832,10 @@
         }
         offerTeamEntry(targetsE, daysE, durE, clockE);
         return true;
-      case "preencher_horas_em_falta_equipa":
-        var fp = intent.argumentos || {};
-        var durFp = round15(Number(fp.duracao_horas));
-        offerFillMissingTeam(fp.pessoa, durFp > 0 ? durFp : 0);
-        return true;
       case "aprovar":
         var aa = intent.argumentos || {};
         var isAll = /^(todos|toda a equipa|equipa toda)$/i.test(String(aa.pessoa || "").trim());
         handleApprovalRequest(isAll ? "approve everyone" : "approve " + String(aa.pessoa || ""));
-        return true;
-      case "registar_allowance_equipa":
-        var al = intent.argumentos || {};
-        var teamMembersAl = teamOf(state.leader);
-        var targetsAl = /^(todos|toda a equipa|equipa toda)$/i.test(String(al.pessoa || "").trim())
-          ? teamMembersAl
-          : teamMembersAl.filter(function(m){ return m.name.toLowerCase().indexOf(String(al.pessoa || "").toLowerCase()) !== -1; });
-        var wAl = wt(al.rubrica);
-        var rawDaysAl = Array.isArray(al.dias) && al.dias.length ? al.dias : (al.dia ? [al.dia] : []);
-        var daysAl = rawDaysAl.map(function(d){ return resolveDayArg(d); }).filter(function(i){ return i !== -1; });
-        var qtyAl = round15(Number(al.quantidade));
-        var hasAmountAl = !!(qtyAl && qtyAl > 0);
-        if(!targetsAl.length || !wAl || !daysAl.length || !hasAmountAl){
-          var msgAl = intent.texto || teamActionProblem(al.pessoa, targetsAl.length > 0, daysAl.length > 0, hasAmountAl, t("label_the_quantity"));
-          if(!intent.texto && !wAl) msgAl += " " + t("bot_also_unrecognized_wage_type");
-          botSay("bot", msgAl);
-          botChips([t("chip_help")]);
-          return true;
-        }
-        offerTeamAllowance(targetsAl, daysAl, al.rubrica, qtyAl, String(al.nota || "").trim());
         return true;
       case "registar_horas":
         var a = intent.argumentos || {};
@@ -7748,9 +8002,9 @@
        back to, which would otherwise misread "2 km" as "2 hours". */
     var teamMembers = teamOf(state.leader);
     var ta = botParseTeamAllowance(txt, teamMembers);
+    var tp = ta ? null : botParseTeamHours(txt, teamMembers);
+    if((ta || tp) && state.role !== "pm"){ botSay("bot", t("bot_team_only_pm")); botChips([t("chip_change_test")]); return; }
     if(ta){ offerTeamAllowance(ta.members, ta.days, ta.code, ta.qty, ta.note); return; }
-
-    var tp = botParseTeamHours(txt, teamMembers);
     if(tp){ offerTeamEntry(tp.members, tp.days, tp.dur, tp.clock); return; }
 
     /* a request for every working day ("8h RTL-TT all days this week"),
@@ -8203,12 +8457,17 @@
     var t = txt.toLowerCase();
     if(/\b(everyone|the\s+whole\s+team|the\s+team|all|todos|todas|toda\s+a\s+equipa|tous|toutes)\b/.test(t)) return {all:true};
     var found = null;
-    state.approvals.forEach(function(a){
+    tsQueue().forEach(function(a){
       if(t.indexOf(a.who.split(" ")[0].toLowerCase()) !== -1) found = a;
     });
     return found ? {one:found} : null;
   }
   function handleApprovalRequest(txt){
+    if(state.role !== "pm"){
+      botSay("bot", t("bot_ts_only_pm"));
+      botChips([t("chip_change_test")]);
+      return;
+    }
     var tgt = matchApprovalTargets(txt);
     if(!tgt){
       botSay("bot",t("bot_approval_ask_who"));
@@ -8216,7 +8475,7 @@
       return;
     }
     if(tgt.all){
-      var clean = state.approvals.filter(function(a){ return !a.warn && !a.approved; });
+      var clean = tsQueue().filter(function(a){ return !a.warn && !a.approved; });
       if(!clean.length){
         botSay("bot",t("bot_approval_nothing"));
         return;
@@ -8488,7 +8747,28 @@
   if($("ttBonus")) $("ttBonus").onclick = function(){ state.teamTab = "bonus"; renderTeam(); };
 
   /* ---------- wiring: Leave Request and View as ---------- */
-  if($("roleSel")) $("roleSel").onchange = function(){ switchRole($("roleSel").value); };
+  /* ---------- wiring: the test setup ---------- */
+  if($("ctxBtn")) $("ctxBtn").onclick = openSetup;
+  Array.prototype.forEach.call(document.querySelectorAll("#setupCo button"), function(b){
+    b.onclick = function(){ setupDraft.co = b.dataset.co; renderSetup(); };
+  });
+  Array.prototype.forEach.call(document.querySelectorAll("#setupRoles .setupcard"), function(b){
+    b.onclick = function(){ setupDraft.role = b.dataset.role; renderSetup(); };
+  });
+  Array.prototype.forEach.call(document.querySelectorAll("#setupLang button"), function(b){
+    b.onclick = function(){ setLang(b.dataset.lang); };
+  });
+  if($("setupLeader")) $("setupLeader").onchange = function(){ setupDraft.leader = $("setupLeader").value; renderSetup(); };
+  if($("setupGo")) $("setupGo").onclick = function(ev){
+    ev.preventDefault();
+    var d = setupDraft;
+    $("dlgSetup").close("go");
+    applyTestSetup(d.co, d.role, d.leader);
+  };
+  /* closed with Escape on the first open: carry on with what's on screen */
+  if($("dlgSetup")) $("dlgSetup").addEventListener("close", function(){
+    if(!state.setupDone) applyTestSetup(IT0001.bukrs, state.role, state.leader);
+  });
   if($("lvNew")) $("lvNew").onclick = function(){ openLeaveDialog(); };
   ["lvType","lvStart","lvEnd","lvPartial","lvHours","lvBeg","lvFin"].forEach(function(id){
     var n = $(id);
@@ -8502,9 +8782,12 @@
 
   applyLocaleArrays();
   applyI18n();
-  renderRoleOptions();
+  renderContextButton();
+  applyProfileChrome();
   render();
   /* The app opens on the assistant: the conversation is the way in, the
-     screens are where the data can be checked or edited directly. */
+     screens are where the data can be checked or edited directly. The
+     first thing asked is which test is being run. */
   placeAssistant("home");
+  if(!setupFromUrl()) openSetup();
 })();
