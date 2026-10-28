@@ -45,8 +45,17 @@
   .num{font-family:var(--f-mono); font-variant-numeric:tabular-nums}
 
   /* shell bar */
+  /* shell bar and tabs stay on top while the page scrolls, so it's always
+     clear which screen this is; --appbar-h (set by the page) keeps sticky
+     panels and scrolled-to rows out from under it */
+  .appbar{position:sticky; top:env(safe-area-inset-top,0px); z-index:30; box-shadow:0 1px 3px rgba(0,0,0,.06)}
+  html{scroll-padding-top:calc(var(--appbar-h, 0px) + 12px)}
+  /* on a phone the shell bar wraps to a third of the screen: only the tabs stay */
+  @media (max-width:600px){
+    .appbar{display:contents}
+    .nav{position:sticky; top:env(safe-area-inset-top,0px); z-index:30; box-shadow:0 1px 3px rgba(0,0,0,.06)}
+  }
   .shellbar{
-    position:sticky; top:env(safe-area-inset-top,0px); z-index:30;
     background:var(--surface); border-bottom:1px solid var(--line);
     display:flex; align-items:center; gap:12px; flex-wrap:wrap;
     padding:14px 20px;
@@ -493,7 +502,7 @@
      drops under the conversation, which keeps the first screen for talking. */
   .home{display:grid; grid-template-columns:minmax(0,1fr) 380px; gap:16px; align-items:start}
   .homechat{min-width:0}
-  .homeside{display:grid; gap:16px; min-width:0; position:sticky; top:16px}
+  .homeside{display:grid; gap:16px; min-width:0; position:sticky; top:calc(var(--appbar-h, 0px) + 16px)}
   @media (max-width:980px){ .home{grid-template-columns:minmax(0,1fr)} .homeside{position:static} }
   .joule.docked{position:relative; right:auto; bottom:auto; z-index:auto; width:auto;
     height:calc(100vh - 190px); min-height:500px; max-height:none; box-shadow:none; border-radius:var(--radius)}

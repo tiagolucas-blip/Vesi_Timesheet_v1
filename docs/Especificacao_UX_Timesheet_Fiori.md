@@ -286,7 +286,7 @@ O assistente é a porta de entrada da aplicação (E16): ao abrir, a conversa oc
 | Copiar semana | `copiar a semana passada` | Confirmação e criação das linhas sem durações |
 | Aplicar sugestões | `aplicar as de confiança alta` | Confirmação com a lista antes de aplicar |
 | Submeter | `submeter a semana` | Valida primeiro. Com erros, explica o primeiro e não submete |
-| Pedir ausência | `férias de 3 a 6 de novembro`, `consulta amanhã das 14h às 17h` | Cartão com tipo e AWART, período, duração, saldo depois, aprovador e serviço standard. Só envia depois de confirmar |
+| Pedir ausência | `férias de 3 a 6 de novembro`, `consulta amanhã das 14h às 17h` | Cartão com tipo de ausência (pelo nome, sem códigos SAP), período, duração, saldo depois e aprovador. Só envia depois de confirmar. Os códigos técnicos (AWART, LeaveRequestSet, IT2001) ficam no mapeamento SAP, nas Definições |
 | Consultar pedidos e saldo | `os meus pedidos de ausência`, `quantos dias de férias me restam` | Pedidos marcados e pendentes, saldo de férias |
 | Retirar ou cancelar | `cancela a consulta de amanhã` | Pendente: retira logo. Aprovado: pede o cancelamento, que volta à chefia |
 | Alertas da chefia | `o que tenho para aprovar` | Pedidos de ausência e timesheets à espera, com o mais próximo em destaque. Também na saudação, ao abrir |

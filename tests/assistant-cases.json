@@ -35,10 +35,13 @@
         {
           "say": "vacation 3 to 6 November",
           "expect": [
-            "AWART 0100",
+            "Vacation",
             "3 Nov 2026 to 6 Nov 2026",
             "4 working days",
             "Sofia Almeida"
+          ],
+          "absent": [
+            "AWART"
           ]
         }
       ]
@@ -50,7 +53,10 @@
         {
           "say": "vacation 3 to 6 November",
           "expect": [
-            "AWART 0100"
+            "Vacation"
+          ],
+          "absent": [
+            "AWART"
           ]
         },
         {
@@ -69,9 +75,12 @@
         {
           "say": "doctor tomorrow 14h to 17h",
           "expect": [
-            "AWART 0210",
+            "Medical appointment",
             "29 Oct 2026, 14:00 to 17:00",
             "3.0 h"
+          ],
+          "absent": [
+            "AWART"
           ]
         }
       ]
@@ -125,7 +134,7 @@
       "lang": "en",
       "steps": [
         {
-          "say": "vacation 17 September",
+          "say": "vacation 3 December",
           "expect": [
             "Overlaps your request 4500230"
           ]
@@ -137,7 +146,7 @@
       "lang": "en",
       "steps": [
         {
-          "say": "vacation 1 to 31 December",
+          "say": "vacation 9 to 27 November",
           "expect": [
             "Not enough vacation balance"
           ]
@@ -258,9 +267,12 @@
         {
           "say": "férias de 3 a 6 de novembro",
           "expect": [
-            "AWART 0100",
+            "Férias",
             "3 Nov 2026 a 6 Nov 2026",
             "4 dias úteis"
+          ],
+          "absent": [
+            "AWART"
           ]
         }
       ]
@@ -272,9 +284,12 @@
         {
           "say": "consulta médica amanhã das 9h às 11h",
           "expect": [
-            "AWART 0210",
+            "Consulta médica",
             "09:00 às 11:00",
             "2.0 h"
+          ],
+          "absent": [
+            "AWART"
           ]
         }
       ]

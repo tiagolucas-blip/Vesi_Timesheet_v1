@@ -236,8 +236,11 @@
     /* the project manager under test: their own sheet is the record */
     if(isSelfMember(m) && weekNum === WEEKS[weekIdx].num) return [0,1,2,3,4,5,6].map(function(d){ return dayTotal(d); });
     var base;
-    if(weekNum >= 38) base = (m.already || [0,0,0,0,0,0,0]).slice();
-    else base = [0,1,2,3,4].reduce(function(acc,d){ acc[d] = m.abs[d] ? 0 : 8; return acc; }, [0,0,0,0,0,0,0]);
+    var wk = WEEKS.filter(function(w){ return w.num === weekNum; })[0];
+    var thisWeek = mondayOf(todayISO());
+    if(wk && wk.start > thisWeek) base = [0,0,0,0,0,0,0];
+    else if(wk && wk.start < thisWeek) base = [0,1,2,3,4].reduce(function(acc,d){ acc[d] = m.abs[d] ? 0 : teamDailyCap(m); return acc; }, [0,0,0,0,0,0,0]);
+    else base = (m.already || [0,0,0,0,0,0,0]).slice();
     /* the sample "already" figures are a static baseline and never move;
        without this, saving a mass entry made the read-only grid look like
        the save had been lost the moment it succeeded, since staged (now 0)
@@ -329,11 +332,20 @@
   }
   function weekLabelFor(dates, num){
     var s = dates[0], e = dates[6];
-    var sD = +s.slice(6,8), sM = +s.slice(4,6)-1, eD = +e.slice(6,8), eM = +e.slice(4,6)-1, y = s.slice(0,4);
+    var sD = +s.slice(6,8), sM = +s.slice(4,6)-1, eD = +e.slice(6,8), eM = +e.slice(4,6)-1, y = e.slice(0,4);
+    /* a week across New Year names both years: 28 Dec 2026 to 3 Jan 2027 */
     var range = sM === eM
       ? t("label_range_same_month", {d1: sD, d2: eD, month: MONTHS[sM]})
-      : t("label_range_diff_month", {d1: sD, m1: MONTHS[sM], d2: eD, m2: MONTHS[eM]});
-    return t("label_week_n", {n: num, range: range, y: y});
+      : t("label_range_diff_month", {d1: sD, m1: MONTHS[sM] + (s.slice(0,4) !== y ? " " + s.slice(0,4) : ""), d2: eD, m2: MONTHS[eM]});
+    return t("label_week_n", {n: isoWeekOf(s), range: range, y: y});
+  }
+  /* The ISO week number of a date: the sample's own week counter keeps
+     going past 53, the label shown never does. */
+  function isoWeekOf(dateISO){
+    var d = new Date(Date.UTC(+dateISO.slice(0,4), +dateISO.slice(4,6)-1, +dateISO.slice(6,8)));
+    d.setUTCDate(d.getUTCDate() + 3 - (d.getUTCDay() + 6) % 7);
+    var jan4 = new Date(Date.UTC(d.getUTCFullYear(), 0, 4));
+    return 1 + Math.round(((d - jan4) / 86400000 - 3 + (jan4.getUTCDay() + 6) % 7) / 7);
   }
 
   /* Absences come from the Leave Request, read-only in this application. Sample data
@@ -628,17 +640,19 @@
      weeks up to the end of the year, for both companies, so a request for
      November or Christmas lands in a week the timesheet can actually show.
      Nothing recorded, nothing submitted, they only exist to be filled. */
-  function extendWeeks(weeks, lastNum){
+  function extendWeeksTo(weeks, untilISO){
     var w = weeks[weeks.length - 1];
-    while(w.num < lastNum){
+    while(w.start <= untilISO){
       w = {num:w.num + 1, start:datesFor(datesFor(w.start)[6])[1], submitted:false, absences:[], rows:[], allow:[], sugs:[]};
       weeks.push(w);
     }
   }
-  extendWeeks(WEEKS_PT01, 53);
-  extendWeeks(WEEKS_PT02, 53);
+  /* to the end of the year, or four months past today when that's later */
+  var WEEKS_UNTIL = (function(){ var four = isoAdd(todayISO(), 120); return four > "20261231" ? four : "20261231"; })();
+  extendWeeksTo(WEEKS_PT01, WEEKS_UNTIL);
+  extendWeeksTo(WEEKS_PT02, WEEKS_UNTIL);
   var WEEKS = WEEKS_PT01;
-  var weekIdx = 6; // week 38, the default landing week (index shifts whenever a week is added before it)
+  var weekIdx = 6; // placeholder until the sample is brought up to today, then today's week
   var ABSENCES = WEEKS[weekIdx].absences;
   WORKDATES = datesFor(WEEKS[weekIdx].start);
   DAYS = daysFor(WORKDATES);
@@ -807,6 +821,7 @@
      messages are a separate follow-up, not covered here yet. */
   var I18N = {
     en: {
+      label_approval_week:"Timesheet approval, week {n}",
       label_you:"you",
       filter_pending:"To approve", filter_all:"All", aria_ap_filter:"Which timesheets to show", text_ap_none_pending:"Nothing left to approve. Choose All to see the approved ones.", btn_select_clean_one:"Select the {n} without warnings", btn_select_clean_other:"Select the {n} without warnings",
       settings_reference:"Technical reference", btn_open_mapping:"Open the SAP mapping", text_mapping_hint:"Field by field, what each screen writes to CATS and to the standard Leave Request, with the records and payloads generated live.",
@@ -839,7 +854,7 @@
       leave_range:"{from} to {to}", leave_time_range:"{b} to {e}",
       n_workdays_one:"{n} working day", n_workdays_other:"{n} working days",
       n_requests_one:"{n} request", n_requests_other:"{n} requests",
-      lr_status_sent:"Pending approval", lr_status_approved:"Approved", lr_status_posted:"Approved, in IT2001",
+      lr_status_sent:"Pending approval", lr_status_approved:"Approved", lr_status_posted:"Approved, recorded",
       lr_status_rejected:"Rejected", lr_status_withdrawn:"Withdrawn", lr_status_cancel_requested:"Cancellation pending",
       leave_err_type:"Choose the absence type.", leave_err_dates:"Fill in the start and end dates.", leave_err_order:"The end date is before the start date.",
       leave_err_no_workdays:"The period has no working days.", leave_err_partial_type:"{type} can only be requested for whole days.",
@@ -943,7 +958,7 @@
       capture_on:"Suggestions on, private timeline", capture_off:"Capture paused",
       aria_it0001:"Company of the employee, from IT0001",
       aria_project_billing:"Project to bill and staff mass entries for", aria_leader_scope:"Leader and scope",
-      aria_mass_entry_section:"Mass entry section", label_approval_week37:"Timesheet approval, week 37",
+      aria_mass_entry_section:"Mass entry section",
       label_week_n:"Week {n}, {range} {y}", label_range_same_month:"{d1} to {d2} {month}", label_range_diff_month:"{d1} {m1} to {d2} {m2}",
       status_approved:"Approved", status_pending:"Pending request",
       dlg_new_entry_title:"New entry", origin_suggested:"Suggested", origin_copied:"Copied",
@@ -1310,6 +1325,7 @@
       row_confirm_cell:"Confirm cell and move down", row_show_list:"Show this list"
     },
     pt: {
+      label_approval_week:"Aprovação de horas, semana {n}",
       label_you:"tu",
       filter_pending:"Por aprovar", filter_all:"Todas", aria_ap_filter:"Que timesheets mostrar", text_ap_none_pending:"Nada por aprovar. Escolhe Todas para ver as aprovadas.", btn_select_clean_one:"Selecionar a {n} sem avisos", btn_select_clean_other:"Selecionar as {n} sem avisos",
       settings_reference:"Referência técnica", btn_open_mapping:"Abrir o mapeamento SAP", text_mapping_hint:"Campo a campo, o que cada ecrã grava no CATS e no Leave Request standard, com os registos e os payloads gerados em tempo real.",
@@ -1342,7 +1358,7 @@
       leave_range:"{from} a {to}", leave_time_range:"{b} às {e}",
       n_workdays_one:"{n} dia útil", n_workdays_other:"{n} dias úteis",
       n_requests_one:"{n} pedido", n_requests_other:"{n} pedidos",
-      lr_status_sent:"Pendente de aprovação", lr_status_approved:"Aprovado", lr_status_posted:"Aprovado, no IT2001",
+      lr_status_sent:"Pendente de aprovação", lr_status_approved:"Aprovado", lr_status_posted:"Aprovado, lançado",
       lr_status_rejected:"Rejeitado", lr_status_withdrawn:"Retirado", lr_status_cancel_requested:"Cancelamento pendente",
       leave_err_type:"Escolhe o tipo de ausência.", leave_err_dates:"Preenche a data de início e de fim.", leave_err_order:"A data de fim é anterior à de início.",
       leave_err_no_workdays:"O período não tem dias úteis.", leave_err_partial_type:"{type} só pode ser pedido por dias inteiros.",
@@ -1446,7 +1462,7 @@
       capture_on:"Sugestões ativas, linha do tempo privada", capture_off:"Captura em pausa",
       aria_it0001:"Empresa do colaborador, a partir do IT0001",
       aria_project_billing:"Projeto a faturar e a alocar aos lançamentos em massa", aria_leader_scope:"Líder e âmbito",
-      aria_mass_entry_section:"Secção de lançamento em massa", label_approval_week37:"Aprovação de horas, semana 37",
+      aria_mass_entry_section:"Secção de lançamento em massa",
       label_week_n:"Semana {n}, {range} {y}", label_range_same_month:"{d1} a {d2} {month}", label_range_diff_month:"{d1} {m1} a {d2} {m2}",
       status_approved:"Aprovada", status_pending:"Pedido pendente",
       dlg_new_entry_title:"Novo lançamento", origin_suggested:"Sugerido", origin_copied:"Copiado",
@@ -1806,6 +1822,7 @@
       row_confirm_cell:"Confirmar célula e descer", row_show_list:"Mostrar esta lista"
     },
     fr: {
+      label_approval_week:"Approbation des temps, semaine {n}",
       label_you:"vous",
       filter_pending:"À approuver", filter_all:"Toutes", aria_ap_filter:"Feuilles de temps à afficher", text_ap_none_pending:"Plus rien à approuver. Choisissez Toutes pour voir celles approuvées.", btn_select_clean_one:"Sélectionner la {n} sans avertissement", btn_select_clean_other:"Sélectionner les {n} sans avertissement",
       settings_reference:"Référence technique", btn_open_mapping:"Ouvrir le mapping SAP", text_mapping_hint:"Champ par champ, ce que chaque écran enregistre dans CATS et dans le Leave Request standard, avec les enregistrements et payloads générés en direct.",
@@ -1838,7 +1855,7 @@
       leave_range:"du {from} au {to}", leave_time_range:"de {b} à {e}",
       n_workdays_one:"{n} jour ouvré", n_workdays_other:"{n} jours ouvrés",
       n_requests_one:"{n} demande", n_requests_other:"{n} demandes",
-      lr_status_sent:"En attente d'approbation", lr_status_approved:"Approuvée", lr_status_posted:"Approuvée, dans l'IT2001",
+      lr_status_sent:"En attente d'approbation", lr_status_approved:"Approuvée", lr_status_posted:"Approuvée, enregistrée",
       lr_status_rejected:"Refusée", lr_status_withdrawn:"Retirée", lr_status_cancel_requested:"Annulation en attente",
       leave_err_type:"Choisissez le type d'absence.", leave_err_dates:"Renseignez les dates de début et de fin.", leave_err_order:"La date de fin est antérieure à la date de début.",
       leave_err_no_workdays:"La période ne contient aucun jour ouvré.", leave_err_partial_type:"{type} ne peut être demandé que par journées entières.",
@@ -1942,7 +1959,7 @@
       capture_on:"Suggestions activées, historique privé", capture_off:"Capture en pause",
       aria_it0001:"Société de l'employé, à partir de l'IT0001",
       aria_project_billing:"Projet à facturer et à affecter aux saisies groupées", aria_leader_scope:"Chef d'équipe et périmètre",
-      aria_mass_entry_section:"Section de saisie groupée", label_approval_week37:"Approbation des temps, semaine 37",
+      aria_mass_entry_section:"Section de saisie groupée",
       label_week_n:"Semaine {n}, {range} {y}", label_range_same_month:"{d1} au {d2} {month}", label_range_diff_month:"{d1} {m1} au {d2} {m2}",
       status_approved:"Approuvée", status_pending:"Demande en attente",
       dlg_new_entry_title:"Nouvelle saisie", origin_suggested:"Suggéré", origin_copied:"Copié",
@@ -2879,7 +2896,7 @@
     if(extra) node.classList.add.apply(node.classList, extra.split(" "));
     if(week.submitted){
       node.classList.add("submitted");
-      node.title = "Week " + week.num + " was already submitted, not editable.";
+      node.title = "Week " + isoWeekOf(week.start) + " was already submitted, not editable.";
     } else if(!periodOpen(dates[i])){
       node.classList.add("closed");
       node.title = t("tip_period_closed", {ym: periodFor(dates[i]).ym, bukrs: IT0001.bukrs});
@@ -2970,7 +2987,7 @@
       var w0 = weekDayFor(dates[di]).week;
       var span = 0;
       while(di+span < dates.length && weekDayFor(dates[di+span]).week === w0) span++;
-      var label = el("div","monthweeklabel","Week "+w0.num);
+      var label = el("div","monthweeklabel","Week "+isoWeekOf(w0.start));
       label.style.gridColumn = "span " + span;
       sub.appendChild(label);
       di += span;
@@ -3173,7 +3190,7 @@
         ab.style.minHeight = Math.max(30, a.hours*26) + "px";
         ab.appendChild(el("b","", fmt(a.hours)+" h"));
         ab.appendChild(document.createTextNode(absTypeLabel(a) + " · " + absStatusLabel(a.status)));
-        ab.title = a.src + ", AWART " + a.awart;
+        ab.title = a.src + ", " + absTypeLabel(a);
         col.appendChild(ab);
       });
       var any = false;
@@ -3216,7 +3233,7 @@
         ab.style.minHeight = Math.max(30, a.hours*26) + "px";
         ab.appendChild(el("b","", fmt(a.hours)+" h"));
         ab.appendChild(document.createTextNode(absTypeLabel(a) + " · " + absStatusLabel(a.status)));
-        ab.title = a.src + ", AWART " + a.awart;
+        ab.title = a.src + ", " + absTypeLabel(a);
         col.appendChild(ab);
       });
       /* r.desc is free text the person types in Quick Add or the detail
@@ -3330,7 +3347,7 @@
       withWeek(w, function(){
         validate().forEach(function(m){
           if(typeof m.day === "number" && dates.indexOf(datesFor(w.start)[m.day]) === -1) return;
-          list.push({sev:m.sev, txt:t("val_week_label_prefix", {n: w.num, txt: m.txt}), conflict:m.conflict, week:w, submitted:w.submitted});
+          list.push({sev:m.sev, txt:t("val_week_label_prefix", {n: isoWeekOf(w.start), txt: m.txt}), conflict:m.conflict, week:w, submitted:w.submitted});
         });
       });
     });
@@ -3546,7 +3563,7 @@
     h.appendChild(el("b","", absTypeLabel(a)));
     h.appendChild(el("span","chip " + (a.status === "approved" ? "grey" : "amber"), absStatusLabel(a.status)));
     c.appendChild(h);
-    c.appendChild(el("div","why", DAYS[a.day] + " · " + fmt(a.hours) + " h · AWART " + a.awart));
+    c.appendChild(el("div","why", DAYS[a.day] + " · " + fmt(a.hours) + " h"));
     c.appendChild(el("div","why", a.src + " · Leave Request"));
     if(a.status === "pending"){
       var acts = el("div","acts","");
@@ -3846,7 +3863,7 @@
       "// with BAPI_TRANSACTION_COMMIT. No OData service, no WorkforceTimesheetService,\n" +
       "// whether the target is cloud or on-premise\n\n" +
       JSON.stringify({
-        requestId: "ts-2026-W" + WEEKS[weekIdx].num + "-" + PERNR,
+        requestId: "ts-" + WORKDATES[3].slice(0,4) + "-W" + isoWeekOf(WEEKS[weekIdx].start) + "-" + PERNR,
         bukrs: IT0001.bukrs,
         profile: profileFor(WORKDATES[0]).code,
         period: {ym: periodFor(WORKDATES[0]).ym, open: periodOpen(WORKDATES[0])},
@@ -4718,26 +4735,12 @@
     loadWeek(next);
     render();
   }
-  /* Weeks 35/40/41 exist only so My week's month pager (consulting) has
-     more than one month to page through; Team's own week-by-week
-     navigator predates that and only ever offered weeks 36-39. Without
-     this, stepping through Team with prevW2/nextW2 could wander into
-     those extra weeks too, which reads as the mass entry screen now
-     spanning far more weeks than it used to - it should stay exactly as
-     it was before the monthly work, regardless of what My week added. */
+  /* Team's week-by-week navigator stays around today, six weeks back and
+     four ahead, however far My week's month pager or a leave request
+     reaches. */
   function teamWeekRange(){
-    var lo = 0, hi = WEEKS.length - 1;
-    /* The week-39 cap is PT01-only: PT01 always shows the monthly view, so
-       weeks 40+ exist purely as overflow for My week's month pager, never
-       meant to be reachable from a weekly navigator. PT02 has no monthly
-       view - its own later weeks are real, navigable weeks, so it keeps
-       the full range instead of being capped at 39 too. */
-    var cap = IT0001.bukrs === "PT02" ? null : 39;
-    WEEKS.forEach(function(w, i){
-      if(w.num === 36) lo = i;
-      if(cap !== null && w.num === cap) hi = i;
-    });
-    return { lo: lo, hi: hi };
+    var cur = todayWeekIndex();
+    return { lo: Math.max(0, cur - 6), hi: Math.min(WEEKS.length - 1, cur + 4) };
   }
   function changeWeek(delta){
     if(isMonthly()) return changeMonth(delta);
@@ -4824,11 +4827,10 @@
     /* WEEKS_PT01 and WEEKS_PT02 no longer line up index for index - PT01
        alone has weeks either side for the monthly view - so land on the
        same week NUMBER in the new array, not the same array position;
-       falling back to week 38 (present in both) if this company doesn't
-       have that number at all. */
+       falling back to today's week if this company doesn't have that
+       number at all. */
     var match = WEEKS.filter(function(w){ return w.num === curNum; })[0];
-    if(!match) match = WEEKS.filter(function(w){ return w.num === 38; })[0];
-    loadWeek(match ? WEEKS.indexOf(match) : 0);
+    loadWeek(match ? WEEKS.indexOf(match) : todayWeekIndex());
     if(isClock()) seedClock();
     renderLeaderOptions();
     renderContextButton();
@@ -5246,7 +5248,7 @@
       var ul = el("div","sum","");
       warns.forEach(function(m){
         var r = el("div","r","");
-        r.appendChild(el("span","", t("val_week_label_prefix", {n: m.week.num, txt: m.txt})));
+        r.appendChild(el("span","", t("val_week_label_prefix", {n: isoWeekOf(m.week.start), txt: m.txt})));
         r.appendChild(el("span","chip amber",t("chip_warning_lower")));
         r.appendChild(el("span","",""));
         ul.appendChild(r);
@@ -5278,7 +5280,7 @@
   }
   function openSubmit(){
     if(isMonthly()) return openSubmitMonth();
-    $("subTitle").textContent = t("dlg_submit_week_title", {n: WEEKS[weekIdx].num});
+    $("subTitle").textContent = t("dlg_submit_week_title", {n: isoWeekOf(WEEKS[weekIdx].start)});
     var byP = {};
     state.rows.forEach(function(r){
       var t = rowTotal(r);
@@ -5335,7 +5337,7 @@
     state.needsSave = true;
     $("dlgSubmit").close();
     render();
-    toast(t("toast_week_submitted_approval", {n: WEEKS[weekIdx].num}), t("ui_reopen"), function(){ state.submitted = false; state.needsSave = false; render(); });
+    toast(t("toast_week_submitted_approval", {n: isoWeekOf(WEEKS[weekIdx].start)}), t("ui_reopen"), function(){ state.submitted = false; state.needsSave = false; render(); });
   }
 
   /* ---------- approvals ---------- */
@@ -5429,6 +5431,7 @@
     $("apAll").disabled = cleanLeft === 0;
     if(!cleanLeft) $("apAll").checked = false;
 
+    if($("apWeekLabel")) $("apWeekLabel").textContent = t("label_approval_week", {n: isoWeekOf(isoAdd(mondayOf(todayISO()), -7))});
     var sel = tsQueue().filter(function(a){ return a.sel && !a.approved; }).length;
     $("apSel").textContent = plural(sel, "n_selected");
     $("apApprove").disabled = sel === 0;
@@ -5646,19 +5649,23 @@
     PT02:{year:2026, entitlement:22, carryover:2, usedBefore:8}
   };
   var LEAVE = {PT01:[], PT02:[]};
+  /* Day d (0 = Monday) of the week wk weeks after the current one: the
+     sample requests keep the same place relative to today, whenever the
+     mockup is opened. */
+  function weekDay(wk, d){ return isoAdd(mondayOf(todayISO()), wk*7 + d); }
   var LEAVE_TEAM = {
     PT01:[
-      {RequestID:"4500391", EmployeeID:"00104401", EmployeeName:"Ana Ferreira", role:"Senior consultant", AbsenceTypeCode:"0100", StartDate:"20261116", EndDate:"20261120", partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"SENT", Notes:"Family trip", available:14},
-      {RequestID:"4500388", EmployeeID:"00104402", EmployeeName:"Bruno Matos", role:"Consultant", AbsenceTypeCode:"0210", StartDate:"20261104", EndDate:"20261104", partial:true, hours:3, StartTime:"14:00", EndTime:"17:00", StatusID:"SENT", Notes:"Dentist", available:9},
-      {RequestID:"4500395", EmployeeID:"00104404", EmployeeName:"Diogo Sousa", role:"Junior consultant", AbsenceTypeCode:"0300", StartDate:"20261109", EndDate:"20261110", partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"SENT", Notes:"S/4HANA certification course", available:17},
-      {RequestID:"4500393", EmployeeID:"00104403", EmployeeName:"Carla Nunes", role:"Consultant", AbsenceTypeCode:"0100", StartDate:"20261221", EndDate:"20261224", partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"SENT", Notes:"Christmas", available:6},
-      {RequestID:"4500372", EmployeeID:"00104405", EmployeeName:"Eva Lopes", role:"Architect", AbsenceTypeCode:"0100", StartDate:"20261116", EndDate:"20261118", partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"APPROVED", Notes:"", available:11}
+      {RequestID:"4500391", EmployeeID:"00104401", EmployeeName:"Ana Ferreira", role:"Senior consultant", AbsenceTypeCode:"0100", StartDate:weekDay(3,0), EndDate:weekDay(3,4), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"SENT", Notes:"Family trip", available:14},
+      {RequestID:"4500388", EmployeeID:"00104402", EmployeeName:"Bruno Matos", role:"Consultant", AbsenceTypeCode:"0210", StartDate:weekDay(1,2), EndDate:weekDay(1,2), partial:true, hours:3, StartTime:"14:00", EndTime:"17:00", StatusID:"SENT", Notes:"Dentist", available:9},
+      {RequestID:"4500395", EmployeeID:"00104404", EmployeeName:"Diogo Sousa", role:"Junior consultant", AbsenceTypeCode:"0300", StartDate:weekDay(2,0), EndDate:weekDay(2,1), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"SENT", Notes:"S/4HANA certification course", available:17},
+      {RequestID:"4500393", EmployeeID:"00104403", EmployeeName:"Carla Nunes", role:"Consultant", AbsenceTypeCode:"0100", StartDate:weekDay(8,0), EndDate:weekDay(8,3), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"SENT", Notes:"Christmas", available:6},
+      {RequestID:"4500372", EmployeeID:"00104405", EmployeeName:"Eva Lopes", role:"Architect", AbsenceTypeCode:"0100", StartDate:weekDay(3,0), EndDate:weekDay(3,2), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"APPROVED", Notes:"", available:11}
     ],
     PT02:[
-      {RequestID:"4500396", EmployeeID:"00104510", EmployeeName:"Nuno Dias", role:"Technician", AbsenceTypeCode:"0100", StartDate:"20261123", EndDate:"20261127", partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"SENT", Notes:"", available:12},
-      {RequestID:"4500389", EmployeeID:"00104528", EmployeeName:"Luís Teixeira", role:"Technician", AbsenceTypeCode:"0210", StartDate:"20261105", EndDate:"20261105", partial:true, hours:3, StartTime:"14:00", EndTime:"17:00", StatusID:"SENT", Notes:"Physiotherapy", available:10},
-      {RequestID:"4500397", EmployeeID:"00104530", EmployeeName:"Ana Pires", role:"Technician", AbsenceTypeCode:"0100", StartDate:"20261228", EndDate:"20261231", partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"SENT", Notes:"Christmas", available:5},
-      {RequestID:"4500380", EmployeeID:"00104512", EmployeeName:"Hugo Matos", role:"Technician", AbsenceTypeCode:"0100", StartDate:"20261124", EndDate:"20261125", partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"APPROVED", Notes:"", available:8}
+      {RequestID:"4500396", EmployeeID:"00104510", EmployeeName:"Nuno Dias", role:"Technician", AbsenceTypeCode:"0100", StartDate:weekDay(4,0), EndDate:weekDay(4,4), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"SENT", Notes:"", available:12},
+      {RequestID:"4500389", EmployeeID:"00104528", EmployeeName:"Luís Teixeira", role:"Technician", AbsenceTypeCode:"0210", StartDate:weekDay(1,3), EndDate:weekDay(1,3), partial:true, hours:3, StartTime:"14:00", EndTime:"17:00", StatusID:"SENT", Notes:"Physiotherapy", available:10},
+      {RequestID:"4500397", EmployeeID:"00104530", EmployeeName:"Ana Pires", role:"Technician", AbsenceTypeCode:"0100", StartDate:weekDay(9,0), EndDate:weekDay(9,3), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"SENT", Notes:"Christmas", available:5},
+      {RequestID:"4500380", EmployeeID:"00104512", EmployeeName:"Hugo Matos", role:"Technician", AbsenceTypeCode:"0100", StartDate:weekDay(4,1), EndDate:weekDay(4,2), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"APPROVED", Notes:"", available:8}
     ]
   };
   var leaveSeq = 4500400;
@@ -5788,9 +5795,101 @@
   }
   LEAVE.PT01 = seedLeaveFromWeeks("PT01");
   LEAVE.PT02 = seedLeaveFromWeeks("PT02");
+  /* Bring the employee's own sample around today: the two requests still
+     waiting move to the weeks ahead (a request pending for a day long gone
+     isn't realistic), and a part-day medical appointment, already approved,
+     sits earlier this week. */
+  ["PT01","PT02"].forEach(function(b){
+    LEAVE[b].forEach(function(r){
+      if(r.RequestID === "4500230"){ r.StartDate = r.EndDate = weekDay(5, 3); r.StatusID = "SENT"; syncLeaveToTimesheet(r); }
+      if(r.RequestID === "4500255"){ r.StartDate = r.EndDate = weekDay(6, 0); r.StatusID = "SENT"; syncLeaveToTimesheet(r); }
+    });
+    var today = todayISO(), mon = mondayOf(today);
+    var day = mon < today ? mon : weekDay(-1, 3);
+    var clock = profileFor(day, b).clock;
+    var appt = {
+      RequestID:"4500290", EmployeeID:PERNR, EmployeeName:EMPLOYEE_NAME, bukrs:b, AbsenceTypeCode:"0210",
+      StartDate:day, EndDate:day, partial:true, hours:4, StartTime: clock ? "14:00" : "", EndTime: clock ? "18:00" : "",
+      StatusID: day < today ? "POSTED" : "APPROVED", Notes:"", origin:"Manual", ApproverName: LINE_MANAGER[b].name
+    };
+    LEAVE[b].push(appt);
+    syncLeaveToTimesheet(appt);
+  });
+  prefillToToday("PT01");
+  prefillToToday("PT02");
+  /* the app opens on today's week, and for consulting on today's month */
+  saveCurrentWeek();
+  loadWeek(todayWeekIndex());
   LEAVE_TEAM.PT01.forEach(function(r){ r.bukrs = "PT01"; });
   LEAVE_TEAM.PT02.forEach(function(r){ r.bukrs = "PT02"; });
 
+  /* ---------- the timesheet up to today ----------
+     The sample's own weeks stop where they were written; this tops them up
+     so the app opens on current data: every working day from the start of
+     last month to the day before yesterday recorded to capacity, yesterday
+     half done, today and the days ahead still open, and two suggestions
+     for what's missing. Weeks wholly before this month are submitted. The
+     hand-written rows stay; only the gaps are filled. */
+  function mondayOf(dateISO){ return isoAdd(dateISO, -weekdayOf(dateISO)); }
+  function previousWorkday(dateISO){
+    var d = isoAdd(dateISO, -1);
+    while(weekdayOf(d) > 4) d = isoAdd(d, -1);
+    return d;
+  }
+  function todayWeekIndex(){
+    var today = todayISO();
+    for(var i=0; i<WEEKS.length; i++){ if(datesFor(WEEKS[i].start).indexOf(today) !== -1) return i; }
+    return today > WEEKS[WEEKS.length - 1].start ? WEEKS.length - 1 : Math.min(6, WEEKS.length - 1);
+  }
+  function prefillToToday(bukrs){
+    var PREFILL_DESC = {
+      0:"Payroll go-live support", 1:"Time tracking rollout support", 2:"WFM rollout stabilization",
+      4:"Elevator preventive maintenance", 5:"Terminal HVAC inspection round"
+    };
+    var weeks = weeksOfCompany(bukrs), today = todayISO();
+    var y = +today.slice(0,4), m = +today.slice(4,6);
+    var from = m === 1 ? (y - 1) + "1201" : "" + y + (m - 1 < 10 ? "0" : "") + (m - 1) + "01";
+    var monthStart = today.slice(0,6) + "01";
+    var yesterday = previousWorkday(today);
+    weeks.forEach(function(w){
+      var dates = datesFor(w.start);
+      if(dates[6] < from || w.start > today) return;
+      /* consulting splits the day between banking and a second project that
+         changes week to week; building solutions mostly on the hospital */
+      var plan = bukrs === "PT02" ? [[4, 6], [5, 2]] : [[0, 4], [w.num % 2 ? 1 : 2, 4]];
+      var touched = false;
+      for(var d=0; d<5; d++){
+        var day = dates[d];
+        if(day < from || day >= today || !periodOpen(day, bukrs)) continue;
+        var cap = capacityOf(w, d), have = dayTotalOf(w, d);
+        var target = day === yesterday ? Math.min(cap, round15(cap / 2)) : cap;
+        var gap = target - have;
+        if(gap <= 0) continue;
+        plan.forEach(function(pl){
+          if(gap <= 0) return;
+          var add = Math.min(gap, pl[1]);
+          var row = w.rows.filter(function(r){ return r.p === pl[0]; })[0];
+          if(!row){ row = {id:nextId++, p:pl[0], desc:PREFILL_DESC[pl[0]] || "", h:[0,0,0,0,0,0,0], origin:"Manual"}; w.rows.push(row); }
+          row.h[d] = round15((row.h[d] || 0) + add);
+          gap -= add;
+        });
+        touched = true;
+      }
+      if(touched && bukrs === "PT02") seedClockRows(w.rows);
+      if(dates[4] < monthStart) w.submitted = true;
+      /* suggestions belong to the week being worked on, not to past ones */
+      if(dates[6] < today) w.sugs = [];
+      /* what's missing in the current week, proposed rather than filled */
+      if(dates.indexOf(today) !== -1){
+        var sugs = [], td = dates.indexOf(today), yd = dates.indexOf(yesterday);
+        var why = bukrs === "PT02" ? ["3 work orders closed in the maintenance log", "12 changes in the maintenance ticket system"]
+                                   : ["3 client meetings on the calendar", "12 changes in the project repository"];
+        if(td <= 4 && capacityOf(w, td) > 0) sugs.push({id:"st1", hours:2.5, day:td, p:plan[0][0], why:why[0], conf:"hi", desc:PREFILL_DESC[plan[0][0]]});
+        if(yd !== -1 && capacityOf(w, yd) - dayTotalOf(w, yd) > 0) sugs.push({id:"st2", hours:round15(Math.min(2, capacityOf(w, yd) - dayTotalOf(w, yd))), day:yd, p:plan[1][0], why:why[1], conf:"mid", desc:PREFILL_DESC[plan[1][0]]});
+        w.sugs = sugs;
+      }
+    });
+  }
   function myLeave(){ return LEAVE[IT0001.bukrs]; }
   /* Scoped to one company: the two sample histories reuse the same request
      numbers (it's the same employee, opened under either company), so a
@@ -6046,7 +6145,7 @@
       tr.appendChild(td2(r.RequestID, "num"));
       var ty = document.createElement("td");
       ty.appendChild(el("div","who", absTypeLabel(r)));
-      ty.appendChild(el("div","sub", "AWART " + r.AbsenceTypeCode + (r.origin === "Joule" ? " · " + t("origin_joule_short") : "")));
+      if(r.origin === "Joule") ty.appendChild(el("div","sub", t("origin_joule_short")));
       tr.appendChild(ty);
       var per = document.createElement("td");
       per.appendChild(el("div","", leavePeriodLabel(r)));
@@ -6142,7 +6241,7 @@
     sel.innerHTML = "";
     ABSENCE_TYPES.forEach(function(ty){
       var o = document.createElement("option");
-      o.value = ty.code; o.textContent = t("abs_" + ty.code) + " · " + ty.code;
+      o.value = ty.code; o.textContent = t("abs_" + ty.code);
       sel.appendChild(o);
     });
     sel.value = p.AbsenceTypeCode || "0100";
@@ -6604,7 +6703,7 @@
   function leaveCardLines(d){
     var ty = absType(d.AbsenceTypeCode);
     var lines = [
-      [t("label_absence_type"), t("abs_" + ty.code) + " · AWART " + ty.code],
+      [t("label_absence_type"), t("abs_" + ty.code)],
       [t("label_period"), leavePeriodLabel(d)],
       [t("label_duration"), d.partial ? fmt(d.hours) + " h" : plural(leaveWorkdays(d), "n_workdays")]
     ];
@@ -6613,7 +6712,6 @@
       lines.push([t("label_balance_after"), fmtDays(bal.available - leaveDays(d)) + " " + t("unit_days")]);
     }
     lines.push([t("label_approver"), LINE_MANAGER[d.bukrs].name + " · " + t("role_manager")]);
-    lines.push([t("label_service"), "LeaveRequestSet · HCMFAB_LEAVE_REQUEST_CR_SRV"]);
     if(d.Notes) lines.push([t("label_note"), d.Notes]);
     return lines;
   }
@@ -7467,7 +7565,7 @@
       return;
     }
     chat.pending = "submit";
-    botSay("bot",t("bot_confirm_submit_week", {num: WEEKS[weekIdx].num}), botCard(
+    botSay("bot",t("bot_confirm_submit_week", {num: isoWeekOf(WEEKS[weekIdx].start)}), botCard(
       [[t("th_total"),fmt(weekTotal()) + " h"],[t("label_expected"),fmt(weekCapacity()) + " h"],[t("label_status_after_submit"),t("state_in_approval")]],
       t("btn_submit"), function(){ doSubmit(); botSay("bot",t("bot_week_submitted_msg")); }));
   }
@@ -7728,7 +7826,7 @@
                 porProjeto[code] = (porProjeto[code] || 0) + tot;
               });
               return {
-                semana: w.num,
+                semana: isoWeekOf(w.start),
                 submetida: w.submitted,
                 projetos: Object.keys(porProjeto).map(function(c){ return {codigo:c, horas: round15(porProjeto[c])}; }),
                 ausencias: w.absences.map(function(a){ return {tipo:a.type, horas:a.hours, estado:a.status}; })
@@ -8866,6 +8964,18 @@
   if($("rjOk")) $("rjOk").onclick = function(ev){ ev.preventDefault(); confirmRejectLeave(); };
   if($("rjCancel")) $("rjCancel").onclick = function(){ $("dlgReject").close(); };
 
+  /* the top bar is sticky: its height, which changes when the shell bar
+     wraps or the language changes, is what sticky panels sit under */
+  (function(){
+    var bar = $("appbar");
+    if(!bar) return;
+    var nav = bar.querySelector(".nav");
+    /* on a phone only the tabs stick (the wrapper has no box of its own) */
+    function measure(){ document.documentElement.style.setProperty("--appbar-h", (bar.offsetHeight || nav.offsetHeight) + "px"); }
+    if(window.ResizeObserver){ var ro = new ResizeObserver(measure); ro.observe(bar); ro.observe(nav); }
+    else window.addEventListener("resize", measure);
+    measure();
+  })();
   applyLocaleArrays();
   applyI18n();
   renderContextButton();

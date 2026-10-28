@@ -15,6 +15,7 @@
 </style>
 </head>
 <body>
+<div class="appbar" id="appbar">
 <header class="shellbar">
   <img class="orglogo" src="assets/vinci-energies-logo.png" alt="Vinci Energies">
   <div class="brand"><strong data-i18n="brand_title">Time Recording</strong><span data-i18n="brand_subtitle">Fiori Prototype</span></div>
@@ -35,6 +36,7 @@
   <button role="tab" id="tab-team" data-screen="team" data-i18n="nav_team">Team (mass entry)</button>
   <button role="tab" id="tab-aprov" data-screen="aprov" data-i18n="nav_approval">Approval (manager)</button>
 </nav>
+</div>
 
 <div class="wrap">
 
@@ -346,7 +348,6 @@
     <div class="pagehead">
       <div class="top">
         <div class="weeknav"><span class="label" id="lvTitle">My leave requests</span></div>
-        <span class="chip grey" data-i18n="chip_lr_standard">Standard Leave Request, PTARQ</span>
         <div class="spacer"></div>
         <label class="coswitch" id="lvActingWrap" hidden><span data-i18n="label_acting_as">Acting as</span><b id="lvActingAs"></b></label>
         <button class="btn primary" id="lvNew" data-i18n="btn_new_leave">New leave request</button>
@@ -370,7 +371,7 @@
     </div>
 
     <div class="panel" id="lvTeamPanel" style="margin-top:16px" hidden>
-      <header><h2 data-i18n="hdr_leave_to_approve">Leave requests to approve</h2><span class="chip grey" id="lvTeamCount">0 requests</span><span class="chip grey" data-i18n="chip_my_inbox">Decision through My Inbox, TASKPROCESSING</span></header>
+      <header><h2 data-i18n="hdr_leave_to_approve">Leave requests to approve</h2><span class="chip grey" id="lvTeamCount">0 requests</span></header>
       <div class="tablescroll">
         <table class="lr">
           <thead><tr>
@@ -398,7 +399,7 @@
   <section id="screen-aprov" hidden>
     <div class="pagehead">
       <div class="top">
-        <div class="weeknav"><span class="label" data-i18n="label_approval_week37">Timesheet approval, week 37</span></div>
+        <div class="weeknav"><span class="label" id="apWeekLabel">Timesheet approval</span></div>
         <span class="chip blue" id="apSel">0 selected</span>
         <div class="spacer"></div>
         <label class="coswitch"><span data-i18n="label_acting_as">Acting as</span><b id="apActingAs">Sofia Almeida &middot; Delivery Manager, Consulting</b></label>
@@ -624,7 +625,7 @@
 </form></dialog>
 
 <dialog id="dlgLeave"><form class="dlg" method="dialog">
-  <header><h3 data-i18n="dlg_new_leave_title">New leave request</h3><span class="chip grey num">LeaveRequestSet</span></header>
+  <header><h3 data-i18n="dlg_new_leave_title">New leave request</h3></header>
   <div class="body">
     <div class="field"><label for="lvType" data-i18n="label_absence_type">Absence type</label><select id="lvType"></select></div>
     <div class="two">

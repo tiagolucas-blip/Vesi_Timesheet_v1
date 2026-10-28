@@ -155,7 +155,11 @@ node tests/run-assistant-tests.cjs
 
 ## Data
 
-There's no real data. Employee, projects, WBS, cost centers and absences are made up and live as constants at the top of `app.js`. No request leaves the browser, except what the assistant sends to `api/chat.js` when Claude is enabled (the typed text and the week's context described above). No data is stored, there are no cookies, and local storage only keeps the interface language. The exception is the Artifact on claude.ai, which keeps the assistant conversations described under Learning loop, with the same fictitious data.
+There's no real data. Employee, projects, WBS, cost centers and absences are made up and live as constants at the top of `app.js`.
+
+The sample follows the calendar: the app opens on today's week (and, for consulting, today's month), with the working days from the start of last month up to the day before yesterday already recorded, yesterday half done, today and the days ahead still open, and two suggestions for what's missing. Weeks wholly before the current month are submitted. The leave requests of the team, the employee's two pending requests and an approved medical appointment this week are placed relative to today, so the approval queues and the absence calendar always look ahead. Week numbers are ISO weeks. To pin a date, add `?today=YYYYMMDD` to the address (the tests use `20261028`).
+
+The screens show absence types by name (Vacation, Medical appointment); SAP codes such as AWART, the OData entity set and the infotype stay in the SAP mapping, under Settings. The shell bar and tabs stay on top while scrolling (only the tabs on a phone). No request leaves the browser, except what the assistant sends to `api/chat.js` when Claude is enabled (the typed text and the week's context described above). No data is stored, there are no cookies, and local storage only keeps the interface language. The exception is the Artifact on claude.ai, which keeps the assistant conversations described under Learning loop, with the same fictitious data.
 
 ## Known limits, by design
 
