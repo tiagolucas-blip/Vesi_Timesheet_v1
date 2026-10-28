@@ -400,7 +400,14 @@
     </div>
 
     <div class="panel" style="margin-top:16px">
-      <header><h2 data-i18n="hdr_team_allocated">Team allocated to my projects</h2><span class="chip grey" data-i18n="chip_integrates">Integrates with My Inbox and SAP Task Center</span></header>
+      <header>
+        <h2 data-i18n="hdr_team_allocated">Team allocated to my projects</h2>
+        <div class="seg" role="group" id="apFilter" data-i18n-aria="aria_ap_filter" aria-label="Which timesheets to show">
+          <button type="button" data-f="pending" aria-pressed="true" data-i18n="filter_pending">To approve</button>
+          <button type="button" data-f="all" aria-pressed="false" data-i18n="filter_all">All</button>
+        </div>
+        <span class="chip grey" data-i18n="chip_integrates">Integrates with My Inbox and SAP Task Center</span>
+      </header>
       <div class="tablescroll">
         <table class="lr">
           <thead>

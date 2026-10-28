@@ -1,5 +1,5 @@
 {
-  "about": "Conversations the assistant must keep handling. Each step's last answer must contain every 'expect' string and none of the 'absent' ones (case-insensitive). 'confirm' clicks the open card. 'intent' stands in for Claude's decision for that message. 'role' is the profile under test (employee by default, pm with 'leader', manager), 'company' PT01 or PT02. 'today' pins the date relative phrases are read against. Add a case for every failure fixed from the conversation log, with 'why' saying where it came from.",
+  "about": "Conversations the assistant must keep handling. Each step's last answer must contain every 'expect' string and none of the 'absent' ones (case-insensitive). 'confirm' clicks the open card. 'intent' stands in for Claude's decision for that message. 'role' is the profile under test (employee by default, pm with 'leader', manager), 'company' PT01 or PT02. 'today' pins the date relative phrases are read against. Add a case for every failure fixed from the conversation log, with 'why' saying where it came from. 'expectContext' checks the context sent to Claude with that message ('projetos[].codigo' lists one field of every item).",
   "today": "20261028",
   "cases": [
     {
@@ -549,6 +549,79 @@
           ],
           "absent": [
             "isn't part of this profile"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "context-pm-projects",
+      "lang": "en",
+      "role": "pm",
+      "leader": "RN",
+      "why": "comment: two projects in the picker, the assistant said six",
+      "steps": [
+        {
+          "say": "how many projects do I have?",
+          "expectContext": {
+            "projetos[].codigo": [
+              "RTL",
+              "AXI"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "context-employee-pt01-projects",
+      "lang": "en",
+      "steps": [
+        {
+          "say": "how many projects do I have?",
+          "expectContext": {
+            "projetos[].codigo": [
+              "BNK",
+              "RTL",
+              "AER",
+              "AXI"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "context-employee-pt02-projects",
+      "lang": "en",
+      "company": "PT02",
+      "steps": [
+        {
+          "say": "how many projects do I have?",
+          "expectContext": {
+            "projetos[].codigo": [
+              "AXI",
+              "HSP",
+              "AER"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "claude-intent-pm-pending",
+      "lang": "en",
+      "role": "pm",
+      "leader": "RN",
+      "why": "conversation log: 'What do I have to approve?' as project manager",
+      "steps": [
+        {
+          "say": "What do I have to approve?",
+          "intent": {
+            "funcao": "listar_pendentes_aprovacao",
+            "argumentos": {},
+            "texto": null
+          },
+          "expect": [
+            "timesheets to approve",
+            "Bruno Matos"
           ]
         }
       ]

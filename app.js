@@ -797,6 +797,7 @@
      messages are a separate follow-up, not covered here yet. */
   var I18N = {
     en: {
+      filter_pending:"To approve", filter_all:"All", aria_ap_filter:"Which timesheets to show", text_ap_none_pending:"Nothing left to approve. Choose All to see the approved ones.", btn_select_clean_one:"Select the {n} without warnings", btn_select_clean_other:"Select the {n} without warnings",
       settings_reference:"Technical reference", btn_open_mapping:"Open the SAP mapping", text_mapping_hint:"Field by field, what each screen writes to CATS and to the standard Leave Request, with the records and payloads generated live.",
       label_test:"Test", aria_change_test:"Change the test: company and profile",
       profile_employee:"Employee", profile_pm:"Project manager", profile_manager:"Line manager",
@@ -1298,6 +1299,7 @@
       row_confirm_cell:"Confirm cell and move down", row_show_list:"Show this list"
     },
     pt: {
+      filter_pending:"Por aprovar", filter_all:"Todas", aria_ap_filter:"Que timesheets mostrar", text_ap_none_pending:"Nada por aprovar. Escolhe Todas para ver as aprovadas.", btn_select_clean_one:"Selecionar a {n} sem avisos", btn_select_clean_other:"Selecionar as {n} sem avisos",
       settings_reference:"Referência técnica", btn_open_mapping:"Abrir o mapeamento SAP", text_mapping_hint:"Campo a campo, o que cada ecrã grava no CATS e no Leave Request standard, com os registos e os payloads gerados em tempo real.",
       label_test:"Teste", aria_change_test:"Mudar o teste: empresa e perfil",
       profile_employee:"Colaborador", profile_pm:"Gestor de projeto", profile_manager:"Chefia hierárquica",
@@ -1792,6 +1794,7 @@
       row_confirm_cell:"Confirmar célula e descer", row_show_list:"Mostrar esta lista"
     },
     fr: {
+      filter_pending:"À approuver", filter_all:"Toutes", aria_ap_filter:"Feuilles de temps à afficher", text_ap_none_pending:"Plus rien à approuver. Choisissez Toutes pour voir celles approuvées.", btn_select_clean_one:"Sélectionner la {n} sans avertissement", btn_select_clean_other:"Sélectionner les {n} sans avertissement",
       settings_reference:"Référence technique", btn_open_mapping:"Ouvrir le mapping SAP", text_mapping_hint:"Champ par champ, ce que chaque écran enregistre dans CATS et dans le Leave Request standard, avec les enregistrements et payloads générés en direct.",
       label_test:"Test", aria_change_test:"Changer le test : entreprise et profil",
       profile_employee:"Collaborateur", profile_pm:"Chef de projet", profile_manager:"Responsable hiérarchique",
@@ -2453,6 +2456,8 @@
        "employee", "pm" (project manager: team entry and timesheet
        approval) or "manager" (line manager: leave approval) */
     role: "employee",
+    /* Approval screen: "pending" shows only what is still to approve */
+    apFilter: "pending",
     /* true once the test setup has been confirmed; nothing is greeted before */
     setupDone: false,
     /* decisions on the employee's own requests, waiting to be told to them
@@ -4757,6 +4762,18 @@
     var codes = l.projs.map(function(i){ return PROJECTS[i].code; });
     return state.approvals.filter(function(a){ return codes.indexOf(a.proj) !== -1 && a.who !== l.name; });
   }
+  /* The projects the person under test actually works with: for the
+     employee, the company's own plus the shared internal one (the same
+     rule as the project pickers); for the project manager, the projects
+     they own; the line manager books no time. The assistant is told
+     exactly this list, so its answers match what the screen offers. */
+  function profileProjects(){
+    if(state.role === "pm") return leaderById(state.leader).projs.slice();
+    if(state.role === "manager") return [];
+    var out = [];
+    PROJECTS.forEach(function(p, i){ if(p.bukrs === IT0001.bukrs || p.bukrs === null) out.push(i); });
+    return out;
+  }
   function pmProjectsLabel(){
     return leaderById(state.leader).projs.map(function(i){ return PROJECTS[i].code; }).join(", ");
   }
@@ -5300,7 +5317,15 @@
       apDev.innerHTML = (dev>0?"+":"") + fmt(dev) + "<small> h</small>";
     }
 
+    /* Approved rows leave the list by default: the queue shows what is
+       still to approve, and "All" brings the approved ones back, read only. */
+    var showAll = state.apFilter === "all";
+    var visible = function(a){ return showAll || !a.approved; };
+    Array.prototype.forEach.call(document.querySelectorAll("#apFilter button"), function(b){
+      b.setAttribute("aria-pressed", (b.dataset.f === "all") === showAll ? "true" : "false");
+    });
     function group(title, list, cls){
+      list = list.filter(visible);
       if(!list.length) return;
       var gh = document.createElement("tr");
       gh.className = "grouphead";
@@ -5311,7 +5336,7 @@
         var tr = document.createElement("tr");
         var c1 = document.createElement("td");
         var cb = document.createElement("input");
-        cb.type = "checkbox"; cb.checked = a.sel; cb.disabled = !!a.warn;
+        cb.type = "checkbox"; cb.checked = !!a.sel && !a.approved; cb.disabled = !!a.warn || !!a.approved;
         cb.setAttribute("aria-label",t("aria_select_timesheet_for", {name: a.who}));
         cb.onchange = function(){ a.sel = cb.checked; renderApprovals(); };
         c1.appendChild(cb); tr.appendChild(c1);
@@ -5355,8 +5380,20 @@
     }
     group(t("hdr_no_warnings_group"), clean);
     group(t("hdr_exceptions_group"), flagged);
+    if(!body.children.length){
+      var er = document.createElement("tr");
+      var et = td2(t("text_ap_none_pending"), "sub");
+      et.colSpan = 7;
+      er.appendChild(et);
+      body.appendChild(er);
+    }
+    var cleanLeft = clean.filter(function(a){ return !a.approved; }).length;
+    $("apSelClean").textContent = plural(cleanLeft, "btn_select_clean");
+    $("apSelClean").disabled = cleanLeft === 0;
+    $("apAll").disabled = cleanLeft === 0;
+    if(!cleanLeft) $("apAll").checked = false;
 
-    var sel = tsQueue().filter(function(a){ return a.sel; }).length;
+    var sel = tsQueue().filter(function(a){ return a.sel && !a.approved; }).length;
     $("apSel").textContent = plural(sel, "n_selected");
     $("apApprove").disabled = sel === 0;
     var pend = tsQueue().filter(function(a){ return !a.approved; }).length;
@@ -5489,16 +5526,20 @@
 
   $("apAll").onchange = function(){
     var on = $("apAll").checked;
-    tsQueue().forEach(function(a){ if(!a.warn) a.sel = on; });
+    tsQueue().forEach(function(a){ if(!a.warn && !a.approved) a.sel = on; });
     renderApprovals();
   };
   $("apSelClean").onclick = function(){
-    tsQueue().forEach(function(a){ if(!a.warn) a.sel = true; });
+    tsQueue().forEach(function(a){ if(!a.warn && !a.approved) a.sel = true; });
     renderApprovals();
   };
+  Array.prototype.forEach.call(document.querySelectorAll("#apFilter button"), function(b){
+    b.onclick = function(){ state.apFilter = b.dataset.f; renderApprovals(); };
+  });
   $("apApprove").onclick = function(){
     var n = 0;
-    tsQueue().forEach(function(a){ if(a.sel){ a.approved = true; a.sel = false; n++; } });
+    tsQueue().forEach(function(a){ if(a.sel && !a.approved){ a.approved = true; n++; } a.sel = false; });
+    $("apAll").checked = false;
     renderApprovals();
     toast(t("toast_timesheets_approved", {n: n}));
   };
@@ -7626,7 +7667,7 @@
                instruction asks it to ground any explanation of the fill-in logic
                in, instead of hedging ("se não tens esse perfil..."). */
             meu_registo: isClock() ? "relogio" : "duracao",
-            projetos: PROJECTS.map(function(p,i){ return {codigo: p.code.split("-")[0], nome: p.name, indice: i}; }),
+            projetos: profileProjects().map(function(i){ var p = PROJECTS[i]; return {codigo: p.code.split("-")[0], nome: p.name, indice: i}; }),
             ausencias: ABSENCES.map(function(a){ return {dia: DAYS[a.day], indice: a.day, tipo: a.type, horas: a.hours, estado: a.status}; }),
             capacidades: [0,1,2,3,4].map(function(d){ return {dia: DAYS[d], indice: d, capacidade: capacity(d), registado: dayTotal(d)}; }),
             /* For consulting (monthly), this has to cover every week the

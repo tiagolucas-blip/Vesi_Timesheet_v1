@@ -12,7 +12,8 @@
  * Without an API key /api/chat answers 404 here, so the local
  * interpreter is what's tested. A step with "intent" stands in for Claude:
  * /api/chat returns that {funcao, argumentos, texto} once, which tests how
- * the page acts on a decision Claude could make.
+ * the page acts on a decision Claude could make. "expectContext" checks what
+ * the page told Claude with that message, e.g. {"projetos[].codigo": [...]}.
  *
  * Run:   node tests/run-assistant-tests.cjs            all cases
  *        node tests/run-assistant-tests.cjs leave-en   cases whose id contains "leave-en"
@@ -56,10 +57,21 @@ async function waitReply(page, before) {
     [BOT, before], { timeout: 8000 });
   await page.waitForTimeout(120);
 }
-function check(text, step) {
+/* "projetos[].codigo" reads one field from every item of a list; anything
+   else is a dotted path into the context the page sent with the message. */
+function pick(obj, p) {
+  const m = p.match(/^(\w+)\[\]\.(\w+)$/);
+  if (m) return ((obj || {})[m[1]] || []).map((x) => x[m[2]]);
+  return p.split(".").reduce((o, k) => (o == null ? o : o[k]), obj);
+}
+function check(text, step, context) {
   const low = text.toLowerCase();
   const missing = (step.expect || []).filter((s) => !low.includes(String(s).toLowerCase()));
   const present = (step.absent || []).filter((s) => low.includes(String(s).toLowerCase()));
+  Object.keys(step.expectContext || {}).forEach((k) => {
+    const got = JSON.stringify(pick(context, k)), want = JSON.stringify(step.expectContext[k]);
+    if (got !== want) missing.push("context " + k + " = " + want + " (got " + got + ")");
+  });
   return { ok: !missing.length && !present.length, missing, present };
 }
 
@@ -69,8 +81,9 @@ async function runCase(browser, base, c) {
   const page = await ctx.newPage();
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
-  let pendingIntent = null;
+  let pendingIntent = null, lastContext = null;
   await page.route("**/api/chat", (route) => {
+    try { lastContext = JSON.parse(route.request().postData() || "{}").contexto || null; } catch (e) { lastContext = null; }
     if (!pendingIntent) return route.fulfill({ status: 404, body: "" });
     const body = JSON.stringify(pendingIntent);
     pendingIntent = null;
@@ -101,7 +114,7 @@ async function runCase(browser, base, c) {
     try { await waitReply(page, before); }
     catch (e) { results.push({ step: step.say, ok: false, missing: ["a reply within 8 s"], present: [], text: await lastBot(page) }); break; }
     text = await lastBot(page);
-    results.push(Object.assign({ step: step.say, text }, check(text, step)));
+    results.push(Object.assign({ step: step.say, text }, check(text, step, lastContext)));
   }
   await ctx.close();
   if (errors.length) results.push({ step: "page errors", ok: false, missing: [], present: errors, text: "" });
