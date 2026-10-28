@@ -545,3 +545,11 @@
      bar stays on one line on a standard laptop width. */
   .coswitch span{white-space:nowrap}
   @media (max-width:1560px){ .brand span{display:none} }
+
+  /* ---------- learning loop: feedback under each answer ---------- */
+  .jfb{display:flex; gap:4px; align-items:center; min-height:24px}
+  .jfbbtn{background:none; border:1px solid transparent; border-radius:999px; padding:0 7px; font-size:var(--fs-sm); line-height:22px; opacity:.55}
+  .jfbbtn:hover, .jfbbtn:focus-visible{opacity:1; border-color:var(--line)}
+  .jfbform{display:flex; gap:6px; flex:1; min-width:0}
+  .jfbform input[type=text]{flex:1; min-width:0; padding:4px 8px; font-size:var(--fs-sm)}
+  .jfbdone{font-size:var(--fs-label); color:var(--ink-3)}

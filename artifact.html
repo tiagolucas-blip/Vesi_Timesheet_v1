@@ -2,7 +2,6 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="styles.css">
 <header class="shellbar">
-  <img class="orglogo" src="assets/vinci-energies-logo.png" alt="Vinci Energies">
   <div class="brand"><strong data-i18n="brand_title">Time Recording</strong><span data-i18n="brand_subtitle">Fiori Prototype</span></div>
   <div class="capture" id="capture"><span class="dot"></span><span id="captureTxt">Suggestions on, private timeline</span></div>
   <label class="coswitch" for="coSel"><span>IT0001</span>
@@ -529,6 +528,7 @@
   <header>
     <span class="jdot"></span>
     <h3 data-i18n="assistant_title">Assistant</h3>
+    <span class="chip blue" id="jLogChip" hidden data-i18n="chip_conversation_log" data-i18n-title="title_conversation_log" title="This conversation is saved in the artifact so the assistant can be improved. Mockup data only.">Learning mode</span>
     <span class="chip grey" data-i18n="chip_joule_pattern">Joule pattern</span>
     <button class="btn sm" id="jClose" data-i18n="btn_close" data-i18n-aria="aria_close_assistant" aria-label="Close the assistant">Close</button>
   </header>
@@ -706,4 +706,5 @@
   </div>
   <footer><button class="btn primary" id="settingsClose" data-i18n="btn_close">Close</button></footer>
 </div></dialog>
+<script src="assistant-prompt.js"></script>
 <script src="app.js"></script>

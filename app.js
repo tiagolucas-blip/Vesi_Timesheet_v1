@@ -286,7 +286,15 @@
   }
   /* "YYYYMMDD", local time, to compare directly against WORKDATES/datesFor
      entries without any timezone conversion in between. */
+  /* ?today=YYYYMMDD pins "today", so the assistant's test suite reads
+     relative dates ("tomorrow", "next week") the same way whatever day
+     it runs. Without the parameter, it's the real date. */
+  var FIXED_TODAY = (function(){
+    var m = /[?&]today=(\d{8})(?:&|$)/.exec((window.location && window.location.search) || "");
+    return m ? m[1] : null;
+  })();
   function todayISO(){
+    if(FIXED_TODAY) return FIXED_TODAY;
     var d = new Date();
     return "" + d.getFullYear() + ((d.getMonth()+1)<10?"0":"")+(d.getMonth()+1) + (d.getDate()<10?"0":"")+d.getDate();
   }
@@ -789,6 +797,8 @@
      messages are a separate follow-up, not covered here yet. */
   var I18N = {
     en: {
+      chip_conversation_log:"Learning mode", title_conversation_log:"This conversation is saved in the artifact so the assistant can be improved. Mockup data only.",
+      fb_helpful:"Helpful", fb_not_helpful:"Not helpful", fb_placeholder:"What should it have done?", fb_send:"Send", fb_thanks:"Thanks", fb_noted:"Noted, it will be looked at in the next round of improvements.",
       /* Leave Request and the assistant as the entry point */
       nav_home:"Assistant", nav_leave:"Leave Request", label_view_as:"View as", aria_view_as:"View the app as the employee or as their direct manager",
       role_employee:"Employee", role_manager:"Direct manager",
@@ -1267,6 +1277,8 @@
       row_confirm_cell:"Confirm cell and move down", row_show_list:"Show this list"
     },
     pt: {
+      chip_conversation_log:"Modo aprendizagem", title_conversation_log:"Esta conversa fica guardada no artifact para melhorar o assistente. Só dados fictícios do mockup.",
+      fb_helpful:"Útil", fb_not_helpful:"Não ajudou", fb_placeholder:"O que devia ter feito?", fb_send:"Enviar", fb_thanks:"Obrigado", fb_noted:"Registado, vai ser analisado na próxima ronda de melhorias.",
       /* Leave Request e o assistente como porta de entrada */
       nav_home:"Assistente", nav_leave:"Ausências", label_view_as:"Ver como", aria_view_as:"Ver a aplicação como o colaborador ou como a chefia direta",
       role_employee:"Colaborador", role_manager:"Chefia direta",
@@ -1738,6 +1750,8 @@
       row_confirm_cell:"Confirmar célula e descer", row_show_list:"Mostrar esta lista"
     },
     fr: {
+      chip_conversation_log:"Mode apprentissage", title_conversation_log:"Cette conversation est enregistrée dans l'artifact pour améliorer l'assistant. Données fictives uniquement.",
+      fb_helpful:"Utile", fb_not_helpful:"Pas utile", fb_placeholder:"Qu'aurait-il dû faire ?", fb_send:"Envoyer", fb_thanks:"Merci", fb_noted:"Noté, ce sera examiné lors de la prochaine série d'améliorations.",
       /* Leave Request et l'assistant comme point d'entrée */
       nav_home:"Assistant", nav_leave:"Absences", label_view_as:"Voir en tant que", aria_view_as:"Voir l'application en tant que collaborateur ou responsable direct",
       role_employee:"Collaborateur", role_manager:"Responsable direct",
@@ -4743,12 +4757,11 @@
     var desc = rest.replace(/\s+/g," ").trim();
 
     box.appendChild(chipBtn(isNaN(dur) || !dur ? "duration to set" : fmt(dur)+" h", isNaN(dur) || !dur ? "warnc" : "okc", function(){
-      var v = window.prompt("Duration (e.g. 1.5, 1:30, 90m)", isNaN(dur) || !dur ? "" : fmt(dur));
-      if(v === null) return;
-      var parsed = parseDur(v);
-      if(isNaN(parsed) || parsed <= 0){ toast(t("toast_bad_duration", {v: v})); return; }
-      $("nlq").value = nlText(round15(parsed), day, pIdx, desc);
-      parseNL();
+      /* Edited in the text itself: a window.prompt() is refused inside the
+         claude.ai viewer, and the sentence is already the editable form. */
+      var q = $("nlq");
+      q.focus();
+      q.select();
     }));
     box.appendChild(chipBtn(dayLabel, "okc", function(){
       $("nlq").value = nlText(dur, (day + 1) % 7, pIdx, desc);
@@ -6557,8 +6570,10 @@
   function parseLeaveDates(low){
     var m, d1, d2;
     var W = "([a-zà-ÿ]{3,}\\.?)";
-    /* 3 to 7 November, de 3 a 7 de novembro, du 3 au 7 novembre, 28 Dec to 2 Jan */
-    m = low.match(new RegExp("(\\d{1,2})(?:\\s*(?:de|of)?\\s*" + W + ")?\\s*(?:a|à|ao|até|ate|to|till|until|through|-|–|au|e|and)\\s*(\\d{1,2})\\s*(?:de|of)?\\s*" + W + "(?:\\s*(?:de\\s*)?(\\d{4}))?"));
+    /* 3 to 7 November, de 3 a 7 de novembro, du 3 au 7 novembre, 28 Dec to 2 Jan.
+       "de"/"of" only counts as a word of its own: optional and glued, it
+       used to eat the start of "december" or "dezembro". */
+    m = low.match(new RegExp("(\\d{1,2})(?:\\s*(?:(?:de|of)\\s+)?" + W + ")?\\s*(?:a|à|ao|até|ate|to|till|until|through|-|–|au|e|and)\\s*(\\d{1,2})\\s*(?:(?:de|of)\\s+)?" + W + "(?:\\s*(?:de\\s*)?(\\d{4}))?"));
     if(m && monthIndexOf(m[4]) !== -1 && (!m[2] || monthIndexOf(m[2]) !== -1)){
       var mEnd = monthIndexOf(m[4]), mStart = m[2] ? monthIndexOf(m[2]) : mEnd;
       d1 = leaveDateFrom(+m[1], mStart, m[5]); d2 = leaveDateFrom(+m[3], mEnd, m[5]);
@@ -6582,7 +6597,7 @@
       if(d1 && d2) return {start:d1, end:d2};
     }
     /* a single day: 12 de novembro, 12 November, November 12 */
-    m = low.match(new RegExp("(\\d{1,2})\\s*(?:de|of)?\\s*" + W + "(?:\\s*(?:de\\s*)?(\\d{4}))?"));
+    m = low.match(new RegExp("(\\d{1,2})\\s*(?:(?:de|of)\\s+)?" + W + "(?:\\s*(?:de\\s*)?(\\d{4}))?"));
     if(m && monthIndexOf(m[2]) !== -1){ d1 = leaveDateFrom(+m[1], monthIndexOf(m[2]), m[3]); if(d1) return {start:d1, end:d1}; }
     m = low.match(new RegExp(W + "\\s+(\\d{1,2})(?:st|nd|rd|th)?\\b"));
     if(m && monthIndexOf(m[1]) !== -1){ d1 = leaveDateFrom(+m[2], monthIndexOf(m[1])); if(d1) return {start:d1, end:d1}; }
@@ -6732,6 +6747,148 @@
     }
   }
 
+  /* ---------- learning loop: Claude in the page, and the conversation log ----------
+     Published as an Artifact on claude.ai, the page asks Claude itself (the
+     `sample` capability, on the viewer's own account, no API key needed)
+     with the same functions and instructions as api/chat.js, and keeps each
+     conversation in the artifact's database (`db`). A scheduled task reads
+     those conversations every night, turns what went wrong into test cases
+     and opens a pull request with the fix. Anywhere else (Vercel, a local
+     file) window.claude is absent or use() resolves null, and the page
+     behaves exactly as before: /api/chat, then the local interpreter, and
+     nothing is recorded. Only the mockup's fictitious data is involved. */
+  var learn = {sample:null, sampleOff:false, db:null, sessionId:null, part:0, started:null, turns:[], writing:false, dirty:false, timer:null};
+  (function(){
+    if(!(window.claude && typeof window.claude.use === "function")) return;
+    window.claude.use("sample").then(function(sm){ learn.sample = sm || null; }, function(){});
+    window.claude.use("db").then(function(db){
+      if(!db) return;
+      learn.db = db;
+      learn.started = new Date().toISOString();
+      learn.sessionId = learn.started.replace(/[:.]/g, "-") + "-" + Math.random().toString(36).slice(2, 7);
+      var chipEl = $("jLogChip");
+      if(chipEl) chipEl.hidden = false;
+    }, function(){});
+  })();
+
+  /* `sample` has no system prompt: the instructions go in a leading user
+     turn, followed by the conversation the page keeps, ending on the new
+     message. The reply is the same {funcao, argumentos, texto} that
+     /api/chat returns, so botDispatch doesn't know which one answered. */
+  function sampleInput(payload){
+    var P = window.VESI_PROMPT;
+    var rules = P.buildSystemPrompt(payload.contexto, payload.idioma) +
+      "\n\nFunções disponíveis, com os argumentos em JSON Schema:\n" +
+      JSON.stringify(P.FUNCTIONS.map(function(f){ return {nome: f.name, descricao: f.description, argumentos: f.parameters}; })) +
+      "\n\nResponde só com um objeto JSON, sem mais texto: {\"funcao\": o nome de uma das funções acima, ou null, \"argumentos\": o objeto com os argumentos dessa função, ou null, \"texto\": uma frase curta para a pessoa, na língua indicada, ou null}. Quando escolhes uma função, \"texto\" é opcional; quando não escolhes nenhuma, \"texto\" é obrigatório.";
+    var turns = [{role:"user", content: rules}];
+    (payload.historico || []).forEach(function(h){
+      if(h && (h.role === "user" || h.role === "assistant") && h.content) turns.push({role: h.role, content: String(h.content).slice(0, 600)});
+    });
+    turns.push({role:"user", content: String(payload.mensagem)});
+    return turns;
+  }
+  async function askViaSample(payload){
+    if(!learn.sample || learn.sampleOff || !window.VESI_PROMPT) return null;
+    try{
+      var r = await learn.sample.json(sampleInput(payload), {modelTier:"default", effort:"low", cache:false});
+      if(!r || typeof r !== "object") return null;
+      var names = window.VESI_PROMPT.FUNCTIONS.map(function(f){ return f.name; });
+      var fn = typeof r.funcao === "string" && names.indexOf(r.funcao) !== -1 ? r.funcao : null;
+      var out = {
+        funcao: fn,
+        argumentos: fn && r.argumentos && typeof r.argumentos === "object" ? r.argumentos : null,
+        texto: typeof r.texto === "string" && r.texto.trim() ? r.texto.trim() : null
+      };
+      return out.funcao || out.texto ? out : null;
+    }catch(e){
+      var code = (e && e.code) || "error";
+      if(chat.curTurn) chat.curTurn.sample_error = code;
+      /* a viewer who declined, or an account without Claude: stop asking for this visit */
+      if(/^(not_granted|sampling_disabled|not_declared|capability_disabled|capability_removed)$/.test(code)) learn.sampleOff = true;
+      return null;
+    }
+  }
+
+  /* One document per visit, conversations/<visit id>, with every turn in
+     it: what was typed, which engine read it, the function and arguments
+     it chose, what the assistant answered, whether the card was confirmed
+     or cancelled, and the 👍/👎 the person gave. A document holds at most
+     256 KiB, so a very long visit carries on in a second one. */
+  function logTurnStart(txt){
+    if(!learn.db) return null;
+    var turn = {
+      n: learn.turns.length + 1, at: new Date().toISOString(), lang: state.lang, company: IT0001.bukrs,
+      role: state.role, screen: state.screen, user: String(txt).slice(0, 1000),
+      engine: null, local: false, path: null, funcao: null, argumentos: null, replies: [], card: null,
+      outcome: null, feedback: null, comment: null
+    };
+    learn.turns.push(turn);
+    return turn;
+  }
+  function logSave(){
+    if(!learn.db) return;
+    clearTimeout(learn.timer);
+    learn.timer = setTimeout(logWrite, 700);
+  }
+  function logWrite(){
+    if(!learn.db) return;
+    if(learn.writing){ learn.dirty = true; return; }
+    var body = {app:"vesi-timesheet", session: learn.sessionId, part: learn.part, started_at: learn.started, updated_at: new Date().toISOString(), turns: learn.turns};
+    if(JSON.stringify(body).length > 200000 && learn.turns.length > 1){
+      learn.part++;
+      learn.turns = learn.turns.slice(-1);
+      body.part = learn.part;
+      body.turns = learn.turns;
+    }
+    learn.writing = true;
+    learn.db.doc("conversations/" + learn.sessionId + (learn.part ? "-" + learn.part : "")).set(body).then(function(){}, function(e){
+      if(e && /^(quota_exceeded|revoked|not_granted|capability_disabled|capability_removed|invalid_argument)$/.test(e.code)) learn.db = null;
+    }).then(function(){
+      learn.writing = false;
+      if(learn.dirty){ learn.dirty = false; logWrite(); }
+    });
+  }
+  /* 👍/👎 under the assistant's last answer of each turn. 👎 asks what it
+     should have done: the most useful line the nightly review reads. */
+  function addFeedback(turn){
+    var log = $("jlog");
+    var bots = log ? log.querySelectorAll(".jmsg.bot") : [];
+    var last = bots[bots.length - 1];
+    if(!last || last.querySelector(".jfb")) return;
+    var row = el("div","jfb","");
+    var up = btn("👍","jfbbtn", function(){
+      turn.feedback = "up";
+      row.innerHTML = "";
+      row.appendChild(el("span","jfbdone", t("fb_thanks")));
+      logSave();
+    });
+    up.type = "button"; up.title = t("fb_helpful"); up.setAttribute("aria-label", t("fb_helpful"));
+    var down = btn("👎","jfbbtn", function(){
+      turn.feedback = "down";
+      logSave();
+      row.innerHTML = "";
+      var f = el("form","jfbform","");
+      var inp = document.createElement("input");
+      inp.type = "text"; inp.maxLength = 300; inp.placeholder = t("fb_placeholder");
+      f.appendChild(inp);
+      f.appendChild(btn(t("fb_send"),"btn sm", null));
+      f.onsubmit = function(ev){
+        ev.preventDefault();
+        turn.comment = inp.value.trim() || null;
+        row.innerHTML = "";
+        row.appendChild(el("span","jfbdone", t("fb_noted")));
+        logSave();
+      };
+      row.appendChild(f);
+      setTimeout(function(){ inp.focus(); }, 30);
+    });
+    down.type = "button"; down.title = t("fb_not_helpful"); down.setAttribute("aria-label", t("fb_not_helpful"));
+    row.appendChild(up);
+    row.appendChild(down);
+    last.appendChild(row);
+  }
+
   /* ---------- conversational assistant, Joule pattern ---------- */
   var chat = {pending:null, greeted:false, draft:null, draftWeek:null, history:[], busy:false};
   var VOICE_LANGS = {PT:"pt-PT", EN:"en-US", FR:"fr-FR"};
@@ -6804,6 +6961,12 @@
      prompt injection could put markup in either - so the default stays
      textContent, never innerHTML, for both bot and user lines. */
   function botSay(who, txt, node, allowHtml){
+    if(who === "bot" && chat.curTurn){
+      var said = (txt ? (allowHtml ? String(txt).replace(/<[^>]+>/g, "") : String(txt)) : "");
+      /* a confirmation card is already kept, field by field, in turn.card */
+      if(node && !(node.classList && node.classList.contains("jcard"))) said += (said ? " | " : "") + String(node.textContent || "").replace(/\s+/g, " ").trim();
+      chat.curTurn.replies.push(said.slice(0, 1500));
+    }
     var log = $("jlog");
     var b = el("div","jmsg "+who,"");
     if(txt){
@@ -6850,6 +7013,14 @@
     if(log) log.scrollTop = log.scrollHeight;
   }
   function botCard(lines, confirmLabel, onConfirm, warn){
+    var turn = chat.curTurn;
+    if(turn) turn.card = lines.map(function(l){ return l[0] + ": " + l[1]; }).concat(warn ? ["! " + warn] : []);
+    /* what the card's buttons say afterwards belongs to the turn that showed it */
+    function inTurn(fn){
+      var prev = chat.curTurn;
+      chat.curTurn = turn;
+      try{ fn(); } finally{ chat.curTurn = prev; logSave(); }
+    }
     var c = el("div","jcard" + (warn ? " warn" : ""), "");
     lines.forEach(function(l){
       var r = el("div","jrow","");
@@ -6865,7 +7036,8 @@
       chat.draftWeek = null;
       acts.innerHTML = "";
       acts.appendChild(el("span","chip green",t("chip_confirmed")));
-      onConfirm();
+      if(turn) turn.outcome = "confirmed";
+      inTurn(onConfirm);
     }));
     acts.appendChild(btn(t("btn_cancel"),"btn sm", function(){
       chat.pending = null;
@@ -6873,7 +7045,8 @@
       chat.draftWeek = null;
       acts.innerHTML = "";
       acts.appendChild(el("span","chip grey",t("chip_cancelled")));
-      botSay("bot",t("bot_cancelled_no_save"));
+      if(turn) turn.outcome = "cancelled";
+      inTurn(function(){ botSay("bot",t("bot_cancelled_no_save")); });
     }));
     c.appendChild(acts);
     return c;
@@ -7169,10 +7342,7 @@
      and in that case the caller falls back to the local regex interpreter. */
   async function askAssistant(txt){
     try{
-      var res = await fetch("/api/chat", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({
+      var payload = {
           mensagem: txt,
           historico: chat.history.slice(0, -1).slice(-12),
           /* The assistant always replies in the app's own language setting, not
@@ -7252,11 +7422,23 @@
               ? {dia: DAYS[chat.draft.day], duracao_horas: chat.draft.dur, projeto: PROJECTS[chat.draft.p].code.split("-")[0], descricao: chat.draft.desc}
               : null
           }
-        })
+      };
+      /* Inside claude.ai, Claude answers from the page itself; elsewhere
+         the serverless function does, when it has a key. */
+      if(learn.sample && !learn.sampleOff){
+        var viaSample = await askViaSample(payload);
+        if(viaSample){ if(chat.curTurn) chat.curTurn.engine = "claude.ai"; return viaSample; }
+        return null;
+      }
+      var res = await fetch("/api/chat", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(payload)
       });
       if(!res.ok) return null;
       var data = await res.json();
       if(!data || data.error) return null;
+      if(chat.curTurn) chat.curTurn.engine = "api";
       return data;
     }catch(e){
       return null;
@@ -7305,6 +7487,7 @@
   /* maps Claude's response (function + arguments) to the same bot actions */
   function botDispatch(intent){
     var la = intent.argumentos || {};
+    if(chat.curTurn){ chat.curTurn.funcao = intent.funcao || null; chat.curTurn.argumentos = intent.argumentos || null; }
     switch(intent.funcao){
       case "pedir_ausencia":
         var dl = {
@@ -7451,7 +7634,20 @@
     }
   }
 
+  /* Every message the person sends is one turn of the log (when there is
+     one): whatever the assistant says while handling it lands in that
+     turn, and the 👍/👎 goes under its last answer. */
   async function botHandle(txt){
+    if(!txt || !txt.trim()) return;
+    var turn = logTurnStart(txt);
+    chat.curTurn = turn;
+    try{ await botHandleTurn(txt); }
+    finally{
+      chat.curTurn = null;
+      if(turn){ addFeedback(turn); logSave(); }
+    }
+  }
+  async function botHandleTurn(txt){
     if(!txt || !txt.trim()) return;
     botSay("me", txt);
     botChips([]);
@@ -7475,6 +7671,7 @@
 
     /* A rejection waiting for its reason: this message is the reason. */
     if(chat.rejectDraft){
+      if(chat.curTurn) chat.curTurn.path = "reject_reason";
       var targetsR = chat.rejectDraft;
       chat.rejectDraft = null;
       await thinkingDelay();
@@ -7487,7 +7684,7 @@
     if(chat.leaveDraft){
       await thinkingDelay();
       hideTyping();
-      if(continueLeaveDraft(txt)) return;
+      if(continueLeaveDraft(txt)){ if(chat.curTurn) chat.curTurn.path = "leave_draft"; return; }
       showTyping();
     }
 
@@ -7506,6 +7703,7 @@
      The pending-entry correction is checked earlier, in botHandle, ahead of
      Claude, so it isn't repeated here. */
   function botHandleLocal(txt){
+    if(chat.curTurn) chat.curTurn.local = true;
     var low = txt.toLowerCase();
 
     /* greeting, no task in it: a short human reply, not the parsing-failure

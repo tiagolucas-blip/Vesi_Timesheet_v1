@@ -1,0 +1,410 @@
+{
+  "about": "Conversations the assistant must keep handling. Each step's last answer must contain every 'expect' string and none of the 'absent' ones (case-insensitive). 'confirm' clicks the open card. 'intent' stands in for Claude's decision for that message. 'today' pins the date relative phrases are read against. Add a case for every failure fixed from the conversation log, with 'why' saying where it came from.",
+  "today": "20261028",
+  "cases": [
+    {
+      "id": "hours-en-basic",
+      "lang": "en",
+      "steps": [
+        {
+          "say": "2h BNK payroll testing yesterday",
+          "expect": [
+            "Banking, Payroll and ECP",
+            "2.0 h"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "help-en",
+      "lang": "en",
+      "steps": [
+        {
+          "say": "help",
+          "expect": [
+            "request an absence",
+            "approve or reject"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "leave-en-range",
+      "lang": "en",
+      "steps": [
+        {
+          "say": "vacation 3 to 6 November",
+          "expect": [
+            "AWART 0100",
+            "3 Nov 2026 to 6 Nov 2026",
+            "4 working days",
+            "Sofia Almeida"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "leave-en-send",
+      "lang": "en",
+      "steps": [
+        {
+          "say": "vacation 3 to 6 November",
+          "expect": [
+            "AWART 0100"
+          ]
+        },
+        {
+          "confirm": true,
+          "expect": [
+            "Request 4500401",
+            "pending"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "leave-en-partial-window",
+      "lang": "en",
+      "steps": [
+        {
+          "say": "doctor tomorrow 14h to 17h",
+          "expect": [
+            "AWART 0210",
+            "29 Oct 2026, 14:00 to 17:00",
+            "3.0 h"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "leave-en-asks-dates",
+      "lang": "en",
+      "steps": [
+        {
+          "say": "I want a day off",
+          "expect": [
+            "which days"
+          ]
+        },
+        {
+          "say": "next week",
+          "expect": [
+            "2 Nov 2026 to 6 Nov 2026",
+            "5 working days"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "leave-en-balance",
+      "lang": "en",
+      "steps": [
+        {
+          "say": "how many vacation days do I have left?",
+          "expect": [
+            "You can still request"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "leave-en-list",
+      "lang": "en",
+      "steps": [
+        {
+          "say": "my leave requests",
+          "expect": [
+            "4500230",
+            "4500255"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "leave-en-overlap",
+      "lang": "en",
+      "steps": [
+        {
+          "say": "vacation 17 September",
+          "expect": [
+            "Overlaps your request 4500230"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "leave-en-quota",
+      "lang": "en",
+      "steps": [
+        {
+          "say": "vacation 1 to 31 December",
+          "expect": [
+            "Not enough vacation balance"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "leave-pt-month-starting-with-de",
+      "lang": "pt",
+      "why": "'de' was read off the start of 'dezembro'",
+      "steps": [
+        {
+          "say": "férias 21 a 24 dezembro",
+          "expect": [
+            "21 Dez 2026 a 24 Dez 2026",
+            "4 dias úteis"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "leave-en-withdraw",
+      "lang": "en",
+      "steps": [
+        {
+          "say": "cancel leave request 4500230",
+          "expect": [
+            "Withdraw request 4500230?"
+          ]
+        },
+        {
+          "confirm": true,
+          "expect": [
+            "withdrawn"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "leave-en-employee-cannot-approve",
+      "lang": "en",
+      "steps": [
+        {
+          "say": "approve Ana's leave request",
+          "expect": [
+            "Only the direct manager"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "manager-en-pending",
+      "lang": "en",
+      "role": "manager",
+      "steps": [
+        {
+          "say": "what do I have to approve?",
+          "expect": [
+            "leave requests to approve",
+            "Ana Ferreira",
+            "timesheets waiting"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "manager-en-reject-needs-reason",
+      "lang": "en",
+      "role": "manager",
+      "steps": [
+        {
+          "say": "reject Bruno leave request",
+          "expect": [
+            "reason"
+          ]
+        },
+        {
+          "say": "team is short that afternoon",
+          "expect": [
+            "Reject with this reason?",
+            "team is short that afternoon"
+          ]
+        },
+        {
+          "confirm": true,
+          "expect": [
+            "Rejected"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "manager-en-approve-ambiguous",
+      "lang": "en",
+      "role": "manager",
+      "steps": [
+        {
+          "say": "approve Ana",
+          "expect": [
+            "Which one?"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "manager-en-approve-leave",
+      "lang": "en",
+      "role": "manager",
+      "steps": [
+        {
+          "say": "approve Diogo's leave request",
+          "expect": [
+            "Approve this request?",
+            "Diogo Sousa"
+          ]
+        },
+        {
+          "confirm": true,
+          "expect": [
+            "Approved"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "leave-pt-range",
+      "lang": "pt",
+      "steps": [
+        {
+          "say": "férias de 3 a 6 de novembro",
+          "expect": [
+            "AWART 0100",
+            "3 Nov 2026 a 6 Nov 2026",
+            "4 dias úteis"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "leave-pt-partial-window",
+      "lang": "pt",
+      "steps": [
+        {
+          "say": "consulta médica amanhã das 9h às 11h",
+          "expect": [
+            "AWART 0210",
+            "09:00 às 11:00",
+            "2.0 h"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "leave-pt-balance",
+      "lang": "pt",
+      "steps": [
+        {
+          "say": "quantos dias de férias me restam?",
+          "expect": [
+            "Ainda podes pedir"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "role-pt-switch",
+      "lang": "pt",
+      "steps": [
+        {
+          "say": "ver como chefia",
+          "expect": [
+            "Sofia Almeida",
+            "pedidos de ausência para aprovar"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "leave-pt02-clock-window",
+      "lang": "pt",
+      "company": "PT02",
+      "steps": [
+        {
+          "say": "consulta amanhã das 10h às 12h30",
+          "expect": [
+            "Patrícia Gomes",
+            "2.5 h",
+            "10:00 às 12:30"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "leave-fr-range",
+      "lang": "fr",
+      "steps": [
+        {
+          "say": "congés du 16 au 20 novembre",
+          "expect": [
+            "Congés payés",
+            "du 16 Nov 2026 au 20 Nov 2026"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "leave-fr-afternoon",
+      "lang": "fr",
+      "steps": [
+        {
+          "say": "rendez-vous médical demain après-midi",
+          "expect": [
+            "Rendez-vous médical",
+            "14:00"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "claude-intent-leave",
+      "lang": "pt",
+      "why": "how the page acts on Claude's decision",
+      "steps": [
+        {
+          "say": "quero férias na semana do natal",
+          "intent": {
+            "funcao": "pedir_ausencia",
+            "argumentos": {
+              "tipo": "0100",
+              "data_inicio": "2026-12-21",
+              "data_fim": "2026-12-24"
+            },
+            "texto": null
+          },
+          "expect": [
+            "21 Dez 2026 a 24 Dez 2026",
+            "4 dias úteis"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "claude-intent-missing-dates",
+      "lang": "pt",
+      "why": "Claude asked for dates, the next short answer completes the request",
+      "steps": [
+        {
+          "say": "quero tirar uns dias",
+          "intent": {
+            "funcao": "pedir_ausencia",
+            "argumentos": {
+              "tipo": "0100"
+            },
+            "texto": "Para que dias?"
+          },
+          "expect": [
+            "Para que dias?"
+          ]
+        },
+        {
+          "say": "de 9 a 13 de novembro",
+          "expect": [
+            "9 Nov 2026 a 13 Nov 2026",
+            "5 dias úteis"
+          ]
+        }
+      ]
+    }
+  ]
+}

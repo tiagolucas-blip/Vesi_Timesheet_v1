@@ -92,17 +92,20 @@ Everything below works, with no server and no real data.
 ## Structure
 
 ```
-body.html      page content, single source of truth for the markup
-styles.css     color and typography tokens, light and dark theme
-app.js         all the logic, no external dependencies
-index.html     the complete document, what Vercel serves  (generated)
-artifact.html  the same page without the shell, to publish as an Artifact  (generated)
-tools/build.py generates the two files above from body.html
-api/chat.js    optional serverless function, off by default
-vercel.json    static site configuration
+body.html            page content, single source of truth for the markup
+styles.css           color and typography tokens, light and dark theme
+app.js               all the logic, no external dependencies
+api/_prompt.js       the assistant's functions and instructions, one source for Vercel and the Artifact
+api/chat.js          optional serverless function, off by default
+index.html           the complete document, what Vercel serves  (generated)
+artifact.html        the same page without the shell or the company logo, published as an Artifact  (generated)
+assistant-prompt.js  api/_prompt.js for the browser  (generated)
+tools/build.py       generates the three files above
+tests/               the assistant's regression suite
+vercel.json          static site configuration
 ```
 
-After editing `body.html`, run:
+After editing `body.html` or `api/_prompt.js`, run:
 
 ```bash
 python3 tools/build.py
@@ -123,9 +126,27 @@ python3 -m http.server 8000
 
 The project is mostly static, with a serverless function at `api/chat.js`. Import the repository into Vercel and accept the defaults, no framework preset, no build command, with the root as the output directory. `vercel.json` already carries that configuration. Set `ANTHROPIC_API_KEY` in the project's environment variables to enable the Claude-powered assistant.
 
+## Learning loop
+
+The mockup improves from being used. It is published as a private Artifact on claude.ai (https://claude.ai/artifact/RQ12tJoHg9FkVy4pKn1xH5), where:
+
+- **Claude answers from the page itself**, on the viewer's own Claude account, with the same functions and instructions as `api/chat.js` (both read `api/_prompt.js`). No API key is needed there. If Claude is unavailable or declined, the local interpreter answers, as on Vercel
+- **Every conversation is kept** in the Artifact's database, one document per visit under `conversations/`: what was typed, which engine read it, the function and arguments chosen, the answers, whether the card was confirmed or cancelled. The header shows `Learning mode` while this is on
+- **Each answer has 👍/👎.** 👎 asks what the assistant should have done, which is the most useful line for the review
+- **Every night (22:35, Lisbon)** a scheduled task reads the conversations since the last run, finds what went wrong, adds a case to `tests/assistant-cases.json` for each failure it fixes, corrects `app.js` or `api/_prompt.js`, runs the whole suite and opens a pull request (or adds to the one already open). Nothing reaches `main` without a merge
+- **After a merge**, the next run republishes the Artifact from `main`. Progress is kept in the Artifact's `meta/improve` document
+
+On Vercel or a local copy none of this is active: nothing is recorded and the page behaves as before.
+
+Run the regression suite (needs Playwright with Chromium):
+
+```bash
+node tests/run-assistant-tests.cjs
+```
+
 ## Data
 
-There's no real data. Employee, projects, WBS, cost centers and absences are made up and live as constants at the top of `app.js`. No request leaves the browser, except what the assistant sends to `api/chat.js` when Claude is enabled (the typed text and the week's context described above). No data is stored, there's no local storage and no cookies.
+There's no real data. Employee, projects, WBS, cost centers and absences are made up and live as constants at the top of `app.js`. No request leaves the browser, except what the assistant sends to `api/chat.js` when Claude is enabled (the typed text and the week's context described above). No data is stored, there are no cookies, and local storage only keeps the interface language. The exception is the Artifact on claude.ai, which keeps the assistant conversations described under Learning loop, with the same fictitious data.
 
 ## Known limits, by design
 
