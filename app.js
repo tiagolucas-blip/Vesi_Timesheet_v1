@@ -870,6 +870,26 @@
      messages are a separate follow-up, not covered here yet. */
   var I18N = {
     en: {
+      view_day:"Day",
+      view_week:"Week",
+      view_month:"Month",
+      tab_direct_reports:"My direct reports",
+      tab_peers:"My peers",
+      hdr_my_hierarchy:"My reporting hierarchy",
+      hdr_my_colleagues:"My colleagues",
+      placeholder_search_people:"Search for people",
+      label_absent_n:"Absent ({n})",
+      n_direct_reports_one:"1 direct report",
+      n_direct_reports_other:"{n} direct reports",
+      text_you_suffix:"you",
+      aria_fullscreen:"Full screen",
+      aria_prev_period:"Previous",
+      aria_next_period:"Next",
+      aria_expand_reports:"Show {name}'s direct reports",
+      label_week_short:"Week {n}",
+      text_absent_generic:"Absent",
+      text_tac_nobody:"Nobody to show with these filters.",
+      text_tac_privacy:"Colleagues' health related absences show only as Absent.",
       lrmap_asof:"Balance on a date",
       lrmap_holidays:"Public holidays",
       lrmap_teamcal:"Team absence calendar",
@@ -1502,6 +1522,26 @@
       row_confirm_cell:"Confirm cell and move down", row_show_list:"Show this list"
     },
     pt: {
+      view_day:"Dia",
+      view_week:"Semana",
+      view_month:"Mês",
+      tab_direct_reports:"Colaboradores diretos",
+      tab_peers:"Os meus pares",
+      hdr_my_hierarchy:"A minha hierarquia",
+      hdr_my_colleagues:"Os meus colegas",
+      placeholder_search_people:"Procurar pessoas",
+      label_absent_n:"Ausentes ({n})",
+      n_direct_reports_one:"1 colaborador direto",
+      n_direct_reports_other:"{n} colaboradores diretos",
+      text_you_suffix:"tu",
+      aria_fullscreen:"Ecrã inteiro",
+      aria_prev_period:"Anterior",
+      aria_next_period:"Seguinte",
+      aria_expand_reports:"Mostrar os colaboradores diretos de {name}",
+      label_week_short:"Semana {n}",
+      text_absent_generic:"Ausente",
+      text_tac_nobody:"Ninguém a mostrar com estes filtros.",
+      text_tac_privacy:"As ausências de saúde dos colegas aparecem só como Ausente.",
       lrmap_asof:"Saldo numa data",
       lrmap_holidays:"Feriados",
       lrmap_teamcal:"Calendário de ausências da equipa",
@@ -2127,6 +2167,26 @@
       row_confirm_cell:"Confirmar célula e descer", row_show_list:"Mostrar esta lista"
     },
     fr: {
+      view_day:"Jour",
+      view_week:"Semaine",
+      view_month:"Mois",
+      tab_direct_reports:"Collaborateurs directs",
+      tab_peers:"Mes pairs",
+      hdr_my_hierarchy:"Ma hiérarchie",
+      hdr_my_colleagues:"Mes collègues",
+      placeholder_search_people:"Rechercher des personnes",
+      label_absent_n:"Absents ({n})",
+      n_direct_reports_one:"1 collaborateur direct",
+      n_direct_reports_other:"{n} collaborateurs directs",
+      text_you_suffix:"vous",
+      aria_fullscreen:"Plein écran",
+      aria_prev_period:"Précédent",
+      aria_next_period:"Suivant",
+      aria_expand_reports:"Afficher les collaborateurs directs de {name}",
+      label_week_short:"Semaine {n}",
+      text_absent_generic:"Absent",
+      text_tac_nobody:"Personne à afficher avec ces filtres.",
+      text_tac_privacy:"Les absences pour raison de santé des collègues apparaissent seulement comme Absent.",
       lrmap_asof:"Solde à une date",
       lrmap_holidays:"Jours fériés",
       lrmap_teamcal:"Calendrier des absences de l'équipe",
@@ -6144,6 +6204,32 @@
     {RequestID:"4500359", EmployeeID:"00104511", EmployeeName:"Hélder Rocha", role:"Technician", AbsenceTypeCode:"0100", StartDate:weekDay(-1,0), EndDate:weekDay(-1,2), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"POSTED", Notes:""},
     {RequestID:"4500384", EmployeeID:"00104528", EmployeeName:"Luís Teixeira", role:"Technician", AbsenceTypeCode:"0200", StartDate:weekDay(0,0), EndDate:weekDay(0,0), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"POSTED", Notes:"", Attachment:"atestado.pdf"}
   );
+  /* One level further down (a senior consultant who leads two people) and
+     the line manager's own peers, for the team calendar: their absences are
+     approved by someone else, so they never reach this manager's inbox. */
+  var SUB_REPORTS = {
+    "00104401":[{EmployeeID:"00104461", name:"Rui Marques", role:"Consultant", manager:"Ana Ferreira"}, {EmployeeID:"00104462", name:"Joana Silva", role:"Junior consultant", manager:"Ana Ferreira"}],
+    "00104510":[{EmployeeID:"00104561", name:"Pedro Lima", role:"Technician", manager:"Nuno Dias"}]
+  };
+  var MANAGER_PEERS = {
+    PT01:[{EmployeeID:"00100211", name:"Miguel Costa", role:"Delivery Manager, Public Sector"}, {EmployeeID:"00100212", name:"Rita Santos", role:"Delivery Manager, Banking"}],
+    PT02:[{EmployeeID:"00100321", name:"Jorge Antunes", role:"Operations Manager, Hospitals"}, {EmployeeID:"00100322", name:"Sara Lopes", role:"Operations Manager, Airports"}]
+  };
+  var OTHER_LEAVE = {
+    PT01:[
+      {RequestID:"4500402", EmployeeID:"00104461", EmployeeName:"Rui Marques", AbsenceTypeCode:"0100", StartDate:weekDay(0,3), EndDate:weekDay(1,1), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"APPROVED", Notes:"", ApproverName:"Ana Ferreira"},
+      {RequestID:"4500403", EmployeeID:"00104462", EmployeeName:"Joana Silva", AbsenceTypeCode:"0300", StartDate:weekDay(2,2), EndDate:weekDay(2,2), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"APPROVED", Notes:"", ApproverName:"Ana Ferreira"},
+      {RequestID:"4500404", EmployeeID:"00104462", EmployeeName:"Joana Silva", AbsenceTypeCode:"0100", StartDate:weekDay(6,0), EndDate:weekDay(6,4), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"SENT", Notes:"", ApproverName:"Ana Ferreira"},
+      {RequestID:"4500405", EmployeeID:"00100211", EmployeeName:"Miguel Costa", AbsenceTypeCode:"0100", StartDate:weekDay(-1,0), EndDate:weekDay(-1,4), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"POSTED", Notes:"", ApproverName:"Henrique Vaz"},
+      {RequestID:"4500406", EmployeeID:"00100212", EmployeeName:"Rita Santos", AbsenceTypeCode:"0100", StartDate:weekDay(4,2), EndDate:weekDay(4,4), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"APPROVED", Notes:"", ApproverName:"Henrique Vaz"}
+    ],
+    PT02:[
+      {RequestID:"4500407", EmployeeID:"00104561", EmployeeName:"Pedro Lima", AbsenceTypeCode:"0100", StartDate:weekDay(1,0), EndDate:weekDay(1,2), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"APPROVED", Notes:"", ApproverName:"Nuno Dias"},
+      {RequestID:"4500408", EmployeeID:"00100321", EmployeeName:"Jorge Antunes", AbsenceTypeCode:"0100", StartDate:weekDay(2,0), EndDate:weekDay(2,4), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"APPROVED", Notes:"", ApproverName:"Teresa Moura"},
+      {RequestID:"4500409", EmployeeID:"00100322", EmployeeName:"Sara Lopes", AbsenceTypeCode:"0200", StartDate:weekDay(-1,3), EndDate:weekDay(-1,3), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"POSTED", Notes:"", ApproverName:"Teresa Moura"}
+    ]
+  };
+  ["PT01","PT02"].forEach(function(b){ OTHER_LEAVE[b].forEach(function(r){ r.bukrs = b; r.created = isoAdd(r.StartDate < todayISO() ? r.StartDate : todayISO(), -12); }); });
   /* every sample request gets a sending date, for the workflow history */
   ["PT01","PT02"].forEach(function(b){
     LEAVE_TEAM[b].forEach(function(r){
@@ -6391,13 +6477,13 @@
      lookup across both could pick up the other company's copy. */
   function leaveById(id, bukrs){
     var b = bukrs || IT0001.bukrs;
-    return LEAVE[b].concat(LEAVE_TEAM[b]).filter(function(r){ return r.RequestID === String(id); })[0] || null;
+    return LEAVE[b].concat(LEAVE_TEAM[b], OTHER_LEAVE[b]).filter(function(r){ return r.RequestID === String(id); })[0] || null;
   }
   function reportsOf(bukrs){ return DIRECT_REPORTS[bukrs || IT0001.bukrs]; }
   function reportById(id, bukrs){ return reportsOf(bukrs).filter(function(m){ return m.EmployeeID === id; })[0] || null; }
   function requestsOf(id, bukrs){
     var b = bukrs || IT0001.bukrs;
-    return id === PERNR ? LEAVE[b] : LEAVE_TEAM[b].filter(function(r){ return r.EmployeeID === id; });
+    return id === PERNR ? LEAVE[b] : LEAVE_TEAM[b].concat(OTHER_LEAVE[b]).filter(function(r){ return r.EmployeeID === id; });
   }
   /* A vacation account: taken (in the past), planned (approved, ahead),
      pending, and what's left. With asOf, only requests starting by that
@@ -6676,9 +6762,11 @@
       k.appendChild(lvKpi(t("kpi_absent_today"), absentOn(todayISO()).length));
     }
     ["lvMineWrap","lvMinePanel"].forEach(function(id){ $(id).hidden = mgrView; });
-    ["lvTeamPanel","lvTeamCalPanel","lvBalPanel"].forEach(function(id){ $(id).hidden = !mgrView; });
-    if(mgrView){ renderLeaveQueue(); renderTeamCalendar(); renderTeamBalances(); }
+    ["lvTeamPanel","lvBalPanel"].forEach(function(id){ $(id).hidden = !mgrView; });
+    $("lvTeamCalPanel").hidden = false;
+    if(mgrView){ renderLeaveQueue(); renderTeamBalances(); }
     else { renderAccounts(); renderMyCalendar(); renderMyLeave(); }
+    renderTeamCalendar();
     var done = leaveDecidedThisSession();
     $("lvDonePanel").hidden = !mgrView || !done.length;
     if(mgrView && done.length) renderLeaveDone(done);
@@ -6916,7 +7004,7 @@
     line(t("label_absence_type"), absTypeLabel(r));
     line(t("th_period"), leavePeriodLabel(r));
     line(t("th_duration"), leaveDurationLabel(r) + (leaveHolidaysIn(r) ? " · " + plural(leaveHolidaysIn(r), "n_holidays_skipped") : ""));
-    var after = leaveAvailableAfter(r);
+    var after = r.EmployeeID === PERNR || reportById(r.EmployeeID) ? leaveAvailableAfter(r) : null;
     if(after !== null) line(t("label_balance_after"), fmtDays(after) + " " + t("unit_days"));
     line(t("label_note"), r.Notes || "");
     var ty = absType(r.AbsenceTypeCode);
@@ -7066,64 +7154,197 @@
     if(picked.length) toast(plural(picked.length, "n_leave_approved"));
   }
 
-  /* ---- the line manager: team absence calendar ---- */
+  /* ---- team absence calendar, as in SuccessFactors ----
+     On the left, who's in view: the line manager's direct reports (one
+     level further down on demand) or their peers; for an employee, the
+     colleagues under the same manager. Each person can be ticked off,
+     searched, or the list cut down to who's absent in the period. On the
+     right, Day, Week or Month, with one bar per absence across its days
+     and the public holidays marked on every row. A colleague's health
+     related absence shows only as an absence, without the reason. */
+  var SENSITIVE_TYPES = ["0200","0210"];
+  function tacState(){
+    if(!state.tac) state.tac = {view:"month", anchor:todayISO(), tab:"reports", hidden:{}, expanded:{}, absentOnly:false, q:"", status:"all", type:"", full:false};
+    return state.tac;
+  }
+  /* an employee only has colleagues to look at */
+  function tacTab(st){ return state.role === "manager" ? st.tab : "peers"; }
+  function tacRange(st){
+    if(st.view === "day") return {from:st.anchor, to:st.anchor};
+    if(st.view === "week"){ var m = mondayOf(st.anchor); return {from:m, to:isoAdd(m, 6)}; }
+    var key = st.anchor.slice(0,6);
+    return {from:key + "01", to:isoAdd(monthAdd(key, 1) + "01", -1)};
+  }
+  function tacPeople(st){
+    var b = IT0001.bukrs, out = [];
+    if(tacTab(st) === "reports"){
+      reportsOf(b).forEach(function(m){
+        var subs = SUB_REPORTS[m.EmployeeID] || [];
+        out.push({id:m.EmployeeID, name:m.name, role:m.role, subs:subs.length, level:0, own:true});
+        if(st.expanded[m.EmployeeID]) subs.forEach(function(x){ out.push({id:x.EmployeeID, name:x.name, role:x.role, subs:0, level:1, own:true}); });
+      });
+    } else if(state.role === "manager"){
+      var mgr = lineManager();
+      out.push({id:mgr.pernr, name:mgr.name, role:mgr.role, subs:reportsOf(b).length, level:0, self:true, own:true});
+      MANAGER_PEERS[b].forEach(function(m){ out.push({id:m.EmployeeID, name:m.name, role:m.role, subs:0, level:0, own:false}); });
+    } else {
+      reportsOf(b).forEach(function(m){ out.push({id:m.EmployeeID, name:m.name, role:m.role, subs:0, level:0, self:m.EmployeeID === PERNR, own:m.EmployeeID === PERNR}); });
+    }
+    return out;
+  }
+  function tacRequests(person, st, range){
+    return requestsOf(person.id).filter(function(r){
+      if(!(leaveActive(r) || r.cancelRequested) || r.EndDate < range.from || r.StartDate > range.to) return false;
+      if(st.type && r.AbsenceTypeCode !== st.type) return false;
+      var k = leaveStateKey(r);
+      if(st.status === "approved" && k !== "approved") return false;
+      if(st.status === "pending" && k === "approved") return false;
+      return true;
+    });
+  }
+  function initials(n){ var p = String(n).split(" "); return (p[0].charAt(0) + (p.length > 1 ? p[p.length - 1].charAt(0) : "")).toUpperCase(); }
+  function avatar(n){ return el("span","av", initials(n)); }
+  function shortRangeLabel(r){
+    var s = r.StartDate, e = r.EndDate;
+    if(s === e) return (+s.slice(6,8)) + " " + MONTHS[+s.slice(4,6)-1] + (r.partial && r.StartTime ? ", " + r.StartTime + "–" + r.EndTime : r.partial ? ", " + fmt(r.hours) + " h" : "");
+    var sm = +s.slice(4,6)-1, em = +e.slice(4,6)-1;
+    return sm === em ? t("label_range_same_month", {d1: +s.slice(6,8), d2: +e.slice(6,8), month: MONTHS[sm]})
+                     : t("label_range_diff_month", {d1: +s.slice(6,8), m1: MONTHS[sm], d2: +e.slice(6,8), m2: MONTHS[em]});
+  }
   function renderTeamCalendar(){
-    var key = state.lvTcMonth || todayISO().slice(0,6);
-    state.lvTcMonth = key;
-    var st = state.lvTcStatus || "all", ty = state.lvTcType || "";
-    $("lvTcLabel").textContent = monthLabelOf(key);
-    Array.prototype.forEach.call(document.querySelectorAll("#lvTcStatus button"), function(b){ b.setAttribute("aria-pressed", b.dataset.s === st ? "true" : "false"); });
+    var st = tacState(), mgrView = state.role === "manager";
+    var range = tacRange(st), today = todayISO();
+    /* toolbar */
+    $("lvTcLabel").textContent = st.view === "day" ? fmtDateShort(range.from) + " " + range.from.slice(0,4) : t("leave_range", {from: fmtDate(range.from), to: fmtDate(range.to)});
+    Array.prototype.forEach.call(document.querySelectorAll("#lvTcView button"), function(b){ b.setAttribute("aria-pressed", b.dataset.v === st.view ? "true" : "false"); });
+    Array.prototype.forEach.call(document.querySelectorAll("#lvTcTabs button"), function(b){ b.setAttribute("aria-pressed", b.dataset.t === tacTab(st) ? "true" : "false"); });
+    Array.prototype.forEach.call(document.querySelectorAll("#lvTcStatus button"), function(b){ b.setAttribute("aria-pressed", b.dataset.s === st.status ? "true" : "false"); });
+    $("lvTcTabs").hidden = !mgrView;
+    $("lvTcSideHd").textContent = mgrView ? (tacTab(st) === "reports" ? t("hdr_my_hierarchy") : t("tab_peers")) : t("hdr_my_colleagues");
+    $("lvTeamCalPanel").classList.toggle("full", !!st.full);
     var sel = $("lvTcType");
     sel.innerHTML = "";
     var o0 = document.createElement("option"); o0.value = ""; o0.textContent = t("filter_all_types"); sel.appendChild(o0);
     ABSENCE_TYPES.forEach(function(x){ var o = document.createElement("option"); o.value = x.code; o.textContent = t("abs_" + x.code); sel.appendChild(o); });
-    sel.value = ty;
-    var days = monthDays(key), today = todayISO();
-    var table = $("lvTcTable");
-    table.innerHTML = "";
-    var thead = document.createElement("thead"), hr = document.createElement("tr");
-    hr.appendChild(el("th","nm", t("th_team_member")));
-    days.forEach(function(d){
-      var hol = holidayOn(d);
-      var th = el("th", (weekdayOf(d) > 4 || hol ? "we" : "") + (d === today ? " today" : ""), "");
-      th.appendChild(el("div","", WEEKDAY_ABBR[weekdayOf(d)]));
-      th.appendChild(el("div","", String(+d.slice(6,8))));
-      if(hol) th.title = holidayName(hol);
-      hr.appendChild(th);
+    sel.value = st.type;
+    if($("lvTcSearch").value !== st.q) $("lvTcSearch").value = st.q;
+    $("lvTcAbsent").checked = !!st.absentOnly;
+
+    /* who's in view */
+    var q = foldText(st.q).trim();
+    var people = tacPeople(st);
+    var matching = people.filter(function(pp){ return !q || foldText(pp.name).indexOf(q) !== -1; });
+    var absentIds = {};
+    matching.forEach(function(pp){ if(tacRequests(pp, st, range).length) absentIds[pp.id] = true; });
+    $("lvTcAbsentLbl").textContent = t("label_absent_n", {n: Object.keys(absentIds).length});
+    var list = $("lvTcList");
+    list.innerHTML = "";
+    matching.forEach(function(pp){
+      var row = el("div","tacp" + (st.hidden[pp.id] ? "" : " on") + (pp.level ? " lvl1" : ""), "");
+      if(pp.subs && tacTab(st) === "reports"){
+        var ex = el("button","exp", st.expanded[pp.id] ? "▾" : "▸");
+        ex.type = "button";
+        ex.setAttribute("aria-label", t("aria_expand_reports", {name: pp.name}));
+        ex.onclick = function(){ st.expanded[pp.id] = !st.expanded[pp.id]; renderTeamCalendar(); };
+        row.appendChild(ex);
+      } else row.appendChild(el("span","",""));
+      var cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.checked = !st.hidden[pp.id];
+      cb.setAttribute("aria-label", pp.name);
+      cb.onchange = function(){ if(cb.checked) delete st.hidden[pp.id]; else st.hidden[pp.id] = true; renderTeamCalendar(); };
+      row.appendChild(cb);
+      row.appendChild(avatar(pp.name));
+      row.appendChild(el("span","nm", pp.name + (pp.self ? " (" + t("text_you_suffix") + ")" : "")));
+      row.appendChild(el("span","cnt", pp.subs ? String(pp.subs) : ""));
+      list.appendChild(row);
     });
-    thead.appendChild(hr);
-    table.appendChild(thead);
-    var tbody = document.createElement("tbody");
-    reportsOf().forEach(function(m){
-      var reqs = requestsOf(m.EmployeeID).filter(function(r){
-        if(ty && r.AbsenceTypeCode !== ty) return false;
-        var k = leaveStateKey(r);
-        if(st === "approved" && k !== "approved") return false;
-        if(st === "pending" && k === "approved") return false;
-        return true;
-      });
-      var tr = document.createElement("tr");
-      var nm = el("td","nm", m.name);
-      nm.appendChild(el("small","", m.role));
-      tr.appendChild(nm);
-      days.forEach(function(d){
+    var shown = matching.filter(function(pp){ return !st.hidden[pp.id] && (!st.absentOnly || absentIds[pp.id]); });
+
+    /* the grid */
+    var days = [];
+    for(var d = range.from; d <= range.to; d = isoAdd(d, 1)) days.push(d);
+    var minW = st.view === "month" ? 30 : st.view === "week" ? 96 : 320;
+    var grid = $("lvTcGrid");
+    grid.innerHTML = "";
+    grid.style.gridTemplateColumns = "200px repeat(" + days.length + ", minmax(" + minW + "px, 1fr))";
+    /* narrow screens scroll sideways instead of squeezing the days */
+    grid.style.minWidth = (200 + days.length * minW) + "px";
+    function put(node, row, col, span){
+      node.style.gridRow = String(row);
+      node.style.gridColumn = col + (span ? " / span " + span : "");
+      grid.appendChild(node);
+    }
+    /* row 1: days, row 2: weeks */
+    put(el("div","tccorner",""), 1, 1);
+    put(el("div","tccorner",""), 2, 1);
+    days.forEach(function(d, i){
+      var hol = holidayOn(d), we = weekdayOf(d) > 4 || !!hol;
+      var h = el("div","tch" + (we ? " we" : "") + (d === today ? " today" : ""), "");
+      h.appendChild(el("div","", st.view === "day" ? fmtDateShort(d) : WEEKDAY_ABBR[weekdayOf(d)]));
+      if(st.view !== "day") h.appendChild(el("span","n", String(+d.slice(6,8))));
+      if(hol) h.title = holidayName(hol);
+      put(h, 1, i + 2);
+    });
+    var w0 = 0;
+    while(w0 < days.length){
+      var wk = isoWeekOf(days[w0]), span = 0;
+      while(w0 + span < days.length && isoWeekOf(days[w0 + span]) === wk) span++;
+      put(el("div","tcw", t("label_week_short", {n: wk})), 2, w0 + 2, span);
+      w0 += span;
+    }
+    if(!shown.length){
+      var em = el("div","tacempty", t("text_tac_nobody"));
+      put(em, 3, 1, days.length + 1);
+    }
+    shown.forEach(function(pp, ri){
+      var row = ri + 3;
+      var nm = el("div","tcname" + (pp.level ? " lvl1" : ""), "");
+      nm.appendChild(avatar(pp.name));
+      var tx = el("div","", "");
+      tx.appendChild(el("div","who", pp.name + (pp.self ? " (" + t("text_you_suffix") + ")" : "")));
+      tx.appendChild(el("small","", pp.subs ? plural(pp.subs, "n_direct_reports") : pp.role));
+      nm.appendChild(tx);
+      put(nm, row, 1);
+      days.forEach(function(d, i){
         var hol = holidayOn(d);
-        var td = el("td", weekdayOf(d) > 4 || hol ? "we" : "", "");
-        var r = reqs.filter(function(x){ return onLeaveDay(x, d); })[0];
-        if(r){
-          var b = el("button","ab " + leaveStateKey(r) + (r.partial ? " half" : ""), "");
-          b.type = "button";
-          b.title = m.name + " · " + absTypeLabel(r) + " · " + leavePeriodLabel(r) + " · " + leaveStatusLabel(r);
-          b.setAttribute("aria-label", b.title);
-          b.onclick = function(){ openLeaveDetail(r); };
-          td.appendChild(b);
+        put(el("div","tcd" + (weekdayOf(d) > 4 || hol ? " we" : "") + (d === today ? " today" : ""), ""), row, i + 2);
+        if(hol){
+          var tag = el("span","tchol", holidayName(hol));
+          tag.title = holidayName(hol);
+          put(tag, row, i + 2);
         }
-        tr.appendChild(td);
       });
-      tbody.appendChild(tr);
+      tacRequests(pp, st, range).forEach(function(r){
+        var a = r.StartDate < range.from ? range.from : r.StartDate, z = r.EndDate > range.to ? range.to : r.EndDate;
+        var c0 = days.indexOf(a), c1 = days.indexOf(z);
+        if(c0 === -1 || c1 === -1) return;
+        var full = pp.own || (mgrView && tacTab(st) === "reports");
+        var label = full || SENSITIVE_TYPES.indexOf(r.AbsenceTypeCode) === -1 ? absTypeLabel(r) : t("text_absent_generic");
+        var bar = el("button","tcbar " + leaveStateKey(r) + (full ? "" : " ro"), "");
+        bar.type = "button";
+        bar.appendChild(el("b","", label));
+        bar.appendChild(el("span","", shortRangeLabel(r)));
+        bar.title = pp.name + " · " + label + " · " + leavePeriodLabel(r) + " · " + leaveStatusLabel(r);
+        bar.setAttribute("aria-label", bar.title);
+        if(full) bar.onclick = function(){ openLeaveDetail(r); };
+        put(bar, row, c0 + 2, c1 - c0 + 1);
+      });
     });
-    table.appendChild(tbody);
-    legend($("lvTcLegend"), [["approved", t("legend_approved")], ["pending", t("legend_pending")], ["cancel", t("legend_cancel")], ["hol", t("legend_holiday_weekend")]]);
+    /* the month opens scrolled to today when it doesn't all fit */
+    var ti = days.indexOf(today), main = $("lvTcMain");
+    if(main) main.scrollLeft = ti === -1 ? 0 : Math.max(0, 200 + ti * minW - main.clientWidth / 2);
+    var leg = [["approved", t("legend_approved")], ["pending", t("legend_pending")], ["cancel", t("legend_cancel")], ["hol", t("legend_holiday_weekend")]];
+    legend($("lvTcLegend"), leg);
+    if(tacTab(st) === "peers") $("lvTcLegend").appendChild(el("span","", t("text_tac_privacy")));
+  }
+  function tacMove(dir){
+    var st = tacState();
+    if(dir === 0) st.anchor = todayISO();
+    else if(st.view === "day") st.anchor = isoAdd(st.anchor, dir);
+    else if(st.view === "week") st.anchor = isoAdd(st.anchor, 7 * dir);
+    else st.anchor = monthAdd(st.anchor.slice(0,6), dir) + "01";
+    renderTeamCalendar();
   }
 
   /* ---- the line manager: team balances, and recording on behalf ---- */
@@ -10377,11 +10598,17 @@
     if($("lvSelAll").checked) leaveQueue().forEach(function(r){ state.lvSel[lvSelKey(r)] = true; });
     renderLeaveQueue();
   };
-  if($("lvTcPrev")) $("lvTcPrev").onclick = function(){ state.lvTcMonth = monthAdd(state.lvTcMonth || todayISO().slice(0,6), -1); renderTeamCalendar(); };
-  if($("lvTcNext")) $("lvTcNext").onclick = function(){ state.lvTcMonth = monthAdd(state.lvTcMonth || todayISO().slice(0,6), 1); renderTeamCalendar(); };
-  if($("lvTcToday")) $("lvTcToday").onclick = function(){ state.lvTcMonth = todayISO().slice(0,6); renderTeamCalendar(); };
-  Array.prototype.forEach.call(document.querySelectorAll("#lvTcStatus button"), function(b){ b.onclick = function(){ state.lvTcStatus = b.dataset.s; renderTeamCalendar(); }; });
-  if($("lvTcType")) $("lvTcType").onchange = function(){ state.lvTcType = $("lvTcType").value; renderTeamCalendar(); };
+  if($("lvTcPrev")) $("lvTcPrev").onclick = function(){ tacMove(-1); };
+  if($("lvTcNext")) $("lvTcNext").onclick = function(){ tacMove(1); };
+  if($("lvTcToday")) $("lvTcToday").onclick = function(){ tacMove(0); };
+  Array.prototype.forEach.call(document.querySelectorAll("#lvTcView button"), function(b){ b.onclick = function(){ tacState().view = b.dataset.v; renderTeamCalendar(); }; });
+  Array.prototype.forEach.call(document.querySelectorAll("#lvTcTabs button"), function(b){ b.onclick = function(){ tacState().tab = b.dataset.t; renderTeamCalendar(); }; });
+  Array.prototype.forEach.call(document.querySelectorAll("#lvTcStatus button"), function(b){ b.onclick = function(){ tacState().status = b.dataset.s; renderTeamCalendar(); }; });
+  if($("lvTcType")) $("lvTcType").onchange = function(){ tacState().type = $("lvTcType").value; renderTeamCalendar(); };
+  if($("lvTcSearch")) $("lvTcSearch").oninput = function(){ tacState().q = $("lvTcSearch").value; renderTeamCalendar(); };
+  if($("lvTcAbsent")) $("lvTcAbsent").onchange = function(){ tacState().absentOnly = $("lvTcAbsent").checked; renderTeamCalendar(); };
+  if($("lvTcFull")) $("lvTcFull").onclick = function(){ var st = tacState(); st.full = !st.full; renderTeamCalendar(); };
+  document.addEventListener("keydown", function(ev){ if(ev.key === "Escape" && state.tac && state.tac.full && !document.querySelector("dialog[open]")){ state.tac.full = false; renderTeamCalendar(); } });
   if($("lvAtt")) $("lvAtt").onchange = syncLeaveForm;
   ["lvType","lvStart","lvEnd","lvPartial","lvHours","lvBeg","lvFin"].forEach(function(id){
     var n = $(id);

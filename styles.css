@@ -651,3 +651,48 @@
   .wf .bad .dot{background:var(--crit); border-color:var(--crit)}
   .wf small{display:block; color:var(--ink-3)}
   .lvattlbl{font-size:var(--fs-sm); color:var(--ink-3); font-weight:400}
+
+  /* Team absence calendar, as in SuccessFactors: hierarchy on the left,
+     a day grid on the right with bars spanning each absence */
+  .tac{display:grid; grid-template-columns:250px minmax(0, 1fr); border-top:1px solid var(--line-soft)}
+  @media (max-width:900px){ .tac{grid-template-columns:minmax(0, 1fr)} .tacside{border-right:none; border-bottom:1px solid var(--line-soft)} }
+  .tacside{border-right:1px solid var(--line-soft); padding:10px; display:flex; flex-direction:column; gap:8px; min-width:0}
+  .tactabs{align-self:flex-start}
+  .tacsidehd{font-weight:600; font-size:var(--fs-sm)}
+  .tacsearch{width:100%}
+  .taclist{display:flex; flex-direction:column; gap:2px; max-height:420px; overflow:auto}
+  .tacp{display:grid; grid-template-columns:16px 18px 26px minmax(0, 1fr) auto; align-items:center; gap:6px; padding:5px 6px; border-radius:var(--radius); font-size:var(--fs-sm)}
+  .tacp.on{background:var(--accent-soft)}
+  .tacp.lvl1{padding-left:26px}
+  .tacp .exp{background:none; border:none; padding:0; color:var(--ink-2); cursor:pointer; font-size:12px; width:16px}
+  .tacp .nm{white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .tacp .cnt{color:var(--ink-3); font-size:var(--fs-micro)}
+  .av{display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%; background:var(--accent-soft); color:var(--accent-ink); font-size:10px; font-weight:700; flex:none}
+  .tacfilters{display:flex; flex-wrap:wrap; gap:6px; margin-top:auto; padding-top:8px; border-top:1px solid var(--line-soft)}
+  .tacmain{overflow:auto; min-width:0}
+  .tacgrid{display:grid; width:100%; position:relative}
+  .tacgrid > *{min-width:0}
+  .tch{font-size:var(--fs-micro); color:var(--ink-3); text-align:center; padding:4px 0 2px; background:var(--surface); position:sticky; top:0; z-index:3}
+  .tch .n{display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:4px; margin-top:2px; color:var(--ink); font-size:var(--fs-sm)}
+  .tch.we .n{background:var(--surface-3)}
+  .tch.today .n{background:var(--accent); color:#fff}
+  .tcw{font-size:var(--fs-micro); color:var(--ink-2); text-align:center; padding:4px 2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; border-left:1px solid var(--line-soft); border-bottom:1px solid var(--line); background:var(--surface); position:sticky; top:42px; z-index:3}
+  .tccorner{background:var(--surface); position:sticky; left:0; z-index:5; border-bottom:1px solid var(--line)}
+  .tcname{position:sticky; left:0; z-index:4; background:var(--surface); display:flex; align-items:center; gap:8px; padding:6px 10px; border-bottom:1px solid var(--line-soft); box-shadow:2px 0 4px -2px rgba(0,0,0,.12); min-height:48px}
+  .tcname .who{font-size:var(--fs-sm); font-weight:600; line-height:1.2}
+  .tcname small{display:block; color:var(--ink-3); font-size:var(--fs-micro); font-weight:400}
+  .tcname.lvl1{padding-left:26px}
+  .tcd{border-bottom:1px solid var(--line-soft); border-left:1px solid var(--line-soft); min-height:48px}
+  .tcd.we{background:var(--surface-3)}
+  .tcd.today{background:var(--accent-soft)}
+  .tcbar{align-self:center; z-index:2; margin:0 2px; border-radius:4px; padding:2px 6px; font-size:var(--fs-micro); line-height:1.25; text-align:left; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; cursor:pointer; font-family:inherit; border:1px solid; min-height:30px; display:flex; flex-direction:column; justify-content:center}
+  .tcbar b{font-weight:600; overflow:hidden; text-overflow:ellipsis}
+  .tcbar span{color:var(--ink-3); overflow:hidden; text-overflow:ellipsis}
+  .tcbar.approved{background:var(--good-soft); border-color:var(--good); color:var(--ink)}
+  .tcbar.pending{background:var(--warn-soft); border-color:var(--warn); border-style:dashed; border-left:3px solid var(--warn); color:var(--ink)}
+  .tcbar.cancel{background:var(--crit-soft); border-color:var(--crit); border-style:dashed; color:var(--ink)}
+  .tcbar.ro{cursor:default}
+  .tchol{align-self:center; justify-self:center; z-index:2; font-size:var(--fs-micro); background:var(--surface); border:1px solid var(--ink-3); border-radius:3px; padding:0 3px; max-width:calc(100% - 4px); overflow:hidden; white-space:nowrap; text-overflow:ellipsis; color:var(--ink-2)}
+  .tacempty{padding:24px; color:var(--ink-3); font-size:var(--fs-sm)}
+  .tacpanel.full{position:fixed; inset:12px; z-index:70; margin:0 !important; overflow:auto; box-shadow:var(--shadow)}
+  .tacpanel.full .taclist{max-height:none}

@@ -393,14 +393,26 @@
       </div>
     </div>
 
-    <div class="panel" id="lvTeamCalPanel" style="margin-top:16px" hidden>
+    <div class="panel tacpanel" id="lvTeamCalPanel" style="margin-top:16px" hidden>
       <header><h2 data-i18n="hdr_team_calendar">Team absence calendar</h2>
-        <div class="lvmonthnav"><button type="button" class="arrow" id="lvTcPrev" data-i18n-aria="aria_prev_month" aria-label="Previous month">&#8249;</button><b id="lvTcLabel"></b><button type="button" class="arrow" id="lvTcNext" data-i18n-aria="aria_next_month" aria-label="Next month">&#8250;</button></div>
-        <button type="button" class="btn sm" id="lvTcToday" data-i18n="btn_today">Today</button>
-        <div class="seg" role="group" id="lvTcStatus"><button type="button" data-s="all" data-i18n="filter_all">All</button><button type="button" data-s="approved" data-i18n="filter_approved">Approved</button><button type="button" data-s="pending" data-i18n="filter_pending">Pending</button></div>
-        <select class="lvsel" id="lvTcType" data-i18n-aria="label_absence_type" aria-label="Absence type"></select>
+        <div class="lvmonthnav"><button type="button" class="arrow" id="lvTcPrev" data-i18n-aria="aria_prev_period" aria-label="Previous">&#8249;</button><button type="button" class="btn sm" id="lvTcToday" data-i18n="btn_today">Today</button><button type="button" class="arrow" id="lvTcNext" data-i18n-aria="aria_next_period" aria-label="Next">&#8250;</button><b id="lvTcLabel"></b></div>
+        <div class="seg" role="group" id="lvTcView"><button type="button" data-v="day" data-i18n="view_day">Day</button><button type="button" data-v="week" data-i18n="view_week">Week</button><button type="button" data-v="month" data-i18n="view_month">Month</button></div>
+        <button type="button" class="btn sm" id="lvTcFull" data-i18n-aria="aria_fullscreen" aria-label="Full screen" data-i18n-title="aria_fullscreen" title="Full screen">&#10530;</button>
       </header>
-      <div class="tablescroll"><table class="tcal" id="lvTcTable"></table></div>
+      <div class="tac">
+        <aside class="tacside">
+          <div class="seg tactabs" role="group" id="lvTcTabs"><button type="button" data-t="reports" data-i18n="tab_direct_reports">My direct reports</button><button type="button" data-t="peers" data-i18n="tab_peers">My peers</button></div>
+          <div class="tacsidehd" id="lvTcSideHd"></div>
+          <input type="search" class="lvsel tacsearch" id="lvTcSearch" data-i18n-placeholder="placeholder_search_people" placeholder="Search for people">
+          <label class="lvchk"><input type="checkbox" id="lvTcAbsent"> <span id="lvTcAbsentLbl">Absent</span></label>
+          <div class="taclist" id="lvTcList"></div>
+          <div class="tacfilters">
+            <div class="seg" role="group" id="lvTcStatus"><button type="button" data-s="all" data-i18n="filter_all">All</button><button type="button" data-s="approved" data-i18n="filter_approved">Approved</button><button type="button" data-s="pending" data-i18n="filter_pending">Pending</button></div>
+            <select class="lvsel" id="lvTcType" data-i18n-aria="label_absence_type" aria-label="Absence type"></select>
+          </div>
+        </aside>
+        <div class="tacmain" id="lvTcMain"><div class="tacgrid" id="lvTcGrid"></div></div>
+      </div>
       <div class="lvlegend" id="lvTcLegend"></div>
     </div>
 
