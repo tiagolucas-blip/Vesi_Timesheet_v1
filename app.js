@@ -870,6 +870,22 @@
      messages are a separate follow-up, not covered here yet. */
   var I18N = {
     en: {
+      nav_leave_approval:"Leave approval",
+      hdr_leave_approval:"Leave approval",
+      hdr_leave_from_reports:"Requests from my direct reports",
+      aria_la_filter:"Which requests to show",
+      hint_bulk_leave:"Bulk approval is only for requests without warnings. A rejection needs a reason, which the employee sees.",
+      lvw_overlap:"Overlaps {names}",
+      lvw_balance:"Balance goes negative",
+      lvw_cancel:"Cancellation of an approved absence",
+      lvw_retro:"Retroactive",
+      lvw_no_attachment:"No medical certificate",
+      hdr_decided_group:"Decided in this session",
+      text_la_none_pending:"Nothing left to approve. Choose All to see what was decided.",
+      aria_select_leave_for:"Select the request of {name}",
+      text_n_also_out:"{n} more out",
+      text_team_complete:"team complete",
+      btn_view_request:"Request details",
       view_day:"Day",
       view_week:"Week",
       view_month:"Month",
@@ -1522,6 +1538,22 @@
       row_confirm_cell:"Confirm cell and move down", row_show_list:"Show this list"
     },
     pt: {
+      nav_leave_approval:"Aprovação de ausências",
+      hdr_leave_approval:"Aprovação de ausências",
+      hdr_leave_from_reports:"Pedidos dos meus colaboradores diretos",
+      aria_la_filter:"Que pedidos mostrar",
+      hint_bulk_leave:"A aprovação em massa é só para os pedidos sem avisos. Rejeitar pede um motivo, que o colaborador vê.",
+      lvw_overlap:"Sobrepõe-se a {names}",
+      lvw_balance:"Saldo fica negativo",
+      lvw_cancel:"Cancelamento de ausência aprovada",
+      lvw_retro:"Retroativo",
+      lvw_no_attachment:"Sem atestado médico",
+      hdr_decided_group:"Decididos nesta sessão",
+      text_la_none_pending:"Nada por aprovar. Escolhe Todos para ver o que foi decidido.",
+      aria_select_leave_for:"Selecionar o pedido de {name}",
+      text_n_also_out:"mais {n} ausentes",
+      text_team_complete:"equipa completa",
+      btn_view_request:"Detalhe do pedido",
       view_day:"Dia",
       view_week:"Semana",
       view_month:"Mês",
@@ -2167,6 +2199,22 @@
       row_confirm_cell:"Confirmar célula e descer", row_show_list:"Mostrar esta lista"
     },
     fr: {
+      nav_leave_approval:"Approbation des absences",
+      hdr_leave_approval:"Approbation des absences",
+      hdr_leave_from_reports:"Demandes de mes collaborateurs directs",
+      aria_la_filter:"Quelles demandes afficher",
+      hint_bulk_leave:"L'approbation groupée concerne seulement les demandes sans avertissement. Un refus demande un motif, que le collaborateur voit.",
+      lvw_overlap:"Chevauche {names}",
+      lvw_balance:"Solde négatif",
+      lvw_cancel:"Annulation d'une absence approuvée",
+      lvw_retro:"Rétroactive",
+      lvw_no_attachment:"Sans certificat médical",
+      hdr_decided_group:"Décidées dans cette session",
+      text_la_none_pending:"Rien à approuver. Choisissez Tous pour voir ce qui a été décidé.",
+      aria_select_leave_for:"Sélectionner la demande de {name}",
+      text_n_also_out:"{n} autres absents",
+      text_team_complete:"équipe au complet",
+      btn_view_request:"Détail de la demande",
       view_day:"Jour",
       view_week:"Semaine",
       view_month:"Mois",
@@ -4028,7 +4076,7 @@
        count against whether the month can be submitted, so that count
        can't be reused here. */
     var errCount = renderMsgs(); renderKpis(errCount); renderApprovals(); renderTeam(); renderCats();
-    renderHome(); renderLeave(); renderLeaveMap(); renderNavBadges();
+    renderHome(); renderLeave(); renderLeaveApprovals(); renderLeaveMap(); renderNavBadges();
   }
 
   /* ---------- absences: a badge on the grid's day header, detail on hover ----------
@@ -6092,12 +6140,13 @@
   function showScreen(s){
     if(s === "cats" && state.screen !== "cats") state.prevScreen = state.screen;
     Array.prototype.forEach.call(document.querySelectorAll(".nav button"), function(x){ x.setAttribute("aria-current", x.dataset.screen === s ? "true" : "false"); });
-    ["home","semana","leave","team","aprov","cats"].forEach(function(k){ $("screen-"+k).hidden = k !== s; });
+    ["home","semana","leave","lvaprov","team","aprov","cats"].forEach(function(k){ $("screen-"+k).hidden = k !== s; });
     state.screen = s;
     placeAssistant(s);
     if(s === "cats"){ renderCats(); renderLeaveMap(); }
     if(s === "team") renderTeam();
     if(s === "leave") renderLeave();
+    if(s === "lvaprov") renderLeaveApprovals();
     if(s === "home") renderHome();
     window.scrollTo({top:0});
   }
@@ -6762,14 +6811,14 @@
       k.appendChild(lvKpi(t("kpi_absent_today"), absentOn(todayISO()).length));
     }
     ["lvMineWrap","lvMinePanel"].forEach(function(id){ $(id).hidden = mgrView; });
-    ["lvTeamPanel","lvBalPanel"].forEach(function(id){ $(id).hidden = !mgrView; });
+    /* approving lives in its own console now (Leave approval), as for timesheets */
+    $("lvTeamPanel").hidden = true;
+    $("lvBalPanel").hidden = !mgrView;
     $("lvTeamCalPanel").hidden = false;
-    if(mgrView){ renderLeaveQueue(); renderTeamBalances(); }
+    if(mgrView) renderTeamBalances();
     else { renderAccounts(); renderMyCalendar(); renderMyLeave(); }
     renderTeamCalendar();
-    var done = leaveDecidedThisSession();
-    $("lvDonePanel").hidden = !mgrView || !done.length;
-    if(mgrView && done.length) renderLeaveDone(done);
+    $("lvDonePanel").hidden = true;
   }
   /* ---- shared pieces ---- */
   function monthAdd(key, n){
@@ -7350,6 +7399,160 @@
     renderTeamCalendar();
   }
 
+  /* ---- the line manager: the leave approval console ----
+     The same shape as the timesheet approval console: requests without
+     warnings can be approved together, the exceptions (an overlap in the
+     team, a balance going negative, a cancellation, a retroactive request,
+     sick leave without a certificate) one by one, each line opening its
+     days with who else is off. "All" brings back what was decided in this
+     session, read only. */
+  function leaveWarnings(r){
+    var out = [];
+    if(r.cancelRequested) out.push(t("lvw_cancel"));
+    var ov = leaveOverlaps(r);
+    if(ov.length) out.push(t("lvw_overlap", {names: ov.map(function(o){ return o.EmployeeName.split(" ")[0]; }).filter(function(n, i, a){ return a.indexOf(n) === i; }).join(", ")}));
+    var after = leaveAvailableAfter(r);
+    if(after !== null && after < 0) out.push(t("lvw_balance"));
+    if(r.StartDate < todayISO() && !r.cancelRequested) out.push(t("lvw_retro"));
+    var ty = absType(r.AbsenceTypeCode);
+    if(ty && ty.attach === "required" && !r.Attachment) out.push(t("lvw_no_attachment"));
+    return out;
+  }
+  function renderLeaveApprovals(){
+    var body = $("laBody");
+    if(!body || state.role !== "manager") return;
+    var mgr = lineManager();
+    $("laActingAs").textContent = mgr.name + " · " + mgr.role;
+    $("laSub").textContent = t("text_leave_sub_manager", {name: mgr.name});
+    state.laSel = state.laSel || {};
+    state.laExp = state.laExp || {};
+    var q = leaveQueue();
+    Object.keys(state.laSel).forEach(function(k){ if(!q.some(function(r){ return lvSelKey(r) === k; })) delete state.laSel[k]; });
+    var clean = q.filter(function(r){ return !leaveWarnings(r).length; });
+    var flagged = q.filter(function(r){ return leaveWarnings(r).length; });
+    $("laPend").textContent = q.length;
+    $("laDays").innerHTML = fmtDays(q.reduce(function(a, r){ return a + (r.cancelRequested ? 0 : leaveDays(r)); }, 0)) + "<small> " + t("unit_days") + "</small>";
+    $("laWarn").textContent = flagged.length;
+    $("laSoon").textContent = q.filter(function(r){ return daysUntil(r.StartDate) <= 14; }).length;
+    var showAll = state.laFilter === "all";
+    Array.prototype.forEach.call(document.querySelectorAll("#laFilter button"), function(b){
+      b.setAttribute("aria-pressed", (b.dataset.f === "all") === showAll ? "true" : "false");
+    });
+    body.innerHTML = "";
+    function row(r, decided){
+      var key = lvSelKey(r), warns = decided ? [] : leaveWarnings(r);
+      var tr = document.createElement("tr");
+      var c1 = document.createElement("td");
+      var cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.checked = !decided && !warns.length && !!state.laSel[key];
+      cb.disabled = decided || warns.length > 0;
+      cb.setAttribute("aria-label", t("aria_select_leave_for", {name: r.EmployeeName}));
+      cb.onchange = function(){ if(cb.checked) state.laSel[key] = true; else delete state.laSel[key]; laSelSync(); };
+      c1.appendChild(cb);
+      tr.appendChild(c1);
+      var c2 = document.createElement("td");
+      var who = document.createElement("button");
+      who.type = "button";
+      who.className = "apwho";
+      who.setAttribute("aria-expanded", state.laExp[key] ? "true" : "false");
+      var chev = el("span","apchev", state.laExp[key] ? "▾" : "▸");
+      var wtxt = el("span","","");
+      wtxt.appendChild(el("div","who", r.EmployeeName));
+      wtxt.appendChild(el("div","sub", (r.role || t("role_employee")) + " · " + r.RequestID));
+      who.appendChild(chev); who.appendChild(wtxt);
+      who.onclick = function(){ state.laExp[key] = !state.laExp[key]; renderLeaveApprovals(); };
+      c2.appendChild(who);
+      tr.appendChild(c2);
+      var c3 = document.createElement("td");
+      c3.appendChild(el("div","", absTypeLabel(r)));
+      if(r.cancelRequested) c3.appendChild(el("div","sub", t("text_cancellation")));
+      else if(r.Notes) c3.appendChild(el("div","sub", r.Notes));
+      tr.appendChild(c3);
+      var c4 = document.createElement("td");
+      c4.appendChild(el("div","", leavePeriodLabel(r)));
+      var du = daysUntil(r.StartDate);
+      if(!decided) c4.appendChild(el("div","sub", du === 0 ? t("text_starts_today_or_past") : plural(du, "text_starts_in_days")));
+      tr.appendChild(c4);
+      tr.appendChild(td2(leaveDurationLabel(r), "n"));
+      var after = decided ? null : leaveAvailableAfter(r);
+      tr.appendChild(td2(after === null ? "–" : fmtDays(after) + " " + t("unit_days"), "n" + (after !== null && after < 0 ? " neg" : "")));
+      var c7 = document.createElement("td");
+      if(decided) c7.appendChild(el("span","chip " + (r.decision === "approved" ? "green" : "grey"), t(r.decision === "approved" ? "chip_approved" : "chip_rejected")));
+      else if(warns.length) warns.forEach(function(w){ c7.appendChild(el("span","chip amber", w)); });
+      else c7.appendChild(el("span","chip blue", t("chip_in_approval")));
+      tr.appendChild(c7);
+      body.appendChild(tr);
+      if(state.laExp[key]){
+        var dtr = document.createElement("tr");
+        dtr.className = "apdetail";
+        var dtd = document.createElement("td");
+        dtd.colSpan = 7;
+        var days = el("div","apdays","");
+        eachLeaveDay(r, function(d){
+          var others = absentOn(d).filter(function(o){ return o.EmployeeID !== r.EmployeeID; });
+          var chip = el("span","apday" + (others.length ? " busy" : ""), fmtDateShort(d) + " · " + (others.length ? t("text_n_also_out", {n: others.length}) : t("text_team_complete")));
+          if(others.length) chip.title = others.map(function(o){ return o.EmployeeName; }).join(", ");
+          days.appendChild(chip);
+        });
+        dtd.appendChild(days);
+        var info = [];
+        if(r.Attachment) info.push("📎 " + r.Attachment);
+        if(r.ApproverComment) info.push("“" + r.ApproverComment + "”");
+        if(info.length) dtd.appendChild(el("p","sub", info.join(" · ")));
+        var acts = el("div","lvacts laacts","");
+        if(!decided){
+          acts.appendChild(btn(t("btn_approve"), "btn sm primary", function(){
+            decideLeave(r, true, "");
+            toast(t(r.decisionKind === "cancel" ? "toast_leave_cancel_approved" : "toast_leave_approved", {name: r.EmployeeName, id: r.RequestID}));
+          }));
+          acts.appendChild(btn(t("btn_reject"), "btn sm", function(){ openRejectLeave(r); }));
+        }
+        acts.appendChild(btn(t("btn_view_request"), "btn sm", function(){ openLeaveDetail(r); }));
+        dtd.appendChild(acts);
+        dtr.appendChild(dtd);
+        body.appendChild(dtr);
+      }
+    }
+    function group(title, list, decided){
+      if(!list.length) return;
+      var gh = document.createElement("tr");
+      gh.className = "grouphead";
+      var td = document.createElement("td");
+      td.colSpan = 7; td.textContent = title;
+      gh.appendChild(td); body.appendChild(gh);
+      list.forEach(function(r){ row(r, decided); });
+    }
+    group(t("hdr_no_warnings_group"), clean, false);
+    group(t("hdr_exceptions_group"), flagged, false);
+    if(showAll) group(t("hdr_decided_group"), leaveDecidedThisSession(), true);
+    if(!body.children.length){
+      var er = document.createElement("tr");
+      var et = td2(t("text_la_none_pending"), "sub");
+      et.colSpan = 7;
+      er.appendChild(et);
+      body.appendChild(er);
+    }
+    $("laSelClean").textContent = plural(clean.length, "btn_select_clean");
+    $("laSelClean").disabled = !clean.length;
+    $("laAll").disabled = !clean.length;
+    laSelSync();
+  }
+  function laSelSync(){
+    var q = leaveQueue().filter(function(r){ return !leaveWarnings(r).length; });
+    var n = q.filter(function(r){ return state.laSel[lvSelKey(r)]; }).length;
+    $("laSel").textContent = plural(n, "n_selected");
+    $("laApprove").disabled = !n;
+    $("laAll").checked = q.length > 0 && n === q.length;
+  }
+  function approveLeaveConsole(){
+    var picked = leaveQueue().filter(function(r){ return state.laSel[lvSelKey(r)] && !leaveWarnings(r).length; });
+    picked.forEach(function(r){ decideLeave(r, true, ""); });
+    state.laSel = {};
+    render();
+    if(picked.length) toast(plural(picked.length, "n_leave_approved"));
+  }
+
   /* ---- the line manager: team balances, and recording on behalf ---- */
   function renderTeamBalances(){
     var body = $("lvBalBody");
@@ -7614,7 +7817,7 @@
     });
     ap.appendChild(list);
     var f1 = el("div","gridfoot","");
-    f1.appendChild(btn(t("btn_open_leave_approvals"), "btn primary", function(){ clickNav("leave"); }));
+    f1.appendChild(btn(t("btn_open_leave_approvals"), "btn primary", function(){ clickNav("lvaprov"); }));
     ap.appendChild(f1);
     side.appendChild(ap);
 
@@ -7698,7 +7901,7 @@
   /* A count on the Leave Request tab for whoever is acting as manager:
      the same alert the assistant gives, visible from any screen. */
   function renderNavBadges(){
-    setNavBadge("tab-leave", state.role === "manager" ? leaveQueue().length : 0);
+    setNavBadge("tab-lvaprov", state.role === "manager" ? leaveQueue().length : 0);
     setNavBadge("tab-aprov", state.role === "pm" ? tsQueue().filter(function(a){ return !a.approved; }).length : 0);
   }
   function setNavBadge(id, n){
@@ -7724,7 +7927,7 @@
   var PROFILE_TABS = {
     employee: ["home","semana","leave"],
     pm:       ["home","semana","team","aprov"],
-    manager:  ["home","leave"]
+    manager:  ["home","lvaprov","leave"]
   };
   function currentActor(){
     if(state.role === "pm") return {name: leaderById(state.leader).name, label: t("profile_pm")};
@@ -9033,7 +9236,11 @@
     botSay("bot",t("bot_switched_to", {screen: label}));
   }
   function goToTeamScreen(){ goToScreen("team",t("nav_team")); }
-  function goToApprovalScreen(){ goToScreen("aprov",t("nav_approval")); }
+  /* the line manager's approvals are leave requests, in their own console */
+  function goToApprovalScreen(){
+    if(state.role === "manager") goToScreen("lvaprov", t("nav_leave_approval"));
+    else goToScreen("aprov",t("nav_approval"));
+  }
   function goToCatsScreen(){ goToScreen("cats",t("nav_cats")); }
   function showSuggestionsPanel(){
     var vis = visibleSugs();
@@ -10596,6 +10803,18 @@
   if($("lvShowTeam")) $("lvShowTeam").onchange = function(){ state.lvShowTeam = $("lvShowTeam").checked; renderMyCalendar(); };
   Array.prototype.forEach.call(document.querySelectorAll("#lvFilter button"), function(b){ b.onclick = function(){ state.lvFilter = b.dataset.f; renderMyLeave(); }; });
   if($("lvMassApprove")) $("lvMassApprove").onclick = approveSelectedLeave;
+  if($("laApprove")) $("laApprove").onclick = approveLeaveConsole;
+  if($("laSelClean")) $("laSelClean").onclick = function(){
+    state.laSel = {};
+    leaveQueue().forEach(function(r){ if(!leaveWarnings(r).length) state.laSel[lvSelKey(r)] = true; });
+    renderLeaveApprovals();
+  };
+  if($("laAll")) $("laAll").onchange = function(){
+    state.laSel = {};
+    if($("laAll").checked) leaveQueue().forEach(function(r){ if(!leaveWarnings(r).length) state.laSel[lvSelKey(r)] = true; });
+    renderLeaveApprovals();
+  };
+  Array.prototype.forEach.call(document.querySelectorAll("#laFilter button"), function(b){ b.onclick = function(){ state.laFilter = b.dataset.f; renderLeaveApprovals(); }; });
   if($("lvSelAll")) $("lvSelAll").onchange = function(){
     state.lvSel = {};
     if($("lvSelAll").checked) leaveQueue().forEach(function(r){ state.lvSel[lvSelKey(r)] = true; });

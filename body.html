@@ -15,6 +15,7 @@
 <nav class="nav" role="tablist">
   <button role="tab" id="tab-home" aria-current="true" data-screen="home" data-i18n="nav_home">Assistant</button>
   <button role="tab" id="tab-semana" aria-current="false" data-screen="semana" data-i18n="nav_my_timesheet">My Timesheet</button>
+  <button role="tab" id="tab-lvaprov" aria-current="false" data-screen="lvaprov" data-i18n="nav_leave_approval">Leave approval</button>
   <button role="tab" id="tab-leave" aria-current="false" data-screen="leave" data-i18n="nav_leave">Leave Request</button>
   <button role="tab" id="tab-team" data-screen="team" data-i18n="nav_team">Team (mass entry)</button>
   <button role="tab" id="tab-aprov" data-screen="aprov" data-i18n="nav_approval">Approval (manager)</button>
@@ -481,6 +482,51 @@
         </table>
       </div>
       <div class="gridfoot"><button type="button" class="hinttip" data-i18n-title="hint_bulk_approval" title="Bulk approval is only available for rows without warnings. Rejection requires a reason, per the SAP standard.">?</button></div>
+    </div>
+  </section>
+
+  <!-- ============ leave approval console, the same shape as the timesheet one ============ -->
+  <section id="screen-lvaprov" hidden>
+    <div class="pagehead">
+      <div class="top">
+        <div class="weeknav"><span class="label" data-i18n="hdr_leave_approval">Leave approval</span></div>
+        <span class="chip blue" id="laSel">0 selected</span>
+        <div class="spacer"></div>
+        <label class="coswitch"><span data-i18n="label_acting_as">Acting as</span><b id="laActingAs"></b></label>
+        <button class="btn" id="laSelClean">Select the requests without warnings</button>
+        <button class="btn primary" id="laApprove" disabled data-i18n="btn_approve_selected">Approve selected</button>
+      </div>
+      <p class="sub" id="laSub" style="margin:6px 0 0; font-size:var(--fs-sm); color:var(--ink-3)"></p>
+      <div class="kpis">
+        <div class="kpi"><span class="k" data-i18n="kpi_leave_pending">Pending</span><span class="v" id="laPend">0</span></div>
+        <div class="kpi"><span class="k" data-i18n="kpi_leave_days_requested">Days requested</span><span class="v" id="laDays">0</span></div>
+        <div class="kpi"><span class="k" data-i18n="kpi_with_warnings">With warnings</span><span class="v" id="laWarn" style="color:var(--warn)">0</span></div>
+        <div class="kpi"><span class="k" data-i18n="kpi_leave_soon">Starting in the next 14 days</span><span class="v" id="laSoon">0</span></div>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-top:16px">
+      <header>
+        <h2 data-i18n="hdr_leave_from_reports">Requests from my direct reports</h2>
+        <div class="seg" role="group" id="laFilter" data-i18n-aria="aria_la_filter" aria-label="Which requests to show">
+          <button type="button" data-f="pending" aria-pressed="true" data-i18n="filter_pending">To approve</button>
+          <button type="button" data-f="all" aria-pressed="false" data-i18n="filter_all">All</button>
+        </div>
+        <span class="chip grey" data-i18n="chip_integrates">Integrates with My Inbox and SAP Task Center</span>
+      </header>
+      <div class="tablescroll">
+        <table class="lr">
+          <thead>
+            <tr>
+              <th style="width:34px"><input type="checkbox" id="laAll" data-i18n-aria="aria_select_all" aria-label="Select all"></th>
+              <th data-i18n="th_employee">Employee</th><th data-i18n="th_type">Type</th><th data-i18n="th_period">Period</th>
+              <th style="text-align:right" data-i18n="th_duration">Duration</th><th style="text-align:right" data-i18n="th_balance_after">Balance after</th><th data-i18n="th_status">Status</th>
+            </tr>
+          </thead>
+          <tbody id="laBody"></tbody>
+        </table>
+      </div>
+      <div class="gridfoot"><button type="button" class="hinttip" data-i18n-title="hint_bulk_leave" title="Bulk approval is only for requests without warnings. A rejection needs a reason, which the employee sees.">?</button></div>
     </div>
   </section>
 

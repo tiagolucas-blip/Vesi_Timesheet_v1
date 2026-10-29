@@ -118,7 +118,7 @@ export const FUNCTIONS = [
   },
   { name: "consultar_semana", description: "Total registado, esperado e erros de validação", parameters: { type: "object", properties: {} } },
   { name: "ir_para_equipa", description: "Mudar para o ecrã Team (mass entry), onde o líder lança horas, allowances ou bónus em massa para a equipa", parameters: { type: "object", properties: {} } },
-  { name: "ir_para_aprovacao", description: "Mudar para o ecrã Approval (manager), onde os timesheets da equipa são aprovados", parameters: { type: "object", properties: {} } },
+  { name: "ir_para_aprovacao", description: "Abrir a consola de aprovação de quem está a testar: para o gestor de projeto, a aprovação das timesheets da equipa; para a chefia, a aprovação de ausências", parameters: { type: "object", properties: {} } },
   { name: "ir_para_cats", description: "Abrir o mapeamento SAP, a referência técnica do que cada ação grava no CATS e no Leave Request. Não tem separador próprio: abre-se pelas Definições, ou por esta função, para qualquer perfil", parameters: { type: "object", properties: {} } },
   { name: "listar_ausencias", description: "Ausências da semana e capacidade por dia", parameters: { type: "object", properties: {} } },
   { name: "copiar_semana", description: "Copiar a estrutura da semana anterior, sem durações", parameters: { type: "object", properties: {} } },

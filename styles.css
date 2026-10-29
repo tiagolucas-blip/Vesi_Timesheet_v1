@@ -699,3 +699,8 @@
   .tacempty{padding:24px; color:var(--ink-3); font-size:var(--fs-sm)}
   .tacpanel.full{position:fixed; inset:12px; z-index:70; margin:0 !important; overflow:auto; box-shadow:var(--shadow)}
   .tacpanel.full .taclist{max-height:none}
+
+  .apday.busy{border-color:var(--warn); color:var(--warn)}
+  .laacts{justify-content:flex-start; margin-top:8px}
+  tr.apdetail .sub{margin:8px 0 0}
+  #laBody td .chip + .chip{margin-left:4px}
