@@ -341,8 +341,29 @@
       <div class="kpis" id="lvKpis"></div>
     </div>
 
+    <!-- employee: accounts, calendar, requests -->
+    <div class="lvgrid" id="lvMineWrap">
+      <div class="panel" id="lvAccPanel">
+        <header><h2 data-i18n="hdr_time_accounts">Time accounts</h2>
+          <label class="lvasof"><span data-i18n="label_balance_as_of">Balance as of</span><input type="date" id="lvAsOf"></label></header>
+        <div class="lvacc" id="lvAccBody"></div>
+      </div>
+      <div class="panel" id="lvCalPanel">
+        <header><h2 data-i18n="hdr_my_calendar">My calendar</h2>
+          <div class="lvmonthnav"><button type="button" class="arrow" id="lvCalPrev" data-i18n-aria="aria_prev_month" aria-label="Previous month">&#8249;</button><b id="lvCalLabel"></b><button type="button" class="arrow" id="lvCalNext" data-i18n-aria="aria_next_month" aria-label="Next month">&#8250;</button></div>
+          <button type="button" class="btn sm" id="lvCalToday" data-i18n="btn_today">Today</button>
+          <label class="lvchk"><input type="checkbox" id="lvShowTeam"> <span data-i18n="label_show_team">Show my team's absences</span></label>
+        </header>
+        <p class="lvhint" id="lvCalHint"></p>
+        <div class="lvcal" id="lvCal"></div>
+        <div class="lvlegend" id="lvCalLegend"></div>
+      </div>
+    </div>
+
     <div class="panel" id="lvMinePanel" style="margin-top:16px">
-      <header><h2 data-i18n="hdr_my_leave_requests">My leave requests</h2><span class="chip grey" id="lvMineCount">0 requests</span></header>
+      <header><h2 data-i18n="hdr_my_leave_requests">My leave requests</h2><span class="chip grey" id="lvMineCount">0 requests</span>
+        <div class="seg" role="group" id="lvFilter"><button type="button" data-f="upcoming" data-i18n="filter_upcoming">Upcoming</button><button type="button" data-f="history" data-i18n="filter_history">History</button><button type="button" data-f="all" data-i18n="filter_all">All</button></div>
+      </header>
       <div class="tablescroll">
         <table class="lr">
           <thead><tr>
@@ -355,16 +376,44 @@
       <div class="privacy" data-i18n="privacy_leave_sync">Requests go through the standard Leave Request service and its approval workflow, never through the timesheet.</div>
     </div>
 
+    <!-- line manager: approvals, team calendar, balances -->
     <div class="panel" id="lvTeamPanel" style="margin-top:16px" hidden>
-      <header><h2 data-i18n="hdr_leave_to_approve">Leave requests to approve</h2><span class="chip grey" id="lvTeamCount">0 requests</span></header>
+      <header><h2 data-i18n="hdr_leave_to_approve">Leave requests to approve</h2><span class="chip grey" id="lvTeamCount">0 requests</span>
+        <button type="button" class="btn sm primary" id="lvMassApprove" disabled>Approve selected</button></header>
       <div class="tablescroll">
         <table class="lr">
           <thead><tr>
+            <th style="width:32px"><input type="checkbox" id="lvSelAll" data-i18n-aria="aria_select_all" aria-label="Select all"></th>
             <th data-i18n="th_employee">Employee</th><th data-i18n="th_type">Type</th><th data-i18n="th_period">Period</th>
             <th style="text-align:right" data-i18n="th_duration">Duration</th><th style="text-align:right" data-i18n="th_balance_after">Balance after</th>
             <th data-i18n="th_overlap">Team overlap</th><th></th>
           </tr></thead>
           <tbody id="lvTeamBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel" id="lvTeamCalPanel" style="margin-top:16px" hidden>
+      <header><h2 data-i18n="hdr_team_calendar">Team absence calendar</h2>
+        <div class="lvmonthnav"><button type="button" class="arrow" id="lvTcPrev" data-i18n-aria="aria_prev_month" aria-label="Previous month">&#8249;</button><b id="lvTcLabel"></b><button type="button" class="arrow" id="lvTcNext" data-i18n-aria="aria_next_month" aria-label="Next month">&#8250;</button></div>
+        <button type="button" class="btn sm" id="lvTcToday" data-i18n="btn_today">Today</button>
+        <div class="seg" role="group" id="lvTcStatus"><button type="button" data-s="all" data-i18n="filter_all">All</button><button type="button" data-s="approved" data-i18n="filter_approved">Approved</button><button type="button" data-s="pending" data-i18n="filter_pending">Pending</button></div>
+        <select class="lvsel" id="lvTcType" data-i18n-aria="label_absence_type" aria-label="Absence type"></select>
+      </header>
+      <div class="tablescroll"><table class="tcal" id="lvTcTable"></table></div>
+      <div class="lvlegend" id="lvTcLegend"></div>
+    </div>
+
+    <div class="panel" id="lvBalPanel" style="margin-top:16px" hidden>
+      <header><h2 data-i18n="hdr_team_balances">Team vacation balances</h2><span class="chip grey" id="lvBalYear"></span></header>
+      <div class="tablescroll">
+        <table class="lr">
+          <thead><tr>
+            <th data-i18n="th_team_member">Team member</th><th style="text-align:right" data-i18n="acc_entitlement">Entitlement</th>
+            <th style="text-align:right" data-i18n="acc_taken">Taken</th><th style="text-align:right" data-i18n="acc_planned">Planned</th>
+            <th style="text-align:right" data-i18n="acc_pending">Pending</th><th style="text-align:right" data-i18n="acc_available">Available</th><th></th>
+          </tr></thead>
+          <tbody id="lvBalBody"></tbody>
         </table>
       </div>
     </div>
@@ -617,7 +666,7 @@
 </form></dialog>
 
 <dialog id="dlgLeave"><form class="dlg" method="dialog">
-  <header><h3 data-i18n="dlg_new_leave_title">New leave request</h3></header>
+  <header><h3 id="lvDlgTitle" data-i18n="dlg_new_leave_title">New leave request</h3></header>
   <div class="body">
     <div class="field"><label for="lvType" data-i18n="label_absence_type">Absence type</label><select id="lvType"></select></div>
     <div class="two">
@@ -632,6 +681,7 @@
       <div class="field"><label for="lvBeg" data-i18n="label_start">Start</label><input type="time" id="lvBeg" value="09:00"></div>
       <div class="field"><label for="lvFin" data-i18n="label_end">End</label><input type="time" id="lvFin" value="13:00"></div>
     </div>
+    <div class="field" id="lvAttWrap" hidden><label for="lvAtt"><span data-i18n="label_attachment">Attachment</span> <span class="lvattlbl" id="lvAttHint"></span></label><input type="file" id="lvAtt"><span class="lvattlbl" id="lvAttCur"></span></div>
     <div class="field"><label for="lvNote" data-i18n="label_note">Note</label><input type="text" id="lvNote" maxlength="120" data-i18n-placeholder="placeholder_leave_note" placeholder="Optional, the manager sees it"></div>
     <div class="lvsum" id="lvSummary"></div>
     <div class="msgs" id="lvMsgs"></div>
@@ -640,6 +690,23 @@
     <button class="btn" id="lvCancel" value="cancel" formnovalidate data-i18n="btn_cancel">Cancel</button>
     <button class="btn primary" id="lvSubmit" value="save" data-i18n="btn_send_request">Send request</button>
   </footer>
+</form></dialog>
+
+<dialog id="dlgLvDetail"><form class="dlg" method="dialog">
+  <header><h3 id="ldTitle">Leave request</h3><span class="chip" id="ldStatus"></span></header>
+  <div class="body" id="ldBody"></div>
+  <footer id="ldActs"></footer>
+</form></dialog>
+
+<dialog id="dlgAccount"><form class="dlg" method="dialog">
+  <header><h3 id="acTitle">Vacation</h3></header>
+  <div class="body">
+    <div class="tablescroll"><table class="lr">
+      <thead><tr><th data-i18n="th_date">Date</th><th data-i18n="th_movement">Movement</th><th style="text-align:right" data-i18n="th_days">Days</th><th data-i18n="th_status">Status</th></tr></thead>
+      <tbody id="acBody"></tbody>
+    </table></div>
+  </div>
+  <footer><button class="btn" value="cancel" data-i18n="btn_close">Close</button></footer>
 </form></dialog>
 
 <dialog id="dlgReject"><form class="dlg" method="dialog">
