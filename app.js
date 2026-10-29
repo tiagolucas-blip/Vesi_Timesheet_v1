@@ -7248,15 +7248,18 @@
         ex.onclick = function(){ st.expanded[pp.id] = !st.expanded[pp.id]; renderTeamCalendar(); };
         row.appendChild(ex);
       } else row.appendChild(el("span","",""));
+      /* the whole line is the label: the box, the picture or the name all
+         show or hide the person */
+      var lab = el("label","tacpl","");
       var cb = document.createElement("input");
       cb.type = "checkbox";
       cb.checked = !st.hidden[pp.id];
-      cb.setAttribute("aria-label", pp.name);
       cb.onchange = function(){ if(cb.checked) delete st.hidden[pp.id]; else st.hidden[pp.id] = true; renderTeamCalendar(); };
-      row.appendChild(cb);
-      row.appendChild(avatar(pp.name));
-      row.appendChild(el("span","nm", pp.name + (pp.self ? " (" + t("text_you_suffix") + ")" : "")));
-      row.appendChild(el("span","cnt", pp.subs ? String(pp.subs) : ""));
+      lab.appendChild(cb);
+      lab.appendChild(avatar(pp.name));
+      lab.appendChild(el("span","nm", pp.name + (pp.self ? " (" + t("text_you_suffix") + ")" : "")));
+      lab.appendChild(el("span","cnt", pp.subs ? String(pp.subs) : ""));
+      row.appendChild(lab);
       list.appendChild(row);
     });
     var shown = matching.filter(function(pp){ return !st.hidden[pp.id] && (!st.absentOnly || absentIds[pp.id]); });
@@ -8423,7 +8426,7 @@
   ].forEach(function(r){ ROAD_KM[kmKey(r[0], r[1])] = r[2]; });
   /* where a trip starts when only the destination is said */
   var OFFICE_PLACE = {PT01:"Lisboa", PT02:"Porto"};
-  function foldText(s){ return String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); }
+  function foldText(s){ return String(s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); }
   function placeLabel(p){ return (state.lang === "en" && p.en) || (state.lang === "fr" && p.fr) || p.name; }
   function placeByName(name){
     var f = foldText(name).trim().replace(/^(o|a|the|le|la)\s+/, "");

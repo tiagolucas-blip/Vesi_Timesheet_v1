@@ -661,7 +661,10 @@
   .tacsidehd{font-weight:600; font-size:var(--fs-sm)}
   .tacsearch{width:100%}
   .taclist{display:flex; flex-direction:column; gap:2px; max-height:420px; overflow:auto}
-  .tacp{display:grid; grid-template-columns:16px 18px 26px minmax(0, 1fr) auto; align-items:center; gap:6px; padding:5px 6px; border-radius:var(--radius); font-size:var(--fs-sm)}
+  .tacp{display:grid; grid-template-columns:16px minmax(0, 1fr); align-items:center; gap:6px; padding:0 6px; border-radius:var(--radius); font-size:var(--fs-sm)}
+  .tacpl{display:grid; grid-template-columns:18px 26px minmax(0, 1fr) auto; align-items:center; gap:6px; padding:5px 0; cursor:pointer; min-width:0}
+  .tacp:hover{background:var(--surface-2)}
+  .tacp.on:hover{filter:brightness(.97)}
   .tacp.on{background:var(--accent-soft)}
   .tacp.lvl1{padding-left:26px}
   .tacp .exp{background:none; border:none; padding:0; color:var(--ink-2); cursor:pointer; font-size:12px; width:16px}
