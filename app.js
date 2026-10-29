@@ -822,6 +822,7 @@
      messages are a separate follow-up, not covered here yet. */
   var I18N = {
     en: {
+      bot_lang_followed:"Switched to English, the language you're writing in. You can change it in Settings.",
       chip_not_your_project:"{code} isn't one of your projects",
       bot_which_project_for:"Which project should the {dur} h on {when} go to?",
       bot_which_project_fill:"Which project should the missing hours go to?",
@@ -1367,6 +1368,7 @@
       row_confirm_cell:"Confirm cell and move down", row_show_list:"Show this list"
     },
     pt: {
+      bot_lang_followed:"Passei para português, a língua em que estás a escrever. Podes mudar nas Definições.",
       chip_not_your_project:"{code} não é um dos teus projetos",
       bot_which_project_for:"Em que projeto registo as {dur} h de {when}?",
       bot_which_project_fill:"Em que projeto registo as horas em falta?",
@@ -1905,6 +1907,7 @@
       row_confirm_cell:"Confirmar célula e descer", row_show_list:"Mostrar esta lista"
     },
     fr: {
+      bot_lang_followed:"Passage au français, la langue dans laquelle vous écrivez. Vous pouvez la changer dans les Paramètres.",
       chip_not_your_project:"{code} ne fait pas partie de vos projets",
       bot_which_project_for:"Sur quel projet dois-je saisir les {dur} h de {when} ?",
       bot_which_project_fill:"Sur quel projet dois-je saisir les heures manquantes ?",
@@ -2556,7 +2559,9 @@
     lang: (function(){
       try{
         var saved = localStorage.getItem("vesiLang");
-        return I18N[saved] ? saved : "en";
+        if(I18N[saved]) return saved;
+        var nav = String(navigator.language || "").slice(0, 2).toLowerCase();
+        return I18N[nav] ? nav : "en";
       }catch(e){ return "en"; }
     })(),
     submitted: WEEKS[weekIdx].submitted,
@@ -7055,6 +7060,54 @@
     chat.greeted = true;
     assistantGreet();
   }
+  /* ---------- the language the person writes in ----------
+     The assistant answers in the language of the message, not only the
+     one picked in the selector: a message clearly in Portuguese, English
+     or French switches the whole app to it, with a line in the chat
+     saying so. Only distinctive words count, project names are left out
+     (they're English in every language) and a chip the assistant offered
+     never switches anything. */
+  var LANG_WORDS = {
+    pt: "ontem hoje amanhã amanha anteontem segunda terça terca quarta quinta sexta sábado sabado domingo horas hora férias ferias consulta médica medica " +
+        "ausência ausencia ausências ausencias pedido pedidos semana mês projeto projecto registar regista registo quero queria preciso tenho quantas quantos " +
+        "para com não nao sim olá ola obrigado obrigada bom boa aprovar aprova rejeitar submeter saldo quilómetros quilometros ida volta dos das uma " +
+        "mostra mostrar ver estou está esta minhas meus minha meu equipa todos dias formação formacao doença doenca falta janeiro fevereiro março marco " +
+        "abril maio junho julho agosto setembro outubro novembro dezembro também tambem fiz fui trabalhei porque mudar escritório escritorio casa ajuda",
+    en: "yesterday today tomorrow monday tuesday wednesday thursday friday saturday sunday hours hour the my what how many much log record please show " +
+        "vacation holiday leave doctor request requests approve reject submit week month project for from with have can you is are january february " +
+        "march april may june july august september october november december balance mileage round trip team everyone sick hello thanks worked went " +
+        "need want would like help change office home i'm i've don't",
+    fr: "hier aujourd'hui demain lundi mardi mercredi jeudi vendredi samedi dimanche heures heure congés conges médecin medecin demande demandes semaine " +
+        "mois projet je j'ai les des du au aux pour avec sont combien montre montrer approuver refuser soumettre solde aller retour équipe equipe " +
+        "tous bonjour merci oui non janvier février fevrier avril juin juillet août aout septembre octobre novembre décembre decembre et en suis veux " +
+        "voudrais besoin travaillé travaille aide bureau maison"
+  };
+  var LANG_SETS = {};
+  Object.keys(LANG_WORDS).forEach(function(l){ LANG_SETS[l] = {}; LANG_WORDS[l].split(" ").forEach(function(w){ LANG_SETS[l][w] = true; }); });
+  function detectMessageLang(txt){
+    if((chat.lastChips || []).indexOf(String(txt).trim()) !== -1) return "";
+    var skip = {};
+    PROJECTS.forEach(function(pr){ pr.name.toLowerCase().split(/[^a-zà-ÿ]+/).forEach(function(w){ if(w) skip[w] = true; }); });
+    var score = {pt:0, en:0, fr:0};
+    String(txt).toLowerCase().split(/[^a-zà-ÿ']+/).forEach(function(w){
+      w = w.replace(/^'+|'+$/g, "");
+      if(!w || skip[w]) return;
+      Object.keys(score).forEach(function(l){ if(LANG_SETS[l][w]) score[l]++; });
+    });
+    var ranked = Object.keys(score).sort(function(a, b){ return score[b] - score[a]; });
+    var best = ranked[0], second = ranked[1];
+    /* clearly ahead, or nothing to go on */
+    if(score[best] < 1 || score[best] <= 2 * score[second]) return "";
+    return best;
+  }
+  /* switched before the message is shown: on a first message the
+     greeting is redone in the new language, and the message stays */
+  function followMessageLang(txt){
+    var lang = detectMessageLang(txt);
+    if(!lang || lang === state.lang) return false;
+    setLang(lang);
+    return true;
+  }
   function assistantRoleChanged(){
     var a = currentActor();
     var log = $("jlog");
@@ -7829,6 +7882,7 @@
   function botChips(list){
     var box = $("jchips");
     box.innerHTML = "";
+    chat.lastChips = (list || []).slice();
     (list || []).forEach(function(t){
       box.appendChild(btn(t,"btn sm", function(){ botHandle(t); }));
     });
@@ -8496,7 +8550,9 @@
   }
   async function botHandleTurn(txt){
     if(!txt || !txt.trim()) return;
+    var langSwitched = followMessageLang(txt);
     botSay("me", txt);
+    if(langSwitched && $("jlog")) $("jlog").appendChild(el("div","jdivider", t("bot_lang_followed")));
     botChips([]);
     chat.history.push({role:"user", content:txt});
     showTyping();
@@ -8594,7 +8650,7 @@
     /* absences */
     if(/absen|vacation|holiday|leave|time off/.test(low)){ showAbsences(); return; }
     /* week status */
-    if(/how many hours|week status|status|summary|how('| i)?s (the week|it going)|check (the|my) week/.test(low)){ showWeekStatus(); return; }
+    if(/how many hours|week status|status|summary|how('| i)?s (the week|it going)|check (the|my) week|quantas horas|estado da semana|resumo|como (est[áa]|vai) a semana|combien d'heures|[ée]tat de la semaine|r[ée]sum[ée]/.test(low)){ showWeekStatus(); return; }
     /* suggestions */
     if(/suggest/.test(low) && !/high.confidence/.test(low)){ showSuggestionsPanel(); return; }
     if(/high.confidence/.test(low)){ offerApplyHighConfidence(); return; }

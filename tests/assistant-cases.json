@@ -1102,6 +1102,89 @@
           ]
         }
       ]
+    },
+    {
+      "id": "lang-pt-message-in-en-app",
+      "lang": "en",
+      "why": "comment: wrote in Portuguese and the assistant answered in English",
+      "steps": [
+        {
+          "say": "2h BNK ontem",
+          "expect": [
+            "Confirmas este lançamento?",
+            "Ter 27",
+            "BNK-2026"
+          ],
+          "absent": [
+            "Confirm this entry"
+          ]
+        },
+        {
+          "confirm": true,
+          "expect": [
+            "gravadas em Ter 27"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "lang-en-message-in-pt-app",
+      "lang": "pt",
+      "steps": [
+        {
+          "say": "vacation 3 to 6 November",
+          "expect": [
+            "Here's the request",
+            "Vacation"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "lang-fr-message-in-en-app",
+      "lang": "en",
+      "steps": [
+        {
+          "say": "congés du 16 au 20 novembre",
+          "expect": [
+            "Congés payés",
+            "du 16 Nov 2026 au 20 Nov 2026"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "lang-chip-keeps-language",
+      "lang": "pt",
+      "why": "project names are English, a chip never switches the language",
+      "steps": [
+        {
+          "say": "2h ontem",
+          "expect": [
+            "Em que projeto"
+          ]
+        },
+        {
+          "say": "AXI-INT · Internal, pre-sales and training",
+          "expect": [
+            "Confirmas este lançamento?",
+            "AXI-INT"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "lang-km-portuguese-in-en-app",
+      "lang": "en",
+      "steps": [
+        {
+          "say": "km de Lisboa para o Porto ontem",
+          "expect": [
+            "Quilómetros em viatura própria",
+            "313 km por sentido"
+          ]
+        }
+      ]
     }
   ]
 }
