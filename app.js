@@ -822,6 +822,13 @@
      messages are a separate follow-up, not covered here yet. */
   var I18N = {
     en: {
+      chip_not_your_project:"{code} isn't one of your projects",
+      bot_which_project_for:"Which project should the {dur} h on {when} go to?",
+      bot_which_project_fill:"Which project should the missing hours go to?",
+      bot_project_not_allocated:"You're not allocated to {code}, so I can't record hours there. Your projects are {list}.",
+      text_every_weekday:"every working day this week",
+      text_days_missing:"the days missing hours",
+      bot_day_outside_week:"That day isn't in the week on screen. Open its week in My Timesheet, or tell me a day of this week.",
       wt_AJC_NAC:"Domestic per diem",
       wt_AJC_INT:"Foreign per diem",
       wt_KMS:"Own-car kilometres",
@@ -1360,6 +1367,13 @@
       row_confirm_cell:"Confirm cell and move down", row_show_list:"Show this list"
     },
     pt: {
+      chip_not_your_project:"{code} não é um dos teus projetos",
+      bot_which_project_for:"Em que projeto registo as {dur} h de {when}?",
+      bot_which_project_fill:"Em que projeto registo as horas em falta?",
+      bot_project_not_allocated:"Não estás alocado ao projeto {code}, por isso não posso registar horas lá. Os teus projetos são {list}.",
+      text_every_weekday:"todos os dias úteis desta semana",
+      text_days_missing:"os dias com horas em falta",
+      bot_day_outside_week:"Esse dia não está na semana que tens no ecrã. Abre a semana dele em A Minha Folha, ou indica um dia desta semana.",
       wt_AJC_NAC:"Ajudas de custo nacionais",
       wt_AJC_INT:"Ajudas de custo no estrangeiro",
       wt_KMS:"Quilómetros em viatura própria",
@@ -1891,6 +1905,13 @@
       row_confirm_cell:"Confirmar célula e descer", row_show_list:"Mostrar esta lista"
     },
     fr: {
+      chip_not_your_project:"{code} ne fait pas partie de vos projets",
+      bot_which_project_for:"Sur quel projet dois-je saisir les {dur} h de {when} ?",
+      bot_which_project_fill:"Sur quel projet dois-je saisir les heures manquantes ?",
+      bot_project_not_allocated:"Vous n'êtes pas affecté au projet {code}, je ne peux donc pas y saisir d'heures. Vos projets sont {list}.",
+      text_every_weekday:"tous les jours ouvrés de cette semaine",
+      text_days_missing:"les jours où il manque des heures",
+      bot_day_outside_week:"Ce jour n'est pas dans la semaine affichée. Ouvrez sa semaine dans Ma feuille, ou indiquez un jour de cette semaine.",
       wt_AJC_NAC:"Indemnité journalière nationale",
       wt_AJC_INT:"Indemnité journalière à l'étranger",
       wt_KMS:"Kilomètres en véhicule personnel",
@@ -4995,22 +5016,14 @@
 
     var day = $("nlq").dataset.day ? +$("nlq").dataset.day : 0;
     var dayLabel = null;
-    var names = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"];
-    if(/\byesterday\b/i.test(rest)){ day = 1; dayLabel = "yesterday, "+DAYS[1]; rest = rest.replace(/\byesterday\b/i," "); }
-    else if(/\btoday\b/i.test(rest)){ day = 2; dayLabel = "today, "+DAYS[2]; rest = rest.replace(/\btoday\b/i," "); }
-    else {
-      for(var i=0; i<names.length; i++){
-        var re = new RegExp("\\b"+names[i]+"\\b","i");
-        if(re.test(rest)){ day = i; dayLabel = DAYS[day]; rest = rest.replace(re," "); break; }
-      }
-    }
+    var dmq = matchDayMention(" " + rest + " ");
+    if(dmq && dmq.day !== -1){ day = dmq.day; dayLabel = DAYS[day]; rest = rest.replace(dmq.match, " "); }
     if(!dayLabel) dayLabel = DAYS[day];
 
-    var pIdx = -1;
-    PROJECTS.forEach(function(pr,i){
-      var key = pr.code.split("-")[0];
-      if(new RegExp("\\b"+key+"\\b","i").test(rest)){ pIdx = i; rest = rest.replace(new RegExp(key+"[\\w-]*","i")," "); }
-    });
+    /* the same rule as the assistant: only the person's own projects */
+    var pIdx = -1, notMine = "";
+    var pmq = matchProject(" " + rest + " ");
+    if(pmq){ rest = rest.replace(pmq.match, " "); if(pmq.notAllowed) notMine = PROJECTS[pmq.p].code; else pIdx = pmq.p; }
     var desc = rest.replace(/\s+/g," ").trim();
 
     box.appendChild(chipBtn(isNaN(dur) || !dur ? "duration to set" : fmt(dur)+" h", isNaN(dur) || !dur ? "warnc" : "okc", function(){
@@ -5026,7 +5039,7 @@
     }));
     box.appendChild(chipSelect(
       pIdx === -1 ? "" : String(pIdx),
-      PROJECTS.map(function(p,i){ return {value:String(i), label:p.code + " · " + p.name}; }),
+      profileProjects().map(function(i){ return {value:String(i), label:PROJECTS[i].code + " · " + PROJECTS[i].name}; }),
       pIdx === -1 ? "warnc" : "okc",
       function(v){
         if(v === "") return;
@@ -5035,6 +5048,7 @@
       },
       "project to choose"
     ));
+    if(notMine) box.appendChild(chip(t("chip_not_your_project", {code: notMine}), "warnc"));
     box.appendChild(chip(pIdx === -1 ? "activity to set" : PROJECTS[pIdx].act, pIdx === -1 ? "" : "okc"));
     if(pIdx !== -1) box.appendChild(chip(PROJECTS[pIdx].sap.rproj ? "PEP "+PROJECTS[pIdx].sap.rproj : "cost center "+PROJECTS[pIdx].sap.rkostl, "okc"));
     if(desc) box.appendChild(chip("description: "+desc.slice(0,42), "okc"));
@@ -7493,7 +7507,9 @@
       chat.kmDraft = null;
       recordKm(d, wd, qty, d.fromLabel.replace(/\s*\(.*\)$/, "") + " → " + d.toLabel + (d.round ? " (" + t("km_round_trip") + ")" : ""));
     }, warn));
-    if(known && !d.given) botChips([t(d.round ? "chip_km_one_way" : "chip_km_round")]);
+    var kmChips = known && !d.given ? [t(d.round ? "chip_km_one_way" : "chip_km_round")] : [];
+    if(d.pAuto) kmChips = kmChips.concat(profileProjects().filter(function(i){ return i !== d.p; }).map(function(i){ return PROJECTS[i].code; }));
+    botChips(kmChips);
     chat.history.push({role:"assistant", content:"Proposed " + qty + " km own-car kilometres, " + route + ", on " + d.date + ". Waiting for confirmation."});
   }
   function recordKm(d, wd, qty, note){
@@ -7987,7 +8003,7 @@
     botSay("bot",t("bot_confirm_entry"), botCard([
       [t("label_day"), DAYS[day]],
       [t("label_duration"), fmt(dur) + " h"],
-      [t("label_project"), pr.name],
+      [t("label_project"), pr.code + " · " + pr.name],
       [t("label_receiver_object"), receiverObjectLabel(pr)],
       [t("label_activity_type"), pr.sap.lstar + ", " + pr.act],
       [t("label_description"), desc || t("bot_desc_tbd")],
@@ -8040,7 +8056,7 @@
       [t("label_days"), daysLabel],
       [t("label_duration_per_day"), fmt(dur) + " h"],
       [t("th_total"), fmt(dur * applicable.length) + " h"],
-      [t("label_project"), pr.name],
+      [t("label_project"), pr.code + " · " + pr.name],
       [t("label_receiver_object"), receiverObjectLabel(pr)],
       [t("label_activity_type"), pr.sap.lstar + ", " + pr.act],
       [t("label_description"), desc || t("bot_desc_tbd")],
@@ -8094,7 +8110,7 @@
     botSay("bot",t("bot_confirm_entry"), botCard([
       [t("label_days"), daysLabel],
       [t("th_total"), fmt(total) + " h"],
-      [t("label_project"), pr.name],
+      [t("label_project"), pr.code + " · " + pr.name],
       [t("label_receiver_object"), receiverObjectLabel(pr)],
       [t("label_activity_type"), pr.sap.lstar + ", " + pr.act],
       [t("label_origin"), "Joule"]
@@ -8130,7 +8146,7 @@
     botSay("bot",t("bot_confirm_entry"), botCard([
       [t("label_days"), daysLabel],
       [t("th_total"), fmt(total) + " h"],
-      [t("label_project"), pr.name],
+      [t("label_project"), pr.code + " · " + pr.name],
       [t("label_receiver_object"), receiverObjectLabel(pr)],
       [t("label_activity_type"), pr.sap.lstar + ", " + pr.act],
       [t("label_origin"), "Joule"]
@@ -8426,11 +8442,13 @@
            offerEntryWeek doesn't need to duplicate for the common case. */
         var rawDays = Array.isArray(a.dias) && a.dias.length ? a.dias : (a.dia ? [a.dia] : []);
         var days = rawDays.map(function(d){ return resolveDayArg(d); }).filter(function(i){ return i !== -1 && i <= 4; });
-        if(!days.length || pIdx === -1 || !dur || dur <= 0){
+        if(!days.length || !dur || dur <= 0){
           botSay("bot", intent.texto || t("bot_parse_failed_generic"));
           botChips([t("chip_hours_i_have"),t("chip_my_absences")]);
           return true;
         }
+        var draftH = days.length === 1 ? {kind:"entry", day:days[0], dur:dur, desc:a.descricao || ""} : {kind:"week", days:days, dur:dur, desc:a.descricao || ""};
+        if(!checkProjectArg(pIdx, draftH, intent.texto)) return true;
         if(days.length === 1) offerEntry(days[0], dur, pIdx, a.descricao || "");
         else offerEntryWeek(days, dur, pIdx, a.descricao || "");
         return true;
@@ -8438,22 +8456,19 @@
         var aw = intent.argumentos || {};
         var pIdxW = matchProjectCodePrefix(aw.projeto);
         var durW = round15(Number(aw.duracao_horas));
-        if(pIdxW === -1 || !durW || durW <= 0){
+        if(!durW || durW <= 0){
           botSay("bot", intent.texto || t("bot_parse_failed_generic"));
           botChips([t("chip_hours_i_have"),t("chip_my_absences")]);
           return true;
         }
+        if(!checkProjectArg(pIdxW, {kind:"week", days:[0,1,2,3,4], dur:durW, desc:aw.descricao || ""}, intent.texto)) return true;
         offerEntryWeek([0,1,2,3,4], durW, pIdxW, aw.descricao || "");
         return true;
       case "preencher_horas_em_falta":
         var af = intent.argumentos || {};
         var pIdxF = matchProjectCodePrefix(af.projeto);
-        if(pIdxF === -1){
-          botSay("bot", intent.texto || t("bot_which_project"));
-          botChips([t("chip_hours_i_have"),t("chip_my_absences")]);
-          return true;
-        }
         var durF = round15(Number(af.duracao_horas));
+        if(!checkProjectArg(pIdxF, {kind:"fill", dur:durF > 0 ? durF : 0}, intent.texto)) return true;
         offerFillMissing(pIdxF, durF > 0 ? durF : 0);
         return true;
       default:
@@ -8492,6 +8507,7 @@
        the open card from context alone). */
     if(chat.pending === "entry" && chat.draft){
       var fix = tryCorrectDraft(txt);
+      if(fix && fix.handled){ await thinkingDelay(); hideTyping(); return; }
       if(fix){
         await thinkingDelay();
         hideTyping();
@@ -8512,6 +8528,17 @@
         offerKm(kmFix);
         return;
       }
+    }
+
+    /* "Which project?" is open: a code or a chip completes the entry. */
+    if(chat.projectDraft){
+      if(continueProjectDraft(txt)){
+        await thinkingDelay();
+        hideTyping();
+        if(chat.curTurn) chat.curTurn.path = "project_answer";
+        return;
+      }
+      chat.projectDraft = null;
     }
 
     /* A rejection waiting for its reason: this message is the reason. */
@@ -8606,6 +8633,8 @@
        and a project too and would otherwise just default to "today" */
     if(ALL_WEEK_RE.test(low)){
       var pw = botParseWeek(txt);
+      if(pw && pw.p === -1){ askProject({kind:"week", days:pw.days, dur:pw.dur, desc:pw.desc}, projectFromNameWord(txt)); return; }
+      if(pw && pw.notAllowed){ sayNotAllocated(pw.p, {kind:"week", days:pw.days, dur:pw.dur, desc:pw.desc}); return; }
       if(pw){
         offerEntryWeek(pw.days, pw.dur, pw.p, pw.desc);
         chat.history.push({role:"assistant", content:"Proposed " + fmt(pw.dur) + "h/day, " + PROJECTS[pw.p].name + ", every working day this week. Waiting for confirmation."});
@@ -8621,6 +8650,9 @@
       chat.history.push({role:"assistant", content:"Couldn't parse a duration and project from that message."});
       return;
     }
+    if(p.day === -1){ botSay("bot", t("bot_day_outside_week")); botChips([t("chip_hours_i_have"), t("chip_help")]); return; }
+    if(p.p === -1){ askProject({kind:"entry", day:p.day, dur:p.dur, desc:p.desc}, projectFromNameWord(txt)); return; }
+    if(p.notAllowed){ sayNotAllocated(p.p, {kind:"entry", day:p.day, dur:p.dur, desc:p.desc}); return; }
     offerEntry(p.day, p.dur, p.p, p.desc);
     chat.history.push({role:"assistant", content:"Proposed an entry: " + fmt(p.dur) + "h, " + PROJECTS[p.p].name + ", " + DAYS[p.day] + ". Waiting for confirmation."});
   }
@@ -8675,7 +8707,7 @@
      "ours" behind in the text. */
   function matchDuration(rest){
     var m;
-    if((m = rest.match(/(\d+(?:[.,]\d+)?)\s*h(?:ours?|rs?)?\b/i))) return {dur:parseDur(m[1]), match:m[0]};
+    if((m = rest.match(/(\d+(?:[.,]\d+)?)\s*h(?:ours?|rs?|oras?|eures?)?\b/i))) return {dur:parseDur(m[1]), match:m[0]};
     if((m = rest.match(/(\d{1,2}):(\d{2})\b/))) return {dur:parseDur(m[0]), match:m[0]};
     if((m = rest.match(/(\d+)\s*m(?:in(?:ute)?s?)?\b/i))) return {dur:parseDur(m[1]+"m"), match:m[0]};
     if((m = rest.match(/\s(\d+(?:[.,]\d+)?)\s/))) return {dur:parseDur(m[1]), match:m[0]};
@@ -8683,29 +8715,117 @@
   }
   /* Project code, plus any WBS suffix attached to it ("RTL-TT.2.1"), so that
      doesn't leak into the description either. */
+  /* A project code in the message, read against the person's own
+     projects first: PT01's AER is AER-WFM, not PT02's AER-FAC. A code
+     that only exists outside their projects comes back marked notAllowed,
+     so the assistant says so instead of booking hours there. */
   function matchProject(rest){
-    var found = null;
+    var allowed = profileProjects(), full = null, mine = null, other = null;
     PROJECTS.forEach(function(pr,i){
-      var key = pr.code.split("-")[0];
-      var m = rest.match(new RegExp("\\b"+key+"[\\w.\\-]*","i"));
-      if(m) found = {p:i, match:m[0]};
+      var mf = rest.match(new RegExp("\\b" + pr.code.replace(/-/g, "\\-") + "[\\w.\\-]*", "i"));
+      if(mf && !full) full = {p:i, match:mf[0]};
+      var m = rest.match(new RegExp("\\b"+pr.code.split("-")[0]+"[\\w.\\-]*","i"));
+      if(!m) return;
+      if(allowed.indexOf(i) !== -1){ if(!mine) mine = {p:i, match:m[0]}; }
+      else if(!other) other = {p:i, match:m[0]};
     });
-    return found;
+    var hit = full || mine || other;
+    if(hit && allowed.indexOf(hit.p) === -1) hit.notAllowed = true;
+    return hit;
   }
-  var ALL_WEEK_RE = /\ball\s+days?\b|\bevery\s+day\b|\beach\s+day\b|\ball\s+week\b|\bwhole\s+week\b|\bfor\s+the\s+week\b/i;
+  /* A word of a project's name ("payroll", "retail") that belongs to only
+     one of the person's projects: a hint for which one to offer first,
+     never a reason to book it without asking. */
+  function projectFromNameWord(txt){
+    var allowed = profileProjects(), f = foldText(txt), hits = [];
+    allowed.forEach(function(i){
+      var words = foldText(PROJECTS[i].name).split(/[^a-z]+/).filter(function(w){ return w.length >= 5; });
+      if(words.some(function(w){ return new RegExp("\\b" + w + "\\b").test(f); })) hits.push(i);
+    });
+    return hits.length === 1 ? hits[0] : -1;
+  }
+  /* The person's projects for a question, the likeliest first: the hinted
+     one, then by hours already recorded this week. */
+  function projectChoices(prefer){
+    var hours = {};
+    state.rows.forEach(function(r){ hours[r.p] = (hours[r.p] || 0) + r.h.reduce(function(a, b){ return a + b; }, 0); });
+    return profileProjects().slice().sort(function(a, b){
+      return ((b === prefer) - (a === prefer)) || ((hours[b] || 0) - (hours[a] || 0));
+    });
+  }
+  function projectChip(i){ return PROJECTS[i].code + " · " + PROJECTS[i].name; }
+  /* Hours never go to a project the person didn't name: with a duration
+     and a day but no project, the assistant asks, with their projects as
+     the answers, and keeps the rest so one click completes the entry. */
+  function askProject(draft, prefer, msg){
+    if(!profileProjects().length){ botSay("bot", t("bot_km_not_in_profile")); botChips([t("chip_change_test")]); return; }
+    chat.projectDraft = draft;
+    var when = draft.kind === "week" ? t("text_every_weekday") : draft.kind === "fill" ? t("text_days_missing") : DAYS[draft.day];
+    botSay("bot", msg || (draft.kind === "fill" ? t("bot_which_project_fill") : t("bot_which_project_for", {dur: fmt(draft.dur), when: when})));
+    botChips(projectChoices(prefer).map(projectChip));
+  }
+  function sayNotAllocated(pIdx, draft){
+    chat.projectDraft = draft || null;
+    botSay("bot", t("bot_project_not_allocated", {code: PROJECTS[pIdx].code, list: profileProjects().map(function(i){ return PROJECTS[i].code; }).join(", ")}));
+    botChips(draft ? projectChoices(-1).map(projectChip) : [t("chip_help")]);
+  }
+  function runProjectDraft(d, pIdx){
+    chat.projectDraft = null;
+    if(d.kind === "week") offerEntryWeek(d.days, d.dur, pIdx, d.desc || "");
+    else if(d.kind === "fill") offerFillMissing(pIdx, d.dur || 0);
+    else offerEntry(d.day, d.dur, pIdx, d.desc || "");
+  }
+  /* The answer to "which project?": a code, or a chip. */
+  function continueProjectDraft(txt){
+    /* a message with its own duration is a new request, not the answer */
+    if(/\d\s*(h|horas?|hours?|hrs?|heures?|m|min)\b|\d:\d\d/i.test(txt)) return false;
+    var pm = matchProject(" " + txt + " ");
+    if(!pm) return false;
+    if(pm.notAllowed){ sayNotAllocated(pm.p, chat.projectDraft); return true; }
+    runProjectDraft(chat.projectDraft, pm.p);
+    return true;
+  }
+  /* Claude's project must be one of the person's, and one they named in
+     the last few messages; one picked for them is asked about instead. */
+  function projectMentioned(pIdx){
+    var said = chat.history.filter(function(h){ return h.role === "user"; }).slice(-3).map(function(h){ return h.content; }).join(" ");
+    var pm = matchProject(" " + said + " ");
+    if(pm && pm.p === pIdx) return true;
+    var f = foldText(said);
+    if(new RegExp("\\b" + foldText(PROJECTS[pIdx].code.split("-")[0]) + "\\b").test(f)) return true;
+    return projectFromNameWord(said) === pIdx;
+  }
+  function checkProjectArg(pIdx, draft, texto){
+    var allowed = profileProjects();
+    if(pIdx !== -1 && allowed.indexOf(pIdx) === -1){ sayNotAllocated(pIdx, draft); return false; }
+    if(pIdx === -1){ askProject(draft, -1, texto || null); return false; }
+    if(allowed.length > 1 && !projectMentioned(pIdx)){ askProject(draft, pIdx); return false; }
+    return true;
+  }
+  var ALL_WEEK_RE = /\ball\s+days?\b|\bevery\s+day\b|\beach\s+day\b|\ball\s+week\b|\bwhole\s+week\b|\bfor\s+the\s+week\b|\btodos\s+os\s+dias\b|\b(?:a\s+|esta\s+)?semana\s+toda\b|\btoda\s+a\s+semana\b|\btous\s+les\s+jours\b|\btoute\s+la\s+semaine\b/i;
 
   /* Weekday token, "yesterday"/"today", or a calendar date, whichever is
      found first. Returns null (no mention at all, caller keeps its own
      default) or {day, match}, where day is -1 for a real date outside the
      visible week, a signal the caller should treat as "can't place this". */
+  var DAY_WORDS_NLP = [
+    {re:/\b(anteontem|avant-hier)\b|\bday before yesterday\b/i, off:-2},
+    {re:/\b(yesterday|ontem|hier)\b/i, off:-1},
+    {re:/\b(today|hoje)\b|aujourd'hui/i, off:0}
+  ];
+  var WEEKDAYS_NLP = [
+    /\b(monday|segunda(?:-feira)?|lundi)\b/i, /\b(tuesday|ter[çc]a(?:-feira)?|mardi)\b/i, /\b(wednesday|quarta(?:-feira)?|mercredi)\b/i,
+    /\b(thursday|quinta(?:-feira)?|jeudi)\b/i, /\b(friday|sexta(?:-feira)?|vendredi)\b/i, /\b(saturday|s[áa]bado|samedi)\b/i, /\b(sunday|domingo|dimanche)\b/i
+  ];
+  /* where "today" sits in the visible week, or Monday when it's elsewhere */
+  function todayDayIdx(){ var i = WORKDATES.indexOf(todayISO()); return i === -1 ? 0 : i; }
   function matchDayMention(rest){
-    var m;
-    if((m = rest.match(/\byesterday\b/i))) return {day:1, match:m[0]};
-    if((m = rest.match(/\btoday\b/i))) return {day:2, match:m[0]};
-    var names = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"];
-    for(var i=0; i<names.length; i++){
-      var re = new RegExp("\\b("+names[i]+")\\b","i");
-      if((m = rest.match(re))) return {day:i, match:m[0]};
+    var m, i;
+    for(i=0; i<DAY_WORDS_NLP.length; i++){
+      if((m = rest.match(DAY_WORDS_NLP[i].re))) return {day:WORKDATES.indexOf(isoAdd(todayISO(), DAY_WORDS_NLP[i].off)), match:m[0]};
+    }
+    for(i=0; i<WEEKDAYS_NLP.length; i++){
+      if((m = rest.match(WEEKDAYS_NLP[i]))) return {day:i, match:m[0]};
     }
     var dmDate = parseDateMention(rest);
     if(dmDate) return dmDate;
@@ -8718,8 +8838,10 @@
     var dm = matchDuration(rest);
     if(!dm || dm.dur <= 0) return null;
     rest = rest.replace(dm.match," ");
+    /* an explicit "2h", "1:30" or "90m", not just any number in the text */
+    var explicit = /[hm:]/i.test(dm.match);
 
-    var day = 2;
+    var day = todayDayIdx();
     var dayM = matchDayMention(rest);
     if(dayM){
       if(dayM.day === -1) return null;
@@ -8727,9 +8849,9 @@
       rest = rest.replace(dayM.match," ");
     }
     var pm = matchProject(rest);
-    if(!pm) return null;
+    if(!pm) return explicit ? {dur:round15(dm.dur), day:day, p:-1, desc:rest.replace(/\s+/g," ").trim()} : null;
     rest = rest.replace(pm.match," ");
-    return {dur:round15(dm.dur), day:day, p:pm.p, desc:rest.replace(/\s+/g," ").trim()};
+    return {dur:round15(dm.dur), day:day, p:pm.p, notAllowed:!!pm.notAllowed, desc:rest.replace(/\s+/g," ").trim()};
   }
 
   /* "log 8h for João today" / "record 4h for everyone tomorrow": a mass
@@ -9108,11 +9230,11 @@
     var rest = " " + txt + " ";
     var dm = matchDuration(rest);
     if(!dm || dm.dur <= 0) return null;
-    rest = rest.replace(dm.match," ").replace(ALL_WEEK_RE," ").replace(/\bthis\s+week\b|\bthe\s+week\b/gi," ");
+    rest = rest.replace(dm.match," ").replace(ALL_WEEK_RE," ").replace(/\bthis\s+week\b|\bthe\s+week\b|\besta\s+semana\b|\bcette\s+semaine\b/gi," ");
     var pm = matchProject(rest);
-    if(!pm) return null;
+    if(!pm) return {dur:round15(dm.dur), days:[0,1,2,3,4], p:-1, desc:rest.replace(/\s+/g," ").trim()};
     rest = rest.replace(pm.match," ");
-    return {dur:round15(dm.dur), days:[0,1,2,3,4], p:pm.p, desc:rest.replace(/\s+/g," ").trim()};
+    return {dur:round15(dm.dur), days:[0,1,2,3,4], p:pm.p, notAllowed:!!pm.notAllowed, desc:rest.replace(/\s+/g," ").trim()};
   }
 
   /* A card is already open for chat.draft: read this message for just the
@@ -9126,26 +9248,18 @@
   function tryCorrectDraft(txt){
     var rest = " " + txt + " ", m;
     var draft = chat.draft, day = draft.day, dur = draft.dur, pIdx = draft.p, changed = false;
+    /* "every day this week" is a new request for the week, not a correction */
+    if(ALL_WEEK_RE.test(rest)) return null;
 
-    if(/\byesterday\b/i.test(rest)){ day = 1; changed = true; rest = rest.replace(/\byesterday\b/i," "); }
-    else if(/\btoday\b/i.test(rest)){ day = 2; changed = true; rest = rest.replace(/\btoday\b/i," "); }
-    else {
-      var names = ["monday","tuesday","wednesday","thursday","friday","saturday","sunday"];
-      for(var i=0; i<names.length && !changed; i++){
-        var re = new RegExp("\\b("+names[i]+")\\b","i");
-        if(re.test(rest)){ day = i; changed = true; rest = rest.replace(re," "); }
-      }
-      if(!changed){
-        var dm = parseDateMention(rest);
-        if(dm && dm.day !== -1){ day = dm.day; changed = true; rest = rest.replace(dm.match," "); }
-      }
-    }
+    var dmn = matchDayMention(rest);
+    if(dmn && dmn.day !== -1){ day = dmn.day; changed = true; rest = rest.replace(dmn.match," "); }
 
-    if((m = rest.match(/(\d+(?:[.,]\d+)?)\s*h(?:ours?|rs?)?\b/i))){ dur = parseDur(m[1]); changed = true; }
+    if((m = rest.match(/(\d+(?:[.,]\d+)?)\s*h(?:ours?|rs?|oras?|eures?)?\b/i))){ dur = parseDur(m[1]); changed = true; }
     else if((m = rest.match(/(\d{1,2}):(\d{2})\b/))){ dur = parseDur(m[0]); changed = true; }
     else if((m = rest.match(/(\d+)\s*m(?:in(?:ute)?s?)?\b/i))){ dur = parseDur(m[1]+"m"); changed = true; }
 
     var pm = matchProject(rest);
+    if(pm && pm.notAllowed){ sayNotAllocated(pm.p, {kind:"entry", day:day, dur:round15(dur), desc:draft.desc}); return {handled:true}; }
     if(pm){ pIdx = pm.p; changed = true; }
 
     if(!changed) return null;

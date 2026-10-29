@@ -874,6 +874,234 @@
           ]
         }
       ]
+    },
+    {
+      "id": "project-pt-missing-asks",
+      "lang": "pt",
+      "why": "comment: always validate the project the hours go to",
+      "steps": [
+        {
+          "say": "2h ontem",
+          "expect": [
+            "Em que projeto registo as 2.0 h de Ter 27?"
+          ]
+        },
+        {
+          "say": "RTL-TT · Retail, Time Tracking",
+          "expect": [
+            "Confirmas este lançamento?",
+            "RTL-TT · Retail, Time Tracking",
+            "Ter 27"
+          ]
+        },
+        {
+          "confirm": true,
+          "expect": [
+            "2.0 h gravadas em Ter 27, RTL-TT"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "project-pt-not-allocated",
+      "lang": "pt",
+      "why": "comment: always validate the project the hours go to",
+      "steps": [
+        {
+          "say": "3h HSP ontem",
+          "expect": [
+            "Não estás alocado ao projeto HSP-FAC",
+            "BNK-2026, RTL-TT, AER-WFM, AXI-INT"
+          ]
+        },
+        {
+          "say": "BNK-2026",
+          "expect": [
+            "BNK-2026 · Banking, Payroll and ECP",
+            "Ter 27",
+            "3.0 h"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "project-en-own-prefix-first",
+      "lang": "en",
+      "why": "AER in PT01 is AER-WFM, not PT02's AER-FAC",
+      "steps": [
+        {
+          "say": "2h AER yesterday",
+          "expect": [
+            "AER-WFM · Airports, WFM rollout"
+          ],
+          "absent": [
+            "AER-FAC"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "project-en-pm-not-allocated",
+      "lang": "en",
+      "role": "pm",
+      "leader": "RN",
+      "steps": [
+        {
+          "say": "2h BNK yesterday",
+          "expect": [
+            "not allocated to BNK-2026",
+            "RTL-TT, AXI-INT"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "project-en-pt02-ambiguous-name",
+      "lang": "en",
+      "company": "PT02",
+      "steps": [
+        {
+          "say": "4h facilities yesterday",
+          "expect": [
+            "Which project should the 4.0 h on Tue 27 go to?"
+          ]
+        },
+        {
+          "say": "HSP-FAC",
+          "expect": [
+            "HSP-FAC · Hospital campus, facilities maintenance",
+            "Tue 27"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "project-pt-new-request-replaces-question",
+      "lang": "pt",
+      "why": "a new request while 'which project?' is open isn't the answer to it",
+      "steps": [
+        {
+          "say": "2h ontem",
+          "expect": [
+            "Em que projeto"
+          ]
+        },
+        {
+          "say": "3h HSP hoje",
+          "expect": [
+            "Não estás alocado ao projeto HSP-FAC"
+          ]
+        },
+        {
+          "say": "BNK-2026",
+          "expect": [
+            "Qua 28",
+            "3.0 h",
+            "BNK-2026"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "day-pt-words",
+      "lang": "pt",
+      "why": "Portuguese day words used to be read as the description",
+      "steps": [
+        {
+          "say": "2h BNK ontem",
+          "expect": [
+            "Ter 27"
+          ],
+          "absent": [
+            "Descrição ontem"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "claude-intent-hours-unnamed-project",
+      "lang": "pt",
+      "why": "a project Claude picked that the person never named is asked about",
+      "steps": [
+        {
+          "say": "2h ontem",
+          "intent": {
+            "funcao": "registar_horas",
+            "argumentos": {
+              "dia": "2026-10-27",
+              "duracao_horas": 2,
+              "projeto": "RTL-TT"
+            },
+            "texto": null
+          },
+          "expect": [
+            "Em que projeto registo as 2.0 h de Ter 27?"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "claude-intent-hours-no-project",
+      "lang": "pt",
+      "steps": [
+        {
+          "say": "2h ontem",
+          "intent": {
+            "funcao": "registar_horas",
+            "argumentos": {
+              "dia": "2026-10-27",
+              "duracao_horas": 2
+            },
+            "texto": null
+          },
+          "expect": [
+            "Em que projeto registo as 2.0 h de Ter 27?"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "claude-intent-hours-not-allocated",
+      "lang": "en",
+      "steps": [
+        {
+          "say": "2h on the hospital yesterday",
+          "intent": {
+            "funcao": "registar_horas",
+            "argumentos": {
+              "dia": "2026-10-27",
+              "duracao_horas": 2,
+              "projeto": "HSP-FAC"
+            },
+            "texto": null
+          },
+          "expect": [
+            "not allocated to HSP-FAC"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "claude-intent-hours-named-project",
+      "lang": "en",
+      "steps": [
+        {
+          "say": "2h RTL yesterday",
+          "intent": {
+            "funcao": "registar_horas",
+            "argumentos": {
+              "dia": "2026-10-27",
+              "duracao_horas": 2,
+              "projeto": "RTL-TT"
+            },
+            "texto": null
+          },
+          "expect": [
+            "Confirm this entry?",
+            "RTL-TT · Retail, Time Tracking"
+          ]
+        }
+      ]
     }
   ]
 }
