@@ -573,6 +573,13 @@
         <div class="qtywrap"><input type="text" id="alQty" inputmode="decimal" value="1"><span id="alUnit">days</span></div>
       </div>
     </div>
+    <div class="two" id="alRouteWrap" hidden>
+      <div class="field"><label for="alFrom" data-i18n="label_origin">From</label><input type="text" id="alFrom" list="alPlaces" autocomplete="off"></div>
+      <div class="field"><label for="alTo" data-i18n="label_destination">To</label><input type="text" id="alTo" list="alPlaces" autocomplete="off"></div>
+    </div>
+    <label class="lvchk" id="alRoundWrap" hidden><input type="checkbox" id="alRound"> <span data-i18n="label_round_trip">Round trip</span></label>
+    <p class="sub" id="alRouteInfo" hidden style="margin:0"></p>
+    <datalist id="alPlaces"></datalist>
     <div class="field" id="alProjWrap"><label for="alProj" data-i18n="label_project">Project</label><select id="alProj"></select></div>
     <div class="field" id="alNoteWrap"><label for="alNote"><span id="alNoteLbl" data-i18n="label_note">Note</span></label><input type="text" id="alNote" data-i18n-placeholder="placeholder_note_required" placeholder="Required for this allowance"></div>
     <p class="sub" id="alHint" style="font-size:var(--fs-sm); color:var(--ink-3); margin:0"></p>

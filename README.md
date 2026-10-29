@@ -55,6 +55,7 @@ Everything below works, with no server and no real data.
 - Recorded as quantity and unit, never as a value. Payroll does the valuation
 - An allowance can exist on a day with no hours, for example kilometres for a Saturday trip
 - Kilometres and foreign per diem block submission until origin and destination, or the country, is filled in
+- Kilometres can be recorded through the assistant (`km from Lisbon to Porto yesterday`, `km de Lisboa para o Porto ontem ida e volta`) or the Add allowance form: the distance by road between the two places is worked out and shown on a card for confirmation before anything is recorded on wage type 1300. With only a destination, the trip starts at the company office (Lisbon for PT01, Porto for PT02). "Round trip" doubles it, a figure typed by the person wins over the calculated one with a warning when they differ by more than 10%, and the trip has to be in the past, in an open week that isn't submitted. The mockup carries road distances for the usual trips between Portuguese cities and estimates the rest from the map; in SAP this comes from a routing service
 - The bonus is the exception: it carries an amount, it is not on the employee's screen, and only the project owner records it
 
 **Entry mode by company, profile Z_CONS or Z_BSRV**

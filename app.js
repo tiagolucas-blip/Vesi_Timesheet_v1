@@ -106,6 +106,7 @@
     {code:"BONUS",   lgart:"1400", name:"Project bonus",      unit:"amount", amount:true,  needProj:true,  noteLabel:"Reason",               selfEntry:false}
   ];
   function wt(code){ return WAGETYPES.filter(function(w){ return w.code === code; })[0]; }
+  function wtName(w){ var k = "wt_" + w.code, v = t(k); return v === k ? w.name : v; }
   function wtFor(bukrs){
     /* Shift allowance only makes sense where people work shifts. */
     return WAGETYPES.filter(function(w){ return w.code !== "TURNO" || (bukrs || IT0001.bukrs) === "PT02"; });
@@ -821,6 +822,40 @@
      messages are a separate follow-up, not covered here yet. */
   var I18N = {
     en: {
+      wt_AJC_NAC:"Domestic per diem",
+      wt_AJC_INT:"Foreign per diem",
+      wt_KMS:"Own-car kilometres",
+      wt_TURNO:"Shift allowance",
+      wt_BONUS:"Project bonus",
+      label_route:"Route",
+      label_road_distance:"Road distance",
+      label_to_record:"To record",
+      label_origin:"From",
+      label_destination:"To",
+      label_round_trip:"Round trip",
+      label_office_base:"{city} (office)",
+      km_one_way:"one way",
+      km_round_trip:"round trip",
+      km_per_leg:"{km} km each way",
+      km_estimated:"(estimate from the map)",
+      bot_km_confirm:"Here are the kilometres. I worked out the distance between the two places; check it before I record it.",
+      bot_km_confirm_given:"Here are the kilometres you gave me. I don't have the distance for that route, so check the figure before I record it.",
+      bot_km_recorded:"Recorded {km} km on {day}, {route}, project {code}. It's in the week's allowances.",
+      bot_km_which_route:"Between which places? For example: km from Lisbon to Porto yesterday.",
+      bot_km_unknown_place:"I don't have the distance to {place} in this mockup. Tell me the kilometres (for example, 120 km) and I'll record them with that route.",
+      bot_km_future:"Kilometres are recorded after the trip, and {date} hasn't come yet.",
+      bot_km_no_week:"{date} is outside the weeks available in the timesheet.",
+      bot_km_week_submitted:"The week of {date} has already been submitted, so no more allowances can go in.",
+      bot_km_period_closed:"The period for {date} is closed, so no more allowances can go in.",
+      bot_km_not_in_profile:"The line manager has no timesheet in this test, so there are no kilometres to record. Switch to employee or project manager with the Test button.",
+      warn_km_differs:"You said {given} km; the distance worked out is {calc} km. I'll keep your figure.",
+      chip_km_round:"Round trip",
+      chip_km_one_way:"One way only",
+      chip_km_example:"km from Lisbon to Porto yesterday",
+      hint_km_route:"{route}: {km} km by road each way, {total} km to record.",
+      hint_km_unknown:"No distance for this route in the mockup: enter the kilometres.",
+      hint_km_enter_route:"Enter where the trip started and ended to work out the distance.",
+      toast_km_route_needed:"Enter where the trip started and ended.",
       label_approval_week:"Timesheet approval, week {n}",
       label_you:"you",
       filter_pending:"To approve", filter_all:"All", aria_ap_filter:"Which timesheets to show", text_ap_none_pending:"Nothing left to approve. Choose All to see the approved ones.", btn_select_clean_one:"Select the {n} without warnings", btn_select_clean_other:"Select the {n} without warnings",
@@ -953,7 +988,7 @@
       chip_leave_tomorrow:"Tomorrow", chip_leave_next_week:"Next week", bot_leave_form_opened:"Here's the form, already filled with what you told me.",
       bot_leave_ambiguous:"{name} has a leave request and a timesheet waiting. Which one?",
       bot_leave_need_more:"I need the type of absence and the dates.",
-      bot_help_text_home:"A few things I can do: log your hours (<span class=\"num\">2h BNK payroll testing yesterday</span>), request an absence (<span class=\"num\">vacation 3 to 6 November</span>, <span class=\"num\">doctor tomorrow 14h to 17h</span>), check or cancel your requests and your vacation balance, check the week, submit it, and, as a manager, see what's waiting and approve or reject. Just say it in plain language.",
+      bot_help_text_home:"A few things I can do: log your hours (<span class=\"num\">2h BNK payroll testing yesterday</span>), request an absence (<span class=\"num\">vacation 3 to 6 November</span>, <span class=\"num\">doctor tomorrow 14h to 17h</span>), record kilometres with the distance worked out (<span class=\"num\">km from Lisbon to Porto yesterday</span>), check or cancel your requests and your vacation balance, check the week, submit it, and, as a manager, see what's waiting and approve or reject. Just say it in plain language.",
       brand_title:"Time Recording", brand_subtitle:"Fiori Prototype",
       capture_on:"Suggestions on, private timeline", capture_off:"Capture paused",
       aria_it0001:"Company of the employee, from IT0001",
@@ -1325,6 +1360,40 @@
       row_confirm_cell:"Confirm cell and move down", row_show_list:"Show this list"
     },
     pt: {
+      wt_AJC_NAC:"Ajudas de custo nacionais",
+      wt_AJC_INT:"Ajudas de custo no estrangeiro",
+      wt_KMS:"Quilómetros em viatura própria",
+      wt_TURNO:"Subsídio de turno",
+      wt_BONUS:"Prémio de projeto",
+      label_route:"Percurso",
+      label_road_distance:"Distância por estrada",
+      label_to_record:"A registar",
+      label_origin:"Origem",
+      label_destination:"Destino",
+      label_round_trip:"Ida e volta",
+      label_office_base:"{city} (escritório)",
+      km_one_way:"só ida",
+      km_round_trip:"ida e volta",
+      km_per_leg:"{km} km por sentido",
+      km_estimated:"(estimativa pelo mapa)",
+      bot_km_confirm:"Aqui estão os quilómetros. Calculei a distância entre as duas localidades; confirma antes de eu registar.",
+      bot_km_confirm_given:"Aqui estão os quilómetros que indicaste. Não tenho a distância desse percurso, por isso confirma o valor antes de eu registar.",
+      bot_km_recorded:"Registados {km} km em {day}, {route}, projeto {code}. Já aparecem nos abonos da semana.",
+      bot_km_which_route:"Entre que localidades? Por exemplo: km de Lisboa para o Porto ontem.",
+      bot_km_unknown_place:"Não tenho a distância até {place} neste mockup. Diz-me os quilómetros (por exemplo, 120 km) e registo com esse percurso.",
+      bot_km_future:"Os quilómetros registam-se depois da deslocação, e {date} ainda não chegou.",
+      bot_km_no_week:"{date} fica fora das semanas disponíveis na timesheet.",
+      bot_km_week_submitted:"A semana de {date} já foi submetida, por isso já não leva mais abonos.",
+      bot_km_period_closed:"O período de {date} está fechado, por isso já não leva mais abonos.",
+      bot_km_not_in_profile:"A chefia não tem timesheet neste teste, por isso não há quilómetros a registar. Muda para colaborador ou gestor de projeto no botão Teste.",
+      warn_km_differs:"Indicaste {given} km; a distância calculada é {calc} km. Fica o valor que indicaste.",
+      chip_km_round:"Ida e volta",
+      chip_km_one_way:"Só ida",
+      chip_km_example:"km de Lisboa para o Porto ontem",
+      hint_km_route:"{route}: {km} km por estrada em cada sentido, {total} km a registar.",
+      hint_km_unknown:"Sem distância para este percurso no mockup: indica os quilómetros.",
+      hint_km_enter_route:"Indica a origem e o destino para calcular a distância.",
+      toast_km_route_needed:"Indica a origem e o destino da deslocação.",
       label_approval_week:"Aprovação de horas, semana {n}",
       label_you:"tu",
       filter_pending:"Por aprovar", filter_all:"Todas", aria_ap_filter:"Que timesheets mostrar", text_ap_none_pending:"Nada por aprovar. Escolhe Todas para ver as aprovadas.", btn_select_clean_one:"Selecionar a {n} sem avisos", btn_select_clean_other:"Selecionar as {n} sem avisos",
@@ -1457,7 +1526,7 @@
       chip_leave_tomorrow:"Amanhã", chip_leave_next_week:"Próxima semana", bot_leave_form_opened:"Aqui está o formulário, já preenchido com o que me disseste.",
       bot_leave_ambiguous:"{name} tem um pedido de ausência e uma timesheet à espera. Qual dos dois?",
       bot_leave_need_more:"Preciso do tipo de ausência e das datas.",
-      bot_help_text_home:"Algumas coisas que posso fazer: registar as tuas horas (<span class=\"num\">2h BNK testes de payroll ontem</span>), pedir uma ausência (<span class=\"num\">férias de 3 a 6 de novembro</span>, <span class=\"num\">consulta médica amanhã das 14h às 17h</span>), consultar ou cancelar os teus pedidos e o saldo de férias, ver a semana e submetê-la e, como chefia, ver o que está à espera e aprovar ou rejeitar. Escreve em linguagem normal.",
+      bot_help_text_home:"Algumas coisas que posso fazer: registar as tuas horas (<span class=\"num\">2h BNK testes de payroll ontem</span>), pedir uma ausência (<span class=\"num\">férias de 3 a 6 de novembro</span>, <span class=\"num\">consulta médica amanhã das 14h às 17h</span>), registar quilómetros com a distância calculada (<span class=\"num\">km de Lisboa para o Porto ontem</span>), consultar ou cancelar os teus pedidos e o saldo de férias, ver a semana e submetê-la e, como chefia, ver o que está à espera e aprovar ou rejeitar. Escreve em linguagem normal.",
       brand_title:"Registo de Horas", brand_subtitle:"Protótipo Fiori",
       capture_on:"Sugestões ativas, linha do tempo privada", capture_off:"Captura em pausa",
       aria_it0001:"Empresa do colaborador, a partir do IT0001",
@@ -1822,6 +1891,40 @@
       row_confirm_cell:"Confirmar célula e descer", row_show_list:"Mostrar esta lista"
     },
     fr: {
+      wt_AJC_NAC:"Indemnité journalière nationale",
+      wt_AJC_INT:"Indemnité journalière à l'étranger",
+      wt_KMS:"Kilomètres en véhicule personnel",
+      wt_TURNO:"Prime d'équipe",
+      wt_BONUS:"Prime de projet",
+      label_route:"Trajet",
+      label_road_distance:"Distance par la route",
+      label_to_record:"À enregistrer",
+      label_origin:"Départ",
+      label_destination:"Arrivée",
+      label_round_trip:"Aller-retour",
+      label_office_base:"{city} (bureau)",
+      km_one_way:"aller simple",
+      km_round_trip:"aller-retour",
+      km_per_leg:"{km} km par trajet",
+      km_estimated:"(estimation d'après la carte)",
+      bot_km_confirm:"Voici les kilomètres. J'ai calculé la distance entre les deux lieux ; vérifiez avant que je l'enregistre.",
+      bot_km_confirm_given:"Voici les kilomètres indiqués. Je n'ai pas la distance de ce trajet, vérifiez donc le chiffre avant que je l'enregistre.",
+      bot_km_recorded:"{km} km enregistrés le {day}, {route}, projet {code}. Ils figurent dans les indemnités de la semaine.",
+      bot_km_which_route:"Entre quels lieux ? Par exemple : km de Lisbonne à Porto hier.",
+      bot_km_unknown_place:"Je n'ai pas la distance jusqu'à {place} dans cette maquette. Indiquez les kilomètres (par exemple, 120 km) et je les enregistre avec ce trajet.",
+      bot_km_future:"Les kilomètres s'enregistrent après le déplacement, et le {date} n'est pas encore arrivé.",
+      bot_km_no_week:"Le {date} est en dehors des semaines disponibles dans le relevé.",
+      bot_km_week_submitted:"La semaine du {date} a déjà été soumise, elle ne prend plus d'indemnités.",
+      bot_km_period_closed:"La période du {date} est clôturée, elle ne prend plus d'indemnités.",
+      bot_km_not_in_profile:"Le responsable hiérarchique n'a pas de relevé dans ce test, il n'y a donc pas de kilomètres à enregistrer. Passez à collaborateur ou chef de projet avec le bouton Test.",
+      warn_km_differs:"Vous avez indiqué {given} km ; la distance calculée est de {calc} km. Je garde votre chiffre.",
+      chip_km_round:"Aller-retour",
+      chip_km_one_way:"Aller simple",
+      chip_km_example:"km de Lisbonne à Porto hier",
+      hint_km_route:"{route} : {km} km par la route par trajet, {total} km à enregistrer.",
+      hint_km_unknown:"Pas de distance pour ce trajet dans la maquette : indiquez les kilomètres.",
+      hint_km_enter_route:"Indiquez le départ et l'arrivée pour calculer la distance.",
+      toast_km_route_needed:"Indiquez le départ et l'arrivée du déplacement.",
       label_approval_week:"Approbation des temps, semaine {n}",
       label_you:"vous",
       filter_pending:"À approuver", filter_all:"Toutes", aria_ap_filter:"Feuilles de temps à afficher", text_ap_none_pending:"Plus rien à approuver. Choisissez Toutes pour voir celles approuvées.", btn_select_clean_one:"Sélectionner la {n} sans avertissement", btn_select_clean_other:"Sélectionner les {n} sans avertissement",
@@ -1954,7 +2057,7 @@
       chip_leave_tomorrow:"Demain", chip_leave_next_week:"La semaine prochaine", bot_leave_form_opened:"Voici le formulaire, déjà rempli avec ce que vous m'avez dit.",
       bot_leave_ambiguous:"{name} a une demande d'absence et une feuille de temps en attente. Laquelle ?",
       bot_leave_need_more:"J'ai besoin du type d'absence et des dates.",
-      bot_help_text_home:"Voici ce que je peux faire : saisir vos heures (<span class=\"num\">2h BNK tests de paie hier</span>), demander une absence (<span class=\"num\">congés du 3 au 6 novembre</span>, <span class=\"num\">médecin demain de 14h à 17h</span>), consulter ou annuler vos demandes et votre solde de congés, voir la semaine et la soumettre et, en tant que responsable, voir ce qui attend et approuver ou refuser. Écrivez simplement en langage naturel.",
+      bot_help_text_home:"Voici ce que je peux faire : saisir vos heures (<span class=\"num\">2h BNK tests de paie hier</span>), demander une absence (<span class=\"num\">congés du 3 au 6 novembre</span>, <span class=\"num\">médecin demain de 14h à 17h</span>), enregistrer des kilomètres avec la distance calculée (<span class=\"num\">km de Lisbonne à Porto hier</span>), consulter ou annuler vos demandes et votre solde de congés, voir la semaine et la soumettre et, en tant que responsable, voir ce qui attend et approuver ou refuser. Écrivez simplement en langage naturel.",
       brand_title:"Saisie des temps", brand_subtitle:"Prototype Fiori",
       capture_on:"Suggestions activées, historique privé", capture_off:"Capture en pause",
       aria_it0001:"Société de l'employé, à partir de l'IT0001",
@@ -2587,16 +2690,16 @@
       var w = wt(a.code);
       if(!w) return;
       if(w.noteLabel && !String(a.note || "").trim()){
-        out.push({sev:"e", allow:a.id, txt:t("val_allow_note_needed", {name: w.name, day: DAYS[a.day], noteLabel: w.noteLabel.toLowerCase()})});
+        out.push({sev:"e", allow:a.id, txt:t("val_allow_note_needed", {name: wtName(w), day: DAYS[a.day], noteLabel: w.noteLabel.toLowerCase()})});
       }
       if(!periodOpen(WORKDATES[a.day])){
-        out.push({sev:"e", allow:a.id, txt:t("val_allow_closed_period", {name: w.name, day: DAYS[a.day]})});
+        out.push({sev:"e", allow:a.id, txt:t("val_allow_closed_period", {name: wtName(w), day: DAYS[a.day]})});
       }
       if(w.amount && !(a.amount > 0)){
-        out.push({sev:"e", allow:a.id, txt:t("val_allow_no_amount", {name: w.name, day: DAYS[a.day]})});
+        out.push({sev:"e", allow:a.id, txt:t("val_allow_no_amount", {name: wtName(w), day: DAYS[a.day]})});
       }
       if(!w.amount && !(a.qty > 0)){
-        out.push({sev:"e", allow:a.id, txt:t("val_allow_no_qty", {name: w.name, day: DAYS[a.day]})});
+        out.push({sev:"e", allow:a.id, txt:t("val_allow_no_qty", {name: wtName(w), day: DAYS[a.day]})});
       }
     });
     var pend = visibleSugs().length;
@@ -3639,7 +3742,7 @@
       var w = wt(a.code);
       var c = el("div","abscard" + (w.amount ? " bonus" : ""), "");
       var h = el("div","h","");
-      h.appendChild(el("b","", w.name));
+      h.appendChild(el("b","", wtName(w)));
       h.appendChild(el("span","chip " + (w.amount ? "green" : "grey"), allowLabel(a)));
       c.appendChild(h);
       c.appendChild(el("div","why", DAYS[a.day] + " · " + PROJECTS[a.p].code + " · " + t("text_wage_type_label", {code: w.lgart})));
@@ -3650,7 +3753,7 @@
       var rm = btn(t("btn_remove"),"btn sm", function(){
         if(!allowEditable(a)) return;
         state.allow = state.allow.filter(function(x){ return x.id !== a.id; });
-        render(); toast(t("toast_allowance_removed", {name: w.name}), t("ui_undo"), function(){ state.allow.push(a); render(); });
+        render(); toast(t("toast_allowance_removed", {name: wtName(w)}), t("ui_undo"), function(){ state.allow.push(a); render(); });
       });
       rm.disabled = !allowEditable(a);
       if(w.amount) rm.title = t("tip_bonus_remove_restricted");
@@ -3673,18 +3776,24 @@
     sel.innerHTML = "";
     wtFor().filter(function(w){ return w.selfEntry; }).forEach(function(w){
       var o = document.createElement("option");
-      o.value = w.code; o.textContent = w.name + " (" + w.lgart + ")";
+      o.value = w.code; o.textContent = wtName(w) + " (" + w.lgart + ")";
       sel.appendChild(o);
     });
     alEdit.code = sel.value;
     var pj = $("alProj");
     pj.innerHTML = "";
+    var mine = profileProjects();
     PROJECTS.forEach(function(p,i){
+      if(mine.length && mine.indexOf(i) === -1) return;
       var o = document.createElement("option");
       o.value = String(i); o.textContent = p.code + " · " + p.name;
       pj.appendChild(o);
     });
+    if(mine.length && mine.indexOf(alEdit.p) === -1) alEdit.p = mine[0];
     pj.value = String(alEdit.p);
+    $("alFrom").value = ""; $("alTo").value = ""; $("alRound").checked = false;
+    $("alPlaces").innerHTML = "";
+    PLACES.forEach(function(pl){ var o = document.createElement("option"); o.value = placeLabel(pl); $("alPlaces").appendChild(o); });
     var dy = $("alDay");
     dy.innerHTML = "";
     DAYS.forEach(function(d,i){
@@ -3705,11 +3814,17 @@
     $("alNoteLbl").textContent = w.noteLabel || t("label_note");
     $("alProjWrap").hidden = !w.needProj;
     $("alHint").textContent = t("hint_allow_wage_type", {code: w.lgart, unit: w.unit});
+    if(w.code === "KMS" && !$("alFrom").value){ var o = officePlace(); $("alFrom").value = placeLabel(o); }
+    syncAllowRoute();
   }
   function saveAllow(){
     var w = wt($("alCode").value);
     var qty = parseDur($("alQty").value);
     if(isNaN(qty) || qty <= 0){ toast(t("toast_qty_must_be_positive")); return; }
+    if(w.code === "KMS"){
+      if(!$("alFrom").value.trim() || !$("alTo").value.trim()){ toast(t("toast_km_route_needed")); return; }
+      $("alNote").value = $("alFrom").value.trim() + " → " + $("alTo").value.trim() + ($("alRound").checked ? " (" + t("km_round_trip") + ")" : "");
+    }
     state.allow.push({
       id: alEdit.id,
       day: +$("alDay").value,
@@ -3723,7 +3838,7 @@
       byName: "self"
     });
     render();
-    toast(t("toast_allowance_recorded", {name: w.name, day: DAYS[+$("alDay").value]}));
+    toast(t("toast_allowance_recorded", {name: wtName(w), day: DAYS[+$("alDay").value]}));
   }
 
   /* ---------- CATS mapping screen ---------- */
@@ -3735,6 +3850,7 @@
     ["Company of the employee","Organizational assignment","IT0001, field BUKRS","cats","Decides the data entry profile through ZTIME_COMPANY_CFG, read at the date of the entry"],
     ["Data entry profile in force","CATS profile","customizing, Z_CONS or Z_BSRV","cats","Z_CONS records duration only, Z_BSRV records start and end with the duration computed"],
     ["Allowance recorded against a project","Wage type","LGART","cats","Has to exist in T512Z and be authorised in the profile"],
+    ["Own-car kilometres, origin and destination","Quantity and short text","ANZHL, LTXA1","cats","Wage type 1300. The distance between the two places comes from a routing service and is shown for confirmation before it's recorded; the mockup uses a table of road distances and, for other pairs, an estimate from the map. The route goes to LTXA1"],
     ["Allowance quantity","Number, with unit","ANZHL, ZEINH","cats","Days, kilometres. The bonus goes in with ANZHL 1"],
     ["Bonus amount","Amount","CATSAMOUNT","cats","Native CATSDB field, CURR 13.2. Confirm with the client whether the standard CAT6 transfer maps it to IT2010 BETRG, or whether that needs configuring"],
     ["Transfer to payroll","Standard transfer","CAT6 to IT2010","cats","No bespoke interface. CAT5 and CAT7 cover PS and CO"],
@@ -4416,7 +4532,7 @@
     var qty = parseDur($("mAllowQty").value);
     if(isNaN(qty) || qty <= 0){ toast(t("toast_give_qty_positive")); return; }
     var note = $("mAllowNote").value.trim();
-    if(w.noteLabel && !note){ toast(t("toast_note_required_for", {note: w.noteLabel, name: w.name})); return; }
+    if(w.noteLabel && !note){ toast(t("toast_note_required_for", {note: w.noteLabel, name: wtName(w)})); return; }
     var days = [];
     Array.prototype.forEach.call(document.querySelectorAll(".mAllowDays input:checked"), function(c){ days.push(+c.value); });
     if(!days.length){ toast(t("toast_pick_a_day")); return; }
@@ -4501,7 +4617,7 @@
       sel.innerHTML = "";
       massWageTypes().forEach(function(w){
         var o = document.createElement("option");
-        o.value = w.code; o.textContent = w.name + " (" + w.lgart + ")";
+        o.value = w.code; o.textContent = wtName(w) + " (" + w.lgart + ")";
         sel.appendChild(o);
       });
       sel.dataset.for = state.leader;
@@ -4563,7 +4679,7 @@
         var w = wt(e.code);
         h.appendChild(el("span","chip grey", fmt(e.qty) + " " + w.unit));
         c.appendChild(h);
-        c.appendChild(el("div","why", DAYS[e.day] + " · " + PROJECTS[e.p].code + " · " + w.name));
+        c.appendChild(el("div","why", DAYS[e.day] + " · " + PROJECTS[e.p].code + " · " + wtName(w)));
       } else {
         h.appendChild(el("span","chip grey", fmt(e.hours) + " h"));
         c.appendChild(h);
@@ -5817,8 +5933,8 @@
   });
   prefillToToday("PT01");
   prefillToToday("PT02");
-  /* the app opens on today's week, and for consulting on today's month */
-  saveCurrentWeek();
+  /* the app opens on today's week, and for consulting on today's month;
+     nothing to save first, the placeholder week was never edited */
   loadWeek(todayWeekIndex());
   LEAVE_TEAM.PT01.forEach(function(r){ r.bukrs = "PT01"; });
   LEAVE_TEAM.PT02.forEach(function(r){ r.bukrs = "PT02"; });
@@ -7143,6 +7259,272 @@
     showAbsences();
     return true;
   }
+  /* ---------- kilometres between two places ----------
+     Own-car kilometres (wage type KMS) are recorded with their route, and
+     the distance is worked out here and shown for confirmation instead of
+     being typed from memory. In SAP this comes from a routing service; the
+     mockup carries road distances for the usual trips between Portuguese
+     cities and, for any other pair, an estimate from the map. */
+  var PLACES = [
+    {name:"Lisboa", en:"Lisbon", fr:"Lisbonne", alias:["lisboa","lisbon","lisbonne"], lat:38.7223, lon:-9.1393},
+    {name:"Porto", alias:["porto","oporto"], lat:41.1579, lon:-8.6291},
+    {name:"Vila Nova de Gaia", alias:["vila nova de gaia","gaia"], lat:41.1239, lon:-8.6118},
+    {name:"Matosinhos", alias:["matosinhos"], lat:41.1844, lon:-8.6963},
+    {name:"Braga", alias:["braga"], lat:41.5454, lon:-8.4265},
+    {name:"Guimarães", alias:["guimaraes"], lat:41.4425, lon:-8.2918},
+    {name:"Viana do Castelo", alias:["viana do castelo","viana"], lat:41.6932, lon:-8.8329},
+    {name:"Vila Real", alias:["vila real"], lat:41.3006, lon:-7.7441},
+    {name:"Bragança", alias:["braganca"], lat:41.8061, lon:-6.7567},
+    {name:"Aveiro", alias:["aveiro"], lat:40.6405, lon:-8.6538},
+    {name:"Viseu", alias:["viseu"], lat:40.6566, lon:-7.9125},
+    {name:"Coimbra", alias:["coimbra"], lat:40.2033, lon:-8.4103},
+    {name:"Leiria", alias:["leiria"], lat:39.7436, lon:-8.8071},
+    {name:"Castelo Branco", alias:["castelo branco"], lat:39.8222, lon:-7.4909},
+    {name:"Santarém", alias:["santarem"], lat:39.2369, lon:-8.6850},
+    {name:"Sintra", alias:["sintra"], lat:38.8029, lon:-9.3817},
+    {name:"Cascais", alias:["cascais"], lat:38.6979, lon:-9.4215},
+    {name:"Oeiras", alias:["oeiras"], lat:38.6913, lon:-9.3109},
+    {name:"Almada", alias:["almada"], lat:38.6790, lon:-9.1569},
+    {name:"Setúbal", alias:["setubal"], lat:38.5244, lon:-8.8882},
+    {name:"Évora", alias:["evora"], lat:38.5714, lon:-7.9135},
+    {name:"Beja", alias:["beja"], lat:38.0151, lon:-7.8632},
+    {name:"Sines", alias:["sines"], lat:37.9560, lon:-8.8698},
+    {name:"Portimão", alias:["portimao"], lat:37.1386, lon:-8.5370},
+    {name:"Faro", alias:["faro"], lat:37.0194, lon:-7.9322}
+  ];
+  function kmKey(a, b){ return [a, b].sort().join("|"); }
+  var ROAD_KM = {};
+  [
+    ["Lisboa","Porto",313], ["Lisboa","Coimbra",205], ["Lisboa","Braga",365], ["Lisboa","Faro",278],
+    ["Lisboa","Setúbal",50], ["Lisboa","Évora",134], ["Lisboa","Leiria",145], ["Lisboa","Aveiro",255],
+    ["Lisboa","Santarém",85], ["Lisboa","Sintra",28], ["Lisboa","Cascais",32], ["Lisboa","Oeiras",18],
+    ["Lisboa","Almada",12], ["Lisboa","Viseu",290], ["Lisboa","Beja",178], ["Lisboa","Sines",160],
+    ["Lisboa","Castelo Branco",220], ["Lisboa","Portimão",285],
+    ["Porto","Braga",55], ["Porto","Guimarães",55], ["Porto","Aveiro",75], ["Porto","Coimbra",122],
+    ["Porto","Viseu",128], ["Porto","Vila Real",95], ["Porto","Viana do Castelo",72], ["Porto","Matosinhos",9],
+    ["Porto","Vila Nova de Gaia",5], ["Porto","Faro",555], ["Porto","Leiria",190], ["Porto","Bragança",210],
+    ["Coimbra","Aveiro",62], ["Coimbra","Leiria",72], ["Coimbra","Viseu",92], ["Faro","Portimão",67],
+    ["Braga","Guimarães",25]
+  ].forEach(function(r){ ROAD_KM[kmKey(r[0], r[1])] = r[2]; });
+  /* where a trip starts when only the destination is said */
+  var OFFICE_PLACE = {PT01:"Lisboa", PT02:"Porto"};
+  function foldText(s){ return String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); }
+  function placeLabel(p){ return (state.lang === "en" && p.en) || (state.lang === "fr" && p.fr) || p.name; }
+  function placeByName(name){
+    var f = foldText(name).trim().replace(/^(o|a|the|le|la)\s+/, "");
+    if(!f) return null;
+    return PLACES.filter(function(p){ return p.alias.indexOf(f) !== -1 || foldText(p.name) === f; })[0] || null;
+  }
+  function officePlace(){ return placeByName(OFFICE_PLACE[IT0001.bukrs] || "Lisboa"); }
+  function roadKm(a, b){
+    if(a === b) return {km:0, exact:true};
+    var known = ROAD_KM[kmKey(a.name, b.name)];
+    if(known) return {km:known, exact:true};
+    var rad = Math.PI / 180, dLat = (b.lat - a.lat) * rad, dLon = (b.lon - a.lon) * rad;
+    var h = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(a.lat*rad) * Math.cos(b.lat*rad) * Math.sin(dLon/2) * Math.sin(dLon/2);
+    /* roads are rarely straight: a quarter on top of the straight line */
+    return {km:Math.round(2 * 6371 * Math.asin(Math.sqrt(h)) * 1.25), exact:false};
+  }
+  var KM_FROM_RE = /(?:^|\s)(?:de|do|da|desde|from|depuis|du)\s+(?:o\s+|a\s+|the\s+)?$/;
+  var KM_TO_RE = /(?:^|\s)(?:para|pra|to|ate|a|ao|pour|vers|au|jusqu'a)\s+(?:o\s+|a\s+|the\s+)?$/;
+  /* The places named in a message, in the order written; the words just
+     before each one ("de", "para", "from", "to") say which end it is. */
+  function findPlaces(txt){
+    var f = " " + foldText(txt) + " ", hits = [];
+    PLACES.forEach(function(p){
+      var best = null;
+      p.alias.forEach(function(al){
+        var m = f.match(new RegExp("[^a-z]" + al.replace(/ /g, "\\s+") + "(?=[^a-z])"));
+        if(m && (!best || m.index < best.idx)) best = {place:p, idx:m.index, before:f.slice(Math.max(0, m.index - 14), m.index + 1)};
+      });
+      if(best) hits.push(best);
+    });
+    return hits.sort(function(x, y){ return x.idx - y.idx; });
+  }
+  var KM_STOP = ("o a os as the um uma le la registar regista registo record log add enter mim me my hoje today ontem yesterday anteontem amanha tomorrow " +
+    "segunda terca quarta quinta sexta sabado domingo monday tuesday wednesday thursday friday saturday sunday lundi mardi mercredi jeudi vendredi samedi dimanche " +
+    "ida volta km kms quilometros kilometres kilometers projeto project projet dia day jour semana week manha tarde morning afternoon cliente client viagem trip ").split(" ");
+  /* A word after "to"/"para"/"de" that isn't a place the mockup knows. */
+  function unknownPlaceIn(txt){
+    var f = foldText(txt).replace(/\d+([.,]\d+)?\s*(km|kms|quilometros?|kilometres?|kilometers?)\b/g, " ");
+    var re = /(?:^|\s)(?:de|do|da|desde|from|depuis|para|pra|to|ate|pour|vers)\s+(?:o\s+|a\s+|the\s+)?([a-z][a-z'-]{2,}(?:\s+[a-z][a-z'-]{2,})?)/g, m;
+    while((m = re.exec(f))){
+      var words = m[1].split(/\s+/);
+      /* the next search starts right after this word, so "de lisboa para casa" still reaches "para casa" */
+      re.lastIndex = m.index + m[0].length - m[1].length + words[0].length;
+      if(KM_STOP.indexOf(words[0]) !== -1 || monthIndexOf(words[0]) !== -1 || placeByName(words[0]) || placeByName(m[1])) continue;
+      /* "para o BNK" is a project, not a place */
+      if(PROJECTS.some(function(pr){ return foldText(pr.code.split("-")[0]) === words[0]; })) continue;
+      var two = words.length > 1 && KM_STOP.indexOf(words[1]) === -1 && monthIndexOf(words[1]) === -1 && !placeByName(words[1]) ? m[1] : words[0];
+      return two.replace(/\b\w/g, function(c){ return c.toUpperCase(); });
+    }
+    return "";
+  }
+  function kmDateFrom(txt){
+    var low = String(txt).toLowerCase().replace(/\d+([.,]\d+)?\s*(km|kms|quil[óo]metros?|kilom[eè]tres?|kilometers?)\b/g, " ");
+    var f = foldText(low), today = todayISO();
+    if(/anteontem|day before yesterday|avant-hier/.test(f)) return isoAdd(today, -2);
+    if(/\bontem\b|yesterday|\bhier\b/.test(f)) return isoAdd(today, -1);
+    if(/\bhoje\b|\btoday\b|aujourd'hui/.test(f)) return today;
+    if(/amanha|tomorrow|demain/.test(f)) return isoAdd(today, 1);
+    var WD = [/segunda|monday|lundi/, /terca|tuesday|mardi/, /quarta|wednesday|mercredi/, /quinta|thursday|jeudi/, /sexta|friday|vendredi/, /sabado|saturday|samedi/, /domingo|sunday|dimanche/];
+    /* a trip is in the past: "Monday" is the last Monday, today included */
+    for(var i=0; i<7; i++){ if(WD[i].test(f)) return isoAdd(today, -((weekdayOf(today) - i + 7) % 7)); }
+    if(/\d/.test(low)){ var dd = parseLeaveDates(low); if(dd) return dd.start; }
+    return "";
+  }
+  function kmProjectFromText(txt){
+    var allowed = profileProjects(), up = " " + String(txt).toUpperCase() + " ", i;
+    for(i=0; i<allowed.length; i++){ if(up.indexOf(PROJECTS[allowed[i]].code.toUpperCase()) !== -1) return allowed[i]; }
+    for(i=0; i<allowed.length; i++){
+      if(new RegExp("[^A-Z]" + PROJECTS[allowed[i]].code.split("-")[0].toUpperCase() + "[^A-Z]").test(up)) return allowed[i];
+    }
+    return -1;
+  }
+  /* the project the person spent most of that day on, else their first */
+  function kmDefaultProject(week, day){
+    var allowed = profileProjects(), best = -1, most = 0;
+    (week.rows || []).forEach(function(r){ if(allowed.indexOf(r.p) !== -1 && (r.h[day] || 0) > most){ most = r.h[day]; best = r.p; } });
+    if(best !== -1) return best;
+    var any = (week.rows || []).filter(function(r){ return allowed.indexOf(r.p) !== -1; })[0];
+    return any ? any.p : (allowed.length ? allowed[0] : 0);
+  }
+  function setKmEnd(d, end, raw){
+    var place = placeByName(raw);
+    d[end] = place;
+    d[end + "Label"] = place ? placeLabel(place) : String(raw).trim().replace(/\b\w/g, function(c){ return c.toUpperCase(); });
+    if(!place) d.unknown = d[end + "Label"];
+    if(end === "from") d.fromOffice = false;
+  }
+  /* Reads a message into a kilometres draft, on top of the one already on
+     screen when there is one, so "round trip" or "from Coimbra" corrects
+     it. Returns null when the message says nothing about the trip. */
+  function kmDraftFromText(txt, base){
+    var d = base ? Object.assign({}, base) : {}, seen = false, strong = false;
+    var f = foldText(txt);
+    var q = f.match(/(\d+(?:[.,]\d+)?)\s*(?:km|kms|quilometros?|kilometres?|kilometers?)\b/);
+    if(q){ d.given = Math.round(parseFloat(q[1].replace(",", "."))); seen = true; }
+    if(/ida e volta|ida-e-volta|round.?trip|return trip|there and back|both ways|aller.?retour|aller et retour/.test(f)){ d.round = true; seen = true; }
+    else if(/\bso (a )?ida\b|apenas ida|one.?way|aller simple/.test(f)){ d.round = false; seen = true; }
+    strong = seen;
+    var hits = findPlaces(txt);
+    if(hits.length >= 2){
+      var a = hits[0], b = hits[1];
+      /* "to Porto from Lisbon": the first one named is where it ends */
+      var swap = KM_TO_RE.test(a.before) && KM_FROM_RE.test(b.before);
+      setKmEnd(d, "from", (swap ? b : a).place.name); setKmEnd(d, "to", (swap ? a : b).place.name);
+      d.unknown = ""; seen = true;
+    } else if(hits.length === 1){
+      var h = hits[0];
+      if(KM_FROM_RE.test(h.before)){
+        setKmEnd(d, "from", h.place.name);
+        if(!d.to && !d.toLabel){ var off = officePlace(); d.to = off; d.toLabel = placeLabel(off); }
+      } else {
+        setKmEnd(d, "to", h.place.name);
+        if(!d.from && !d.fromLabel){ var o = officePlace(); d.from = o; d.fromLabel = t("label_office_base", {city: placeLabel(o)}); d.fromOffice = true; }
+      }
+      d.unknown = "";
+      var other = unknownPlaceIn(txt);
+      if(other){ if(KM_FROM_RE.test(h.before)) setKmEnd(d, "to", other); else setKmEnd(d, "from", other); }
+      seen = true;
+    } else {
+      var unk = unknownPlaceIn(txt);
+      if(unk){ setKmEnd(d, "to", unk); seen = true; }
+    }
+    if(seen) strong = true;
+    var dt = kmDateFrom(txt);
+    if(dt){ d.date = dt; seen = true; }
+    var pj = kmProjectFromText(txt);
+    if(pj !== -1){ d.p = pj; d.pAuto = false; seen = true; }
+    /* a day or a project alone only corrects the trip in a short reply:
+       "2h BNK today" is a new time entry, not this trip moving to today */
+    d.strong = strong;
+    return seen ? d : null;
+  }
+  var KM_WORD_RE = /(?:\b|\d)kms?\b|quilometr|kilomet|\bmileage\b/;
+  function offerKm(d){
+    chat.kmDraft = d;
+    chat.pending = "km";
+    if(state.role === "manager"){
+      chat.kmDraft = null; chat.pending = null;
+      botSay("bot", t("bot_km_not_in_profile"));
+      botChips([t("chip_change_test")]);
+      return;
+    }
+    var known = d.from && d.to;
+    if(!d.toLabel || (known && d.from === d.to)){
+      botSay("bot", t("bot_km_which_route"));
+      botChips([t("chip_km_example")]);
+      return;
+    }
+    if(!known && !d.given){
+      botSay("bot", t("bot_km_unknown_place", {place: d.unknown || d.toLabel}));
+      return;
+    }
+    var today = todayISO();
+    if(!d.date) d.date = today;
+    var stop = null;
+    var wd = weekDayIn(WEEKS, d.date);
+    if(d.date > today) stop = t("bot_km_future", {date: fmtDate(d.date)});
+    else if(!wd) stop = t("bot_km_no_week", {date: fmtDate(d.date)});
+    else if(wd.week.submitted) stop = t("bot_km_week_submitted", {date: fmtDate(d.date)});
+    else if(!periodOpen(d.date)) stop = t("bot_km_period_closed", {date: fmtDate(d.date)});
+    if(stop){
+      botSay("bot", stop);
+      botChips([t("chip_km_example")]);
+      return;
+    }
+    if(d.p == null || d.p === -1 || d.pAuto !== false){ d.p = kmDefaultProject(wd.week, wd.day); d.pAuto = true; }
+    var leg = known ? roadKm(d.from, d.to) : null;
+    var calc = leg ? leg.km * (d.round ? 2 : 1) : null;
+    var qty = d.given || calc;
+    var route = d.fromLabel + " → " + d.toLabel + " (" + t(d.round ? "km_round_trip" : "km_one_way") + ")";
+    var lines = [
+      [t("label_allowance"), wtName(wt("KMS"))],
+      [t("label_route"), route]
+    ];
+    if(leg) lines.push([t("label_road_distance"), t("km_per_leg", {km: leg.km}) + (leg.exact ? "" : " " + t("km_estimated"))]);
+    lines.push([t("label_to_record"), qty + " km"]);
+    lines.push([t("label_day"), fmtDateShort(d.date)]);
+    lines.push([t("label_project"), PROJECTS[d.p].code + " · " + PROJECTS[d.p].name]);
+    var warn = d.given && calc && Math.abs(d.given - calc) > calc * 0.1 ? t("warn_km_differs", {given: d.given, calc: calc}) : null;
+    if(chat.curTurn) chat.curTurn.path = chat.curTurn.path || "km";
+    botSay("bot", t(leg ? "bot_km_confirm" : "bot_km_confirm_given"), botCard(lines, t("btn_register"), function(){
+      chat.kmDraft = null;
+      recordKm(d, wd, qty, d.fromLabel.replace(/\s*\(.*\)$/, "") + " → " + d.toLabel + (d.round ? " (" + t("km_round_trip") + ")" : ""));
+    }, warn));
+    if(known && !d.given) botChips([t(d.round ? "chip_km_one_way" : "chip_km_round")]);
+    chat.history.push({role:"assistant", content:"Proposed " + qty + " km own-car kilometres, " + route + ", on " + d.date + ". Waiting for confirmation."});
+  }
+  function recordKm(d, wd, qty, note){
+    var week = wd.week;
+    if(!week.allow) week.allow = [];
+    week.allow.push({id:"al" + (nextId++), day:wd.day, p:d.p, code:"KMS", qty:qty, amount:0, note:note,
+      by:IT0001.pernr, onBehalf:IT0001.pernr, byName:"self", origin:"Joule"});
+    if(week === WEEKS[weekIdx]) state.allow = week.allow;
+    render();
+    botSay("bot", t("bot_km_recorded", {km: qty, day: fmtDateShort(d.date), route: note, code: PROJECTS[d.p].code}));
+    botChips([t("chip_hours_i_have"), t("chip_help")]);
+  }
+  /* the screen's own Add allowance form, for kilometres: origin and
+     destination give the quantity, shown before it's recorded */
+  function syncAllowRoute(){
+    var isKm = $("alCode").value === "KMS";
+    $("alRouteWrap").hidden = !isKm; $("alRoundWrap").hidden = !isKm; $("alRouteInfo").hidden = !isKm;
+    if(!isKm) return;
+    $("alNoteWrap").hidden = true;
+    var a = placeByName($("alFrom").value), b = placeByName($("alTo").value);
+    var info = $("alRouteInfo");
+    if(a && b && a !== b){
+      var leg = roadKm(a, b), tot = leg.km * ($("alRound").checked ? 2 : 1);
+      $("alQty").value = String(tot);
+      info.textContent = t("hint_km_route", {route: placeLabel(a) + " → " + placeLabel(b), km: leg.km, total: tot}) + (leg.exact ? "" : " " + t("km_estimated"));
+    } else if($("alTo").value.trim() && $("alFrom").value.trim()){
+      info.textContent = t("hint_km_unknown");
+    } else {
+      info.textContent = t("hint_km_enter_route");
+    }
+  }
   /* "2026-11-03" from Claude to the YYYYMMDD the app keys on. */
   function isoArg(v){
     var s = String(v || "").trim();
@@ -7970,6 +8352,18 @@
         offerLeaveDecision(/^(todos|todas|all|tous|toutes)$/i.test(who.trim()) ? leaveQueue() : matchLeaveTargets(who), la.decisao !== "rejeitar", String(la.motivo || "").trim());
         return true;
       case "ir_para_ausencias": goToScreen("leave", t("nav_leave")); return true;
+      case "registar_quilometros":
+        var kd = {round: !!la.ida_e_volta};
+        if(la.destino) setKmEnd(kd, "to", la.destino);
+        if(la.origem) setKmEnd(kd, "from", la.origem);
+        else if(kd.toLabel){ var ko = officePlace(); kd.from = ko; kd.fromLabel = t("label_office_base", {city: placeLabel(ko)}); kd.fromOffice = true; }
+        if(Number(la.km) > 0) kd.given = Math.round(Number(la.km));
+        if(isoArg(la.data)) kd.date = isoArg(la.data);
+        var kp = matchProjectCodePrefix(la.projeto);
+        if(kp !== -1 && profileProjects().indexOf(kp) !== -1){ kd.p = kp; kd.pAuto = false; }
+        if(!kd.toLabel && intent.texto){ chat.kmDraft = kd; chat.pending = "km"; botSay("bot", intent.texto); return true; }
+        offerKm(kd);
+        return true;
       case "ver_como":
         switchRole(la.perfil === "chefia" ? "manager" : la.perfil === "gestor_projeto" ? "pm" : "employee");
         if(!chat.greeted) assistantEnsureGreeted();
@@ -8107,6 +8501,19 @@
       }
     }
 
+    /* Kilometres on screen or still missing the route: "round trip",
+       "from Coimbra", "250 km" or another day corrects the same trip. */
+    if(chat.pending === "km" && chat.kmDraft){
+      var kmFix = /\d\s*(h|horas?|hours?|heures?)\b/i.test(txt) ? null : kmDraftFromText(txt, chat.kmDraft);
+      if(kmFix && (kmFix.strong || txt.trim().split(/\s+/).length <= 4)){
+        await thinkingDelay();
+        hideTyping();
+        if(chat.curTurn) chat.curTurn.path = "km_draft";
+        offerKm(kmFix);
+        return;
+      }
+    }
+
     /* A rejection waiting for its reason: this message is the reason. */
     if(chat.rejectDraft){
       if(chat.curTurn) chat.curTurn.path = "reject_reason";
@@ -8190,6 +8597,9 @@
     if((ta || tp) && state.role !== "pm"){ botSay("bot", t("bot_team_only_pm")); botChips([t("chip_change_test")]); return; }
     if(ta){ offerTeamAllowance(ta.members, ta.days, ta.code, ta.qty, ta.note); return; }
     if(tp){ offerTeamEntry(tp.members, tp.days, tp.dur, tp.clock); return; }
+
+    /* the person's own kilometres, with the distance worked out */
+    if(KM_WORD_RE.test(foldText(txt))){ offerKm(kmDraftFromText(txt, null) || {}); return; }
 
     /* a request for every working day ("8h RTL-TT all days this week"),
        checked ahead of the single-day parser since it matches a duration
@@ -8526,7 +8936,7 @@
       return;
     }
     if(w.noteLabel && !note){
-      botSay("bot", t("bot_note_required", {noteLabel: w.noteLabel, name: w.name}));
+      botSay("bot", t("bot_note_required", {noteLabel: w.noteLabel, name: wtName(w)}));
       botChips([t("chip_help")]);
       return;
     }
@@ -8534,7 +8944,7 @@
     var lines = [
       [t("label_people"), selected.map(function(m){ return m.name; }).join(", ")],
       [t("label_days"), dayLabel],
-      [t("label_wage_type"), w.name],
+      [t("label_wage_type"), wtName(w)],
       [t("label_quantity_each"), fmt(qty) + " " + w.unit]
     ];
     if(note) lines.push([w.noteLabel || t("label_note"), note]);
@@ -8556,7 +8966,7 @@
       var saved = selected.filter(function(m){ return savedPernrs[m.pernr]; }).map(function(m){ return m.name.split(" ")[0]; });
       var notSaved = selected.filter(function(m){ return !savedPernrs[m.pernr]; }).map(function(m){ return m.name.split(" ")[0]; });
       var msg = saved.length
-        ? t("bot_staged_saved_allow", {names: saved.join(", "), days: dayLabel, name: w.name, save: t("btn_save")})
+        ? t("bot_staged_saved_allow", {names: saved.join(", "), days: dayLabel, name: wtName(w), save: t("btn_save")})
         : t("bot_staged_nothing");
       if(notSaved.length) msg += t("bot_staged_not_saved_allow_suffix", {names: notSaved.join(", "), code: PROJECTS[massProject()].code});
       botSay("bot", msg);
@@ -8882,6 +9292,10 @@
   if($("allowAdd")) $("allowAdd").onclick = openAllow;
   if($("alCode")) $("alCode").onchange = syncAllowForm;
   if($("alSave")) $("alSave").onclick = function(){ saveAllow(); };
+  ["alFrom","alTo","alRound"].forEach(function(id){
+    var n = $(id);
+    if(n){ n.addEventListener("input", syncAllowRoute); n.addEventListener("change", syncAllowRoute); }
+  });
   if($("alCancel")) $("alCancel").onclick = function(){ $("dlgAllow").close(); };
   if($("mProj")) $("mProj").onchange = renderTeam;
   if($("mApply")) $("mApply").onclick = applyMass;

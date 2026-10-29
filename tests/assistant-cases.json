@@ -688,6 +688,192 @@
           ]
         }
       ]
+    },
+    {
+      "id": "km-pt-route-round-trip",
+      "lang": "pt",
+      "why": "comment: record kilometres with the km wage type, showing the distance between the places to confirm",
+      "steps": [
+        {
+          "say": "km de Lisboa para o Porto ontem",
+          "expect": [
+            "Quilómetros em viatura própria",
+            "Lisboa → Porto",
+            "313 km por sentido",
+            "A registar 313 km",
+            "Ter 27 Out"
+          ],
+          "absent": [
+            "AWART"
+          ]
+        },
+        {
+          "say": "ida e volta",
+          "expect": [
+            "ida e volta",
+            "A registar 626 km"
+          ]
+        },
+        {
+          "confirm": true,
+          "expect": [
+            "Registados 626 km",
+            "BNK-2026"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "km-en-from-office",
+      "lang": "en",
+      "steps": [
+        {
+          "say": "mileage to Coimbra today",
+          "expect": [
+            "Lisbon (office) → Coimbra",
+            "205 km each way"
+          ]
+        },
+        {
+          "say": "from Leiria",
+          "expect": [
+            "Leiria → Coimbra",
+            "To record 72 km"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "km-en-given-differs",
+      "lang": "en",
+      "steps": [
+        {
+          "say": "400 km from Lisbon to Porto yesterday",
+          "expect": [
+            "To record 400 km",
+            "313 km each way",
+            "I'll keep your figure"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "km-pt-unknown-place",
+      "lang": "pt",
+      "steps": [
+        {
+          "say": "km de Lisboa para casa ontem",
+          "expect": [
+            "Não tenho a distância até Casa"
+          ]
+        },
+        {
+          "say": "35 km",
+          "expect": [
+            "Lisboa → Casa",
+            "A registar 35 km"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "km-pt02-office-round-trip",
+      "lang": "pt",
+      "company": "PT02",
+      "steps": [
+        {
+          "say": "km para Braga hoje ida e volta",
+          "expect": [
+            "Porto (escritório) → Braga",
+            "A registar 110 km",
+            "HSP-FAC"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "km-en-future-day",
+      "lang": "en",
+      "steps": [
+        {
+          "say": "km from Lisbon to Sintra tomorrow",
+          "expect": [
+            "hasn't come yet"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "km-en-submitted-week",
+      "lang": "en",
+      "steps": [
+        {
+          "say": "km from Lisbon to Porto 15 September",
+          "expect": [
+            "already been submitted"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "km-en-manager-has-no-timesheet",
+      "lang": "en",
+      "role": "manager",
+      "steps": [
+        {
+          "say": "km from Lisbon to Porto",
+          "expect": [
+            "no timesheet in this test"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "km-en-hours-after-open-km",
+      "lang": "en",
+      "why": "an open kilometres question doesn't swallow the next time entry",
+      "steps": [
+        {
+          "say": "km",
+          "expect": [
+            "Between which places?"
+          ]
+        },
+        {
+          "say": "2h BNK today",
+          "expect": [
+            "Confirm this entry?"
+          ],
+          "absent": [
+            "kilometres"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "claude-intent-km",
+      "lang": "pt",
+      "why": "how the page acts on Claude's decision",
+      "steps": [
+        {
+          "say": "fui a Braga ontem e voltei",
+          "intent": {
+            "funcao": "registar_quilometros",
+            "argumentos": {
+              "origem": "Lisboa",
+              "destino": "Braga",
+              "data": "2026-10-27",
+              "ida_e_volta": true
+            },
+            "texto": null
+          },
+          "expect": [
+            "Lisboa → Braga",
+            "365 km por sentido",
+            "A registar 730 km"
+          ]
+        }
+      ]
     }
   ]
 }

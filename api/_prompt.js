@@ -100,6 +100,22 @@ export const FUNCTIONS = [
       required: ["projeto"]
     }
   },
+  {
+    name: "registar_quilometros",
+    description: "Registar quilómetros em viatura própria (abono KMS, rubrica 1300) da própria pessoa, numa deslocação entre duas localidades. A página calcula a distância por estrada e mostra-a num cartão para a pessoa confirmar; nada é gravado sem essa confirmação.",
+    parameters: {
+      type: "object",
+      properties: {
+        origem: { type: "string", description: "localidade de partida, como a pessoa a disse; omitir se não a disse (a página usa o escritório da empresa)" },
+        destino: { type: "string", description: "localidade de chegada, como a pessoa a disse" },
+        data: { type: "string", description: "data ISO, YYYY-MM-DD, do dia da deslocação; omitir para hoje" },
+        ida_e_volta: { type: "boolean", description: "true quando a pessoa disser ida e volta" },
+        km: { type: "number", description: "só quando a pessoa disser o número de quilómetros; nunca calculado por ti" },
+        projeto: { type: "string", description: "código do projeto, apenas da lista 'projetos', se a pessoa o indicar" }
+      },
+      required: ["destino"]
+    }
+  },
   { name: "consultar_semana", description: "Total registado, esperado e erros de validação", parameters: { type: "object", properties: {} } },
   { name: "ir_para_equipa", description: "Mudar para o ecrã Team (mass entry), onde o líder lança horas, allowances ou bónus em massa para a equipa", parameters: { type: "object", properties: {} } },
   { name: "ir_para_aprovacao", description: "Mudar para o ecrã Approval (manager), onde os timesheets da equipa são aprovados", parameters: { type: "object", properties: {} } },
@@ -188,6 +204,7 @@ export function buildSystemPrompt(contexto, idioma) {
     "Uma data ou pedido fora do que as funções cobrem nunca é um beco sem saída: explica em uma frase porque não dá para já (por exemplo, o dia pedido cair fora da semana visível), e propõe sempre a alternativa mais próxima que consegues mesmo fazer (outro dia dentro da semana, copiar a semana anterior, mudar de ecrã), em vez de só recusares.",
     "Assim que tiveres dia, duração e projeto claros (mesmo que tenhas acabado de os esclarecer numa pergunta anterior), chama a função de imediato, no mesmo turno, em vez de descreveres o registo em texto e esperares por um 'sim' à parte: o cartão de confirmação que aparece no ecrã depois de chamares a função É o passo de confirmação, uma segunda confirmação em texto antes disso só atrasa e arrisca perder o contexto. Quando chamares 'registar_horas' ou 'registar_horas_equipa', o campo dia/dias é sempre uma data ISO completa e com zero à esquerda (ex.: '2026-09-15'), nunca só o número do dia.",
     "Ausências e Leave Request: a app é uma máscara sobre o Leave Request standard do SAP (serviço HCMFAB_LEAVE_REQUEST_CR_SRV, workflow de um passo com a chefia direta, decisão pelo My Inbox). Para a pessoa pedir uma ausência usa 'pedir_ausencia' com o código de 'tipos_ausencia' e datas ISO; resolve datas relativas ('amanhã', 'próxima semana', 'de 3 a 7 de novembro') a partir de 'hoje' no contexto, e quando o ano não é dito usa o próximo em que essa data ainda não passou. Se faltar o tipo ou as datas, pergunta só o que falta, em texto, sem chamar a função; se 'pedido_ausencia_por_completar' estiver preenchido, a mensagem atual completa esse pedido. Um pedido enviado aparece logo na timesheet como pendente, e depois de aprovado fecha o dia; não é preciso registar nada à parte. Para ver os pedidos ou o saldo usa 'consultar_ausencias'; para retirar ou cancelar, 'cancelar_ausencia'. 'listar_ausencias' continua a ser só as ausências da semana visível. Só quem tem 'papel' = 'chefia' aprova: usa 'listar_pendentes_aprovacao' quando perguntar o que tem para aprovar, e 'decidir_ausencia' para aprovar ou rejeitar pedidos de 'pedidos_para_aprovar' (uma rejeição precisa de motivo; se 'rejeicao_sem_motivo' estiver preenchido, a mensagem atual é o motivo). Se 'papel' for 'colaborador' e pedir para aprovar uma ausência, explica que só a chefia direta ('chefia_direta') aprova e que pode experimentar com 'Ver como' no topo. Aprovar um timesheet continua a ser 'aprovar'; se o nome existir nas duas listas e o pedido não disser qual, pergunta.",
+    "Quilómetros da própria pessoa (abono de quilómetros em viatura própria): usa 'registar_quilometros' com a origem e o destino como a pessoa os disse, o dia e, se ela os indicar, o projeto e se foi ida e volta. Não calcules nem inventes a distância: a página calcula-a entre as localidades e mostra-a num cartão para a pessoa confirmar. Só preenches 'km' quando a pessoa disser o número. Sem origem, a página parte do escritório da empresa. Quilómetros de outra pessoa da equipa continuam a ser 'registar_allowance_equipa'.",
     "Perfis: 'papel' no contexto diz quem está a usar a demonstração, escolhido no início do teste. 'colaborador' regista as próprias horas e pede ausências ('projetos' traz só os projetos da sua empresa em que pode registar). 'gestor_projeto' ('gestor_projeto_em_teste' diz quem e de que projetos; 'projetos' traz só os projetos de que é responsável) regista as próprias horas como qualquer colaborador ('registar_horas' e afins) e também aparece na lista 'equipa', por isso pode incluir-se num lançamento em massa; lança horas e abonos para a equipa do projeto e aprova as timesheets dessa equipa, nunca a sua: as funções de equipa e 'aprovar' são só dele, e 'aprovacoes' já traz apenas as timesheets dos seus projetos. 'chefia' é a chefia hierárquica: só ela decide pedidos de ausência. Se alguém pedir algo que cabe a outro perfil, não chames a função: explica em uma frase quem o faz e que pode mudar o teste no botão Teste, no topo, ou com 'ver_como'.",
     "Contexto atual da semana, incluindo projetos onde a pessoa está alocada, ausências, capacidade por dia, semanas anteriores, a equipa do líder atual (se aplicável) e os timesheets pendentes de aprovação (se aplicável):",
     JSON.stringify(contexto || {}, null, 2)
