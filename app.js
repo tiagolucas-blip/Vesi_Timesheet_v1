@@ -870,6 +870,11 @@
      messages are a separate follow-up, not covered here yet. */
   var I18N = {
     en: {
+      voice_blocked_short:"Voice dictation isn't available inside this page; click to see the alternative",
+      bot_voice_blocked:"Browser voice dictation needs the microphone, and the claude.ai page this mockup runs in doesn't give it that access. What works here is your system's dictation, which types straight into the box: Windows key + H on Windows, press Fn (or the globe key) twice on a Mac, or the microphone on your phone's keyboard. Opened directly in the browser, the button works in Chrome and Edge.",
+      bot_voice_unsupported:"This browser has no speech recognition. Use your system's dictation, which types straight into the box: Windows key + H on Windows, Fn twice on a Mac, or the microphone on your phone's keyboard.",
+      bot_voice_network:"The browser's speech service didn't answer. Try again, or use your system's dictation: Windows key + H on Windows, Fn twice on a Mac.",
+      voice_err_no_mic:"No microphone found.",
       nav_leave_approval:"Leave approval",
       hdr_leave_approval:"Leave approval",
       hdr_leave_from_reports:"Requests from my direct reports",
@@ -1538,6 +1543,11 @@
       row_confirm_cell:"Confirm cell and move down", row_show_list:"Show this list"
     },
     pt: {
+      voice_blocked_short:"O ditado por voz não está disponível dentro desta página; clica para ver a alternativa",
+      bot_voice_blocked:"O ditado por voz do browser precisa do microfone, e a página do claude.ai onde este mockup corre não lhe dá esse acesso. O que funciona aqui é o ditado do sistema, que escreve diretamente na caixa de texto: tecla Windows + H no Windows, carregar duas vezes em Fn (ou na tecla do globo) no Mac, ou o microfone do teclado no telemóvel. Aberto diretamente no browser, o botão funciona no Chrome e no Edge.",
+      bot_voice_unsupported:"Este browser não tem reconhecimento de voz. Usa o ditado do sistema, que escreve diretamente na caixa de texto: tecla Windows + H no Windows, Fn duas vezes no Mac, ou o microfone do teclado no telemóvel.",
+      bot_voice_network:"O serviço de voz do browser não respondeu. Tenta outra vez, ou usa o ditado do sistema: tecla Windows + H no Windows, Fn duas vezes no Mac.",
+      voice_err_no_mic:"Não encontrei nenhum microfone.",
       nav_leave_approval:"Aprovação de ausências",
       hdr_leave_approval:"Aprovação de ausências",
       hdr_leave_from_reports:"Pedidos dos meus colaboradores diretos",
@@ -2199,6 +2209,11 @@
       row_confirm_cell:"Confirmar célula e descer", row_show_list:"Mostrar esta lista"
     },
     fr: {
+      voice_blocked_short:"La dictée vocale n'est pas disponible dans cette page ; cliquez pour voir l'alternative",
+      bot_voice_blocked:"La dictée vocale du navigateur a besoin du micro, et la page claude.ai où tourne cette maquette ne lui donne pas cet accès. Ce qui marche ici, c'est la dictée du système, qui écrit directement dans la zone de texte : touche Windows + H sous Windows, deux appuis sur Fn (ou la touche globe) sur Mac, ou le micro du clavier du téléphone. Ouvert directement dans le navigateur, le bouton fonctionne dans Chrome et Edge.",
+      bot_voice_unsupported:"Ce navigateur n'a pas de reconnaissance vocale. Utilisez la dictée du système, qui écrit directement dans la zone de texte : touche Windows + H sous Windows, deux fois Fn sur Mac, ou le micro du clavier du téléphone.",
+      bot_voice_network:"Le service vocal du navigateur n'a pas répondu. Réessayez, ou utilisez la dictée du système : touche Windows + H sous Windows, deux fois Fn sur Mac.",
+      voice_err_no_mic:"Aucun micro trouvé.",
       nav_leave_approval:"Approbation des absences",
       hdr_leave_approval:"Approbation des absences",
       hdr_leave_from_reports:"Demandes de mes collaborateurs directs",
@@ -10606,10 +10621,24 @@
     var micBtn = $("jMic"), langBtn = $("jMicLang");
     if(!micBtn || !langBtn) return;
     var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if(!SR){
-      micBtn.disabled = true;
+    /* Inside the claude.ai viewer the page runs in a frame without the
+       microphone, so the browser's dictation can't start there. The
+       button then says why and points to the system's own dictation,
+       which types straight into the box and works anywhere. */
+    function micAllowed(){
+      try{ if(document.permissionsPolicy && !document.permissionsPolicy.allowsFeature("microphone")) return false; }catch(e){}
+      try{ if(document.featurePolicy && !document.featurePolicy.allowsFeature("microphone")) return false; }catch(e){}
+      return true;
+    }
+    function explainVoice(key){
+      if(!chat.greeted) assistantEnsureGreeted();
+      botSay("bot", t(key));
+      $("jinput").focus();
+    }
+    if(!SR || !micAllowed()){
       langBtn.disabled = true;
-      micBtn.title = t("voice_not_supported");
+      micBtn.title = t(SR ? "voice_blocked_short" : "voice_not_supported");
+      micBtn.onclick = function(){ explainVoice(SR ? "bot_voice_blocked" : "bot_voice_unsupported"); };
       return;
     }
     function nextLang(l){ return VOICE_LANG_ORDER[(VOICE_LANG_ORDER.indexOf(l) + 1) % VOICE_LANG_ORDER.length]; }
@@ -10636,7 +10665,11 @@
     };
     recog.onerror = function(ev){
       stopUI();
-      if(ev.error !== "no-speech" && ev.error !== "aborted") toast(t("toast_voice_error", {err: ev.error}));
+      if(ev.error === "no-speech" || ev.error === "aborted") return;
+      if(ev.error === "not-allowed" || ev.error === "service-not-allowed") explainVoice("bot_voice_blocked");
+      else if(ev.error === "audio-capture") toast(t("voice_err_no_mic"));
+      else if(ev.error === "network") explainVoice("bot_voice_network");
+      else toast(t("toast_voice_error", {err: ev.error}));
     };
     recog.onend = function(){
       stopUI();
