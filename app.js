@@ -870,6 +870,8 @@
      messages are a separate follow-up, not covered here yet. */
   var I18N = {
     en: {
+      placeholder_dmy:"DD/MM/YYYY",
+      aria_pick_date:"Pick a date",
       text_submit_approvers:"Goes for approval to {names}.",
       bot_reply_lang_note:"Answering in English, the language you wrote in. The screens keep the language chosen in Settings.",
       text_leave_sub_no_ts:"Requests go to {name}, your direct manager in the org structure.",
@@ -1549,6 +1551,8 @@
       row_confirm_cell:"Confirm cell and move down", row_show_list:"Show this list"
     },
     pt: {
+      placeholder_dmy:"DD/MM/AAAA",
+      aria_pick_date:"Escolher data",
       text_submit_approvers:"Vai para aprovação de {names}.",
       bot_reply_lang_note:"A responder em português, a língua em que escreveste. Os ecrãs mantêm o idioma escolhido nas Definições.",
       text_leave_sub_no_ts:"Os pedidos vão para {name}, a tua chefia direta na estrutura organizativa.",
@@ -2221,6 +2225,8 @@
       row_confirm_cell:"Confirmar célula e descer", row_show_list:"Mostrar esta lista"
     },
     fr: {
+      placeholder_dmy:"JJ/MM/AAAA",
+      aria_pick_date:"Choisir une date",
       text_submit_approvers:"Part pour approbation chez {names}.",
       bot_reply_lang_note:"Réponse en français, la langue dans laquelle vous écrivez. Les écrans gardent la langue choisie dans les Paramètres.",
       text_leave_sub_no_ts:"Les demandes vont à {name}, votre responsable direct dans la structure organisationnelle.",
@@ -2957,7 +2963,12 @@
      data-i18n-title/placeholder/aria set the matching attribute instead,
      and data-i18n-html allows the handful of strings with inline markup
      (<strong>, <span class="num">) to use innerHTML instead of textContent. */
+  function applyDmyPlaceholders(){
+    ["lvAsOf","lvStart","lvEnd"].forEach(function(id){ var n = $(id); if(n) n.placeholder = t("placeholder_dmy"); });
+    Array.prototype.forEach.call(document.querySelectorAll(".dmypick"), function(b){ b.setAttribute("aria-label", t("aria_pick_date")); b.title = t("aria_pick_date"); });
+  }
   function applyI18n(){
+    if(typeof applyDmyPlaceholders === "function") setTimeout(applyDmyPlaceholders, 0);
     document.querySelectorAll("[data-i18n]").forEach(function(elm){
       elm.textContent = t(elm.getAttribute("data-i18n"));
     });
@@ -6428,6 +6439,55 @@
     return t("leave_range", {from: fmtDate(r.StartDate), to: fmtDate(r.EndDate)});
   }
   function isoToInput(d){ return d ? d.slice(0,4) + "-" + d.slice(4,6) + "-" + d.slice(6,8) : ""; }
+  /* Dates typed and shown as DD/MM/YYYY, whatever the browser's own
+     format (a native date field follows the browser, MM/DD/YYYY in an
+     American English one). */
+  function isoToDmy(d){ return d ? d.slice(6,8) + "/" + d.slice(4,6) + "/" + d.slice(0,4) : ""; }
+  function dmyToIso(v){
+    var s = String(v || "").trim(), m;
+    if((m = s.match(/^(\d{4})-(\d{2})-(\d{2})$/))) return m[1] + m[2] + m[3];
+    m = s.match(/^(\d{1,2})[\/.\-](\d{1,2})(?:[\/.\-](\d{2}|\d{4}))?$/);
+    if(!m) return "";
+    var d = +m[1], mo = +m[2], y = m[3] ? +m[3] : +todayISO().slice(0,4);
+    if(y < 100) y += 2000;
+    var dt = new Date(Date.UTC(y, mo - 1, d));
+    if(mo < 1 || mo > 12 || d < 1 || dt.getUTCMonth() !== mo - 1) return "";
+    return "" + y + (mo < 10 ? "0" : "") + mo + (d < 10 ? "0" : "") + d;
+  }
+  /* A DD/MM/YYYY text field with the browser's calendar one click away:
+     slashes go in as the digits are typed, and the picker writes back in
+     the same format. */
+  function enhanceDmyInput(inp){
+    if(!inp || inp.dataset.dmy) return;
+    inp.dataset.dmy = "1";
+    var wrap = el("span","dmywrap","");
+    inp.parentNode.insertBefore(wrap, inp);
+    wrap.appendChild(inp);
+    var hidden = document.createElement("input");
+    hidden.type = "date"; hidden.className = "dmyhidden"; hidden.tabIndex = -1; hidden.setAttribute("aria-hidden", "true");
+    var pick = el("button","btn sm dmypick","📅");
+    pick.type = "button";
+    pick.setAttribute("aria-label", t("aria_pick_date"));
+    pick.title = t("aria_pick_date");
+    pick.onclick = function(){
+      if(inp.disabled) return;
+      hidden.value = isoToInput(dmyToIso(inp.value));
+      try{ if(hidden.showPicker) hidden.showPicker(); else hidden.click(); }catch(e){ hidden.click(); }
+    };
+    hidden.onchange = function(){
+      inp.value = isoToDmy(inputToIso(hidden.value));
+      inp.dispatchEvent(new Event("input", {bubbles:true}));
+      inp.dispatchEvent(new Event("change", {bubbles:true}));
+    };
+    wrap.appendChild(pick);
+    wrap.appendChild(hidden);
+    inp.addEventListener("input", function(ev){
+      if(ev.inputType && ev.inputType.indexOf("delete") === 0) return;
+      var v = inp.value.replace(/[^\d\/]/g, "");
+      if(/^\d{2}$/.test(v) || /^\d{1,2}\/\d{2}$/.test(v)) v += "/";
+      if(v !== inp.value) inp.value = v;
+    });
+  }
   function inputToIso(v){ return String(v || "").replace(/-/g,""); }
   /* Working days of a request: Monday to Friday, less the public holidays
      of the company's holiday calendar. */
@@ -7008,7 +7068,7 @@
     var box = $("lvAccBody");
     box.innerHTML = "";
     var asOf = state.lvAsOf || todayISO();
-    $("lvAsOf").value = isoToInput(asOf);
+    $("lvAsOf").value = isoToDmy(asOf);
     var bal = leaveBalance(), at = balanceOf(PERNR, null, asOf);
     box.appendChild(el("div","accname", t("acc_vacation", {y: bal.year})));
     var big = el("div","accbig", fmtDays(at.available));
@@ -7767,8 +7827,8 @@
     });
     sel.value = p.AbsenceTypeCode || "0100";
     var start = p.StartDate || nextWorkday(todayISO());
-    $("lvStart").value = isoToInput(start);
-    $("lvEnd").value = isoToInput(p.EndDate || start);
+    $("lvStart").value = isoToDmy(start);
+    $("lvEnd").value = isoToDmy(p.EndDate || start);
     $("lvPartial").checked = !!p.partial;
     $("lvHours").value = p.partial && p.hours ? String(p.hours) : "4";
     $("lvBeg").value = p.StartTime || "09:00";
@@ -7788,7 +7848,7 @@
       EmployeeID: dlg.dataset.emp || selfId(), RequestID: dlg.dataset.edit || "", onBehalf: (dlg.dataset.emp || selfId()) !== selfId(),
       Attachment: file ? file.name : (dlg.dataset.att || ""),
       bukrs:IT0001.bukrs, AbsenceTypeCode:$("lvType").value,
-      StartDate:inputToIso($("lvStart").value), EndDate:inputToIso($("lvEnd").value),
+      StartDate:dmyToIso($("lvStart").value), EndDate:dmyToIso($("lvEnd").value),
       partial:$("lvPartial").checked, StartTime:$("lvBeg").value, EndTime:$("lvFin").value,
       hours: parseDur($("lvHours").value), Notes:$("lvNote").value.trim()
     };
@@ -7804,7 +7864,7 @@
     if(!partialOk) $("lvPartial").checked = false;
     $("lvPartial").disabled = !partialOk;
     var partial = $("lvPartial").checked;
-    var d0 = inputToIso($("lvStart").value);
+    var d0 = dmyToIso($("lvStart").value);
     var clock = profileFor(d0 || WORKDATES[0]).clock;
     $("lvHoursWrap").hidden = !partial || clock;
     $("lvClockWrap").hidden = !partial || !clock;
@@ -11021,7 +11081,13 @@
     if(!state.setupDone) applyTestSetup(IT0001.bukrs, state.role, state.leader);
   });
   if($("lvNew")) $("lvNew").onclick = function(){ openLeaveDialog(); };
-  if($("lvAsOf")) $("lvAsOf").onchange = function(){ state.lvAsOf = inputToIso($("lvAsOf").value) || ""; renderAccounts(); };
+  ["lvAsOf","lvStart","lvEnd"].forEach(function(id){ enhanceDmyInput($(id)); });
+  if($("lvAsOf")) $("lvAsOf").onchange = function(){
+    var iso = dmyToIso($("lvAsOf").value);
+    if(!iso && $("lvAsOf").value.trim()) return;
+    state.lvAsOf = iso || "";
+    renderAccounts();
+  };
   if($("lvCalPrev")) $("lvCalPrev").onclick = function(){ state.lvMonth = monthAdd(state.lvMonth || todayISO().slice(0,6), -1); renderMyCalendar(); };
   if($("lvCalNext")) $("lvCalNext").onclick = function(){ state.lvMonth = monthAdd(state.lvMonth || todayISO().slice(0,6), 1); renderMyCalendar(); };
   if($("lvCalToday")) $("lvCalToday").onclick = function(){ state.lvMonth = todayISO().slice(0,6); state.lvPick = null; renderMyCalendar(); };

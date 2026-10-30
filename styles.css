@@ -704,3 +704,10 @@
   .laacts{justify-content:flex-start; margin-top:8px}
   tr.apdetail .sub{margin:8px 0 0}
   #laBody td .chip + .chip{margin-left:4px}
+
+  /* DD/MM/YYYY fields with the browser's calendar behind a button */
+  .dmywrap{display:flex; align-items:center; gap:4px; position:relative; min-width:0}
+  .dmywrap input.dmy{flex:1; min-width:0; font-family:var(--f-mono); font-variant-numeric:tabular-nums}
+  .lvasof .dmywrap input.dmy{width:7.5em; flex:none}
+  .dmypick{padding:3px 7px; line-height:1}
+  .dmyhidden{position:absolute; right:0; bottom:0; width:1px; height:1px; opacity:0; pointer-events:none; border:0; padding:0}

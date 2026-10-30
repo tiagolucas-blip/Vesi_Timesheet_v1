@@ -345,7 +345,7 @@
     <div class="lvgrid" id="lvMineWrap">
       <div class="panel" id="lvAccPanel">
         <header><h2 data-i18n="hdr_time_accounts">Time accounts</h2>
-          <label class="lvasof"><span data-i18n="label_balance_as_of">Balance as of</span><input type="date" id="lvAsOf"></label></header>
+          <label class="lvasof"><span data-i18n="label_balance_as_of">Balance as of</span><input type="text" id="lvAsOf" class="dmy" inputmode="numeric" autocomplete="off" maxlength="10"></label></header>
         <div class="lvacc" id="lvAccBody"></div>
       </div>
       <div class="panel" id="lvCalPanel">
@@ -735,8 +735,8 @@
   <div class="body">
     <div class="field"><label for="lvType" data-i18n="label_absence_type">Absence type</label><select id="lvType"></select></div>
     <div class="two">
-      <div class="field"><label for="lvStart" data-i18n="label_from">From</label><input type="date" id="lvStart"></div>
-      <div class="field"><label for="lvEnd" data-i18n="label_to">To</label><input type="date" id="lvEnd"></div>
+      <div class="field"><label for="lvStart" data-i18n="label_from">From</label><input type="text" id="lvStart" class="dmy" inputmode="numeric" autocomplete="off" maxlength="10"></div>
+      <div class="field"><label for="lvEnd" data-i18n="label_to">To</label><input type="text" id="lvEnd" class="dmy" inputmode="numeric" autocomplete="off" maxlength="10"></div>
     </div>
     <label class="lvchk"><input type="checkbox" id="lvPartial"> <span data-i18n="label_partial_day">Part of the day</span></label>
     <div class="two" id="lvHoursWrap" hidden>
