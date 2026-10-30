@@ -150,7 +150,7 @@
     }
     return null;
   }
-  function holidayName(h){ return h ? (state.lang === "pt" ? h[1] : state.lang === "fr" ? h[3] : h[2]) : ""; }
+  function holidayName(h){ var l = typeof curLang === "function" ? curLang() : state.lang; return h ? (l === "pt" ? h[1] : l === "fr" ? h[3] : h[2]) : ""; }
   function wt(code){ return WAGETYPES.filter(function(w){ return w.code === code; })[0]; }
   function wtName(w){ var k = "wt_" + w.code, v = t(k); return v === k ? w.name : v; }
   function wtFor(bukrs){
@@ -870,6 +870,7 @@
      messages are a separate follow-up, not covered here yet. */
   var I18N = {
     en: {
+      bot_reply_lang_note:"Answering in English, the language you wrote in. The screens keep the language chosen in Settings.",
       text_leave_sub_no_ts:"Requests go to {name}, your direct manager in the org structure.",
       nav_team_calendar:"Team calendar",
       text_tc_sub:"Your colleagues' absences, approved and pending, under the same manager.",
@@ -1547,6 +1548,7 @@
       row_confirm_cell:"Confirm cell and move down", row_show_list:"Show this list"
     },
     pt: {
+      bot_reply_lang_note:"A responder em português, a língua em que escreveste. Os ecrãs mantêm o idioma escolhido nas Definições.",
       text_leave_sub_no_ts:"Os pedidos vão para {name}, a tua chefia direta na estrutura organizativa.",
       nav_team_calendar:"Calendário da equipa",
       text_tc_sub:"As ausências dos teus colegas com a mesma chefia, aprovadas e pendentes.",
@@ -2217,6 +2219,7 @@
       row_confirm_cell:"Confirmar célula e descer", row_show_list:"Mostrar esta lista"
     },
     fr: {
+      bot_reply_lang_note:"Réponse en français, la langue dans laquelle vous écrivez. Les écrans gardent la langue choisie dans les Paramètres.",
       text_leave_sub_no_ts:"Les demandes vont à {name}, votre responsable direct dans la structure organisationnelle.",
       nav_team_calendar:"Calendrier de l'équipe",
       text_tc_sub:"Les absences de vos collègues sous le même responsable, approuvées et en attente.",
@@ -2887,8 +2890,24 @@
       row_confirm_cell:"Valider la cellule et descendre", row_show_list:"Afficher cette liste"
     }
   };
+  /* Two languages, kept apart: the screens use the one chosen in Settings
+     (state.lang); the assistant answers in the language of each message.
+     While a message is handled, REPLY_LANG holds the reply's language, and
+     anything redrawn on screen meanwhile goes back to the interface's. */
+  var REPLY_LANG = null;
+  function curLang(){ return REPLY_LANG || state.lang; }
+  function setReplyLang(l){
+    REPLY_LANG = l && l !== state.lang ? l : null;
+    applyLocaleArrays();
+  }
+  function inUiLang(fn){
+    var saved = REPLY_LANG;
+    if(!saved) return fn();
+    REPLY_LANG = null; applyLocaleArrays();
+    try{ return fn(); } finally{ REPLY_LANG = saved; applyLocaleArrays(); }
+  }
   function t(key, vars){
-    var d = I18N[state.lang] || I18N.en;
+    var d = I18N[curLang()] || I18N.en;
     var s = (Object.prototype.hasOwnProperty.call(d, key) ? d[key] : I18N.en[key]);
     if(s === undefined) return key;
     if(vars) Object.keys(vars).forEach(function(k){ s = s.replace("{" + k + "}", vars[k]); });
@@ -2897,7 +2916,7 @@
   /* French pluralises 0 and 1 the same way (singular); English and
      Portuguese only keep the singular at exactly 1. */
   function plural(n, key, extraVars){
-    var isOne = state.lang === "fr" ? (n <= 1) : (n === 1);
+    var isOne = curLang() === "fr" ? (n <= 1) : (n === 1);
     var vars = {n: n};
     if(extraVars) Object.keys(extraVars).forEach(function(k){ vars[k] = extraVars[k]; });
     return t(isOne ? key + "_one" : key + "_other", vars);
@@ -2921,13 +2940,13 @@
     pt:["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"],
     fr:["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"]
   };
-  function monthFullName(i){ return (MONTHS_FULL_I18N[state.lang] || MONTHS_FULL_I18N.en)[i]; }
+  function monthFullName(i){ return (MONTHS_FULL_I18N[curLang()] || MONTHS_FULL_I18N.en)[i]; }
   /* Re-points the two lookup arrays at the current language and rebuilds
      the cached weekday+date labels (DAYS) that were computed from the old
      ones - called on load and every time the language changes. */
   function applyLocaleArrays(){
-    WEEKDAY_ABBR = WEEKDAY_ABBR_I18N[state.lang] || WEEKDAY_ABBR_I18N.en;
-    MONTHS = MONTHS_I18N[state.lang] || MONTHS_I18N.en;
+    WEEKDAY_ABBR = WEEKDAY_ABBR_I18N[curLang()] || WEEKDAY_ABBR_I18N.en;
+    MONTHS = MONTHS_I18N[curLang()] || MONTHS_I18N.en;
     if(typeof WORKDATES !== "undefined" && WORKDATES.length) DAYS = daysFor(WORKDATES);
   }
   /* Walks every element carrying a data-i18n* attribute and applies the
@@ -4091,7 +4110,8 @@
     if(co && co.value !== IT0001.bukrs) co.value = IT0001.bukrs;
   }
 
-  function render(){
+  function render(){ return inUiLang(renderNow); }
+  function renderNow(){
     applyMonthlyUI();
     if(isMonthly()){ renderMonthGrid(); } else { renderGrid(); }
     renderCal(); renderSugs(); renderAllow();
@@ -6164,7 +6184,8 @@
   /* One way to change screen, from the tabs, the assistant or Settings. The
      SAP mapping has no tab: it's a technical reference, opened from
      Settings, with a Back button to wherever the person was. */
-  function showScreen(s){
+  function showScreen(s){ return inUiLang(function(){ showScreenNow(s); }); }
+  function showScreenNow(s){
     if(s === "cats" && state.screen !== "cats") state.prevScreen = state.screen;
     Array.prototype.forEach.call(document.querySelectorAll(".nav button"), function(x){ x.setAttribute("aria-current", x.dataset.screen === s ? "true" : "false"); });
     ["home","semana","leave","teamcal","lvaprov","team","aprov","cats"].forEach(function(k){ $("screen-"+k).hidden = k !== s; });
@@ -7666,7 +7687,8 @@
   }
 
   /* ---------- new request dialog ---------- */
-  function openLeaveDialog(prefill){
+  function openLeaveDialog(prefill){ return inUiLang(function(){ openLeaveDialogNow(prefill); }); }
+  function openLeaveDialogNow(prefill){
     var p = prefill || {};
     var dlg = $("dlgLeave");
     var emp = p.EmployeeID || selfId(), onBehalf = emp !== selfId(), editing = !!(p.RequestID && p.StatusID === "SENT");
@@ -8429,12 +8451,9 @@
   }
   /* switched before the message is shown: on a first message the
      greeting is redone in the new language, and the message stays */
-  function followMessageLang(txt){
-    var lang = detectMessageLang(txt);
-    if(!lang || lang === state.lang) return false;
-    setLang(lang);
-    return true;
-  }
+  /* The reply's language: the message's when it's clear, else the one
+     the conversation was already in, else the interface's. */
+  function replyLangFor(txt){ return detectMessageLang(txt) || chat.replyLang || state.lang; }
   function assistantRoleChanged(){
     var a = currentActor();
     var log = $("jlog");
@@ -8703,7 +8722,7 @@
   /* where a trip starts when only the destination is said */
   var OFFICE_PLACE = {PT01:"Lisboa", PT02:"Porto"};
   function foldText(s){ return String(s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); }
-  function placeLabel(p){ return (state.lang === "en" && p.en) || (state.lang === "fr" && p.fr) || p.name; }
+  function placeLabel(p){ var l = curLang(); return (l === "en" && p.en) || (l === "fr" && p.fr) || p.name; }
   function placeByName(name){
     var f = foldText(name).trim().replace(/^(o|a|the|le|la)\s+/, "");
     if(!f) return null;
@@ -9222,10 +9241,12 @@
     var turn = chat.curTurn;
     if(turn) turn.card = lines.map(function(l){ return l[0] + ": " + l[1]; }).concat(warn ? ["! " + warn] : []);
     /* what the card's buttons say afterwards belongs to the turn that showed it */
+    var cardLang = REPLY_LANG;
     function inTurn(fn){
-      var prev = chat.curTurn;
+      var prev = chat.curTurn, prevLang = REPLY_LANG;
       chat.curTurn = turn;
-      try{ fn(); } finally{ chat.curTurn = prev; logSave(); }
+      setReplyLang(cardLang);
+      try{ fn(); } finally{ chat.curTurn = prev; setReplyLang(prevLang); logSave(); }
     }
     var c = el("div","jcard" + (warn ? " warn" : ""), "");
     lines.forEach(function(l){
@@ -9562,7 +9583,7 @@
           /* The assistant always replies in the app's own language setting, not
              whatever language the message happens to be written in - same rule
              the rest of the UI follows (one selector, in Settings, for everything). */
-          idioma: state.lang,
+          idioma: curLang(),
           contexto: {
             ecra_atual: {home:"Assistant", semana:"My Timesheet", leave:"Leave Request", team:"Team", aprov:"Approval", cats:"CATS mapping"}[state.screen] || "My Timesheet",
             hoje: isoToInput(todayISO()),
@@ -9871,19 +9892,26 @@
      turn, and the 👍/👎 goes under its last answer. */
   async function botHandle(txt){
     if(!txt || !txt.trim()) return;
+    var lang = replyLangFor(txt);
+    chat.langNote = lang !== state.lang && lang !== chat.replyLang;
+    chat.replyLang = lang;
+    setReplyLang(lang);
+    /* dictation listens in the language the conversation is in */
+    if(VOICE_LANGS[lang.toUpperCase()] && voice.lang !== lang.toUpperCase()){ voice.lang = lang.toUpperCase(); syncVoiceLangBtn(); }
     var turn = logTurnStart(txt);
+    if(turn) turn.replyLang = lang;
     chat.curTurn = turn;
     try{ await botHandleTurn(txt); }
     finally{
       chat.curTurn = null;
+      setReplyLang(null);
       if(turn){ addFeedback(turn); logSave(); }
     }
   }
   async function botHandleTurn(txt){
     if(!txt || !txt.trim()) return;
-    var langSwitched = followMessageLang(txt);
     botSay("me", txt);
-    if(langSwitched && $("jlog")) $("jlog").appendChild(el("div","jdivider", t("bot_lang_followed")));
+    if(chat.langNote && $("jlog")) $("jlog").appendChild(el("div","jdivider", t("bot_reply_lang_note")));
     botChips([]);
     chat.history.push({role:"user", content:txt});
     showTyping();
