@@ -879,6 +879,17 @@
      messages are a separate follow-up, not covered here yet. */
   var I18N = {
     en: {
+      text_sugs_none:"No suggestion applied.",
+      toast_sugg_day_full:"{day} already has all its hours, the suggestion wasn't applied.",
+      toast_sugg_trimmed:"{day}: only {h} h fitted, the suggestion was trimmed to that.",
+      text_sugs_applied:"{n} suggestions applied.",
+      text_sugs_trimmed:"{n} trimmed to the hours left in the day.",
+      text_sugs_skipped:"{n} left out, the day was already full.",
+      text_sug_day_full:"Day already full",
+      text_sug_trimmed_short:"of {h} h, the rest doesn't fit",
+      text_sug_room:"Only {h} h left on this day: it will be trimmed.",
+      btn_accept:"Accept",
+      btn_dismiss:"Dismiss",
       bot_desc_too_short:"The description has to have at least 10 characters: add a bit more on the card, or write it here.",
       placeholder_desc_card:"What you worked on",
       hint_desc_min:"Description required, at least 10 characters",
@@ -1572,6 +1583,17 @@
       row_confirm_cell:"Confirm cell and move down", row_show_list:"Show this list"
     },
     pt: {
+      text_sugs_none:"Nenhuma sugestão aplicada.",
+      toast_sugg_day_full:"{day} já tem as horas todas, a sugestão não foi aplicada.",
+      toast_sugg_trimmed:"{day}: só cabiam {h} h, a sugestão foi ajustada.",
+      text_sugs_applied:"{n} sugestões aplicadas.",
+      text_sugs_trimmed:"{n} ajustadas às horas que restavam no dia.",
+      text_sugs_skipped:"{n} ficaram de fora, o dia já estava completo.",
+      text_sug_day_full:"Dia já completo",
+      text_sug_trimmed_short:"de {h} h, o resto não cabe",
+      text_sug_room:"Só restam {h} h neste dia: vai ser ajustada.",
+      btn_accept:"Aceitar",
+      btn_dismiss:"Descartar",
       bot_desc_too_short:"A descrição tem de ter pelo menos 10 caracteres: completa-a no cartão, ou escreve-a aqui.",
       placeholder_desc_card:"O que fizeste",
       hint_desc_min:"Descrição obrigatória, pelo menos 10 caracteres",
@@ -2258,6 +2280,17 @@
       row_confirm_cell:"Confirmar célula e descer", row_show_list:"Mostrar esta lista"
     },
     fr: {
+      text_sugs_none:"Aucune suggestion appliquée.",
+      toast_sugg_day_full:"{day} a déjà toutes ses heures, la suggestion n'a pas été appliquée.",
+      toast_sugg_trimmed:"{day} : seules {h} h tenaient, la suggestion a été ajustée.",
+      text_sugs_applied:"{n} suggestions appliquées.",
+      text_sugs_trimmed:"{n} ajustées aux heures restantes du jour.",
+      text_sugs_skipped:"{n} laissées de côté, le jour était déjà complet.",
+      text_sug_day_full:"Jour déjà complet",
+      text_sug_trimmed_short:"sur {h} h, le reste ne tient pas",
+      text_sug_room:"Il ne reste que {h} h ce jour : elle sera ajustée.",
+      btn_accept:"Accepter",
+      btn_dismiss:"Ignorer",
       bot_desc_too_short:"La description doit avoir au moins 10 caractères : complétez-la sur la carte, ou écrivez-la ici.",
       placeholder_desc_card:"Ce que vous avez fait",
       hint_desc_min:"Description obligatoire, au moins 10 caractères",
@@ -3957,22 +3990,51 @@
       card.appendChild(el("div","why", s.why));
       card.appendChild(el("div","conf", confLabel(s.conf)));
       var acts = el("div","acts","");
-      acts.appendChild(btn("Accept","btn sm primary", function(){ acceptSug(s); }));
-      acts.appendChild(btn("Edit","btn sm", function(){ openQuick(fmt(s.hours)+"h "+pr.code+" "+(s.desc||""), s.day); }));
-      acts.appendChild(btn("Dismiss","btn sm ghost", function(){ dropSug(s, true); }));
+      var accBtn = btn(t("btn_accept"),"btn sm primary", function(){ acceptSug(s); });
+      if(sugRoom(s) <= 0){ accBtn.disabled = true; accBtn.title = t("toast_sugg_day_full", {day: DAYS[s.day]}); card.appendChild(el("div","why", t("text_sug_day_full"))); }
+      else if(sugRoom(s) < s.hours) card.appendChild(el("div","why", t("text_sug_room", {h: fmt(sugRoom(s))})));
+      acts.appendChild(accBtn);
+      acts.appendChild(btn(t("btn_edit"),"btn sm", function(){ openQuick(fmt(s.hours)+"h "+pr.code+" "+(s.desc||""), s.day); }));
+      acts.appendChild(btn(t("btn_dismiss"),"btn sm ghost", function(){ dropSug(s, true); }));
       card.appendChild(acts);
       box.appendChild(card);
     });
   }
-  function acceptSug(s){
-    if(isBlocked(s.day)){ toast(t("toast_sugg_blocked_absence", {day: DAYS[s.day]})); return; }
+  /* A suggestion goes in only as far as the day has room: never past the
+     day's capacity (the daily schedule less any approved absence), the
+     same hard rule as typing in the grid. Returns the hours added: all of
+     them, fewer (trimmed to what was left), or none (the day was full).
+     quiet leaves the toast to a caller applying several at once. */
+  function sugRoom(s){ return Math.max(0, round15(capacity(s.day) - dayTotal(s.day))); }
+  function acceptSug(s, quiet){
+    if(isBlocked(s.day)){ if(!quiet) toast(t("toast_sugg_blocked_absence", {day: DAYS[s.day]})); return 0; }
+    var room = sugRoom(s);
+    if(room <= 0){ if(!quiet) toast(t("toast_sugg_day_full", {day: DAYS[s.day]})); return 0; }
+    var add = Math.min(s.hours, room);
     var row = state.rows.filter(function(r){ return r.p === s.p; })[0];
-    if(!row){ row = {id:nextId++, p:s.p, desc:s.desc, h:[0,0,0,0,0,0,0], origin:"Suggested"}; state.rows.push(row); }
-    if(!row.desc) row.desc = s.desc;
-    row.h[s.day] += s.hours;
+    if(!row){ row = {id:nextId++, p:s.p, desc:s.desc || "", h:[0,0,0,0,0,0,0], origin:"Suggested"}; state.rows.push(row); }
+    if(!row.desc) row.desc = s.desc || "";
+    row.h[s.day] = round15((row.h[s.day] || 0) + add);
     state.needsSave = true;
     dropSug(s, false);
-    toast(t("toast_suggestion_accepted", {day: DAYS[s.day]}));
+    if(!quiet) toast(add < s.hours ? t("toast_sugg_trimmed", {day: DAYS[s.day], h: fmt(add)}) : t("toast_suggestion_accepted", {day: DAYS[s.day]}));
+    return add;
+  }
+  /* several at once, in order, each against what's left after the others */
+  function acceptSugs(list){
+    var res = {applied:0, trimmed:0, skipped:0};
+    list.forEach(function(s){
+      var add = acceptSug(s, true);
+      if(!add) res.skipped++;
+      else { res.applied++; if(add < s.hours) res.trimmed++; }
+    });
+    return res;
+  }
+  function sugsSummary(res){
+    var txt = res.applied ? t("text_sugs_applied", {n: res.applied}) : t("text_sugs_none");
+    if(res.trimmed) txt += " " + t("text_sugs_trimmed", {n: res.trimmed});
+    if(res.skipped) txt += " " + t("text_sugs_skipped", {n: res.skipped});
+    return txt;
   }
   function dropSug(s, notify){
     state.sugs = state.sugs.filter(function(x){ return x.id !== s.id; });
@@ -6196,8 +6258,7 @@
   $("acceptHi").onclick = function(){
     var hi = visibleSugs().filter(function(s){ return s.conf === "hi"; });
     if(!hi.length) return;
-    hi.forEach(acceptSug);
-    toast(t("toast_high_conf_applied", {n: hi.length}));
+    toast(sugsSummary(acceptSugs(hi)));
   };
   $("vGrid").onclick = function(){ setView(true); };
   $("vCal").onclick = function(){ setView(false); };
@@ -9569,11 +9630,17 @@
     var hi = visibleSugs().filter(function(s){ return s.conf === "hi"; });
     if(!hi.length){ botSay("bot",t("bot_no_high_conf")); return; }
     chat.pending = "sugs";
+    var room = {};
     botSay("bot",t("bot_confirm_apply_suggestions"), botCard(
-      hi.map(function(s){ return [DAYS[s.day] + ", " + PROJECTS[s.p].code, fmt(s.hours) + " h"]; }),
+      hi.map(function(s){
+        var left = room[s.day] != null ? room[s.day] : sugRoom(s);
+        var add = Math.min(s.hours, left);
+        room[s.day] = left - add;
+        return [DAYS[s.day] + ", " + PROJECTS[s.p].code, add <= 0 ? t("text_sug_day_full") : add < s.hours ? fmt(add) + " h (" + t("text_sug_trimmed_short", {h: fmt(s.hours)}) + ")" : fmt(s.hours) + " h"];
+      }),
       t("btn_apply"), function(){
-        hi.forEach(acceptSug);
-        botSay("bot", t("bot_suggestions_applied", {n: hi.length}) + weekSummaryText());
+        var res = acceptSugs(hi);
+        botSay("bot", sugsSummary(res) + " " + weekSummaryText());
       }));
   }
   function offerCopyWeek(){
