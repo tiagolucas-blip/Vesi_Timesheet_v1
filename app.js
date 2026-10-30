@@ -870,6 +870,13 @@
      messages are a separate follow-up, not covered here yet. */
   var I18N = {
     en: {
+      attach_doc_0200:"medical certificate",
+      attach_doc_0210:"certificate of attendance",
+      attach_doc_0400:"supporting document",
+      text_required_lower:"required",
+      leave_err_attachment:"The attachment ({doc}) is required for this absence type.",
+      lvw_no_attachment_doc:"No attachment ({doc})",
+      bot_leave_confirm_attach:"Here's the request. This absence type needs an attachment ({doc}): add it on the card and then send it. It goes to your direct manager, nothing is sent until you confirm.",
       placeholder_dmy:"DD/MM/YYYY",
       aria_pick_date:"Pick a date",
       text_submit_approvers:"Goes for approval to {names}.",
@@ -1551,6 +1558,13 @@
       row_confirm_cell:"Confirm cell and move down", row_show_list:"Show this list"
     },
     pt: {
+      attach_doc_0200:"atestado médico",
+      attach_doc_0210:"declaração de presença",
+      attach_doc_0400:"comprovativo",
+      text_required_lower:"obrigatório",
+      leave_err_attachment:"O anexo ({doc}) é obrigatório neste tipo de ausência.",
+      lvw_no_attachment_doc:"Sem anexo ({doc})",
+      bot_leave_confirm_attach:"Aqui está o pedido. Este tipo de ausência precisa de anexo ({doc}): junta-o no cartão e depois envia. Vai para a tua chefia direta, nada é enviado sem confirmares.",
       placeholder_dmy:"DD/MM/AAAA",
       aria_pick_date:"Escolher data",
       text_submit_approvers:"Vai para aprovação de {names}.",
@@ -2225,6 +2239,13 @@
       row_confirm_cell:"Confirmar célula e descer", row_show_list:"Mostrar esta lista"
     },
     fr: {
+      attach_doc_0200:"certificat médical",
+      attach_doc_0210:"attestation de présence",
+      attach_doc_0400:"justificatif",
+      text_required_lower:"obligatoire",
+      leave_err_attachment:"La pièce jointe ({doc}) est obligatoire pour ce type d'absence.",
+      lvw_no_attachment_doc:"Sans pièce jointe ({doc})",
+      bot_leave_confirm_attach:"Voici la demande. Ce type d'absence demande une pièce jointe ({doc}) : ajoutez-la sur la carte puis envoyez. Elle part chez votre responsable direct, rien n'est envoyé sans votre confirmation.",
       placeholder_dmy:"JJ/MM/AAAA",
       aria_pick_date:"Choisir une date",
       text_submit_approvers:"Part pour approbation chez {names}.",
@@ -6265,12 +6286,14 @@
      like WEEKS and the approval queues. */
   var ABSENCE_TYPES = [
     {code:"0100", name:"Vacation",            quota:true,  partial:true,  attach:""},
-    {code:"0210", name:"Medical appointment", quota:false, partial:true,  attach:"optional"},
+    {code:"0210", name:"Medical appointment", quota:false, partial:true,  attach:"required"},
     {code:"0200", name:"Sick leave",          quota:false, partial:false, attach:"required"},
     {code:"0300", name:"Training",            quota:false, partial:true,  attach:""},
-    {code:"0400", name:"Justified absence",   quota:false, partial:true,  attach:"optional"}
+    {code:"0400", name:"Justified absence",   quota:false, partial:true,  attach:"required"}
   ];
   function absType(code){ return ABSENCE_TYPES.filter(function(x){ return x.code === code; })[0] || null; }
+  /* the document an absence type needs attached */
+  function attachDoc(ty){ return ty ? t("attach_doc_" + ty.code) : ""; }
   /* Absence type texts are language dependent in SAP (T554T), so unlike
      the rest of the sample master data they follow the interface language. */
   function absTypeLabel(a){
@@ -6319,14 +6342,14 @@
   var LEAVE_TEAM = {
     PT01:[
       {RequestID:"4500391", EmployeeID:"00104401", EmployeeName:"Ana Ferreira", role:"Senior consultant", AbsenceTypeCode:"0100", StartDate:weekDay(3,0), EndDate:weekDay(3,4), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"SENT", Notes:"Family trip"},
-      {RequestID:"4500388", EmployeeID:"00104402", EmployeeName:"Bruno Matos", role:"Consultant", AbsenceTypeCode:"0210", StartDate:weekDay(1,2), EndDate:weekDay(1,2), partial:true, hours:3, StartTime:"14:00", EndTime:"17:00", StatusID:"SENT", Notes:"Dentist"},
+      {RequestID:"4500388", EmployeeID:"00104402", EmployeeName:"Bruno Matos", role:"Consultant", AbsenceTypeCode:"0210", StartDate:weekDay(1,2), EndDate:weekDay(1,2), partial:true, hours:3, StartTime:"14:00", EndTime:"17:00", StatusID:"SENT", Notes:"Dentist", Attachment:"declaracao_presenca.pdf"},
       {RequestID:"4500395", EmployeeID:"00104404", EmployeeName:"Diogo Sousa", role:"Junior consultant", AbsenceTypeCode:"0300", StartDate:weekDay(2,0), EndDate:weekDay(2,1), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"SENT", Notes:"S/4HANA certification course"},
       {RequestID:"4500393", EmployeeID:"00104403", EmployeeName:"Carla Nunes", role:"Consultant", AbsenceTypeCode:"0100", StartDate:weekDay(8,0), EndDate:weekDay(8,3), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"SENT", Notes:"Christmas"},
       {RequestID:"4500372", EmployeeID:"00104405", EmployeeName:"Eva Lopes", role:"Architect", AbsenceTypeCode:"0100", StartDate:weekDay(3,0), EndDate:weekDay(3,2), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"APPROVED", Notes:""}
     ],
     PT02:[
       {RequestID:"4500396", EmployeeID:"00104510", EmployeeName:"Nuno Dias", role:"Technician", AbsenceTypeCode:"0100", StartDate:weekDay(4,0), EndDate:weekDay(4,4), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"SENT", Notes:""},
-      {RequestID:"4500389", EmployeeID:"00104528", EmployeeName:"Luís Teixeira", role:"Technician", AbsenceTypeCode:"0210", StartDate:weekDay(1,3), EndDate:weekDay(1,3), partial:true, hours:3, StartTime:"14:00", EndTime:"17:00", StatusID:"SENT", Notes:"Physiotherapy"},
+      {RequestID:"4500389", EmployeeID:"00104528", EmployeeName:"Luís Teixeira", role:"Technician", AbsenceTypeCode:"0210", StartDate:weekDay(1,3), EndDate:weekDay(1,3), partial:true, hours:3, StartTime:"14:00", EndTime:"17:00", StatusID:"SENT", Notes:"Physiotherapy", Attachment:"declaracao_presenca.pdf"},
       {RequestID:"4500397", EmployeeID:"00104530", EmployeeName:"Ana Pires", role:"Technician", AbsenceTypeCode:"0100", StartDate:weekDay(9,0), EndDate:weekDay(9,3), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"SENT", Notes:"Christmas"},
       {RequestID:"4500380", EmployeeID:"00104512", EmployeeName:"Hugo Matos", role:"Technician", AbsenceTypeCode:"0100", StartDate:weekDay(4,1), EndDate:weekDay(4,2), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"APPROVED", Notes:""}
     ]
@@ -6873,7 +6896,7 @@
       var rec = leaveHoursRecorded(d);
       if(rec.hours > 0) out.push({sev:"w", txt:t("leave_warn_hours", {h: fmt(rec.hours), days: rec.days.join(", ")})});
     }
-    if(ty.attach === "required" && !d.Attachment) out.push({sev:"w", txt:t("leave_warn_attachment")});
+    if(ty.attach === "required" && !d.Attachment) out.push({sev:"e", code:"attach", txt:t("leave_err_attachment", {doc: attachDoc(ty)})});
     var outside = false;
     eachLeaveDay(d, function(x){ if(!weekDayIn(weeksOfCompany(d.bukrs), x)) outside = true; });
     if(outside) out.push({sev:"i", txt:t("leave_info_outside_sample")});
@@ -7279,7 +7302,7 @@
         openLeaveDetail(r);
       };
       wrap.appendChild(inp);
-      wrap.appendChild(el("div","lvattlbl", (ty.attach === "required" ? t("hint_attach_required") : t("hint_attach_optional")) + ". " + t("text_attach_local")));
+      wrap.appendChild(el("div","lvattlbl", attachDoc(ty) + ". " + t("text_attach_local")));
       line(t("label_attachment"), wrap);
     }
     if(r.ApproverComment) line(t("label_manager_comment"), "“" + r.ApproverComment + "”");
@@ -7627,7 +7650,7 @@
     if(after !== null && after < 0) out.push(t("lvw_balance"));
     if(r.StartDate < todayISO() && !r.cancelRequested) out.push(t("lvw_retro"));
     var ty = absType(r.AbsenceTypeCode);
-    if(ty && ty.attach === "required" && !r.Attachment) out.push(t("lvw_no_attachment"));
+    if(ty && ty.attach === "required" && !r.Attachment) out.push(t("lvw_no_attachment_doc", {doc: attachDoc(ty)}));
     return out;
   }
   function renderLeaveApprovals(){
@@ -7871,7 +7894,7 @@
     $("lvEnd").disabled = partial;
     if(partial) $("lvEnd").value = $("lvStart").value;
     $("lvAttWrap").hidden = !(ty && ty.attach);
-    if(ty && ty.attach) $("lvAttHint").textContent = "(" + (ty.attach === "required" ? t("hint_attach_required") : t("hint_attach_optional")) + ")";
+    if(ty && ty.attach) $("lvAttHint").textContent = "(" + attachDoc(ty) + ", " + t("text_required_lower") + ")";
     $("lvAttCur").textContent = $("dlgLeave").dataset.att && !($("lvAtt").files && $("lvAtt").files[0]) ? "📎 " + $("dlgLeave").dataset.att : "";
     var d = leaveFormDraft();
     var msgs = validateLeave(d);
@@ -8338,7 +8361,9 @@
     else { d.hours = DAYCAP; d.StartTime = ""; d.EndTime = ""; }
     if(!d.EndDate) d.EndDate = d.StartDate;
     var msgs = validateLeave(d);
-    var errs = msgs.filter(function(m){ return m.sev === "e"; });
+    /* a missing attachment is asked for on the card itself */
+    var needAttach = msgs.some(function(m){ return m.code === "attach"; });
+    var errs = msgs.filter(function(m){ return m.sev === "e" && m.code !== "attach"; });
     var notes = msgs.filter(function(m){ return m.sev !== "e"; }).map(function(m){ return m.txt; });
     chat.leaveDraft = null;
     if(errs.length){
@@ -8348,11 +8373,30 @@
       return;
     }
     chat.pending = "leave";
-    botSay("bot", t("bot_leave_confirm"), botCard(leaveCardLines(d), t("btn_send_request"), function(){
+    var card = botCard(leaveCardLines(d), t("btn_send_request"), function(){
       var r = createLeave(d, "Joule");
       botSay("bot", t("bot_leave_sent", {id: r.RequestID, name: r.ApproverName}));
       botChips([t("chip_my_leave"), t("chip_hours_i_have")]);
-    }, notes.length ? notes.join(" ") : null));
+    }, notes.length ? notes.join(" ") : null);
+    if(needAttach){
+      var ty = absType(d.AbsenceTypeCode), send = card.querySelector(".acts .btn.primary");
+      var row = el("div","jrow jattach","");
+      row.appendChild(el("span","k", t("label_attachment")));
+      var inp = document.createElement("input");
+      inp.type = "file";
+      inp.setAttribute("aria-label", t("label_attachment") + ", " + attachDoc(ty));
+      var v = el("span","v","");
+      v.appendChild(inp);
+      v.appendChild(el("div","lvattlbl", attachDoc(ty) + ", " + t("text_required_lower")));
+      row.appendChild(v);
+      card.insertBefore(row, card.querySelector(".acts"));
+      if(send){ send.disabled = true; send.title = t("leave_err_attachment", {doc: attachDoc(ty)}); }
+      inp.onchange = function(){
+        d.Attachment = inp.files && inp.files[0] ? inp.files[0].name : "";
+        if(send){ send.disabled = !d.Attachment; send.title = ""; }
+      };
+    }
+    botSay("bot", needAttach ? t("bot_leave_confirm_attach", {doc: attachDoc(absType(d.AbsenceTypeCode))}) : t("bot_leave_confirm"), card);
     chat.history.push({role:"assistant", content:"Proposed leave request: " + d.AbsenceTypeCode + ", " + d.StartDate + " to " + d.EndDate + ". Waiting for confirmation."});
   }
   function upcomingLeave(){
