@@ -8021,7 +8021,7 @@
   var PROFILE_TABS = {
     employee: ["home","semana","leave","teamcal"],
     pm:       ["home","semana","leave","teamcal","team","aprov"],
-    manager:  ["home","lvaprov","leave","teamcal"]
+    manager:  ["home","leave","teamcal","lvaprov"]
   };
   function currentActor(){
     if(state.role === "pm") return {name: leaderById(state.leader).name, label: t("profile_pm")};
