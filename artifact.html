@@ -15,13 +15,19 @@
 </header>
 
 <nav class="nav" role="tablist">
-  <button role="tab" id="tab-home" aria-current="true" data-screen="home" data-i18n="nav_home">Assistant</button>
-  <button role="tab" id="tab-semana" aria-current="false" data-screen="semana" data-i18n="nav_my_timesheet">My Timesheet</button>
-  <button role="tab" id="tab-leave" aria-current="false" data-screen="leave" data-i18n="nav_leave">Leave Request</button>
-  <button role="tab" id="tab-teamcal" aria-current="false" data-screen="teamcal" data-i18n="nav_team_calendar">Team calendar</button>
-  <button role="tab" id="tab-team" data-screen="team" data-i18n="nav_team">Team (mass entry)</button>
-  <button role="tab" id="tab-aprov" data-screen="aprov" data-i18n="nav_approval">Approval (manager)</button>
-  <button role="tab" id="tab-lvaprov" aria-current="false" data-screen="lvaprov" data-i18n="nav_leave_approval">Leave approval</button>
+  <button role="tab" id="tab-home" class="navhome" aria-current="true" data-screen="home" data-i18n="nav_home">Assistant</button>
+  <div class="navgroup" role="group" id="navg-ts" data-i18n-aria="navg_timesheet" aria-label="Timesheet">
+    <span class="navglabel" data-i18n="navg_timesheet">Timesheet</span>
+    <button role="tab" id="tab-semana" aria-current="false" data-screen="semana" data-i18n="tab_ts_mine">My timesheet</button>
+    <button role="tab" id="tab-team" data-screen="team" data-i18n="tab_ts_team">Mass entry</button>
+    <button role="tab" id="tab-aprov" data-screen="aprov" data-i18n="tab_ts_approval">Approval</button>
+  </div>
+  <div class="navgroup" role="group" id="navg-lv" data-i18n-aria="navg_leave" aria-label="Leave Request">
+    <span class="navglabel" data-i18n="navg_leave">Leave Request</span>
+    <button role="tab" id="tab-leave" aria-current="false" data-screen="leave" data-i18n="tab_lv_mine">My requests</button>
+    <button role="tab" id="tab-teamcal" aria-current="false" data-screen="teamcal" data-i18n="tab_lv_teamcal">Team calendar</button>
+    <button role="tab" id="tab-lvaprov" aria-current="false" data-screen="lvaprov" data-i18n="tab_lv_approval">Approval</button>
+  </div>
 </nav>
 </div>
 

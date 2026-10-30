@@ -879,6 +879,14 @@
      messages are a separate follow-up, not covered here yet. */
   var I18N = {
     en: {
+      navg_timesheet:"Timesheet",
+      navg_leave:"Leave Request",
+      tab_ts_mine:"My timesheet",
+      tab_ts_team:"Mass entry",
+      tab_ts_approval:"Approval",
+      tab_lv_mine:"My requests",
+      tab_lv_teamcal:"Team calendar",
+      tab_lv_approval:"Approval",
       text_sugs_none:"No suggestion applied.",
       toast_sugg_day_full:"{day} already has all its hours, the suggestion wasn't applied.",
       toast_sugg_trimmed:"{day}: only {h} h fitted, the suggestion was trimmed to that.",
@@ -1583,6 +1591,14 @@
       row_confirm_cell:"Confirm cell and move down", row_show_list:"Show this list"
     },
     pt: {
+      navg_timesheet:"Timesheet",
+      navg_leave:"Ausências",
+      tab_ts_mine:"A minha folha",
+      tab_ts_team:"Lançamento em massa",
+      tab_ts_approval:"Aprovação",
+      tab_lv_mine:"Os meus pedidos",
+      tab_lv_teamcal:"Calendário da equipa",
+      tab_lv_approval:"Aprovação",
       text_sugs_none:"Nenhuma sugestão aplicada.",
       toast_sugg_day_full:"{day} já tem as horas todas, a sugestão não foi aplicada.",
       toast_sugg_trimmed:"{day}: só cabiam {h} h, a sugestão foi ajustada.",
@@ -2280,6 +2296,14 @@
       row_confirm_cell:"Confirmar célula e descer", row_show_list:"Mostrar esta lista"
     },
     fr: {
+      navg_timesheet:"Feuille de temps",
+      navg_leave:"Absences",
+      tab_ts_mine:"Ma feuille",
+      tab_ts_team:"Saisie groupée",
+      tab_ts_approval:"Approbation",
+      tab_lv_mine:"Mes demandes",
+      tab_lv_teamcal:"Calendrier de l'équipe",
+      tab_lv_approval:"Approbation",
       text_sugs_none:"Aucune suggestion appliquée.",
       toast_sugg_day_full:"{day} a déjà toutes ses heures, la suggestion n'a pas été appliquée.",
       toast_sugg_trimmed:"{day} : seules {h} h tenaient, la suggestion a été ajustée.",
@@ -8267,6 +8291,10 @@
     var tabs = PROFILE_TABS[state.role] || PROFILE_TABS.employee;
     Array.prototype.forEach.call(document.querySelectorAll(".nav button"), function(b){
       b.hidden = tabs.indexOf(b.dataset.screen) === -1;
+    });
+    /* an area with none of its tabs in this profile isn't shown at all */
+    Array.prototype.forEach.call(document.querySelectorAll(".navgroup"), function(g){
+      g.hidden = !Array.prototype.some.call(g.querySelectorAll("button"), function(b){ return !b.hidden; });
     });
     /* the project manager under test is fixed; Team's own picker follows it */
     var ls = $("leadSel");

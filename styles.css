@@ -714,3 +714,15 @@
 
   .jrow.jattach .v{display:grid; gap:2px}
   .jrow.jattach input[type=file]{font-size:var(--fs-sm); max-width:100%}
+
+  /* the tabs in two areas, timesheet and leave, with the assistant on its
+     own in front as the one common to both */
+  .nav{align-items:stretch}
+  .nav .navhome{font-weight:600; color:var(--accent-ink); padding-right:16px}
+  .navgroup{display:flex; align-items:stretch; gap:2px; margin-left:10px; padding:0 8px 0 0; position:relative}
+  .navgroup::before{content:""; position:absolute; left:-6px; top:10px; bottom:10px; border-left:1px solid var(--line)}
+  .navgroup[hidden]{display:none}
+  .navglabel{align-self:center; font-size:var(--fs-micro); text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--ink-3);
+    background:var(--surface-2); border:1px solid var(--line-soft); border-radius:999px; padding:2px 8px; margin:0 4px 0 6px; white-space:nowrap}
+  #navg-ts .navglabel{color:var(--accent-ink)}
+  #navg-lv .navglabel{color:var(--good)}
