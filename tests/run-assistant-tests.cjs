@@ -51,10 +51,17 @@ const BOT = "#jlog .jmsg.bot:not(#jtypingBubble)";
 async function lastBot(page) {
   return page.$$eval(BOT, (els) => (els.length ? els[els.length - 1].innerText.replace(/\s+/g, " ").trim() : ""));
 }
-async function waitReply(page, before) {
+/* A new answer, or (when the step switched the test) the other person's
+   conversation, whose last message is different. */
+async function waitReply(page, before, prevLast) {
   await page.waitForFunction(
-    ([sel, n]) => document.querySelectorAll(sel).length > n && !document.getElementById("jtypingBubble"),
-    [BOT, before], { timeout: 8000 });
+    ([sel, n, last]) => {
+      if (document.getElementById("jtypingBubble")) return false;
+      const els = document.querySelectorAll(sel);
+      const now = els.length ? els[els.length - 1].innerText.replace(/\s+/g, " ").trim() : "";
+      return els.length > n || (now && now !== last);
+    },
+    [BOT, before, prevLast], { timeout: 8000 });
   await page.waitForTimeout(120);
 }
 /* "projetos[].codigo" reads one field from every item of a list; anything
@@ -99,11 +106,12 @@ async function runCase(browser, base, c) {
   for (const step of c.steps) {
     let text;
     const before = await page.$$eval(BOT, (els) => els.length);
+    const prevLast = await lastBot(page);
     if (step.confirm) {
       const btns = await page.$$("#jlog .jcard .acts button.primary");
       if (!btns.length) { results.push({ step: "confirm", ok: false, missing: ["a card to confirm"], present: [], text: await lastBot(page) }); break; }
       await btns[btns.length - 1].click();
-      await waitReply(page, before);
+      await waitReply(page, before, prevLast);
       text = await lastBot(page);
       results.push(Object.assign({ step: "confirm", text }, check(text, step)));
       continue;
@@ -111,7 +119,7 @@ async function runCase(browser, base, c) {
     pendingIntent = step.intent || null;
     await page.fill("#jinput", step.say);
     await page.click("#jsend");
-    try { await waitReply(page, before); }
+    try { await waitReply(page, before, prevLast); }
     catch (e) { results.push({ step: step.say, ok: false, missing: ["a reply within 8 s"], present: [], text: await lastBot(page) }); break; }
     text = await lastBot(page);
     results.push(Object.assign({ step: step.say, text }, check(text, step, lastContext)));

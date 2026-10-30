@@ -870,6 +870,7 @@
      messages are a separate follow-up, not covered here yet. */
   var I18N = {
     en: {
+      text_submit_approvers:"Goes for approval to {names}.",
       bot_reply_lang_note:"Answering in English, the language you wrote in. The screens keep the language chosen in Settings.",
       text_leave_sub_no_ts:"Requests go to {name}, your direct manager in the org structure.",
       nav_team_calendar:"Team calendar",
@@ -1543,11 +1544,12 @@
       text_data_footer:"This timeline is visible only to you. The organization only sees the timesheet entries you submit. Legal basis and impact assessment to be validated with the DPO before the pilot.",
       btn_delete_timeline:"Delete timeline",
       dlg_shortcuts_title:"Keyboard shortcuts",
-      row_open_close_assistant:"Open and close the assistant", row_new_quick_add:"New quick add",
+      row_open_close_assistant:"Go to the assistant", row_new_quick_add:"New quick add",
       row_copy_previous_week:"Copy previous week", row_prev_next_week:"Previous and next week",
       row_confirm_cell:"Confirm cell and move down", row_show_list:"Show this list"
     },
     pt: {
+      text_submit_approvers:"Vai para aprovação de {names}.",
       bot_reply_lang_note:"A responder em português, a língua em que escreveste. Os ecrãs mantêm o idioma escolhido nas Definições.",
       text_leave_sub_no_ts:"Os pedidos vão para {name}, a tua chefia direta na estrutura organizativa.",
       nav_team_calendar:"Calendário da equipa",
@@ -2214,11 +2216,12 @@
       text_data_footer:"Esta linha do tempo só é visível para ti. A organização só vê os lançamentos que submetes. Base legal e avaliação de impacto a validar com o DPO antes do piloto.",
       btn_delete_timeline:"Eliminar linha do tempo",
       dlg_shortcuts_title:"Atalhos de teclado",
-      row_open_close_assistant:"Abrir e fechar o assistente", row_new_quick_add:"Novo adicionar rápido",
+      row_open_close_assistant:"Ir para o assistente", row_new_quick_add:"Novo adicionar rápido",
       row_copy_previous_week:"Copiar semana anterior", row_prev_next_week:"Semana anterior e seguinte",
       row_confirm_cell:"Confirmar célula e descer", row_show_list:"Mostrar esta lista"
     },
     fr: {
+      text_submit_approvers:"Part pour approbation chez {names}.",
       bot_reply_lang_note:"Réponse en français, la langue dans laquelle vous écrivez. Les écrans gardent la langue choisie dans les Paramètres.",
       text_leave_sub_no_ts:"Les demandes vont à {name}, votre responsable direct dans la structure organisationnelle.",
       nav_team_calendar:"Calendrier de l'équipe",
@@ -2885,7 +2888,7 @@
       text_data_footer:"Cet historique n'est visible que par vous. L'organisation ne voit que les saisies que vous soumettez. Base légale et analyse d'impact à valider avec le DPO avant le pilote.",
       btn_delete_timeline:"Supprimer l'historique",
       dlg_shortcuts_title:"Raccourcis clavier",
-      row_open_close_assistant:"Ouvrir et fermer l'assistant", row_new_quick_add:"Nouvel ajout rapide",
+      row_open_close_assistant:"Aller à l'assistant", row_new_quick_add:"Nouvel ajout rapide",
       row_copy_previous_week:"Copier la semaine précédente", row_prev_next_week:"Semaine précédente et suivante",
       row_confirm_cell:"Valider la cellule et descendre", row_show_list:"Afficher cette liste"
     }
@@ -3709,7 +3712,7 @@
   }
   function monthList(){
     var seen = {}, out = [];
-    WEEKS_PT01.forEach(function(w){ var k = monthKeyOf(w); if(!seen[k]){ seen[k] = 1; out.push(k); } });
+    weeksOfCompany("PT01").forEach(function(w){ var k = monthKeyOf(w); if(!seen[k]){ seen[k] = 1; out.push(k); } });
     return out;
   }
   function changeMonth(delta){
@@ -5413,7 +5416,7 @@
      exactly this list, so its answers match what the screen offers. */
   function profileProjects(){
     if(state.role === "pm") return leaderById(state.leader).projs.slice();
-    if(state.role === "manager") return [];
+    if(state.role === "manager") return MANAGER_PROJECTS[IT0001.bukrs].slice();
     var out = [];
     PROJECTS.forEach(function(p, i){ if(p.bukrs === IT0001.bukrs || p.bukrs === null) out.push(i); });
     return out;
@@ -5426,7 +5429,7 @@
     saveCurrentWeek();
     var curNum = WEEKS[weekIdx].num;
     IT0001.bukrs = bukrs;
-    WEEKS = bukrs === "PT02" ? WEEKS_PT02 : WEEKS_PT01;
+    WEEKS = weeksOfCompany(bukrs);
     state.approvals = bukrs === "PT02" ? APPROVALS_PT02 : APPROVALS_PT01;
     updateApproverChrome();
     /* WEEKS_PT01 and WEEKS_PT02 no longer line up index for index - PT01
@@ -5835,6 +5838,8 @@
     tr.appendChild(el("span","n", fmt(monthTotalHours(dates))+" h"));
     sum.appendChild(tr);
     body.appendChild(sum);
+    var apm = submitApproverLine(weeks.reduce(function(a, w){ return a.concat(w.rows); }, []));
+    if(apm) body.appendChild(apm);
 
     var warns = [];
     weeks.forEach(function(w){
@@ -5876,6 +5881,29 @@
       render();
     });
   }
+  /* Who approves the hours: the owner of each project, as for everyone;
+     a project manager's hours on their own project, and all of the line
+     manager's, go one level up instead. */
+  function timesheetApprovers(projIdxs){
+    var me = selfId(), names = [];
+    projIdxs.forEach(function(p){
+      var name;
+      if(state.role === "manager") name = approverFor(me).name;
+      else {
+        var owner = LEADERS.filter(function(l){ return l.bukrs === IT0001.bukrs && l.projs.indexOf(p) !== -1; })[0];
+        var ownerM = owner && TEAM.filter(function(m){ return m.leaderOf === owner.id; })[0];
+        name = !owner || (ownerM && ownerM.pernr === me) ? approverFor(me).name : owner.name;
+      }
+      if(names.indexOf(name) === -1) names.push(name);
+    });
+    return names;
+  }
+  function submitApproverLine(rowsList){
+    var ps = [];
+    rowsList.forEach(function(r){ if(r.h.some(function(v){ return v > 0; }) && ps.indexOf(r.p) === -1) ps.push(r.p); });
+    var names = timesheetApprovers(ps);
+    return names.length ? el("p","sub", t("text_submit_approvers", {names: names.join(", ")})) : null;
+  }
   function openSubmit(){
     if(isMonthly()) return openSubmitMonth();
     $("subTitle").textContent = t("dlg_submit_week_title", {n: isoWeekOf(WEEKS[weekIdx].start)});
@@ -5904,6 +5932,8 @@
     tr.appendChild(el("span","n", fmt(weekTotal())+" h"));
     sum.appendChild(tr);
     body.appendChild(sum);
+    var apw = submitApproverLine(state.rows);
+    if(apw) body.appendChild(apw);
 
     var warns = validate().filter(function(m){ return m.sev === "w"; });
     if(warns.length){
@@ -6445,7 +6475,44 @@
      applied to absences, now fed by the request instead of fixed data.
      Mutates each week's absences array in place: ABSENCES points at the
      loaded week's array, and replacing it would leave that pointer stale. */
-  function weeksOfCompany(bukrs){ return bukrs === "PT02" ? WEEKS_PT02 : WEEKS_PT01; }
+  /* ---------- one timesheet per person under test ----------
+     Each profile is a different person with a timesheet of their own: the
+     employee keeps the hand-written sample, and anyone else gets their own
+     copy, built from the same calendar the first time they're tested, with
+     their own projects and their own absences. Nothing recorded as one
+     person shows up in another's. */
+  var WEEKS_OF = {};
+  /* whether each person left changes unsaved in their own timesheet */
+  var UNSAVED = {};
+  WEEKS_OF[PERNR] = {PT01: WEEKS_PT01, PT02: WEEKS_PT02};
+  var BASE_WEEKS = null;
+  /* what a line manager records time against: internal management first,
+     then the projects of their unit */
+  var MANAGER_PROJECTS = {PT01:[3, 0, 1, 2], PT02:[3, 4, 5]};
+  function projectsOfPerson(id, bukrs){
+    var pm = TEAM.filter(function(m){ return m.leaderOf && m.pernr === id; })[0];
+    if(pm) return pm.projs.slice();
+    if(id === LINE_MANAGER.PT01.pernr || id === LINE_MANAGER.PT02.pernr) return MANAGER_PROJECTS[bukrs].slice();
+    return null;
+  }
+  function makeWeeksFor(id){
+    var base = JSON.parse(BASE_WEEKS);
+    WEEKS_OF[id] = base;
+    ["PT01","PT02"].forEach(function(b){
+      var mine = projectsOfPerson(id, b) || [];
+      base[b].forEach(function(w){
+        w.absences = []; w.allow = []; w.sugs = []; w.rows = [];
+      });
+      requestsOf(id, b).forEach(function(r){ syncLeaveToTimesheet(r); });
+      prefillToToday(b, base[b], mine);
+    });
+    return base;
+  }
+  function weeksOfCompany(bukrs, emp){
+    var id = emp || selfId();
+    var store = WEEKS_OF[id] || (BASE_WEEKS ? makeWeeksFor(id) : WEEKS_OF[PERNR]);
+    return bukrs === "PT02" ? store.PT02 : store.PT01;
+  }
   function weekDayIn(weeks, dateISO){
     for(var i=0; i<weeks.length; i++){
       var idx = datesFor(weeks[i].start).indexOf(dateISO);
@@ -6453,8 +6520,11 @@
     }
     return null;
   }
+  /* into the requester's own timesheet, whoever is testing */
   function syncLeaveToTimesheet(r){
-    var weeks = weeksOfCompany(r.bukrs);
+    var store = WEEKS_OF[r.EmployeeID];
+    if(!store) return;
+    var weeks = r.bukrs === "PT02" ? store.PT02 : store.PT01;
     weeks.forEach(function(w){
       for(var i = w.absences.length - 1; i >= 0; i--){
         if(w.absences[i].req === r.RequestID) w.absences.splice(i, 1);
@@ -6469,21 +6539,6 @@
         id:"lr" + r.RequestID + "-" + d, day:wd.day, type: ty ? ty.name : r.AbsenceTypeCode, awart:r.AbsenceTypeCode,
         hours: r.partial ? r.hours : DAYCAP, status: r.StatusID === "SENT" ? "pending" : "approved",
         src:"Request " + r.RequestID, req:r.RequestID
-      });
-    });
-  }
-  /* The sample timesheet stands for whoever is testing, so it carries that
-     person's absences and nobody else's: re-read when the test changes. */
-  function removeLeaveFromTimesheet(r){
-    weeksOfCompany(r.bukrs).forEach(function(w){
-      for(var i = w.absences.length - 1; i >= 0; i--){ if(w.absences[i].req === r.RequestID) w.absences.splice(i, 1); }
-    });
-  }
-  function syncActorLeave(){
-    var me = selfId();
-    ["PT01","PT02"].forEach(function(b){
-      LEAVE[b].concat(LEAVE_TEAM[b], OTHER_LEAVE[b]).forEach(function(r){
-        if(r.EmployeeID === me) syncLeaveToTimesheet(r); else removeLeaveFromTimesheet(r);
       });
     });
   }
@@ -6546,6 +6601,8 @@
   });
   prefillToToday("PT01");
   prefillToToday("PT02");
+  /* the calendar every other person's own timesheet starts from */
+  BASE_WEEKS = JSON.stringify({PT01: WEEKS_PT01, PT02: WEEKS_PT02});
   /* the app opens on today's week, and for consulting on today's month;
      nothing to save first, the placeholder week was never edited */
   loadWeek(todayWeekIndex());
@@ -6571,12 +6628,13 @@
     for(var i=0; i<WEEKS.length; i++){ if(datesFor(WEEKS[i].start).indexOf(today) !== -1) return i; }
     return today > WEEKS[WEEKS.length - 1].start ? WEEKS.length - 1 : Math.min(6, WEEKS.length - 1);
   }
-  function prefillToToday(bukrs){
+  function prefillToToday(bukrs, weeksArg, projsArg){
     var PREFILL_DESC = {
       0:"Payroll go-live support", 1:"Time tracking rollout support", 2:"WFM rollout stabilization",
-      4:"Elevator preventive maintenance", 5:"Terminal HVAC inspection round"
+      4:"Elevator preventive maintenance", 5:"Terminal HVAC inspection round", 3:"Team management and internal meetings"
     };
-    var weeks = weeksOfCompany(bukrs), today = todayISO();
+    var weeks = weeksArg || weeksOfCompany(bukrs), today = todayISO();
+    if(projsArg && !projsArg.length) return;
     var y = +today.slice(0,4), m = +today.slice(4,6);
     var from = m === 1 ? (y - 1) + "1201" : "" + y + (m - 1 < 10 ? "0" : "") + (m - 1) + "01";
     var monthStart = today.slice(0,6) + "01";
@@ -6587,6 +6645,8 @@
       /* consulting splits the day between banking and a second project that
          changes week to week; building solutions mostly on the hospital */
       var plan = bukrs === "PT02" ? [[4, 6], [5, 2]] : [[0, 4], [w.num % 2 ? 1 : 2, 4]];
+      /* someone else's own projects: the first half the day, the others in turn */
+      if(projsArg) plan = projsArg.length > 1 ? [[projsArg[0], 4], [projsArg[1 + (w.num % (projsArg.length - 1))], 4]] : [[projsArg[0], 8]];
       var touched = false;
       for(var d=0; d<5; d++){
         var day = dates[d];
@@ -6617,7 +6677,7 @@
         var why = bukrs === "PT02" ? ["3 work orders closed in the maintenance log", "12 changes in the maintenance ticket system"]
                                    : ["3 client meetings on the calendar", "12 changes in the project repository"];
         if(td <= 4 && capacityOf(w, td) > 0) sugs.push({id:"st1", hours:2.5, day:td, p:plan[0][0], why:why[0], conf:"hi", desc:PREFILL_DESC[plan[0][0]]});
-        if(yd !== -1 && capacityOf(w, yd) - dayTotalOf(w, yd) > 0) sugs.push({id:"st2", hours:round15(Math.min(2, capacityOf(w, yd) - dayTotalOf(w, yd))), day:yd, p:plan[1][0], why:why[1], conf:"mid", desc:PREFILL_DESC[plan[1][0]]});
+        if(yd !== -1 && capacityOf(w, yd) - dayTotalOf(w, yd) > 0) sugs.push({id:"st2", hours:round15(Math.min(2, capacityOf(w, yd) - dayTotalOf(w, yd))), day:yd, p:(plan[1] || plan[0])[0], why:why[1], conf:"mid", desc:PREFILL_DESC[(plan[1] || plan[0])[0]]});
         w.sugs = sugs;
       }
     });
@@ -6809,7 +6869,8 @@
       if(r.StartDate < todayISO()) r.StatusID = "POSTED";
     }
     (emp === PERNR ? LEAVE[d.bukrs] : reportById(emp, d.bukrs) ? LEAVE_TEAM[d.bukrs] : OTHER_LEAVE[d.bukrs]).push(r);
-    if(self){ state.lastLeave = r; syncLeaveToTimesheet(r); }
+    syncLeaveToTimesheet(r);
+    if(self) state.lastLeave = r;
     if(emp === PERNR && d.onBehalf) state.leaveNotices.push(r);
     render();
     return r;
@@ -6822,7 +6883,7 @@
     r.StartTime = d.partial ? (d.StartTime || "") : ""; r.EndTime = d.partial ? (d.EndTime || "") : "";
     r.Notes = d.Notes || ""; r.Attachment = d.Attachment || r.Attachment || "";
     r.StatusID = "SENT"; r.changed = nowStamp();
-    if(r.EmployeeID === selfId()) syncLeaveToTimesheet(r);
+    syncLeaveToTimesheet(r);
     render();
     return r;
   }
@@ -6863,10 +6924,8 @@
     r.decidedAt = nowStamp();
     r.decision = approve ? "approved" : "rejected";
     r.decisionKind = wasCancel ? "cancel" : "new";
-    if(r.EmployeeID === PERNR){
-      syncLeaveToTimesheet(r);
-      state.leaveNotices.push(r);
-    }
+    syncLeaveToTimesheet(r);
+    state.leaveNotices.push(r);
     render();
     if(r.EmployeeID === PERNR && approve && !wasCancel && r.bukrs === IT0001.bukrs && state.role === "employee") leaveConflictToast(r);
   }
@@ -8021,7 +8080,7 @@
   var PROFILE_TABS = {
     employee: ["home","semana","leave","teamcal"],
     pm:       ["home","semana","leave","teamcal","team","aprov"],
-    manager:  ["home","leave","teamcal","lvaprov"]
+    manager:  ["home","semana","leave","teamcal","lvaprov"]
   };
   function currentActor(){
     if(state.role === "pm") return {name: leaderById(state.leader).name, label: t("profile_pm")};
@@ -8051,6 +8110,9 @@
   function applyTestSetup(co, role, leader, quiet){
     if(!PROFILE_TABS[role]) role = "employee";
     var changed = co !== IT0001.bukrs || role !== state.role || (role === "pm" && leader !== state.leader);
+    var oldKey = convoKey(), oldSelf = selfId();
+    saveCurrentWeek();
+    UNSAVED[oldSelf] = !!state.needsSave;
     if(co === "PT01" || co === "PT02") switchCompany(co, true);
     state.role = role;
     if(role === "pm"){
@@ -8062,14 +8124,25 @@
       }
     }
     renderLeaderOptions();
-    syncActorLeave();
+    /* this person's own timesheet, on the same week */
+    var curNum = WEEKS[weekIdx] ? WEEKS[weekIdx].num : null;
+    WEEKS = weeksOfCompany(IT0001.bukrs);
+    var same = WEEKS.filter(function(w){ return w.num === curNum; })[0];
+    loadWeek(same ? WEEKS.indexOf(same) : todayWeekIndex());
+    if(isClock()) seedClock();
+    state.needsSave = !!UNSAVED[selfId()];
     applyProfileChrome();
     updateApproverChrome();
     renderContextButton();
     render();
     try{ localStorage.setItem("vesiTest", JSON.stringify({co: IT0001.bukrs, role: state.role, leader: state.leader})); }catch(e){}
     if(!state.setupDone){ state.setupDone = true; assistantEnsureGreeted(); }
-    else if(changed && !quiet && typeof chat !== "undefined" && chat.greeted) assistantRoleChanged();
+    else if(changed && typeof chat !== "undefined"){
+      /* each person has their own conversation: put this one away and
+         bring back (or start) the other person's */
+      stashConvo(oldKey);
+      restoreConvo(convoKey());
+    }
   }
   /* kept for the assistant's own "view as" requests */
   function switchRole(role){ applyTestSetup(IT0001.bukrs, role, state.leader); }
@@ -8400,7 +8473,6 @@
       return;
     }
     botSay("bot", t("bot_greeting_home", {name: EMPLOYEE_NAME.split(" ")[0]}));
-    flushLeaveNotices();
     botChips([t("chip_hours_i_have"), t("chip_request_vacation"), t("chip_my_leave"), t("chip_submit_week")]);
   }
   function assistantEnsureGreeted(){
@@ -8408,6 +8480,7 @@
     if(chat.greeted || !state.setupDone) return;
     chat.greeted = true;
     assistantGreet();
+    flushLeaveNotices();
   }
   /* ---------- the language the person writes in ----------
      The assistant answers in the language of the message, not only the
@@ -8454,6 +8527,37 @@
   /* The reply's language: the message's when it's clear, else the one
      the conversation was already in, else the interface's. */
   function replyLangFor(txt){ return detectMessageLang(txt) || chat.replyLang || state.lang; }
+  /* ---------- one conversation per person under test ----------
+     What was said as one person, the drafts and the history sent to Claude
+     stay with that person: switching the test puts the conversation away
+     and brings back (or starts) the other person's. */
+  var CONVOS = {};
+  var CHAT_FIELDS = ["pending","draft","draftWeek","history","leaveDraft","leaveFormPrefill","kmDraft","projectDraft","rejectDraft","replyLang","lastChips","greeted","langNote"];
+  function convoKey(){ return IT0001.bukrs + ":" + state.role + (state.role === "pm" ? ":" + state.leader : ""); }
+  function stashConvo(key){
+    var log = $("jlog"), chips = $("jchips"), saved = {log: document.createDocumentFragment(), chips: document.createDocumentFragment()};
+    if(log) while(log.firstChild) saved.log.appendChild(log.firstChild);
+    if(chips) while(chips.firstChild) saved.chips.appendChild(chips.firstChild);
+    CHAT_FIELDS.forEach(function(f){ saved[f] = chat[f]; });
+    CONVOS[key] = saved;
+  }
+  function restoreConvo(key){
+    var saved = CONVOS[key];
+    delete CONVOS[key];
+    CHAT_FIELDS.forEach(function(f){ chat[f] = saved ? saved[f] : null; });
+    chat.history = saved ? saved.history : [];
+    chat.greeted = saved ? saved.greeted : false;
+    if(saved){
+      $("jlog").appendChild(saved.log);
+      $("jchips").appendChild(saved.chips);
+      flushLeaveNotices();
+      var log = $("jlog"); if(log) log.scrollTop = log.scrollHeight;
+      return;
+    }
+    var a = currentActor();
+    $("jlog").appendChild(el("div","jdivider", IT0001.bukrs + " · " + a.label + " · " + a.name));
+    assistantEnsureGreeted();
+  }
   function assistantRoleChanged(){
     var a = currentActor();
     var log = $("jlog");
@@ -8464,9 +8568,12 @@
   /* What the manager decided reaches the employee the next time the
      employee is the one using the app, the way a workflow notification
      would, instead of being lost in a list nobody reopens. */
+  /* the decisions on this person's own requests, and only theirs */
   function flushLeaveNotices(){
-    if(state.role !== "employee") return;
-    state.leaveNotices.forEach(function(r){
+    var me = selfId();
+    var mine = state.leaveNotices.filter(function(r){ return r.EmployeeID === me; });
+    state.leaveNotices = state.leaveNotices.filter(function(r){ return r.EmployeeID !== me; });
+    mine.forEach(function(r){
       var key = r.decisionKind === "cancel"
         ? (r.decision === "approved" ? "bot_notice_cancel_approved" : "bot_notice_cancel_rejected")
         : (r.decision === "approved" ? "bot_notice_approved" : "bot_notice_rejected");
@@ -8477,7 +8584,6 @@
       }
       botSay("bot", msg);
     });
-    state.leaveNotices = [];
   }
 
   /* ---------- local reading of leave requests, PT, EN and FR ----------
@@ -8961,13 +9067,10 @@
       fab.hidden = true;
       assistantEnsureGreeted();
     } else {
-      if(p.classList.contains("docked")){
-        document.body.insertBefore(p, fab.nextSibling);
-        p.classList.remove("docked");
-        p.hidden = true;
-      }
-      fab.hidden = false;
-      fab.setAttribute("aria-expanded", p.hidden ? "false" : "true");
+      /* the assistant lives on its own tab only: no floating button or
+         panel on the other screens */
+      p.hidden = true;
+      fab.hidden = true;
     }
   }
 
@@ -9326,7 +9429,6 @@
       return;
     }
     showScreen(key);
-    if(key !== "home") botToggle(true);
     botSay("bot",t("bot_switched_to", {screen: label}));
   }
   function goToTeamScreen(){ goToScreen("team",t("nav_team")); }
@@ -9595,6 +9697,9 @@
             pedidos_ausencia: myLeave().filter(function(r){ return r.EndDate >= isoAdd(todayISO(), -30) || r.StatusID === "SENT"; }).map(function(r){
               return {pedido: r.RequestID, tipo: r.AbsenceTypeCode, inicio: isoToInput(r.StartDate), fim: isoToInput(r.EndDate), horas: r.partial ? r.hours : null, estado: r.StatusID, cancelamento_pendente: !!r.cancelRequested, pode_cancelar: canWithdraw(r)};
             }),
+            /* only what this profile has: approvals of leave for the line
+               manager, the team and timesheet approvals for the project
+               manager, and everyone's own timesheet and leave */
             pedidos_para_aprovar: state.role === "manager" ? leaveQueue().map(function(r){
               return {pedido: r.RequestID, nome: r.EmployeeName, tipo: r.AbsenceTypeCode, inicio: isoToInput(r.StartDate), fim: isoToInput(r.EndDate), duracao: leaveDurationLabel(r), cancelamento: !!r.cancelRequested, sobreposicoes: leaveOverlaps(r).map(function(o){ return o.EmployeeName; })};
             }) : [],
@@ -9636,14 +9741,14 @@
                 ausencias: w.absences.map(function(a){ return {tipo:a.type, horas:a.hours, estado:a.status}; })
               };
             }),
-            projeto_equipa_ativo: (function(){
+            projeto_equipa_ativo: state.role !== "pm" ? null : (function(){
               var p = PROJECTS[massProject()];
               return p ? {codigo: p.code.split("-")[0], nome: p.name} : null;
             })(),
-            projetos_do_lider: projectsOf(state.leader).map(function(i){
+            projetos_do_lider: state.role !== "pm" ? [] : projectsOf(state.leader).map(function(i){
               return {codigo: PROJECTS[i].code.split("-")[0], nome: PROJECTS[i].name};
             }),
-            equipa: teamOf(state.leader).map(function(m){
+            equipa: state.role !== "pm" ? [] : teamOf(state.leader).map(function(m){
               return {
                 nome: m.name, aprovado_bloqueado: !!m.locked,
                 projetos: m.projs.map(function(i){ return PROJECTS[i].code.split("-")[0]; }),
@@ -9653,7 +9758,7 @@
                 regista: profileFor(WORKDATES[0], m.bukrs).clock ? "relogio" : "duracao"
               };
             }),
-            aprovacoes: tsQueue().map(function(a){ return {nome: a.who, tem_excecao: !!a.warn, nota: a.note || null, aprovado: !!a.approved}; }),
+            aprovacoes: state.role !== "pm" ? [] : tsQueue().map(function(a){ return {nome: a.who, tem_excecao: !!a.warn, nota: a.note || null, aprovado: !!a.approved}; }),
             pedido_por_confirmar: chat.pending === "entry" && chat.draft
               ? {dia: DAYS[chat.draft.day], duracao_horas: chat.draft.dur, projeto: PROJECTS[chat.draft.p].code.split("-")[0], descricao: chat.draft.desc}
               : null
@@ -9975,11 +10080,12 @@
       showTyping();
     }
 
+    var hist = chat.history;
     var intentP = askAssistant(txt);
     var intent = (await Promise.all([intentP, thinkingDelay()]))[0];
     hideTyping();
     if(intent && botDispatch(intent)){
-      chat.history.push({role:"assistant", content: intent.texto || ("Called " + intent.funcao + ".")});
+      hist.push({role:"assistant", content: intent.texto || ("Called " + intent.funcao + ".")});
       return;
     }
 
@@ -10681,7 +10787,7 @@
     return {day:day, dur:round15(dur), p:pIdx, desc:draft.desc};
   }
 
-  $("jouleFab").onclick = function(){ botToggle(); };
+  $("jouleFab").onclick = function(){ showScreen("home"); };
   $("jClose").onclick = function(){ botToggle(false); };
   $("jform").onsubmit = function(ev){
     ev.preventDefault();
@@ -10783,7 +10889,7 @@
     if(ev.key === "Enter" && (ev.ctrlKey || ev.metaKey)){ ev.preventDefault(); if(!$("submitBtn").disabled) openSubmit(); return; }
     if(typing) return;
     if(document.querySelector("dialog[open]")) return;
-    if(ev.key === "j" || ev.key === "J"){ ev.preventDefault(); botToggle(); }
+    if(ev.key === "j" || ev.key === "J"){ ev.preventDefault(); showScreen("home"); }
     else if(ev.key === "n" || ev.key === "N"){ ev.preventDefault(); openQuick("", 2); }
     else if((ev.key === "c" || ev.key === "C") && !isMonthly()){ ev.preventDefault(); copyWeek(); }
     else if(ev.key === "ArrowLeft"){ ev.preventDefault(); changeWeek(-1); }

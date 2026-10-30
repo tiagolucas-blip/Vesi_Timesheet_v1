@@ -1227,6 +1227,50 @@
           ]
         }
       ]
+    },
+    {
+      "id": "manager-en-own-hours",
+      "lang": "en",
+      "role": "manager",
+      "why": "the line manager records their own hours, approved one level up",
+      "steps": [
+        {
+          "say": "2h AXI yesterday",
+          "expect": [
+            "Confirm this entry?",
+            "AXI-INT",
+            "Tue 27"
+          ]
+        },
+        {
+          "confirm": true,
+          "expect": [
+            "2.0 h saved on Tue 27, AXI-INT"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "switch-starts-own-conversation",
+      "lang": "pt",
+      "why": "comment: no information shared between profiles",
+      "steps": [
+        {
+          "say": "2h BNK ontem",
+          "expect": [
+            "Confirmas este lançamento?"
+          ]
+        },
+        {
+          "say": "ver como gestor de projeto",
+          "expect": [
+            "Ricardo"
+          ],
+          "absent": [
+            "BNK-2026 · Banking"
+          ]
+        }
+      ]
     }
   ]
 }
