@@ -110,6 +110,7 @@ async function runCase(browser, base, c) {
     if (step.confirm) {
       const btns = await page.$$("#jlog .jcard .acts button.primary");
       if (!btns.length) { results.push({ step: "confirm", ok: false, missing: ["a card to confirm"], present: [], text: await lastBot(page) }); break; }
+      if (await btns[btns.length - 1].isDisabled()) { results.push({ step: "confirm", ok: false, missing: ["an enabled confirm button"], present: [], text: await lastBot(page) }); break; }
       await btns[btns.length - 1].click();
       await waitReply(page, before, prevLast);
       text = await lastBot(page);

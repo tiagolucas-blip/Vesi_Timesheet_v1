@@ -900,6 +900,16 @@
           ]
         },
         {
+          "say": "configuração das regras de tempo",
+          "expect": [
+            "Confirmas este lançamento?",
+            "configuração das regras de tempo"
+          ],
+          "absent": [
+            "ainda não tem descrição"
+          ]
+        },
+        {
           "confirm": true,
           "expect": [
             "2.0 h gravadas em Ter 27, RTL-TT"
@@ -1273,6 +1283,41 @@
           ],
           "absent": [
             "Ricardo"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "desc-pt-asked-in-chat",
+      "lang": "pt",
+      "why": "comment: the line description is required and the assistant checks it",
+      "steps": [
+        {
+          "say": "2h RTL ontem",
+          "expect": [
+            "ainda não tem descrição"
+          ]
+        },
+        {
+          "say": "reunião",
+          "expect": [
+            "pelo menos 10 caracteres"
+          ]
+        },
+        {
+          "say": "reunião de arranque com o cliente",
+          "expect": [
+            "reunião de arranque com o cliente",
+            "RTL-TT"
+          ],
+          "absent": [
+            "ainda não tem descrição"
+          ]
+        },
+        {
+          "confirm": true,
+          "expect": [
+            "2.0 h gravadas em Ter 27, RTL-TT"
           ]
         }
       ]

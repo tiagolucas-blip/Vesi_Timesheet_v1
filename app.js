@@ -700,6 +700,15 @@
   var WEEKS_UNTIL = (function(){ var four = isoAdd(todayISO(), 120); return four > "20261231" ? four : "20261231"; })();
   extendWeeksTo(WEEKS_PT01, WEEKS_UNTIL);
   extendWeeksTo(WEEKS_PT02, WEEKS_UNTIL);
+  /* every line with hours has a description, internal ones included */
+  var DEFAULT_DESC = {0:"Payroll go-live support", 1:"Time tracking rollout support", 2:"WFM rollout stabilization",
+    3:"Internal meetings and training", 4:"Elevator preventive maintenance", 5:"Terminal HVAC inspection round"};
+  WEEKS_PT01.concat(WEEKS_PT02).forEach(function(w){
+    w.rows.forEach(function(r){
+      var tot = r.h.reduce(function(a, b){ return a + (b || 0); }, 0);
+      if(tot > 0 && String(r.desc || "").trim().length < 10) r.desc = DEFAULT_DESC[r.p] || r.desc;
+    });
+  });
   var WEEKS = WEEKS_PT01;
   var weekIdx = 6; // placeholder until the sample is brought up to today, then today's week
   var ABSENCES = WEEKS[weekIdx].absences;
@@ -870,6 +879,10 @@
      messages are a separate follow-up, not covered here yet. */
   var I18N = {
     en: {
+      bot_desc_too_short:"The description has to have at least 10 characters: add a bit more on the card, or write it here.",
+      placeholder_desc_card:"What you worked on",
+      hint_desc_min:"Description required, at least 10 characters",
+      bot_confirm_entry_desc:"Confirm this entry? This line still has no description: tell me what you worked on, here or on the card, and then save.",
       bot_no_profile_switch:"I can only help with your own records: your hours, your absences and what's yours to approve.",
       attach_doc_0200:"medical certificate",
       attach_doc_0210:"certificate of attendance",
@@ -1272,7 +1285,7 @@
       toast_staged_entries_cleared:"Staged entries cleared. Nothing had been saved.",
       toast_staged_allow_cleared:"Staged allowances cleared. Nothing had been saved.",
       val_day_exceeds_24h:"The total for {day} exceeds 24 hours.",
-      val_desc_required:"Project entries need a description: {code}.",
+      val_desc_required:"Every entry needs a description (at least 10 characters): {code}.",
       val_absence_move_hours:"{day} has an approved {type}. The {h} h recorded need to move off this day.",
       val_partial_absence_capacity:"{day} has an approved partial absence. Day capacity is {cap} h and {tot} h are recorded.",
       val_day_capacity:"{day}'s capacity is {cap} h; {tot} h are recorded.",
@@ -1540,8 +1553,8 @@
       btn_save_entry:"Save entry",
       dlg_entry_detail_title:"Entry detail", label_project_wbs:"Project and WBS",
       label_start:"Start", label_end:"End", label_activity_type:"Activity type", label_description:"Description",
-      placeholder_description:"Required for project entries. The first 40 characters go to LTXA1",
-      placeholder_description_optional:"Optional for internal entries. If filled in, the first 40 characters go to LTXA1",
+      placeholder_description:"Required, at least 10 characters. The first 40 go to LTXA1",
+      placeholder_description_optional:"Required, at least 10 characters. The first 40 go to LTXA1",
       label_project_effort:"Project effort, actual vs. planned",
       label_origin:"Origin", val_manual:"Manual", label_created_by:"Created by", label_last_changed:"Last changed",
       btn_back:"Back", btn_submit:"Submit",
@@ -1559,6 +1572,10 @@
       row_confirm_cell:"Confirm cell and move down", row_show_list:"Show this list"
     },
     pt: {
+      bot_desc_too_short:"A descrição tem de ter pelo menos 10 caracteres: completa-a no cartão, ou escreve-a aqui.",
+      placeholder_desc_card:"O que fizeste",
+      hint_desc_min:"Descrição obrigatória, pelo menos 10 caracteres",
+      bot_confirm_entry_desc:"Confirmas este lançamento? Esta linha ainda não tem descrição: diz-me o que fizeste, aqui ou no cartão, e depois grava.",
       bot_no_profile_switch:"Só posso ajudar com os teus próprios registos: as tuas horas, as tuas ausências e o que te cabe aprovar.",
       attach_doc_0200:"atestado médico",
       attach_doc_0210:"declaração de presença",
@@ -1961,7 +1978,7 @@
       toast_staged_entries_cleared:"Lançamentos em staging limpos. Nada tinha sido gravado.",
       toast_staged_allow_cleared:"Abonos em staging limpos. Nada tinha sido gravado.",
       val_day_exceeds_24h:"O total de {day} excede 24 horas.",
-      val_desc_required:"Lançamentos de projeto precisam de uma descrição: {code}.",
+      val_desc_required:"Todos os lançamentos precisam de uma descrição (pelo menos 10 caracteres): {code}.",
       val_absence_move_hours:"{day} tem uma {type} aprovada. As {h} h registadas precisam de sair desse dia.",
       val_partial_absence_capacity:"{day} tem uma ausência parcial aprovada. A capacidade do dia é {cap} h e estão registadas {tot} h.",
       val_day_capacity:"A capacidade de {day} é {cap} h; estão registadas {tot} h.",
@@ -2222,8 +2239,8 @@
       btn_save_entry:"Gravar lançamento",
       dlg_entry_detail_title:"Detalhe do lançamento", label_project_wbs:"Projeto e WBS",
       label_start:"Início", label_end:"Fim", label_activity_type:"Tipo de atividade", label_description:"Descrição",
-      placeholder_description:"Obrigatório para lançamentos de projeto. Os primeiros 40 caracteres vão para o LTXA1",
-      placeholder_description_optional:"Opcional para lançamentos internos. Se for preenchido, os primeiros 40 caracteres vão para o LTXA1",
+      placeholder_description:"Obrigatória, pelo menos 10 caracteres. Os primeiros 40 vão para o LTXA1",
+      placeholder_description_optional:"Obrigatória, pelo menos 10 caracteres. Os primeiros 40 vão para o LTXA1",
       label_project_effort:"Esforço do projeto, real vs. planeado",
       label_origin:"Origem", val_manual:"Manual", label_created_by:"Criado por", label_last_changed:"Última alteração",
       btn_back:"Voltar", btn_submit:"Submeter",
@@ -2241,6 +2258,10 @@
       row_confirm_cell:"Confirmar célula e descer", row_show_list:"Mostrar esta lista"
     },
     fr: {
+      bot_desc_too_short:"La description doit avoir au moins 10 caractères : complétez-la sur la carte, ou écrivez-la ici.",
+      placeholder_desc_card:"Ce que vous avez fait",
+      hint_desc_min:"Description obligatoire, au moins 10 caractères",
+      bot_confirm_entry_desc:"Confirmer cette saisie ? Cette ligne n'a pas encore de description : dites-moi ce que vous avez fait, ici ou sur la carte, puis enregistrez.",
       bot_no_profile_switch:"Je ne peux vous aider qu'avec vos propres données : vos heures, vos absences et ce qu'il vous revient d'approuver.",
       attach_doc_0200:"certificat médical",
       attach_doc_0210:"attestation de présence",
@@ -2643,7 +2664,7 @@
       toast_staged_entries_cleared:"Saisies en attente effacées. Rien n'avait été enregistré.",
       toast_staged_allow_cleared:"Indemnités en attente effacées. Rien n'avait été enregistré.",
       val_day_exceeds_24h:"Le total pour {day} dépasse 24 heures.",
-      val_desc_required:"Les saisies de projet ont besoin d'une description : {code}.",
+      val_desc_required:"Chaque saisie a besoin d'une description (au moins 10 caractères) : {code}.",
       val_absence_move_hours:"{day} a une {type} approuvée. Les {h} h enregistrées doivent être déplacées hors de ce jour.",
       val_partial_absence_capacity:"{day} a une absence partielle approuvée. La capacité du jour est de {cap} h et {tot} h sont enregistrées.",
       val_day_capacity:"La capacité de {day} est de {cap} h ; {tot} h sont enregistrées.",
@@ -2904,8 +2925,8 @@
       btn_save_entry:"Enregistrer la saisie",
       dlg_entry_detail_title:"Détail de la saisie", label_project_wbs:"Projet et WBS",
       label_start:"Début", label_end:"Fin", label_activity_type:"Type d'activité", label_description:"Description",
-      placeholder_description:"Obligatoire pour les saisies de projet. Les 40 premiers caractères vont dans LTXA1",
-      placeholder_description_optional:"Facultatif pour les saisies internes. Si elle est remplie, les 40 premiers caractères vont dans LTXA1",
+      placeholder_description:"Obligatoire, au moins 10 caractères. Les 40 premiers vont dans LTXA1",
+      placeholder_description_optional:"Obligatoire, au moins 10 caractères. Les 40 premiers vont dans LTXA1",
       label_project_effort:"Effort projet, réel vs. planifié",
       label_origin:"Origine", val_manual:"Manuel", label_created_by:"Créé par", label_last_changed:"Dernière modification",
       btn_back:"Retour", btn_submit:"Soumettre",
@@ -3154,7 +3175,7 @@
       if(dayTotal(d) > 24) out.push({sev:"e", txt:t("val_day_exceeds_24h", {day: DAYS[d]}), day:d});
     }
     state.rows.forEach(function(r){
-      if(PROJECTS[r.p].proj && rowTotal(r) > 0 && r.desc.trim().length < 10){
+      if(rowTotal(r) > 0 && r.desc.trim().length < 10){
         out.push({sev:"e", txt:t("val_desc_required", {code: PROJECTS[r.p].code}), row:r.id});
       }
     });
@@ -3456,7 +3477,7 @@
       var c = document.createElement("code"); c.textContent = pr.wbs || pr.sap.rkostl; p.appendChild(c);
       p.appendChild(el("span","bill" + (pr.proj?"":" no"), pr.proj ? "PEP" : "INTERNAL"));
       meta.appendChild(p);
-      var needDesc = pr.proj && rowTotal(r) > 0 && r.desc.trim().length < 10;
+      var needDesc = rowTotal(r) > 0 && r.desc.trim().length < 10;
       var s = el("div","s", (r.desc || (needDesc ? t("text_desc_required") : t("text_no_description"))) + " · " + pr.act);
       if(needDesc) s.style.color = "var(--crit)";
       meta.appendChild(s);
@@ -3659,7 +3680,7 @@
       var descInp = document.createElement("input");
       descInp.type = "text";
       descInp.className = "monthdesc";
-      descInp.placeholder = pr.proj ? t("placeholder_desc_required_once") : t("placeholder_description_short");
+      descInp.placeholder = t("placeholder_desc_required_once");
       descInp.value = monthRow.desc || "";
       descInp.disabled = allSubmitted;
       descInp.setAttribute("aria-label","Description, "+pr.name);
@@ -5559,7 +5580,10 @@
     if(pIdx !== -1) box.appendChild(chip(PROJECTS[pIdx].sap.rproj ? "PEP "+PROJECTS[pIdx].sap.rproj : "cost center "+PROJECTS[pIdx].sap.rkostl, "okc"));
     if(desc) box.appendChild(chip("description: "+desc.slice(0,42), "okc"));
 
-    var ok = !isNaN(dur) && dur > 0 && pIdx !== -1;
+    var rowDesc = pIdx === -1 ? "" : ((state.rows.filter(function(r){ return r.p === pIdx; })[0] || {}).desc || "");
+    var descOk = desc.length >= 10 || String(rowDesc).trim().length >= 10;
+    if(pIdx !== -1 && !descOk) box.appendChild(chip(t("hint_desc_min"), "warnc"));
+    var ok = !isNaN(dur) && dur > 0 && pIdx !== -1 && descOk;
     nlParsed = ok ? {dur:round15(dur), day:day, p:pIdx, desc:desc} : null;
     $("nlSave").disabled = !ok;
   }
@@ -5605,14 +5629,13 @@
      on the row above it, and in the dialog's own title). openDetail/
      openMonthDetail (every project) and openNewRowDetail/openNewMonthRowDetail
      (only the eligible ones) each built this same option list themselves. */
-  /* Only proj:true entries need a description (val_desc_required), so the
-     hint has to say so: a project-less activity like AXI-INT otherwise
-     reads as "required" when it's actually optional. Re-run on every
-     project change and, since the dialog can stay open across a language
-     switch, from applyI18n too. */
+  /* Every line needs a description (val_desc_required), internal
+     activities like AXI-INT included. Re-run on every project change and,
+     since the dialog can stay open across a language switch, from
+     applyI18n too. */
   function updateDescPlaceholder(pIdx){
     var desc = $("dtDesc");
-    if(desc) desc.placeholder = t(PROJECTS[pIdx].proj ? "placeholder_description" : "placeholder_description_optional");
+    if(desc) desc.placeholder = t("placeholder_description");
   }
   function fillProjectOptions(pj, indices){
     pj.innerHTML = "";
@@ -9605,18 +9628,22 @@
     }
     chat.pending = "entry";
     chat.draft = {day:day, dur:dur, p:pIdx, desc:desc};
-    botSay("bot",t("bot_confirm_entry"), botCard([
+    var existing = state.rows.filter(function(r){ return r.p === pIdx; })[0];
+    var holder = {desc: desc || (existing ? existing.desc : "")};
+    var descOk = String(holder.desc || "").trim().length >= 10;
+    var lines = [
       [t("label_day"), DAYS[day]],
       [t("label_duration"), fmt(dur) + " h"],
       [t("label_project"), pr.code + " · " + pr.name],
       [t("label_receiver_object"), receiverObjectLabel(pr)],
-      [t("label_activity_type"), pr.sap.lstar + ", " + pr.act],
-      [t("label_description"), desc || t("bot_desc_tbd")],
-      [t("label_origin"), "Joule"]
-    ], t("btn_save"), function(){
+      [t("label_activity_type"), pr.sap.lstar + ", " + pr.act]
+    ];
+    if(descOk) lines.push([t("label_description"), holder.desc]);
+    lines.push([t("label_origin"), "Joule"]);
+    var cardE = botCard(lines, t("btn_save"), function(){
       var row = state.rows.filter(function(r){ return r.p === pIdx; })[0];
-      if(!row){ row = {id:nextId++, p:pIdx, desc:desc, h:[0,0,0,0,0,0,0], origin:"Joule"}; state.rows.push(row); }
-      if(desc) row.desc = desc;
+      if(!row){ row = {id:nextId++, p:pIdx, desc:holder.desc, h:[0,0,0,0,0,0,0], origin:"Joule"}; state.rows.push(row); }
+      if(holder.desc) row.desc = holder.desc;
       row.origin = "Joule";
       row.h[day] += dur;
       state.needsSave = true;
@@ -9624,7 +9651,49 @@
       flashCell(row.id, day);
       botSay("bot", t("bot_entry_saved", {dur: fmt(dur), day: DAYS[day], code: pr.code}) + weekSummaryText());
       botChips([t("chip_submit_week"),t("chip_my_absences")]);
-    }));
+    });
+    requireDescOnCard(cardE, holder);
+    chat.draft.needsDesc = !descOk;
+    botSay("bot", descOk ? t("bot_confirm_entry") : t(desc ? "bot_desc_too_short" : "bot_confirm_entry_desc"), cardE);
+  }
+  /* Whether a message reads as a description rather than a new request:
+     no duration in it, and nothing the assistant would act on. */
+  function looksLikeDescription(txt){
+    var low = String(txt).toLowerCase().trim();
+    if(low.length < 3) return false;
+    if(/\d\s*(h|horas?|hours?|heures?|m|min)\b|\d:\d\d/.test(low)) return false;
+    if(KM_WORD_RE.test(foldText(low)) || detectLeaveType(low) || LEAVE_GENERIC_RE.test(low)) return false;
+    if(/\b(aprova|approve|approuve|rejeita|reject|submete|submit|soumet|cancela|cancel|ajuda|help|aide)\w*\b/.test(low)) return false;
+    return true;
+  }
+  /* A line's description is required: a card for a line still without a
+     good one (10 characters at least) gets a field for it, and Save waits
+     until it's there. holder.desc carries what was typed to the callback. */
+  function requireDescOnCard(card, holder){
+    if(String(holder.desc || "").trim().length >= 10) return;
+    var save = card.querySelector(".acts .btn.primary");
+    var row = el("div","jrow jattach","");
+    row.appendChild(el("span","k", t("label_description")));
+    var v = el("span","v","");
+    var inp = document.createElement("input");
+    inp.type = "text"; inp.className = "jdesc"; inp.maxLength = 300;
+    inp.placeholder = t("placeholder_desc_card");
+    inp.value = holder.desc || "";
+    inp.setAttribute("aria-label", t("label_description"));
+    v.appendChild(inp);
+    var hint = el("div","lvattlbl", t("hint_desc_min"));
+    v.appendChild(hint);
+    row.appendChild(v);
+    card.insertBefore(row, card.querySelector(".acts"));
+    function sync(){
+      holder.desc = inp.value.trim();
+      if(chat.draft) chat.draft.desc = holder.desc;
+      var ok = holder.desc.length >= 10;
+      if(save){ save.disabled = !ok; save.title = ok ? "" : t("hint_desc_min"); }
+    }
+    inp.addEventListener("input", sync);
+    inp.addEventListener("keydown", function(ev){ if(ev.key === "Enter" && save && !save.disabled){ ev.preventDefault(); save.click(); } });
+    sync();
   }
   /* Same idea as offerEntry, but for "8h RTL-TT all days this week": one
      duration, repeated on every working day, skipping days with an approved
@@ -9657,19 +9726,22 @@
 
     chat.pending = "entryWeek";
     chat.draftWeek = {days:applicable, dur:dur, p:pIdx, desc:desc};
-    botSay("bot",t("bot_confirm_entry"), botCard([
+    var existingW = state.rows.filter(function(r){ return r.p === pIdx; })[0];
+    var holderW = {desc: desc || (existingW ? existingW.desc : "")};
+    var descOkW = String(holderW.desc || "").trim().length >= 10;
+    var cardW = botCard([
       [t("label_days"), daysLabel],
       [t("label_duration_per_day"), fmt(dur) + " h"],
       [t("th_total"), fmt(dur * applicable.length) + " h"],
       [t("label_project"), pr.code + " · " + pr.name],
       [t("label_receiver_object"), receiverObjectLabel(pr)],
       [t("label_activity_type"), pr.sap.lstar + ", " + pr.act],
-      [t("label_description"), desc || t("bot_desc_tbd")],
+      [t("label_description"), descOkW ? holderW.desc : t("bot_desc_tbd")],
       [t("label_origin"), "Joule"]
     ], t("btn_save"), function(){
       var row = state.rows.filter(function(r){ return r.p === pIdx; })[0];
-      if(!row){ row = {id:nextId++, p:pIdx, desc:desc, h:[0,0,0,0,0,0,0], origin:"Joule"}; state.rows.push(row); }
-      if(desc) row.desc = desc;
+      if(!row){ row = {id:nextId++, p:pIdx, desc:holderW.desc, h:[0,0,0,0,0,0,0], origin:"Joule"}; state.rows.push(row); }
+      if(holderW.desc) row.desc = holderW.desc;
       row.origin = "Joule";
       applicable.forEach(function(d){ row.h[d] += dur; });
       state.needsSave = true;
@@ -9677,7 +9749,11 @@
       applicable.forEach(function(d){ flashCell(row.id, d); });
       botSay("bot", plural(applicable.length, "bot_entry_saved_days", {dur: fmt(dur), total: fmt(dur * applicable.length), code: pr.code}) + weekSummaryText());
       botChips([t("chip_submit_week"),t("chip_my_absences")]);
-    }));
+    });
+    if(!descOkW) cardW.querySelectorAll('.jrow').forEach(function(r){ if(r.querySelector('.k') && r.querySelector('.k').textContent === t('label_description')) r.remove(); });
+    requireDescOnCard(cardW, holderW);
+    if(chat.draftWeek) chat.draftWeek.needsDesc = !descOkW;
+    botSay("bot", t(descOkW ? "bot_confirm_entry" : "bot_confirm_entry_desc"), cardW);
   }
 
   /* "fill in my missing hours [on BNK]": the personal equivalent of
@@ -9712,7 +9788,9 @@
     var total = plan.reduce(function(a,x){ return a + x.add; }, 0);
     var daysLabel = plan.map(function(x){ return DAYS[x.day] + " +" + fmt(x.add) + "h"; }).join(", ");
     chat.pending = "entryWeek";
-    botSay("bot",t("bot_confirm_entry"), botCard([
+    var existingF = state.rows.filter(function(r){ return r.p === pIdx; })[0];
+    var holderF = {desc: existingF ? existingF.desc : ""};
+    var cardF = botCard([
       [t("label_days"), daysLabel],
       [t("th_total"), fmt(total) + " h"],
       [t("label_project"), pr.code + " · " + pr.name],
@@ -9722,6 +9800,7 @@
     ], t("btn_save"), function(){
       var row = state.rows.filter(function(r){ return r.p === pIdx; })[0];
       if(!row){ row = {id:nextId++, p:pIdx, desc:"", h:[0,0,0,0,0,0,0], origin:"Joule"}; state.rows.push(row); }
+      if(String(row.desc || "").trim().length < 10) row.desc = holderF.desc;
       row.origin = "Joule";
       plan.forEach(function(x){ row.h[x.day] += x.add; });
       state.needsSave = true;
@@ -9729,7 +9808,9 @@
       plan.forEach(function(x){ flashCell(row.id, x.day); });
       botSay("bot", plural(plan.length, "bot_filled_saved", {total: fmt(total), code: pr.code}) + weekSummaryText());
       botChips([t("chip_submit_week"),t("chip_my_absences")]);
-    }));
+    });
+    requireDescOnCard(cardF, holderF);
+    botSay("bot", t(String(holderF.desc || "").trim().length >= 10 ? "bot_confirm_entry" : "bot_confirm_entry_desc"), cardF);
   }
   function offerFillMissingMonth(pIdx, dur){
     var pr = PROJECTS[pIdx];
@@ -9748,7 +9829,9 @@
     var daysLabel = plan.map(function(x){ return monthDayLabel(x.week, x.day) + " +" + fmt(x.add) + "h"; }).join(", ");
 
     chat.pending = "entryWeek";
-    botSay("bot",t("bot_confirm_entry"), botCard([
+    var anyRow = plan.map(function(x){ return monthRowIn(x.week, pIdx); }).filter(function(r){ return r && String(r.desc || "").trim().length >= 10; })[0];
+    var holderM = {desc: anyRow ? anyRow.desc : ""};
+    var cardM = botCard([
       [t("label_days"), daysLabel],
       [t("th_total"), fmt(total) + " h"],
       [t("label_project"), pr.code + " · " + pr.name],
@@ -9759,6 +9842,7 @@
       plan.forEach(function(x){
         var row = monthRowIn(x.week, pIdx);
         if(!row){ row = {id:nextId++, p:pIdx, desc:"", h:[0,0,0,0,0,0,0], origin:"Joule"}; x.week.rows.push(row); }
+        if(String(row.desc || "").trim().length < 10) row.desc = holderM.desc;
         row.origin = "Joule";
         row.h[x.day] += x.add;
       });
@@ -9768,7 +9852,9 @@
       botSay("bot", plural(plan.length, "bot_filled_saved_month", {total: fmt(total), code: pr.code})
         + (errs ? plural(errs, "bot_week_errors_block") : t("bot_week_no_errors_submit")));
       botChips([t("chip_submit_month"),t("chip_my_absences")]);
-    }));
+    });
+    requireDescOnCard(cardM, holderM);
+    botSay("bot", t(String(holderM.desc || "").trim().length >= 10 ? "bot_confirm_entry" : "bot_confirm_entry_desc"), cardM);
   }
 
   /* asks Claude, at /api/chat, to interpret the text and choose a function.
@@ -10152,6 +10238,18 @@
         return;
       }
       chat.projectDraft = null;
+    }
+
+    /* A card waiting for its line's description: a reply that isn't a new
+       request or a correction is that description. */
+    var waitingDesc = (chat.pending === "entry" && chat.draft && chat.draft.needsDesc) || (chat.pending === "entryWeek" && chat.draftWeek && chat.draftWeek.needsDesc);
+    if(waitingDesc && looksLikeDescription(txt)){
+      await thinkingDelay();
+      hideTyping();
+      if(chat.curTurn) chat.curTurn.path = "entry_description";
+      if(chat.pending === "entry"){ var dd = chat.draft; offerEntry(dd.day, dd.dur, dd.p, txt.trim()); }
+      else { var dw = chat.draftWeek; offerEntryWeek(dw.days, dw.dur, dw.p, txt.trim()); }
+      return;
     }
 
     /* A rejection waiting for its reason: this message is the reason. */
