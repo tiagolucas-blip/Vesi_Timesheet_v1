@@ -13,9 +13,9 @@ Everything below works, with no server and no real data.
 
 **The test setup comes first**
 - A window opens before anything else: the company (PT01 Consulting, durations by month; PT02 Building Solutions, start and end by week) and the profile under test
-- **Employee** (Tiago Leal) records their own time and requests absences: Assistant, My Timesheet, Leave Request
+- **Employee** (Tiago Leal) records their own time and requests absences: Assistant, My Timesheet, Leave Request, Team calendar
 - **Project manager** (one of the company's project owners, picked in the same window) records their own time like any employee, records for the project team (themselves included, in mass entry, which also fills their own sheet) and approves the team's timesheets, never their own: Assistant, My Timesheet, Team, Approval. In this mockup the own sheet reuses the sample weeks of the employee profile
-- **Line manager** (Sofia Almeida for PT01, Patrícia Gomes for PT02, from the org structure) approves absences: Assistant, Leave approval, Leave Request
+- **Line manager** (Sofia Almeida for PT01, Patrícia Gomes for PT02, from the org structure) approves absences and records their own: Assistant, Leave approval, Leave Request, Team calendar
 - Each profile only sees its screens, and the assistant follows the same split: alerts, greeting and permissions (an employee asking to approve a timesheet is told who does it)
 - The Test button in the header reopens the window at any time. Data stays across changes, so a request sent as the employee can be approved as the line manager in the same session
 - `?company=PT02&profile=pm&leader=CP` in the address skips the window (profile `employee`, `pm` or `manager`), which is how the test suite opens each case
@@ -26,6 +26,8 @@ Everything below works, with no server and no real data.
 - On every other screen the assistant goes back to being the floating panel (button or `J`), with the same conversation
 
 **Leave Request, a mask over the standard**
+- Every profile records its own leave on the Leave Request screen and through the assistant: the employee and the project managers send theirs to the line manager, and the line manager's own goes to the next level up (Henrique Vaz for PT01, Teresa Moura for PT02). The timesheet carries the absences of whoever is being tested
+- The team absence calendar is a tab of its own for every profile: colleagues under the same manager for the employee and the project manager, the reporting hierarchy and peers for the line manager
 - Request an absence from the assistant (`vacation 3 to 6 November`, `doctor tomorrow 14h to 17h`) or from the Leave Request screen: vacation, medical appointment, sick leave, training, justified absence, whole days or part of a day
 - Part of a day follows the company's profile: hours for `Z_CONS`, start and end for `Z_BSRV`
 - Checked while it's filled, not only on submit: overlap with another request, vacation balance, closed period, part-day rules

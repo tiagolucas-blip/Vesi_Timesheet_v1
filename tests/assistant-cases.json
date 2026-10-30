@@ -1185,6 +1185,48 @@
           ]
         }
       ]
+    },
+    {
+      "id": "leave-en-pm-own-request",
+      "lang": "en",
+      "role": "pm",
+      "leader": "RN",
+      "why": "comment: every profile records its own leave",
+      "steps": [
+        {
+          "say": "vacation 12 to 13 November",
+          "expect": [
+            "Vacation",
+            "12 Nov 2026 to 13 Nov 2026",
+            "Sofia Almeida"
+          ]
+        },
+        {
+          "confirm": true,
+          "expect": [
+            "Request 4500401"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "leave-en-manager-own-request",
+      "lang": "en",
+      "role": "manager",
+      "why": "the line manager's own leave goes to the next level up",
+      "steps": [
+        {
+          "say": "vacation 12 November",
+          "expect": [
+            "Vacation",
+            "12 Nov 2026",
+            "Henrique Vaz"
+          ],
+          "absent": [
+            "Sofia Almeida · Direct manager"
+          ]
+        }
+      ]
     }
   ]
 }

@@ -17,6 +17,7 @@
   <button role="tab" id="tab-semana" aria-current="false" data-screen="semana" data-i18n="nav_my_timesheet">My Timesheet</button>
   <button role="tab" id="tab-lvaprov" aria-current="false" data-screen="lvaprov" data-i18n="nav_leave_approval">Leave approval</button>
   <button role="tab" id="tab-leave" aria-current="false" data-screen="leave" data-i18n="nav_leave">Leave Request</button>
+  <button role="tab" id="tab-teamcal" aria-current="false" data-screen="teamcal" data-i18n="nav_team_calendar">Team calendar</button>
   <button role="tab" id="tab-team" data-screen="team" data-i18n="nav_team">Team (mass entry)</button>
   <button role="tab" id="tab-aprov" data-screen="aprov" data-i18n="nav_approval">Approval (manager)</button>
 </nav>
@@ -392,29 +393,6 @@
       </div>
     </div>
 
-    <div class="panel tacpanel" id="lvTeamCalPanel" style="margin-top:16px" hidden>
-      <header><h2 data-i18n="hdr_team_calendar">Team absence calendar</h2>
-        <div class="lvmonthnav"><button type="button" class="arrow" id="lvTcPrev" data-i18n-aria="aria_prev_period" aria-label="Previous">&#8249;</button><button type="button" class="btn sm" id="lvTcToday" data-i18n="btn_today">Today</button><button type="button" class="arrow" id="lvTcNext" data-i18n-aria="aria_next_period" aria-label="Next">&#8250;</button><b id="lvTcLabel"></b></div>
-        <div class="seg" role="group" id="lvTcView"><button type="button" data-v="day" data-i18n="view_day">Day</button><button type="button" data-v="week" data-i18n="view_week">Week</button><button type="button" data-v="month" data-i18n="view_month">Month</button></div>
-        <button type="button" class="btn sm" id="lvTcFull" data-i18n-aria="aria_fullscreen" aria-label="Full screen" data-i18n-title="aria_fullscreen" title="Full screen">&#10530;</button>
-      </header>
-      <div class="tac">
-        <aside class="tacside">
-          <div class="seg tactabs" role="group" id="lvTcTabs"><button type="button" data-t="reports" data-i18n="tab_direct_reports">My direct reports</button><button type="button" data-t="peers" data-i18n="tab_peers">My peers</button></div>
-          <div class="tacsidehd" id="lvTcSideHd"></div>
-          <input type="search" class="lvsel tacsearch" id="lvTcSearch" data-i18n-placeholder="placeholder_search_people" placeholder="Search for people">
-          <label class="lvchk"><input type="checkbox" id="lvTcAbsent"> <span id="lvTcAbsentLbl">Absent</span></label>
-          <div class="taclist" id="lvTcList"></div>
-          <div class="tacfilters">
-            <div class="seg" role="group" id="lvTcStatus"><button type="button" data-s="all" data-i18n="filter_all">All</button><button type="button" data-s="approved" data-i18n="filter_approved">Approved</button><button type="button" data-s="pending" data-i18n="filter_pending">Pending</button></div>
-            <select class="lvsel" id="lvTcType" data-i18n-aria="label_absence_type" aria-label="Absence type"></select>
-          </div>
-        </aside>
-        <div class="tacmain" id="lvTcMain"><div class="tacgrid" id="lvTcGrid"></div></div>
-      </div>
-      <div class="lvlegend" id="lvTcLegend"></div>
-    </div>
-
     <div class="panel" id="lvBalPanel" style="margin-top:16px" hidden>
       <header><h2 data-i18n="hdr_team_balances">Team vacation balances</h2><span class="chip grey" id="lvBalYear"></span></header>
       <div class="tablescroll">
@@ -483,6 +461,37 @@
       </div>
       <div class="gridfoot"><button type="button" class="hinttip" data-i18n-title="hint_bulk_approval" title="Bulk approval is only available for rows without warnings. Rejection requires a reason, per the SAP standard.">?</button></div>
     </div>
+  </section>
+
+  <!-- ============ team absence calendar, a screen of its own for every profile ============ -->
+  <section id="screen-teamcal" hidden>
+    <div class="pagehead">
+      <div class="top"><div class="weeknav"><span class="label" data-i18n="nav_team_calendar">Team calendar</span></div></div>
+      <p class="sub" id="tcSub" style="margin:0; font-size:var(--fs-sm); color:var(--ink-3)"></p>
+    </div>
+    <div class="panel tacpanel" id="lvTeamCalPanel" style="margin-top:16px">
+      <header><h2 data-i18n="hdr_team_calendar">Team absence calendar</h2>
+        <div class="lvmonthnav"><button type="button" class="arrow" id="lvTcPrev" data-i18n-aria="aria_prev_period" aria-label="Previous">&#8249;</button><button type="button" class="btn sm" id="lvTcToday" data-i18n="btn_today">Today</button><button type="button" class="arrow" id="lvTcNext" data-i18n-aria="aria_next_period" aria-label="Next">&#8250;</button><b id="lvTcLabel"></b></div>
+        <div class="seg" role="group" id="lvTcView"><button type="button" data-v="day" data-i18n="view_day">Day</button><button type="button" data-v="week" data-i18n="view_week">Week</button><button type="button" data-v="month" data-i18n="view_month">Month</button></div>
+        <button type="button" class="btn sm" id="lvTcFull" data-i18n-aria="aria_fullscreen" aria-label="Full screen" data-i18n-title="aria_fullscreen" title="Full screen">&#10530;</button>
+      </header>
+      <div class="tac">
+        <aside class="tacside">
+          <div class="seg tactabs" role="group" id="lvTcTabs"><button type="button" data-t="reports" data-i18n="tab_direct_reports">My direct reports</button><button type="button" data-t="peers" data-i18n="tab_peers">My peers</button></div>
+          <div class="tacsidehd" id="lvTcSideHd"></div>
+          <input type="search" class="lvsel tacsearch" id="lvTcSearch" data-i18n-placeholder="placeholder_search_people" placeholder="Search for people">
+          <label class="lvchk"><input type="checkbox" id="lvTcAbsent"> <span id="lvTcAbsentLbl">Absent</span></label>
+          <div class="taclist" id="lvTcList"></div>
+          <div class="tacfilters">
+            <div class="seg" role="group" id="lvTcStatus"><button type="button" data-s="all" data-i18n="filter_all">All</button><button type="button" data-s="approved" data-i18n="filter_approved">Approved</button><button type="button" data-s="pending" data-i18n="filter_pending">Pending</button></div>
+            <select class="lvsel" id="lvTcType" data-i18n-aria="label_absence_type" aria-label="Absence type"></select>
+          </div>
+        </aside>
+        <div class="tacmain" id="lvTcMain"><div class="tacgrid" id="lvTcGrid"></div></div>
+      </div>
+      <div class="lvlegend" id="lvTcLegend"></div>
+    </div>
+
   </section>
 
   <!-- ============ leave approval console, the same shape as the timesheet one ============ -->

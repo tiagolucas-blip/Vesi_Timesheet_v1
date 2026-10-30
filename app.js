@@ -870,6 +870,10 @@
      messages are a separate follow-up, not covered here yet. */
   var I18N = {
     en: {
+      text_leave_sub_no_ts:"Requests go to {name}, your direct manager in the org structure.",
+      nav_team_calendar:"Team calendar",
+      text_tc_sub:"Your colleagues' absences, approved and pending, under the same manager.",
+      text_tc_sub_manager:"Your direct reports' absences, one level further down on demand, and your peers'.",
       voice_blocked_short:"Voice dictation isn't available inside this page; click to see the alternative",
       bot_voice_blocked:"Browser voice dictation needs the microphone, and the claude.ai page this mockup runs in doesn't give it that access. What works here is your system's dictation, which types straight into the box: Windows key + H on Windows, press Fn (or the globe key) twice on a Mac, or the microphone on your phone's keyboard. Opened directly in the browser, the button works in Chrome and Edge.",
       bot_voice_unsupported:"This browser has no speech recognition. Use your system's dictation, which types straight into the box: Windows key + H on Windows, Fn twice on a Mac, or the microphone on your phone's keyboard.",
@@ -1543,6 +1547,10 @@
       row_confirm_cell:"Confirm cell and move down", row_show_list:"Show this list"
     },
     pt: {
+      text_leave_sub_no_ts:"Os pedidos vão para {name}, a tua chefia direta na estrutura organizativa.",
+      nav_team_calendar:"Calendário da equipa",
+      text_tc_sub:"As ausências dos teus colegas com a mesma chefia, aprovadas e pendentes.",
+      text_tc_sub_manager:"As ausências dos teus colaboradores diretos, um nível abaixo quando quiseres, e as dos teus pares.",
       voice_blocked_short:"O ditado por voz não está disponível dentro desta página; clica para ver a alternativa",
       bot_voice_blocked:"O ditado por voz do browser precisa do microfone, e a página do claude.ai onde este mockup corre não lhe dá esse acesso. O que funciona aqui é o ditado do sistema, que escreve diretamente na caixa de texto: tecla Windows + H no Windows, carregar duas vezes em Fn (ou na tecla do globo) no Mac, ou o microfone do teclado no telemóvel. Aberto diretamente no browser, o botão funciona no Chrome e no Edge.",
       bot_voice_unsupported:"Este browser não tem reconhecimento de voz. Usa o ditado do sistema, que escreve diretamente na caixa de texto: tecla Windows + H no Windows, Fn duas vezes no Mac, ou o microfone do teclado no telemóvel.",
@@ -2209,6 +2217,10 @@
       row_confirm_cell:"Confirmar célula e descer", row_show_list:"Mostrar esta lista"
     },
     fr: {
+      text_leave_sub_no_ts:"Les demandes vont à {name}, votre responsable direct dans la structure organisationnelle.",
+      nav_team_calendar:"Calendrier de l'équipe",
+      text_tc_sub:"Les absences de vos collègues sous le même responsable, approuvées et en attente.",
+      text_tc_sub_manager:"Les absences de vos collaborateurs directs, un niveau plus bas à la demande, et celles de vos pairs.",
       voice_blocked_short:"La dictée vocale n'est pas disponible dans cette page ; cliquez pour voir l'alternative",
       bot_voice_blocked:"La dictée vocale du navigateur a besoin du micro, et la page claude.ai où tourne cette maquette ne lui donne pas cet accès. Ce qui marche ici, c'est la dictée du système, qui écrit directement dans la zone de texte : touche Windows + H sous Windows, deux appuis sur Fn (ou la touche globe) sur Mac, ou le micro du clavier du téléphone. Ouvert directement dans le navigateur, le bouton fonctionne dans Chrome et Edge.",
       bot_voice_unsupported:"Ce navigateur n'a pas de reconnaissance vocale. Utilisez la dictée du système, qui écrit directement dans la zone de texte : touche Windows + H sous Windows, deux fois Fn sur Mac, ou le micro du clavier du téléphone.",
@@ -4091,7 +4103,7 @@
        count against whether the month can be submitted, so that count
        can't be reused here. */
     var errCount = renderMsgs(); renderKpis(errCount); renderApprovals(); renderTeam(); renderCats();
-    renderHome(); renderLeave(); renderLeaveApprovals(); renderLeaveMap(); renderNavBadges();
+    renderHome(); renderLeave(); renderLeaveApprovals(); renderTeamCalendar(); renderLeaveMap(); renderNavBadges();
   }
 
   /* ---------- absences: a badge on the grid's day header, detail on hover ----------
@@ -6155,13 +6167,14 @@
   function showScreen(s){
     if(s === "cats" && state.screen !== "cats") state.prevScreen = state.screen;
     Array.prototype.forEach.call(document.querySelectorAll(".nav button"), function(x){ x.setAttribute("aria-current", x.dataset.screen === s ? "true" : "false"); });
-    ["home","semana","leave","lvaprov","team","aprov","cats"].forEach(function(k){ $("screen-"+k).hidden = k !== s; });
+    ["home","semana","leave","teamcal","lvaprov","team","aprov","cats"].forEach(function(k){ $("screen-"+k).hidden = k !== s; });
     state.screen = s;
     placeAssistant(s);
     if(s === "cats"){ renderCats(); renderLeaveMap(); }
     if(s === "team") renderTeam();
     if(s === "leave") renderLeave();
     if(s === "lvaprov") renderLeaveApprovals();
+    if(s === "teamcal") renderTeamCalendar();
     if(s === "home") renderHome();
     window.scrollTo({top:0});
   }
@@ -6209,6 +6222,27 @@
     PT02:{pernr:"00100320", name:"Patrícia Gomes", role:"Operations Manager, Building Solutions"}
   };
   function lineManager(){ return LINE_MANAGER[IT0001.bukrs] || LINE_MANAGER.PT01; }
+  /* The line manager's own manager, who approves the line manager's leave. */
+  var MANAGER_OF = {
+    PT01:{name:"Henrique Vaz", role:"Director, Consulting"},
+    PT02:{name:"Teresa Moura", role:"Director, Building Solutions"}
+  };
+  /* Whoever is testing, for their own leave: the employee, the project
+     manager under test, or the line manager. */
+  function selfId(){
+    if(state.role === "pm"){
+      var me = TEAM.filter(function(x){ return x.leaderOf === state.leader; })[0];
+      return me ? me.pernr : PERNR;
+    }
+    if(state.role === "manager") return lineManager().pernr;
+    return PERNR;
+  }
+  /* who approves someone's leave: the line manager, or for the line
+     manager themselves, the next level up */
+  function approverFor(id, bukrs){
+    var b = bukrs || IT0001.bukrs;
+    return id === LINE_MANAGER[b].pernr ? MANAGER_OF[b] : LINE_MANAGER[b];
+  }
   /* Vacation quota (IT2006), read through TimeAccountSet. usedBefore is
      what was taken earlier in the year, before the sample weeks begin. */
   var QUOTA = {
@@ -6247,7 +6281,9 @@
       {EmployeeID:"00104403", name:"Carla Nunes", role:"Consultant", entitlement:22, carryover:1, usedBefore:13},
       {EmployeeID:"00104404", name:"Diogo Sousa", role:"Junior consultant", entitlement:22, carryover:2, usedBefore:7},
       {EmployeeID:"00104405", name:"Eva Lopes", role:"Architect", entitlement:22, carryover:3, usedBefore:11},
-      {EmployeeID:"00104406", name:"Filipe Reis", role:"Consultant", entitlement:22, carryover:0, usedBefore:7}
+      {EmployeeID:"00104406", name:"Filipe Reis", role:"Consultant", entitlement:22, carryover:0, usedBefore:7},
+      {EmployeeID:"00104540", name:"Ricardo Nunes", role:"Project manager", entitlement:22, carryover:2, usedBefore:10},
+      {EmployeeID:"00104541", name:"Pedro Alves", role:"Project manager", entitlement:22, carryover:1, usedBefore:12}
     ],
     PT02:[
       {EmployeeID:PERNR, name:EMPLOYEE_NAME, role:"Consultant"},
@@ -6255,9 +6291,22 @@
       {EmployeeID:"00104528", name:"Luís Teixeira", role:"Technician", entitlement:22, carryover:0, usedBefore:12},
       {EmployeeID:"00104530", name:"Ana Pires", role:"Technician", entitlement:22, carryover:1, usedBefore:14},
       {EmployeeID:"00104512", name:"Hugo Matos", role:"Technician", entitlement:22, carryover:2, usedBefore:14},
-      {EmployeeID:"00104511", name:"Hélder Rocha", role:"Technician", entitlement:22, carryover:0, usedBefore:6}
+      {EmployeeID:"00104511", name:"Hélder Rocha", role:"Technician", entitlement:22, carryover:0, usedBefore:6},
+      {EmployeeID:"00104542", name:"Carlos Pinto", role:"Project manager", entitlement:22, carryover:0, usedBefore:11},
+      {EmployeeID:"00104543", name:"Marco Silva", role:"Project manager", entitlement:22, carryover:3, usedBefore:9}
     ]
   };
+  /* the line managers' own vacation accounts */
+  var MANAGER_QUOTA = {"00100210":{entitlement:25, carryover:2, usedBefore:12}, "00100320":{entitlement:25, carryover:0, usedBefore:14}};
+  /* the project managers' own requests, decided by the line manager */
+  LEAVE_TEAM.PT01.push(
+    {RequestID:"4500341", EmployeeID:"00104540", EmployeeName:"Ricardo Nunes", role:"Project manager", AbsenceTypeCode:"0100", StartDate:weekDay(5,0), EndDate:weekDay(5,4), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"SENT", Notes:"Family"},
+    {RequestID:"4500342", EmployeeID:"00104541", EmployeeName:"Pedro Alves", role:"Project manager", AbsenceTypeCode:"0300", StartDate:weekDay(-2,2), EndDate:weekDay(-2,2), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"POSTED", Notes:""}
+  );
+  LEAVE_TEAM.PT02.push(
+    {RequestID:"4500343", EmployeeID:"00104542", EmployeeName:"Carlos Pinto", role:"Project manager", AbsenceTypeCode:"0100", StartDate:weekDay(2,2), EndDate:weekDay(2,4), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"SENT", Notes:""},
+    {RequestID:"4500344", EmployeeID:"00104543", EmployeeName:"Marco Silva", role:"Project manager", AbsenceTypeCode:"0100", StartDate:weekDay(-1,0), EndDate:weekDay(-1,1), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"POSTED", Notes:""}
+  );
   /* absences already behind the team, so the calendars show some history */
   LEAVE_TEAM.PT01.push(
     {RequestID:"4500351", EmployeeID:"00104402", EmployeeName:"Bruno Matos", role:"Consultant", AbsenceTypeCode:"0100", StartDate:weekDay(-2,0), EndDate:weekDay(-2,4), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"POSTED", Notes:""},
@@ -6281,18 +6330,20 @@
   };
   var OTHER_LEAVE = {
     PT01:[
-      {RequestID:"4500402", EmployeeID:"00104461", EmployeeName:"Rui Marques", AbsenceTypeCode:"0100", StartDate:weekDay(0,3), EndDate:weekDay(1,1), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"APPROVED", Notes:"", ApproverName:"Ana Ferreira"},
-      {RequestID:"4500403", EmployeeID:"00104462", EmployeeName:"Joana Silva", AbsenceTypeCode:"0300", StartDate:weekDay(2,2), EndDate:weekDay(2,2), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"APPROVED", Notes:"", ApproverName:"Ana Ferreira"},
-      {RequestID:"4500404", EmployeeID:"00104462", EmployeeName:"Joana Silva", AbsenceTypeCode:"0100", StartDate:weekDay(6,0), EndDate:weekDay(6,4), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"SENT", Notes:"", ApproverName:"Ana Ferreira"},
-      {RequestID:"4500405", EmployeeID:"00100211", EmployeeName:"Miguel Costa", AbsenceTypeCode:"0100", StartDate:weekDay(-1,0), EndDate:weekDay(-1,4), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"POSTED", Notes:"", ApproverName:"Henrique Vaz"},
-      {RequestID:"4500406", EmployeeID:"00100212", EmployeeName:"Rita Santos", AbsenceTypeCode:"0100", StartDate:weekDay(4,2), EndDate:weekDay(4,4), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"APPROVED", Notes:"", ApproverName:"Henrique Vaz"}
+      {RequestID:"4500331", EmployeeID:"00104461", EmployeeName:"Rui Marques", AbsenceTypeCode:"0100", StartDate:weekDay(0,3), EndDate:weekDay(1,1), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"APPROVED", Notes:"", ApproverName:"Ana Ferreira"},
+      {RequestID:"4500332", EmployeeID:"00104462", EmployeeName:"Joana Silva", AbsenceTypeCode:"0300", StartDate:weekDay(2,2), EndDate:weekDay(2,2), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"APPROVED", Notes:"", ApproverName:"Ana Ferreira"},
+      {RequestID:"4500333", EmployeeID:"00104462", EmployeeName:"Joana Silva", AbsenceTypeCode:"0100", StartDate:weekDay(6,0), EndDate:weekDay(6,4), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"SENT", Notes:"", ApproverName:"Ana Ferreira"},
+      {RequestID:"4500334", EmployeeID:"00100211", EmployeeName:"Miguel Costa", AbsenceTypeCode:"0100", StartDate:weekDay(-1,0), EndDate:weekDay(-1,4), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"POSTED", Notes:"", ApproverName:"Henrique Vaz"},
+      {RequestID:"4500335", EmployeeID:"00100212", EmployeeName:"Rita Santos", AbsenceTypeCode:"0100", StartDate:weekDay(4,2), EndDate:weekDay(4,4), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"APPROVED", Notes:"", ApproverName:"Henrique Vaz"}
     ],
     PT02:[
-      {RequestID:"4500407", EmployeeID:"00104561", EmployeeName:"Pedro Lima", AbsenceTypeCode:"0100", StartDate:weekDay(1,0), EndDate:weekDay(1,2), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"APPROVED", Notes:"", ApproverName:"Nuno Dias"},
-      {RequestID:"4500408", EmployeeID:"00100321", EmployeeName:"Jorge Antunes", AbsenceTypeCode:"0100", StartDate:weekDay(2,0), EndDate:weekDay(2,4), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"APPROVED", Notes:"", ApproverName:"Teresa Moura"},
-      {RequestID:"4500409", EmployeeID:"00100322", EmployeeName:"Sara Lopes", AbsenceTypeCode:"0200", StartDate:weekDay(-1,3), EndDate:weekDay(-1,3), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"POSTED", Notes:"", ApproverName:"Teresa Moura"}
+      {RequestID:"4500336", EmployeeID:"00104561", EmployeeName:"Pedro Lima", AbsenceTypeCode:"0100", StartDate:weekDay(1,0), EndDate:weekDay(1,2), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"APPROVED", Notes:"", ApproverName:"Nuno Dias"},
+      {RequestID:"4500337", EmployeeID:"00100321", EmployeeName:"Jorge Antunes", AbsenceTypeCode:"0100", StartDate:weekDay(2,0), EndDate:weekDay(2,4), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"APPROVED", Notes:"", ApproverName:"Teresa Moura"},
+      {RequestID:"4500338", EmployeeID:"00100322", EmployeeName:"Sara Lopes", AbsenceTypeCode:"0200", StartDate:weekDay(-1,3), EndDate:weekDay(-1,3), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"POSTED", Notes:"", ApproverName:"Teresa Moura"}
     ]
   };
+  OTHER_LEAVE.PT01.push({RequestID:"4500345", EmployeeID:"00100210", EmployeeName:"Sofia Almeida", role:"Delivery Manager, Consulting", AbsenceTypeCode:"0100", StartDate:weekDay(7,0), EndDate:weekDay(7,4), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"APPROVED", Notes:"", ApproverName:"Henrique Vaz"});
+  OTHER_LEAVE.PT02.push({RequestID:"4500346", EmployeeID:"00100320", EmployeeName:"Patrícia Gomes", role:"Operations Manager, Building Solutions", AbsenceTypeCode:"0100", StartDate:weekDay(6,1), EndDate:weekDay(6,2), partial:false, hours:8, StartTime:"", EndTime:"", StatusID:"SENT", Notes:"", ApproverName:"Teresa Moura"});
   ["PT01","PT02"].forEach(function(b){ OTHER_LEAVE[b].forEach(function(r){ r.bukrs = b; r.created = isoAdd(r.StartDate < todayISO() ? r.StartDate : todayISO(), -12); }); });
   /* every sample request gets a sending date, for the workflow history */
   ["PT01","PT02"].forEach(function(b){
@@ -6397,6 +6448,21 @@
         id:"lr" + r.RequestID + "-" + d, day:wd.day, type: ty ? ty.name : r.AbsenceTypeCode, awart:r.AbsenceTypeCode,
         hours: r.partial ? r.hours : DAYCAP, status: r.StatusID === "SENT" ? "pending" : "approved",
         src:"Request " + r.RequestID, req:r.RequestID
+      });
+    });
+  }
+  /* The sample timesheet stands for whoever is testing, so it carries that
+     person's absences and nobody else's: re-read when the test changes. */
+  function removeLeaveFromTimesheet(r){
+    weeksOfCompany(r.bukrs).forEach(function(w){
+      for(var i = w.absences.length - 1; i >= 0; i--){ if(w.absences[i].req === r.RequestID) w.absences.splice(i, 1); }
+    });
+  }
+  function syncActorLeave(){
+    var me = selfId();
+    ["PT01","PT02"].forEach(function(b){
+      LEAVE[b].concat(LEAVE_TEAM[b], OTHER_LEAVE[b]).forEach(function(r){
+        if(r.EmployeeID === me) syncLeaveToTimesheet(r); else removeLeaveFromTimesheet(r);
       });
     });
   }
@@ -6535,7 +6601,7 @@
       }
     });
   }
-  function myLeave(){ return LEAVE[IT0001.bukrs]; }
+  function myLeave(){ return requestsOf(selfId()); }
   /* Scoped to one company: the two sample histories reuse the same request
      numbers (it's the same employee, opened under either company), so a
      lookup across both could pick up the other company's copy. */
@@ -6554,7 +6620,7 @@
      date count, the balance as it will stand on that day. */
   function balanceOf(id, bukrs, asOf){
     var b = bukrs || IT0001.bukrs;
-    var q = id === PERNR ? QUOTA[b] : (reportById(id, b) || {entitlement:22, carryover:0, usedBefore:0});
+    var q = id === PERNR ? QUOTA[b] : (reportById(id, b) || MANAGER_QUOTA[id] || {entitlement:22, carryover:0, usedBefore:0});
     var total = q.entitlement + q.carryover, taken = q.usedBefore, planned = 0, requested = 0, today = todayISO();
     requestsOf(id, b).forEach(function(r){
       var ty = absType(r.AbsenceTypeCode);
@@ -6568,7 +6634,7 @@
     return {year:QUOTA[b].year, total:total, entitlement:q.entitlement, carryover:q.carryover, usedBefore:q.usedBefore,
       taken:taken, planned:planned, used:taken + planned, requested:requested, available: total - taken - planned - requested};
   }
-  function leaveBalance(bukrs){ return balanceOf(PERNR, bukrs); }
+  function leaveBalance(bukrs){ return balanceOf(selfId(), bukrs); }
   /* What sits in the direct manager's inbox: requests from the direct
      reports, plus the employee's own (the same manager approves them), plus
      cancellations of approved requests, which go back through the same
@@ -6646,7 +6712,7 @@
       if(!(d.hours > 0)) out.push({sev:"e", txt:t("leave_err_hours")});
       else if(d.hours >= DAYCAP) out.push({sev:"e", txt:t("leave_err_hours_full", {cap: fmt(DAYCAP)})});
     }
-    var emp = d.EmployeeID || PERNR;
+    var emp = d.EmployeeID || selfId();
     var mine = {};
     eachLeaveDay(d, function(x){ mine[x] = 1; });
     requestsOf(emp, d.bukrs).forEach(function(o){
@@ -6662,7 +6728,7 @@
       var avail = leaveAvailableFor(d), need = d.partial ? Math.round(d.hours / DAYCAP * 100) / 100 : days;
       if(need > avail) out.push({sev:"e", txt:t("leave_err_quota", {n: fmtDays(need), avail: fmtDays(avail)})});
     }
-    if(emp === PERNR){
+    if(emp === selfId() && state.role !== "manager"){
       var rec = leaveHoursRecorded(d);
       if(rec.hours > 0) out.push({sev:"w", txt:t("leave_warn_hours", {h: fmt(rec.hours), days: rec.days.join(", ")})});
     }
@@ -6676,7 +6742,7 @@
   /* What's free for a new request (or a changed one, whose own days are
      given back first). */
   function leaveAvailableFor(d){
-    var avail = balanceOf(d.EmployeeID || PERNR, d.bukrs).available;
+    var avail = balanceOf(d.EmployeeID || selfId(), d.bukrs).available;
     if(d.RequestID){
       var old = leaveById(d.RequestID, d.bukrs);
       var oty = old && absType(old.AbsenceTypeCode);
@@ -6705,26 +6771,25 @@
      draft carrying a RequestID changes that pending request instead. */
   function createLeave(d, origin){
     if(d.RequestID) return updateLeave(d);
-    var emp = d.EmployeeID || PERNR, self = emp === PERNR, m = reportById(emp, d.bukrs) || {};
+    var emp = d.EmployeeID || selfId(), self = emp === selfId(), m = reportById(emp, d.bukrs) || {};
     var mgr = LINE_MANAGER[d.bukrs];
+    var isMgr = emp === mgr.pernr;
     var r = {
-      RequestID: String(++leaveSeq), EmployeeID:emp, EmployeeName: self ? EMPLOYEE_NAME : m.name, role: m.role, bukrs:d.bukrs,
+      RequestID: String(++leaveSeq), EmployeeID:emp, EmployeeName: emp === PERNR ? EMPLOYEE_NAME : isMgr ? mgr.name : m.name,
+      role: isMgr ? mgr.role : m.role, bukrs:d.bukrs,
       AbsenceTypeCode:d.AbsenceTypeCode, StartDate:d.StartDate, EndDate:d.EndDate,
       partial:!!d.partial, hours: d.partial ? leaveDraftHours(d) : DAYCAP,
       StartTime: d.partial ? (d.StartTime || "") : "", EndTime: d.partial ? (d.EndTime || "") : "",
       StatusID: d.onBehalf ? "APPROVED" : "SENT", Notes:d.Notes || "", origin: origin || "Manual",
-      ApproverName: mgr.name, created: nowStamp(), Attachment: d.Attachment || ""
+      ApproverName: approverFor(emp, d.bukrs).name, created: nowStamp(), Attachment: d.Attachment || ""
     };
     if(d.onBehalf){
       r.onBehalf = mgr.name; r.decidedBy = mgr.name; r.decidedAt = r.created; r.decision = "approved"; r.decisionKind = "new";
       if(r.StartDate < todayISO()) r.StatusID = "POSTED";
     }
-    (self ? LEAVE[d.bukrs] : LEAVE_TEAM[d.bukrs]).push(r);
-    if(self){
-      state.lastLeave = r;
-      syncLeaveToTimesheet(r);
-      if(d.onBehalf) state.leaveNotices.push(r);
-    }
+    (emp === PERNR ? LEAVE[d.bukrs] : reportById(emp, d.bukrs) ? LEAVE_TEAM[d.bukrs] : OTHER_LEAVE[d.bukrs]).push(r);
+    if(self){ state.lastLeave = r; syncLeaveToTimesheet(r); }
+    if(emp === PERNR && d.onBehalf) state.leaveNotices.push(r);
     render();
     return r;
   }
@@ -6736,12 +6801,12 @@
     r.StartTime = d.partial ? (d.StartTime || "") : ""; r.EndTime = d.partial ? (d.EndTime || "") : "";
     r.Notes = d.Notes || ""; r.Attachment = d.Attachment || r.Attachment || "";
     r.StatusID = "SENT"; r.changed = nowStamp();
-    if(r.EmployeeID === PERNR) syncLeaveToTimesheet(r);
+    if(r.EmployeeID === selfId()) syncLeaveToTimesheet(r);
     render();
     return r;
   }
   function canEditLeave(r){
-    return r.EmployeeID === PERNR && r.StatusID === "SENT" && !r.cancelRequested && state.role !== "manager";
+    return r.EmployeeID === selfId() && r.StatusID === "SENT" && !r.cancelRequested;
   }
   /* A request still waiting is simply withdrawn. An approved one is
      already in (or on its way to) IT2001, so cancelling it is itself a
@@ -6759,7 +6824,7 @@
     return "cancel_requested";
   }
   function canWithdraw(r){
-    if(r.EmployeeID !== PERNR || r.cancelRequested) return false;
+    if(r.EmployeeID !== selfId() || r.cancelRequested) return false;
     if(r.StatusID === "SENT") return true;
     return (r.StatusID === "APPROVED" || r.StatusID === "POSTED") && r.StartDate >= todayISO();
   }
@@ -6807,33 +6872,21 @@
   function renderLeave(){
     if(!$("screen-leave")) return;
     var mgrView = state.role === "manager";
-    var mgr = lineManager();
-    $("lvTitle").textContent = mgrView ? t("hdr_team_time_off") : t("hdr_my_time_off");
-    $("lvActingWrap").hidden = !mgrView;
-    $("lvActingAs").textContent = mgr.name + " · " + mgr.role;
-    $("lvNew").hidden = mgrView;
-    $("lvSub").textContent = mgrView ? t("text_leave_sub_manager", {name: mgr.name}) : t("text_leave_sub", {name: mgr.name});
-    var k = $("lvKpis");
-    k.innerHTML = "";
-    k.hidden = !mgrView;
-    if(mgrView){
-      var q = leaveQueue();
-      var soon = q.filter(function(r){ return daysUntil(r.StartDate) <= 14; }).length;
-      var days = q.reduce(function(a, r){ return a + (r.cancelRequested ? 0 : leaveDays(r)); }, 0);
-      k.appendChild(lvKpi(t("kpi_leave_pending"), q.length));
-      k.appendChild(lvKpi(t("kpi_leave_soon"), soon));
-      k.appendChild(lvKpi(t("kpi_leave_days_requested"), fmtDays(days), t("unit_days")));
-      k.appendChild(lvKpi(t("kpi_absent_today"), absentOn(todayISO()).length));
-    }
-    ["lvMineWrap","lvMinePanel"].forEach(function(id){ $(id).hidden = mgrView; });
-    /* approving lives in its own console now (Leave approval), as for timesheets */
+    /* everyone records their own leave; the line manager also sees the
+       team's balances and can record on a report's behalf */
+    $("lvTitle").textContent = t("hdr_my_time_off");
+    $("lvActingWrap").hidden = true;
+    $("lvNew").hidden = false;
+    $("lvSub").textContent = t(mgrView ? "text_leave_sub_no_ts" : "text_leave_sub", {name: approverFor(selfId()).name});
+    $("lvKpis").innerHTML = "";
+    $("lvKpis").hidden = true;
+    $("lvMineWrap").hidden = false;
+    $("lvMinePanel").hidden = false;
     $("lvTeamPanel").hidden = true;
     $("lvBalPanel").hidden = !mgrView;
-    $("lvTeamCalPanel").hidden = false;
-    if(mgrView) renderTeamBalances();
-    else { renderAccounts(); renderMyCalendar(); renderMyLeave(); }
-    renderTeamCalendar();
     $("lvDonePanel").hidden = true;
+    renderAccounts(); renderMyCalendar(); renderMyLeave();
+    if(mgrView) renderTeamBalances();
   }
   /* ---- shared pieces ---- */
   function monthAdd(key, n){
@@ -6942,7 +6995,8 @@
     for(var w=0; w<7; w++) cal.appendChild(el("div","dh", WEEKDAY_ABBR[w]));
     var first = key + "01", last = isoAdd(monthAdd(key, 1) + "01", -1);
     var start = isoAdd(first, -weekdayOf(first)), end = isoAdd(last, 6 - weekdayOf(last));
-    var mine = myLeave(), team = LEAVE_TEAM[IT0001.bukrs], today = todayISO();
+    var me = selfId(), mine = myLeave(), today = todayISO();
+    var team = LEAVE_TEAM[IT0001.bukrs].concat(LEAVE[IT0001.bukrs]).filter(function(r){ return r.EmployeeID !== me; });
     for(var d = start; d <= end; d = isoAdd(d, 1)){
       (function(d){
         var hol = holidayOn(d), we = weekdayOf(d) > 4;
@@ -7064,16 +7118,16 @@
     body.innerHTML = "";
     var dl = el("dl","lvdl","");
     function line(k, v){ if(v === "" || v == null) return; dl.appendChild(el("dt","", k)); var dd = el("dd","", ""); if(typeof v === "string") dd.textContent = v; else dd.appendChild(v); dl.appendChild(dd); }
-    if(mgrView || r.EmployeeID !== PERNR) line(t("th_employee"), r.EmployeeName + (r.role ? " · " + r.role : ""));
+    if(r.EmployeeID !== selfId()) line(t("th_employee"), r.EmployeeName + (r.role ? " · " + r.role : ""));
     line(t("label_absence_type"), absTypeLabel(r));
     line(t("th_period"), leavePeriodLabel(r));
     line(t("th_duration"), leaveDurationLabel(r) + (leaveHolidaysIn(r) ? " · " + plural(leaveHolidaysIn(r), "n_holidays_skipped") : ""));
-    var after = r.EmployeeID === PERNR || reportById(r.EmployeeID) ? leaveAvailableAfter(r) : null;
+    var after = r.EmployeeID === selfId() || reportById(r.EmployeeID) ? leaveAvailableAfter(r) : null;
     if(after !== null) line(t("label_balance_after"), fmtDays(after) + " " + t("unit_days"));
     line(t("label_note"), r.Notes || "");
     var ty = absType(r.AbsenceTypeCode);
     if(r.Attachment) line(t("label_attachment"), "📎 " + r.Attachment);
-    else if(ty && ty.attach && r.EmployeeID === PERNR && !mgrView && (leaveActive(r))){
+    else if(ty && ty.attach && r.EmployeeID === selfId() && leaveActive(r)){
       var wrap = el("span","","");
       var inp = document.createElement("input");
       inp.type = "file";
@@ -7128,8 +7182,8 @@
         toast(t(r.decisionKind === "cancel" ? "toast_leave_cancel_approved" : "toast_leave_approved", {name: r.EmployeeName, id: r.RequestID}));
       });
     }
-    if(!mgrView && canEditLeave(r)) act(t("btn_edit"), "btn", function(){ openLeaveDialog(r); });
-    if(!mgrView && canWithdraw(r)) act(r.StatusID === "SENT" ? t("btn_withdraw") : t("btn_request_cancel"), "btn", function(){ withdrawFromScreen(r); });
+    if(canEditLeave(r)) act(t("btn_edit"), "btn", function(){ openLeaveDialog(r); });
+    if(canWithdraw(r)) act(r.StatusID === "SENT" ? t("btn_withdraw") : t("btn_request_cancel"), "btn", function(){ withdrawFromScreen(r); });
     var close = btn(t("btn_close"), "btn" + (inQueue ? "" : " primary"), function(){ $("dlgLvDetail").close(); });
     close.type = "button";
     acts.appendChild(close);
@@ -7252,7 +7306,8 @@
       out.push({id:mgr.pernr, name:mgr.name, role:mgr.role, subs:reportsOf(b).length, level:0, self:true, own:true});
       MANAGER_PEERS[b].forEach(function(m){ out.push({id:m.EmployeeID, name:m.name, role:m.role, subs:0, level:0, own:false}); });
     } else {
-      reportsOf(b).forEach(function(m){ out.push({id:m.EmployeeID, name:m.name, role:m.role, subs:0, level:0, self:m.EmployeeID === PERNR, own:m.EmployeeID === PERNR}); });
+      var me = selfId();
+      reportsOf(b).forEach(function(m){ out.push({id:m.EmployeeID, name:m.name, role:m.role, subs:0, level:0, self:m.EmployeeID === me, own:m.EmployeeID === me}); });
     }
     return out;
   }
@@ -7276,7 +7331,9 @@
                      : t("label_range_diff_month", {d1: +s.slice(6,8), m1: MONTHS[sm], d2: +e.slice(6,8), m2: MONTHS[em]});
   }
   function renderTeamCalendar(){
+    if(!$("lvTcGrid")) return;
     var st = tacState(), mgrView = state.role === "manager";
+    if($("tcSub")) $("tcSub").textContent = mgrView ? t("text_tc_sub_manager") : t("text_tc_sub");
     var range = tacRange(st), today = todayISO();
     /* toolbar */
     $("lvTcLabel").textContent = st.view === "day" ? fmtDateShort(range.from) + " " + range.from.slice(0,4) : t("leave_range", {from: fmtDate(range.from), to: fmtDate(range.to)});
@@ -7612,11 +7669,11 @@
   function openLeaveDialog(prefill){
     var p = prefill || {};
     var dlg = $("dlgLeave");
-    var emp = p.EmployeeID || PERNR, onBehalf = state.role === "manager", editing = !!(p.RequestID && p.StatusID === "SENT");
+    var emp = p.EmployeeID || selfId(), onBehalf = emp !== selfId(), editing = !!(p.RequestID && p.StatusID === "SENT");
     dlg.dataset.emp = emp;
     dlg.dataset.edit = editing ? p.RequestID : "";
     dlg.dataset.att = editing ? (p.Attachment || "") : "";
-    var who = reportById(emp) || {name: EMPLOYEE_NAME};
+    var who = reportById(emp) || {name: currentActor().name};
     $("lvDlgTitle").textContent = editing ? t("dlg_edit_leave", {id: p.RequestID}) : onBehalf ? t("dlg_leave_for", {name: who.name}) : t("dlg_new_leave_title");
     $("lvSubmit").textContent = editing ? t("btn_save_changes") : onBehalf ? t("btn_record_leave") : t("btn_send_request");
     $("lvAtt").value = "";
@@ -7647,7 +7704,7 @@
   function leaveFormDraft(){
     var dlg = $("dlgLeave"), file = $("lvAtt").files && $("lvAtt").files[0];
     var d = {
-      EmployeeID: dlg.dataset.emp || PERNR, RequestID: dlg.dataset.edit || "", onBehalf: state.role === "manager",
+      EmployeeID: dlg.dataset.emp || selfId(), RequestID: dlg.dataset.edit || "", onBehalf: (dlg.dataset.emp || selfId()) !== selfId(),
       Attachment: file ? file.name : (dlg.dataset.att || ""),
       bukrs:IT0001.bukrs, AbsenceTypeCode:$("lvType").value,
       StartDate:inputToIso($("lvStart").value), EndDate:inputToIso($("lvEnd").value),
@@ -7687,7 +7744,7 @@
         var avail = leaveAvailableFor(d);
         sum.appendChild(el("span","", t("text_balance_now_after", {now: fmtDays(avail), n: fmtDays(avail - (partial ? d.hours / DAYCAP : leaveWorkdays(d)))})));
       }
-      sum.appendChild(el("span","", d.onBehalf ? t("text_onbehalf_note") : t("text_approver", {name: lineManager().name})));
+      sum.appendChild(el("span","", d.onBehalf ? t("text_onbehalf_note") : t("text_approver", {name: approverFor(d.EmployeeID).name})));
       var others = [];
       eachLeaveDay(d, function(x){
         absentOn(x).forEach(function(o){ if(o.EmployeeID !== d.EmployeeID && others.indexOf(o.EmployeeName) === -1) others.push(o.EmployeeName); });
@@ -7940,9 +7997,9 @@
      across changes, so a request sent as the employee can be approved as
      the line manager in the same session. */
   var PROFILE_TABS = {
-    employee: ["home","semana","leave"],
-    pm:       ["home","semana","team","aprov"],
-    manager:  ["home","lvaprov","leave"]
+    employee: ["home","semana","leave","teamcal"],
+    pm:       ["home","semana","leave","teamcal","team","aprov"],
+    manager:  ["home","lvaprov","leave","teamcal"]
   };
   function currentActor(){
     if(state.role === "pm") return {name: leaderById(state.leader).name, label: t("profile_pm")};
@@ -7983,6 +8040,7 @@
       }
     }
     renderLeaderOptions();
+    syncActorLeave();
     applyProfileChrome();
     updateApproverChrome();
     renderContextButton();
@@ -8115,7 +8173,7 @@
       var bal = leaveBalance(d.bukrs);
       lines.push([t("label_balance_after"), fmtDays(bal.available - leaveDays(d)) + " " + t("unit_days")]);
     }
-    lines.push([t("label_approver"), LINE_MANAGER[d.bukrs].name + " · " + t("role_manager")]);
+    lines.push([t("label_approver"), approverFor(selfId(), d.bukrs).name + " · " + t("role_manager")]);
     if(d.Notes) lines.push([t("label_note"), d.Notes]);
     return lines;
   }
@@ -9510,7 +9568,7 @@
             hoje: isoToInput(todayISO()),
             papel: {employee:"colaborador", pm:"gestor_projeto", manager:"chefia"}[state.role] || "colaborador",
             gestor_projeto_em_teste: state.role === "pm" ? {nome: leaderById(state.leader).name, projetos: pmProjectsLabel()} : null,
-            chefia_direta: lineManager().name,
+            chefia_direta: approverFor(selfId()).name,
             tipos_ausencia: ABSENCE_TYPES.map(function(ty){ return {codigo: ty.code, nome: t("abs_" + ty.code), parte_do_dia: ty.partial, desconta_ferias: ty.quota}; }),
             saldo_ferias: (function(){ var b = leaveBalance(); return {direito: b.total, gozados: b.used, pedidos: b.requested, disponivel: b.available}; })(),
             pedidos_ausencia: myLeave().filter(function(r){ return r.EndDate >= isoAdd(todayISO(), -30) || r.StatusID === "SENT"; }).map(function(r){
