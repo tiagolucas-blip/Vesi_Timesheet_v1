@@ -14,7 +14,7 @@ Everything below works, with no server and no real data.
 **The test setup comes first**
 - A window opens before anything else: the company (PT01 Consulting, durations by month; PT02 Building Solutions, start and end by week) and the profile under test
 - **Employee** (Tiago Leal) records their own time and requests absences: Assistant, My Timesheet, Leave Request, Team calendar
-- **Project manager** (one of the company's project owners, picked in the same window) records their own time like any employee, records for the project team (themselves included, in mass entry, which also fills their own sheet) and approves the team's timesheets, never their own: Assistant, My Timesheet, Team, Approval. In this mockup the own sheet reuses the sample weeks of the employee profile
+- **Project manager** (one of the company's project owners, picked in the same window) records their own time like any employee, records for the project team (themselves included, in team entry, which also fills their own sheet) and approves the team's timesheets, never their own: Assistant, My Timesheet, Team, Approval. In this mockup the own sheet reuses the sample weeks of the employee profile
 - **Line manager** (Sofia Almeida for PT01, Patrícia Gomes for PT02, from the org structure) approves absences and records their own time and absences: Assistant, My Timesheet, Leave Request, Team calendar, Leave approval
 - Each profile only sees its screens, and the assistant follows the same split: alerts, greeting and permissions (an employee asking to approve a timesheet is told who does it)
 - The Test button in the header reopens the window at any time. Data stays across changes, so a request sent as the employee can be approved as the line manager in the same session
@@ -28,7 +28,7 @@ Everything below works, with no server and no real data.
 **Leave Request, a mask over the standard**
 - Each profile is a separate person: their own timesheet (the employee keeps the hand-written sample, the project managers and the line manager get their own, filled on their own projects), their own absences and their own conversation with the assistant. Switching the test puts the conversation away and brings back (or starts) the other person's, and Claude is only told what that person has: the team and timesheet approvals for the project manager, the leave approvals for the line manager. What travels between them is the workflow itself: a request reaches its approver, and the decision reaches the person who asked
 - The line manager records their own hours too; on submit, the dialog says who approves: the owner of each project for everyone, one level up for a project manager's own project and for the line manager
-- The tabs are grouped in two areas, each with its label: Timesheet (My timesheet, Mass entry, Approval) and Leave Request (My requests, Team calendar, Approval); the Assistant stands on its own in front, as the one common to both. Each profile sees only the tabs it has
+- The tabs come in two levels: on top the areas, the Assistant on its own in front as the one common to both, then Timesheet and Leave Request; under the open area, a tinted second row with its own tabs, Timesheet (My timesheet, Team entry, Approval) and Leave Request (My requests, Team calendar, Approval). An area opens on the tab last used in it; the second row shows only when the area has more than one tab for the profile, and the area tab repeats the approval count. Each profile sees only the tabs it has
 - The assistant lives on its own tab: there's no floating assistant button on the other screens (J goes to the Assistant tab)
 - Every timesheet line needs a description of at least 10 characters, internal activities included. The assistant checks it: a card for a line still without one asks for it, takes the next reply in the chat as the description (or what's typed on the card) and keeps Save disabled until it's there; Quick add also waits for it
 - The assistant only serves the person talking to it: it never switches profiles or suggests switching, and asked to "view as" someone else it answers that it can only help with that person's own records. The test is changed with the Test button only
@@ -103,7 +103,9 @@ Everything below works, with no server and no real data.
 **Validation and approval**
 - Three severities: error blocks, warning doesn't block, info guides
 - Summary per project and receiver object before submission
-- Approval screen with bulk approval and exceptions singled out
+- Submitting follows the period the timesheet shows: the whole month in Consulting (PT01, time by duration, monthly view), every week of it still open, and the week in Building Solutions (PT02). Submitting is final, with Reopen in the confirmation, and there is no Save step after it
+- The assistant does the same: asked to submit, it shows the month (or the week) with total, expected, warnings and approver for confirmation; when something blocks it, it says so first and lists what to fix, the same problem across several weeks said once
+- Approval screen with bulk approval and exceptions singled out, by month in Consulting (each person's whole month, with the hours per week of the month against the working days, holidays out) and by week in Building Solutions
 
 **SAP mapping, in Settings**
 - A technical reference rather than a working screen, so it has no tab: Settings opens it for any profile, and Back returns to where you were

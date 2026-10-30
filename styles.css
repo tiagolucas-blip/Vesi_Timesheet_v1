@@ -54,6 +54,7 @@
   @media (max-width:600px){
     .appbar{display:contents}
     .nav{position:sticky; top:env(safe-area-inset-top,0px); z-index:30; box-shadow:0 1px 3px rgba(0,0,0,.06)}
+    .subnav{position:sticky; top:calc(env(safe-area-inset-top,0px) + var(--nav-h, 44px)); z-index:29}
   }
   .shellbar{
     background:var(--surface); border-bottom:1px solid var(--line);
@@ -715,14 +716,24 @@
   .jrow.jattach .v{display:grid; gap:2px}
   .jrow.jattach input[type=file]{font-size:var(--fs-sm); max-width:100%}
 
-  /* the tabs in two areas, timesheet and leave, with the assistant on its
-     own in front as the one common to both */
-  .nav{align-items:stretch}
-  .nav .navhome{font-weight:600; color:var(--accent-ink); padding-right:16px}
-  .navgroup{display:flex; align-items:stretch; gap:2px; margin-left:10px; padding:0 8px 0 0; position:relative}
-  .navgroup::before{content:""; position:absolute; left:-6px; top:10px; bottom:10px; border-left:1px solid var(--line)}
-  .navgroup[hidden]{display:none}
-  .navglabel{align-self:center; font-size:var(--fs-micro); text-transform:uppercase; letter-spacing:.1em; font-weight:700; color:var(--ink-3);
-    background:var(--surface-2); border:1px solid var(--line-soft); border-radius:999px; padding:2px 8px; margin:0 4px 0 6px; white-space:nowrap}
-  #navg-ts .navglabel{color:var(--accent-ink)}
-  #navg-lv .navglabel{color:var(--good)}
+  /* two levels of tabs: the areas on top (the assistant, common to both,
+     then Timesheet and Leave Request), and under the open area a tinted
+     second row with that area's own tabs, so the grouping reads at a glance */
+  .nav{align-items:stretch; gap:4px}
+  .nav button{display:inline-flex; align-items:center; gap:8px; padding:12px 16px; font-size:var(--fs-body); font-weight:600; border-bottom-width:3px}
+  .nav button[hidden]{display:none}
+  .nav button svg{flex:none; opacity:.8}
+  .nav button[aria-current="true"]{color:var(--accent-ink); border-bottom-color:var(--accent)}
+  .nav button[aria-current="true"] svg{opacity:1}
+  .nav .navarea[aria-expanded="true"]{background:var(--accent-soft)}
+  .nav .navarea .navbadge{margin-left:0}
+  .subnav{display:flex; align-items:center; gap:6px; padding:8px 16px; background:var(--accent-soft); border-bottom:1px solid var(--line); overflow-x:auto}
+  .subnav[hidden]{display:none}
+  .subnavlabel{font-size:var(--fs-label); text-transform:uppercase; letter-spacing:.08em; font-weight:700; color:var(--accent-ink); white-space:nowrap; margin-right:6px}
+  .subnavlabel::after{content:"\203A"; margin-left:8px; font-size:var(--fs-head); letter-spacing:0; opacity:.6}
+  .subnav button{background:var(--surface); border:1px solid var(--line); border-radius:999px; color:var(--ink-2); padding:5px 14px; font-size:var(--fs-sm); font-weight:500; white-space:nowrap}
+  .subnav button:hover{border-color:var(--accent); color:var(--accent-ink)}
+  .subnav button[hidden]{display:none}
+  .subnav button[aria-current="true"]{background:var(--accent); border-color:var(--accent); color:#fff}
+  .subnav button[aria-current="true"] .navbadge{background:#fff; color:var(--accent-ink)}
+  @media (max-width:480px){ .nav button{padding:10px 10px; gap:6px} .subnav{padding:8px 12px} .subnavlabel{display:none} }

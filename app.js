@@ -880,9 +880,10 @@
   var I18N = {
     en: {
       navg_timesheet:"Timesheet",
+      aria_main_nav:"Main areas",
       navg_leave:"Leave Request",
       tab_ts_mine:"My timesheet",
-      tab_ts_team:"Mass entry",
+      tab_ts_team:"Team entry",
       tab_ts_approval:"Approval",
       tab_lv_mine:"My requests",
       tab_lv_teamcal:"Team calendar",
@@ -1088,6 +1089,10 @@
       hint_km_enter_route:"Enter where the trip started and ended to work out the distance.",
       toast_km_route_needed:"Enter where the trip started and ended.",
       label_approval_week:"Timesheet approval, week {n}",
+      label_approval_month:"Timesheet approval, {month}",
+      ap_week_chip:"Wk {n} · {from} to {to} · {h}/{exp} h",
+      text_approval_monthly:"In Consulting hours are approved by month, the same period the timesheet shows.",
+      text_approval_weekly:"In Building Solutions hours are approved by week, the same period the timesheet shows.",
       label_you:"you",
       filter_pending:"To approve", filter_all:"All", aria_ap_filter:"Which timesheets to show", text_ap_none_pending:"Nothing left to approve. Choose All to see the approved ones.", btn_select_clean_one:"Select the {n} without warnings", btn_select_clean_other:"Select the {n} without warnings",
       settings_reference:"Technical reference", btn_open_mapping:"Open the SAP mapping", text_mapping_hint:"Field by field, what each screen writes to CATS and to the standard Leave Request, with the records and payloads generated live.",
@@ -1223,8 +1228,8 @@
       brand_title:"Time Recording", brand_subtitle:"Fiori Prototype",
       capture_on:"Suggestions on, private timeline", capture_off:"Capture paused",
       aria_it0001:"Company of the employee, from IT0001",
-      aria_project_billing:"Project to bill and staff mass entries for", aria_leader_scope:"Leader and scope",
-      aria_mass_entry_section:"Mass entry section",
+      aria_project_billing:"Project to bill and staff team entries for", aria_leader_scope:"Leader and scope",
+      aria_mass_entry_section:"Team entry section",
       label_week_n:"Week {n}, {range} {y}", label_range_same_month:"{d1} to {d2} {month}", label_range_diff_month:"{d1} {m1} to {d2} {m2}",
       status_approved:"Approved", status_pending:"Pending request",
       dlg_new_entry_title:"New entry", origin_suggested:"Suggested", origin_copied:"Copied",
@@ -1294,9 +1299,9 @@
       toast_row_exists_week:"{code} already has a row this week. Remove or merge it first.",
       toast_entry_updated:"Entry updated.",
       toast_row_exists_month:"{code} already has a row this month. Remove or merge it first.",
-      weeks_submitted_approval_one:"{n} week submitted for approval. Click Save to finish.",
-      weeks_submitted_approval_other:"{n} weeks submitted for approval. Click Save to finish.",
-      toast_week_submitted_approval:"Week {n} submitted for approval. Click Save to finish.",
+      weeks_submitted_approval_one:"{n} week submitted for approval.",
+      weeks_submitted_approval_other:"{n} weeks submitted for approval.",
+      toast_week_submitted_approval:"Week {n} submitted for approval.",
       toast_high_conf_applied:"{n} high-confidence suggestions applied. Medium and low confidence ones are still to review.",
       toast_timeline_deleted:"Raw timeline deleted. Pending suggestions disappeared with it.",
       toast_timesheets_approved:"{n} timesheets approved in a single call. Exceptions remain for review.",
@@ -1363,11 +1368,11 @@
       placeholder_justification_week:"One line is enough. Stays in the week's history.",
       chip_approved:"Approved",
       note_pending_leave_conflict:"Pending leave request overlaps recorded hours", note_two_empty_days:"Two empty working days",
-      val_week_label_prefix:"Week {n}: {txt}",
+      val_week_label_prefix:"Week {n}: {txt}", val_weeks_label_prefix:"Weeks {n}: {txt}",
       link_resolve_move_hours:"resolve, move the hours", link_go_to_day:"go to day",
       btn_shortcuts:"Shortcuts", aria_shortcuts:"Keyboard shortcuts",
       btn_settings:"Settings", aria_settings:"Language settings",
-      nav_my_timesheet:"My Timesheet", nav_team:"Team (mass entry)",
+      nav_my_timesheet:"My Timesheet", nav_team:"Team entry",
       nav_approval:"Approval (manager)", nav_cats:"CATS mapping",
       aria_prev_week:"Previous week", aria_next_week:"Next week",
       state_draft:"Draft", state_in_approval:"In approval, read-only",
@@ -1419,12 +1424,12 @@
       spec_e11:"Conversational assistant with confirmation before saving",
       spec_e12:"Allowances against a project, wage type and quantity, bonus with an amount",
       spec_e13:"Start and end by data entry profile, derived from IT0001",
-      spec_e14:"Team leader mass entry with partial save and on-behalf-of trace",
+      spec_e14:"Team leader team entry with partial save and on-behalf-of trace",
       aria_expand_already:"Expand already recorded", aria_collapse_already:"Collapse already recorded",
       hdr_already_recorded:"Already recorded this week", hdr_already_allow:"Allowances recorded this week",
       chip_readonly:"Read-only",
-      hint_already:"From each person's own sheet or an earlier mass entry, plus whatever is staged below but not yet saved. Amber at 8h, red past it.",
-      hint_already_allow:"Allowances already saved for this team this week, from each person's own sheet or an earlier mass entry.",
+      hint_already:"From each person's own sheet or an earlier team entry, plus whatever is staged below but not yet saved. Amber at 8h, red past it.",
+      hint_already_allow:"Allowances already saved for this team this week, from each person's own sheet or an earlier team entry.",
       tab_hours:"Hours", tab_allowances:"Allowances", tab_bonus:"Bonus",
       hdr_team:"Team", hdr_fill_several:"Fill several people at once",
       label_duration:"Duration", label_start_time:"Start time", label_end_time:"End time", label_days:"Days",
@@ -1504,10 +1509,19 @@
       label_durations:"Durations", bot_stay_zero_value:"stay at zero", btn_copy:"Copy",
       bot_copy_week_done:"Done. The rows are created, durations still need filling in.",
       bot_week_already_submitted:"The week is already submitted and in approval.",
-      bot_cant_submit_yet:"I can't submit yet. {reason}",
+      bot_cant_submit_week_one:"I can't submit week {num} yet: {n} error blocks it.", bot_cant_submit_week_other:"I can't submit week {num} yet: {n} errors block it.",
+      bot_cant_submit_month_one:"I can't submit {month} yet: {n} error blocks it.", bot_cant_submit_month_other:"I can't submit {month} yet: {n} errors block it.",
+      bot_cant_submit_fix:"Fix it and ask me again, I'll submit it then.",
+      bot_month_already_submitted:"{month} is already submitted and in approval.",
+      bot_confirm_submit_month:"Do you confirm submitting {month} for approval? It covers every week of the month still open.",
+      bot_month_submitted_msg:"{month} submitted. It's now in approval with {names}.",
+      bot_submit_weekly_only:"Here the timesheet is weekly, so it's submitted week by week.",
+      bot_month_summary:"In {month} you have {tot} h recorded of {exp} h expected, already with absences deducted. ",
+      bot_month_no_errors_submit:"No errors, you can submit the month.",
+      label_month:"Month", label_weeks:"Weeks", label_warnings:"Warnings", fmt_month_year:"{month} {y}",
       bot_confirm_submit_week:"Confirm submitting week {num}?",
       label_expected:"Expected", label_status_after_submit:"Status after submitting",
-      bot_week_submitted_msg:"Week submitted. It's now in approval with the project manager.",
+      bot_week_submitted_msg:"Week {num} submitted. It's now in approval with {names}.",
       bot_week_locked:"The week is already submitted, I can't change it. Want to see something else?",
       bot_day_absence_no_alt:"{day} has an approved {type} and there's no other day with free capacity. I didn't record anything.",
       bot_day_absence_suggest:"{day} has an approved {type}, so it doesn't accept hours. I suggest {alt}.",
@@ -1592,9 +1606,10 @@
     },
     pt: {
       navg_timesheet:"Timesheet",
+      aria_main_nav:"Áreas principais",
       navg_leave:"Ausências",
       tab_ts_mine:"A minha folha",
-      tab_ts_team:"Lançamento em massa",
+      tab_ts_team:"Lançamento da equipa",
       tab_ts_approval:"Aprovação",
       tab_lv_mine:"Os meus pedidos",
       tab_lv_teamcal:"Calendário da equipa",
@@ -1800,6 +1815,10 @@
       hint_km_enter_route:"Indica a origem e o destino para calcular a distância.",
       toast_km_route_needed:"Indica a origem e o destino da deslocação.",
       label_approval_week:"Aprovação de horas, semana {n}",
+      label_approval_month:"Aprovação de horas, {month}",
+      ap_week_chip:"Sem. {n} · {from} a {to} · {h}/{exp} h",
+      text_approval_monthly:"Na Consultoria as horas aprovam-se ao mês, o mesmo período que a timesheet mostra.",
+      text_approval_weekly:"Na Building Solutions as horas aprovam-se à semana, o mesmo período que a timesheet mostra.",
       label_you:"tu",
       filter_pending:"Por aprovar", filter_all:"Todas", aria_ap_filter:"Que timesheets mostrar", text_ap_none_pending:"Nada por aprovar. Escolhe Todas para ver as aprovadas.", btn_select_clean_one:"Selecionar a {n} sem avisos", btn_select_clean_other:"Selecionar as {n} sem avisos",
       settings_reference:"Referência técnica", btn_open_mapping:"Abrir o mapeamento SAP", text_mapping_hint:"Campo a campo, o que cada ecrã grava no CATS e no Leave Request standard, com os registos e os payloads gerados em tempo real.",
@@ -1821,7 +1840,7 @@
       bot_screen_not_in_profile:"{screen} não está disponível para ti.",
       chip_change_test:"Mudar teste", bot_setup_opened:"Escolhe o novo teste na janela que acabou de abrir.",
       bot_test_changed:"Teste mudado: {co}, {profile}, {name}.",
-      hdr_home_team_week:"Equipa {project}", btn_open_team:"Abrir lançamento em massa",
+      hdr_home_team_week:"Equipa {project}", btn_open_team:"Abrir lançamento da equipa",
       text_acting_as_pm:"A atuar como {name}, gestor de projeto de {projects}. Muda no botão Teste, no topo.",
       chip_conversation_log:"Modo aprendizagem", title_conversation_log:"Esta conversa fica guardada no artifact para melhorar o assistente. Só dados fictícios do mockup.",
       fb_helpful:"Útil", fb_not_helpful:"Não ajudou", fb_placeholder:"O que devia ter feito?", fb_send:"Enviar", fb_thanks:"Obrigado", fb_noted:"Registado, vai ser analisado na próxima ronda de melhorias.",
@@ -1935,8 +1954,8 @@
       brand_title:"Registo de Horas", brand_subtitle:"Protótipo Fiori",
       capture_on:"Sugestões ativas, linha do tempo privada", capture_off:"Captura em pausa",
       aria_it0001:"Empresa do colaborador, a partir do IT0001",
-      aria_project_billing:"Projeto a faturar e a alocar aos lançamentos em massa", aria_leader_scope:"Líder e âmbito",
-      aria_mass_entry_section:"Secção de lançamento em massa",
+      aria_project_billing:"Projeto a faturar e a alocar aos lançamentos da equipa", aria_leader_scope:"Líder e âmbito",
+      aria_mass_entry_section:"Secção de lançamento da equipa",
       label_week_n:"Semana {n}, {range} {y}", label_range_same_month:"{d1} a {d2} {month}", label_range_diff_month:"{d1} {m1} a {d2} {m2}",
       status_approved:"Aprovada", status_pending:"Pedido pendente",
       dlg_new_entry_title:"Novo lançamento", origin_suggested:"Sugerido", origin_copied:"Copiado",
@@ -2006,9 +2025,9 @@
       toast_row_exists_week:"{code} já tem uma linha esta semana. Remove ou junta primeiro.",
       toast_entry_updated:"Lançamento atualizado.",
       toast_row_exists_month:"{code} já tem uma linha este mês. Remove ou junta primeiro.",
-      weeks_submitted_approval_one:"{n} semana submetida para aprovação. Clica em Gravar para terminar.",
-      weeks_submitted_approval_other:"{n} semanas submetidas para aprovação. Clica em Gravar para terminar.",
-      toast_week_submitted_approval:"Semana {n} submetida para aprovação. Clica em Gravar para terminar.",
+      weeks_submitted_approval_one:"{n} semana submetida para aprovação.",
+      weeks_submitted_approval_other:"{n} semanas submetidas para aprovação.",
+      toast_week_submitted_approval:"Semana {n} submetida para aprovação.",
       toast_high_conf_applied:"{n} sugestões de alta confiança aplicadas. As de confiança média e baixa continuam por rever.",
       toast_timeline_deleted:"Linha do tempo em bruto eliminada. As sugestões pendentes desapareceram com ela.",
       toast_timesheets_approved:"{n} folhas de horas aprovadas numa só ação. As exceções continuam por rever.",
@@ -2075,11 +2094,11 @@
       placeholder_justification_week:"Uma linha chega. Fica no histórico da semana.",
       chip_approved:"Aprovada",
       note_pending_leave_conflict:"Pedido de ausência pendente sobrepõe-se a horas registadas", note_two_empty_days:"Dois dias úteis vazios",
-      val_week_label_prefix:"Semana {n}: {txt}",
+      val_week_label_prefix:"Semana {n}: {txt}", val_weeks_label_prefix:"Semanas {n}: {txt}",
       link_resolve_move_hours:"resolver, mover as horas", link_go_to_day:"ir para o dia",
       btn_shortcuts:"Atalhos", aria_shortcuts:"Atalhos de teclado",
       btn_settings:"Definições", aria_settings:"Definições de idioma",
-      nav_my_timesheet:"A Minha Folha", nav_team:"Equipa (lançamento em massa)",
+      nav_my_timesheet:"A Minha Folha", nav_team:"Lançamento da equipa",
       nav_approval:"Aprovação (gestor)", nav_cats:"Mapeamento CATS",
       aria_prev_week:"Semana anterior", aria_next_week:"Semana seguinte",
       state_draft:"Rascunho", state_in_approval:"Em aprovação, só leitura",
@@ -2131,12 +2150,12 @@
       spec_e11:"Assistente conversacional com confirmação antes de gravar",
       spec_e12:"Abonos contra um projeto, tipo de rúbrica e quantidade, bónus com um montante",
       spec_e13:"Início e fim conforme o perfil de lançamento, derivado do IT0001",
-      spec_e14:"Lançamento em massa pelo team leader, com gravação parcial e rasto em nome de",
+      spec_e14:"Lançamento da equipa pelo team leader, com gravação parcial e rasto em nome de",
       aria_expand_already:"Expandir já registado", aria_collapse_already:"Colapsar já registado",
       hdr_already_recorded:"Já registado esta semana", hdr_already_allow:"Abonos registados esta semana",
       chip_readonly:"Só leitura",
-      hint_already:"Da folha de cada pessoa ou de um lançamento em massa anterior, mais o que está em staging abaixo mas ainda não gravado. Âmbar aos 8h, vermelho depois disso.",
-      hint_already_allow:"Abonos já gravados para esta equipa esta semana, da folha de cada pessoa ou de um lançamento em massa anterior.",
+      hint_already:"Da folha de cada pessoa ou de um lançamento da equipa anterior, mais o que está em staging abaixo mas ainda não gravado. Âmbar aos 8h, vermelho depois disso.",
+      hint_already_allow:"Abonos já gravados para esta equipa esta semana, da folha de cada pessoa ou de um lançamento da equipa anterior.",
       tab_hours:"Horas", tab_allowances:"Abonos", tab_bonus:"Bónus",
       hdr_team:"Equipa", hdr_fill_several:"Preencher várias pessoas de uma vez",
       label_duration:"Duração", label_start_time:"Hora de início", label_end_time:"Hora de fim", label_days:"Dias",
@@ -2209,10 +2228,19 @@
       label_durations:"Durações", bot_stay_zero_value:"ficam a zero", btn_copy:"Copiar",
       bot_copy_week_done:"Feito. As linhas estão criadas, as durações ainda precisam de ser preenchidas.",
       bot_week_already_submitted:"A semana já está submetida e em aprovação.",
-      bot_cant_submit_yet:"Ainda não posso submeter. {reason}",
+      bot_cant_submit_week_one:"Ainda não posso submeter a semana {num}: há {n} erro que o impede.", bot_cant_submit_week_other:"Ainda não posso submeter a semana {num}: há {n} erros que o impedem.",
+      bot_cant_submit_month_one:"Ainda não posso submeter o mês de {month}: há {n} erro que o impede.", bot_cant_submit_month_other:"Ainda não posso submeter o mês de {month}: há {n} erros que o impedem.",
+      bot_cant_submit_fix:"Corrige e pede-me de novo, que eu submeto logo.",
+      bot_month_already_submitted:"O mês de {month} já está submetido e em aprovação.",
+      bot_confirm_submit_month:"Confirmas submeter o mês de {month} para aprovação? Inclui todas as semanas do mês ainda abertas.",
+      bot_month_submitted_msg:"Mês de {month} submetido. Está agora em aprovação com {names}.",
+      bot_submit_weekly_only:"Aqui a timesheet é semanal, por isso a submissão é feita à semana.",
+      bot_month_summary:"Em {month} tens {tot} h registadas de {exp} h esperadas, já com as ausências deduzidas. ",
+      bot_month_no_errors_submit:"Sem erros, já podes submeter o mês.",
+      label_month:"Mês", label_weeks:"Semanas", label_warnings:"Avisos", fmt_month_year:"{month} de {y}",
       bot_confirm_submit_week:"Confirmas submeter a semana {num}?",
       label_expected:"Esperado", label_status_after_submit:"Estado após submeter",
-      bot_week_submitted_msg:"Semana submetida. Está agora em aprovação com o gestor do projeto.",
+      bot_week_submitted_msg:"Semana {num} submetida. Está agora em aprovação com {names}.",
       bot_week_locked:"A semana já está submetida, não a posso alterar. Queres ver outra coisa?",
       bot_day_absence_no_alt:"{day} tem uma {type} aprovada e não há outro dia com capacidade livre. Não registei nada.",
       bot_day_absence_suggest:"{day} tem uma {type} aprovada, por isso não aceita horas. Sugiro {alt}.",
@@ -2297,9 +2325,10 @@
     },
     fr: {
       navg_timesheet:"Feuille de temps",
+      aria_main_nav:"Zones principales",
       navg_leave:"Absences",
       tab_ts_mine:"Ma feuille",
-      tab_ts_team:"Saisie groupée",
+      tab_ts_team:"Saisie d'équipe",
       tab_ts_approval:"Approbation",
       tab_lv_mine:"Mes demandes",
       tab_lv_teamcal:"Calendrier de l'équipe",
@@ -2505,6 +2534,10 @@
       hint_km_enter_route:"Indiquez le départ et l'arrivée pour calculer la distance.",
       toast_km_route_needed:"Indiquez le départ et l'arrivée du déplacement.",
       label_approval_week:"Approbation des temps, semaine {n}",
+      label_approval_month:"Approbation des temps, {month}",
+      ap_week_chip:"Sem. {n} · {from} au {to} · {h}/{exp} h",
+      text_approval_monthly:"En Conseil, les heures s'approuvent au mois, la même période que la feuille de temps.",
+      text_approval_weekly:"En Building Solutions, les heures s'approuvent à la semaine, la même période que la feuille de temps.",
       label_you:"vous",
       filter_pending:"À approuver", filter_all:"Toutes", aria_ap_filter:"Feuilles de temps à afficher", text_ap_none_pending:"Plus rien à approuver. Choisissez Toutes pour voir celles approuvées.", btn_select_clean_one:"Sélectionner la {n} sans avertissement", btn_select_clean_other:"Sélectionner les {n} sans avertissement",
       settings_reference:"Référence technique", btn_open_mapping:"Ouvrir le mapping SAP", text_mapping_hint:"Champ par champ, ce que chaque écran enregistre dans CATS et dans le Leave Request standard, avec les enregistrements et payloads générés en direct.",
@@ -2640,8 +2673,8 @@
       brand_title:"Saisie des temps", brand_subtitle:"Prototype Fiori",
       capture_on:"Suggestions activées, historique privé", capture_off:"Capture en pause",
       aria_it0001:"Société de l'employé, à partir de l'IT0001",
-      aria_project_billing:"Projet à facturer et à affecter aux saisies groupées", aria_leader_scope:"Chef d'équipe et périmètre",
-      aria_mass_entry_section:"Section de saisie groupée",
+      aria_project_billing:"Projet à facturer et à affecter aux saisies d'équipe", aria_leader_scope:"Chef d'équipe et périmètre",
+      aria_mass_entry_section:"Section de saisie d'équipe",
       label_week_n:"Semaine {n}, {range} {y}", label_range_same_month:"{d1} au {d2} {month}", label_range_diff_month:"{d1} {m1} au {d2} {m2}",
       status_approved:"Approuvée", status_pending:"Demande en attente",
       dlg_new_entry_title:"Nouvelle saisie", origin_suggested:"Suggéré", origin_copied:"Copié",
@@ -2711,9 +2744,9 @@
       toast_row_exists_week:"{code} a déjà une ligne cette semaine. Supprimez-la ou fusionnez-la d'abord.",
       toast_entry_updated:"Saisie mise à jour.",
       toast_row_exists_month:"{code} a déjà une ligne ce mois-ci. Supprimez-la ou fusionnez-la d'abord.",
-      weeks_submitted_approval_one:"{n} semaine soumise pour approbation. Cliquez sur Enregistrer pour terminer.",
-      weeks_submitted_approval_other:"{n} semaines soumises pour approbation. Cliquez sur Enregistrer pour terminer.",
-      toast_week_submitted_approval:"Semaine {n} soumise pour approbation. Cliquez sur Enregistrer pour terminer.",
+      weeks_submitted_approval_one:"{n} semaine soumise pour approbation.",
+      weeks_submitted_approval_other:"{n} semaines soumises pour approbation.",
+      toast_week_submitted_approval:"Semaine {n} soumise pour approbation.",
       toast_high_conf_applied:"{n} suggestions à forte confiance appliquées. Celles à confiance moyenne et faible restent à revoir.",
       toast_timeline_deleted:"Historique brut supprimé. Les suggestions en attente ont disparu avec lui.",
       toast_timesheets_approved:"{n} relevés approuvés en un seul appel. Les exceptions restent à revoir.",
@@ -2780,11 +2813,11 @@
       placeholder_justification_week:"Une ligne suffit. Reste dans l'historique de la semaine.",
       chip_approved:"Approuvée",
       note_pending_leave_conflict:"Demande d'absence en attente chevauche des heures enregistrées", note_two_empty_days:"Deux jours ouvrés vides",
-      val_week_label_prefix:"Semaine {n} : {txt}",
+      val_week_label_prefix:"Semaine {n} : {txt}", val_weeks_label_prefix:"Semaines {n} : {txt}",
       link_resolve_move_hours:"résoudre, déplacer les heures", link_go_to_day:"aller au jour",
       btn_shortcuts:"Raccourcis", aria_shortcuts:"Raccourcis clavier",
       btn_settings:"Paramètres", aria_settings:"Paramètres de langue",
-      nav_my_timesheet:"Mon relevé", nav_team:"Équipe (saisie groupée)",
+      nav_my_timesheet:"Mon relevé", nav_team:"Saisie d'équipe",
       nav_approval:"Approbation (manager)", nav_cats:"Mappage CATS",
       aria_prev_week:"Semaine précédente", aria_next_week:"Semaine suivante",
       state_draft:"Brouillon", state_in_approval:"En approbation, lecture seule",
@@ -2836,12 +2869,12 @@
       spec_e11:"Assistant conversationnel avec confirmation avant enregistrement",
       spec_e12:"Indemnités contre un projet, une rubrique et une quantité, prime avec un montant",
       spec_e13:"Début et fin selon le profil de saisie, dérivé de l'IT0001",
-      spec_e14:"Saisie groupée par le chef d'équipe, avec enregistrement partiel et trace pour le compte de",
+      spec_e14:"Saisie d'équipe par le chef d'équipe, avec enregistrement partiel et trace pour le compte de",
       aria_expand_already:"Développer déjà enregistré", aria_collapse_already:"Réduire déjà enregistré",
       hdr_already_recorded:"Déjà enregistré cette semaine", hdr_already_allow:"Indemnités enregistrées cette semaine",
       chip_readonly:"Lecture seule",
-      hint_already:"Depuis le relevé de chaque personne ou une saisie groupée antérieure, plus ce qui est en attente ci-dessous mais pas encore enregistré. Ambré à 8h, rouge au-delà.",
-      hint_already_allow:"Indemnités déjà enregistrées pour cette équipe cette semaine, depuis le relevé de chaque personne ou une saisie groupée antérieure.",
+      hint_already:"Depuis le relevé de chaque personne ou une saisie d'équipe antérieure, plus ce qui est en attente ci-dessous mais pas encore enregistré. Ambré à 8h, rouge au-delà.",
+      hint_already_allow:"Indemnités déjà enregistrées pour cette équipe cette semaine, depuis le relevé de chaque personne ou une saisie d'équipe antérieure.",
       tab_hours:"Heures", tab_allowances:"Indemnités", tab_bonus:"Prime",
       hdr_team:"Équipe", hdr_fill_several:"Remplir plusieurs personnes à la fois",
       label_duration:"Durée", label_start_time:"Heure de début", label_end_time:"Heure de fin", label_days:"Jours",
@@ -2914,10 +2947,19 @@
       label_durations:"Durées", bot_stay_zero_value:"restent à zéro", btn_copy:"Copier",
       bot_copy_week_done:"C'est fait. Les lignes sont créées, les durées restent à remplir.",
       bot_week_already_submitted:"La semaine est déjà soumise et en approbation.",
-      bot_cant_submit_yet:"Je ne peux pas encore soumettre. {reason}",
+      bot_cant_submit_week_one:"Je ne peux pas encore soumettre la semaine {num} : {n} erreur l'en empêche.", bot_cant_submit_week_other:"Je ne peux pas encore soumettre la semaine {num} : {n} erreurs l'en empêchent.",
+      bot_cant_submit_month_one:"Je ne peux pas encore soumettre le mois de {month} : {n} erreur l'en empêche.", bot_cant_submit_month_other:"Je ne peux pas encore soumettre le mois de {month} : {n} erreurs l'en empêchent.",
+      bot_cant_submit_fix:"Corrigez puis redemandez-moi, je le soumettrai aussitôt.",
+      bot_month_already_submitted:"Le mois de {month} est déjà soumis et en approbation.",
+      bot_confirm_submit_month:"Confirmez-vous la soumission du mois de {month} pour approbation ? Elle couvre toutes les semaines du mois encore ouvertes.",
+      bot_month_submitted_msg:"Mois de {month} soumis. Il est maintenant en approbation chez {names}.",
+      bot_submit_weekly_only:"Ici la feuille de temps est hebdomadaire, la soumission se fait donc à la semaine.",
+      bot_month_summary:"En {month}, vous avez {tot} h enregistrées sur {exp} h attendues, absences déjà déduites. ",
+      bot_month_no_errors_submit:"Aucune erreur, vous pouvez soumettre le mois.",
+      label_month:"Mois", label_weeks:"Semaines", label_warnings:"Avertissements", fmt_month_year:"{month} {y}",
       bot_confirm_submit_week:"Confirmez la soumission de la semaine {num} ?",
       label_expected:"Attendu", label_status_after_submit:"Statut après soumission",
-      bot_week_submitted_msg:"Semaine soumise. Elle est maintenant en approbation auprès du chef de projet.",
+      bot_week_submitted_msg:"Semaine {num} soumise. Elle est maintenant en approbation chez {names}.",
       bot_week_locked:"La semaine est déjà soumise, je ne peux pas la modifier. Voulez-vous voir autre chose ?",
       bot_day_absence_no_alt:"{day} a une {type} approuvée et aucun autre jour n'a de capacité libre. Je n'ai rien enregistré.",
       bot_day_absence_suggest:"{day} a une {type} approuvée, donc n'accepte pas d'heures. Je suggère {alt}.",
@@ -3115,13 +3157,18 @@
      approval queues - swapped into state.approvals on company switch, the
      same way WEEKS is, so the Approval screen reflects whichever company
      IT0001 currently reads instead of always showing Consulting. */
+  /* Consulting approves by month, the period its timesheet shows: each
+     line is a person's whole month, with what is missing per week (gap,
+     by week of the month) and the hours on the internal project, so the
+     totals are worked out from the real working days of that month
+     (monthlyApprovals below). Building Solutions approves by week. */
   var APPROVALS_PT01 = [
-    {who:"Ana Ferreira", role:"Senior consultant", proj:"BNK-2026", tot:40, inproj:36, dev:0, warn:0, sel:false, days:[8,8,8,8,8]},
-    {who:"Bruno Matos", role:"Consultant", proj:"RTL-TT", tot:38.5, inproj:34, dev:-1.5, warn:0, sel:false, days:[8,8,8,8,6.5]},
-    {who:"Carla Nunes", role:"Consultant", proj:"AER-WFM", tot:40, inproj:40, dev:0, warn:0, sel:false, days:[8,8,8,8,8]},
-    {who:"Diogo Sousa", role:"Junior consultant", proj:"BNK-2026", tot:37, inproj:30, dev:-3, warn:0, sel:false, days:[8,8,8,8,5]},
-    {who:"Eva Lopes", role:"Architect", proj:"RTL-TT", tot:40, inproj:40, dev:0, warn:1, sel:false, note:"Pending leave request overlaps recorded hours", days:[8,8,8,8,8]},
-    {who:"Filipe Reis", role:"Consultant", proj:"AER-WFM", tot:24, inproj:18, dev:-16, warn:1, sel:false, note:"Two empty working days", days:[8,8,0,8,0]}
+    {who:"Ana Ferreira", role:"Senior consultant", proj:"BNK-2026", internal:8, gaps:{}, warn:0, sel:false},
+    {who:"Bruno Matos", role:"Consultant", proj:"RTL-TT", internal:8, gaps:{4:1.5}, warn:0, sel:false},
+    {who:"Carla Nunes", role:"Consultant", proj:"AER-WFM", internal:0, gaps:{}, warn:0, sel:false},
+    {who:"Diogo Sousa", role:"Junior consultant", proj:"BNK-2026", internal:12, gaps:{2:3}, warn:0, sel:false},
+    {who:"Eva Lopes", role:"Architect", proj:"RTL-TT", internal:0, gaps:{}, warn:1, sel:false, note:"Pending leave request overlaps recorded hours"},
+    {who:"Filipe Reis", role:"Consultant", proj:"AER-WFM", internal:6, gaps:{3:16}, warn:1, sel:false, note:"Two empty working days"}
   ];
   var APPROVALS_PT02 = [
     {who:"Nuno Dias", role:"Technician", proj:"HSP-FAC", tot:40, inproj:40, dev:0, warn:0, sel:false, days:[8,8,8,8,8]},
@@ -3186,6 +3233,7 @@
        or "cats" - lets the assistant tell a personal request from a team
        one when the wording alone is ambiguous */
     screen: "home",
+    areaLast: {},
     approvals: APPROVALS_PT01,
     /* whose eyes the app is seen through, chosen in the test setup:
        "employee", "pm" (project manager: team entry and timesheet
@@ -4486,7 +4534,7 @@
     ["Allowance quantity","Number, with unit","ANZHL, ZEINH","cats","Days, kilometres. The bonus goes in with ANZHL 1"],
     ["Bonus amount","Amount","CATSAMOUNT","cats","Native CATSDB field, CURR 13.2. Confirm with the client whether the standard CAT6 transfer maps it to IT2010 BETRG, or whether that needs configuring"],
     ["Transfer to payroll","Standard transfer","CAT6 to IT2010","cats","No bespoke interface. CAT5 and CAT7 cover PS and CO"],
-    ["Recorded on behalf of someone","No equivalent","ON_BEHALF_OF","btp","Mass entry. The submitting user still lands in ERNAM, by standard behaviour"],
+    ["Recorded on behalf of someone","No equivalent","ON_BEHALF_OF","btp","Team entry. The submitting user still lands in ERNAM, by standard behaviour"],
     ["Period open or closed","No equivalent","ZTIME_PERIOD_CTRL","btp","Monthly, per company. Reopening is an HR action and is recorded"],
     ["Project and WBS of the row","Receiver WBS element","RPROJ","cats","Field with conversion, the interface shows the external mask"],
     ["Order, when the receiver is an order","Receiver order","RAUFNR","cats","Maintenance, CAPEX or internal orders"],
@@ -4664,7 +4712,7 @@
      when that day already holds a window on that row). */
   function addToOwnSheet(pIdx, day, hours, slotT){
     var row = state.rows.filter(function(r){ return r.p === pIdx && !(slotT && r.t && r.t[day]); })[0];
-    if(!row){ row = {id:nextId++, p:pIdx, desc:"", h:[0,0,0,0,0,0,0], origin:"Mass entry"}; state.rows.push(row); }
+    if(!row){ row = {id:nextId++, p:pIdx, desc:"", h:[0,0,0,0,0,0,0], origin:"Team entry"}; state.rows.push(row); }
     row.h[day] = round15((row.h[day] || 0) + hours);
     if(slotT && slotT.b !== null && slotT.e !== null) setSlot(row, day, {b: slotT.b, e: slotT.e});
     state.needsSave = true;
@@ -5539,13 +5587,49 @@
     if(state.role === "pm"){
       var l = leaderById(state.leader);
       if($("apActingAs")) $("apActingAs").textContent = l.name + " · " + t("profile_pm") + ", " + pmProjectsLabel();
-      if($("apSubText")) $("apSubText").textContent = t("text_approval_sub_pm", {projects: pmProjectsLabel()});
+      if($("apSubText")) $("apSubText").textContent = t("text_approval_sub_pm", {projects: pmProjectsLabel()}) + " " + t(isMonthly() ? "text_approval_monthly" : "text_approval_weekly");
       return;
     }
     if($("apActingAs")) $("apActingAs").textContent = IT0001.bukrs === "PT02" ? "Patrícia Gomes · Operations Manager, Building Solutions" : "Sofia Almeida · Delivery Manager, Consulting";
     if($("apSubText")) $("apSubText").textContent = t(IT0001.bukrs === "PT02" ? "text_approval_sub_pt02" : "text_approval_sub");
   }
+  /* The month a Consulting approver is closing: the current one from its
+     last working week on (the month's timesheets come in at its end), the
+     one before until then. */
+  function approvalMonth(){
+    var today = todayISO(), y = +today.slice(0,4), m = +today.slice(4,6);
+    var last = new Date(Date.UTC(y, m, 0)).getUTCDate();
+    if(+today.slice(6,8) <= last - 7){ m -= 1; if(!m){ m = 12; y -= 1; } }
+    return "" + y + (m < 10 ? "0" : "") + m;
+  }
+  /* the weeks of a month with their working days (weekends and the
+     company's holidays out), at the daily capacity each */
+  function monthWeeksOf(ym, bukrs){
+    var weeks = [], byNum = {};
+    monthDatesFor(ym).forEach(function(d){
+      if(weekdayOf(d) > 4 || holidayOn(d, bukrs)) return;
+      var n = isoWeekOf(d);
+      if(!byNum[n]){ byNum[n] = {n:n, from:d, to:d, exp:0}; weeks.push(byNum[n]); }
+      byNum[n].to = d;
+      byNum[n].exp += dailyCapFor();
+    });
+    return weeks;
+  }
+  function monthlyApprovals(list){
+    var ym = approvalMonth();
+    if(list._ym === ym) return list;
+    list._ym = ym;
+    var weeks = monthWeeksOf(ym, "PT01");
+    list.forEach(function(a){
+      a.weeks = weeks.map(function(w, i){ return {n:w.n, from:w.from, to:w.to, exp:w.exp, h:Math.max(0, w.exp - ((a.gaps || {})[i] || 0))}; });
+      a.tot = a.weeks.reduce(function(x, w){ return x + w.h; }, 0);
+      a.dev = a.tot - weeks.reduce(function(x, w){ return x + w.exp; }, 0);
+      a.inproj = a.tot - (a.internal || 0);
+    });
+    return list;
+  }
   function tsQueue(){
+    if(state.approvals === APPROVALS_PT01) monthlyApprovals(APPROVALS_PT01);
     if(state.role !== "pm") return state.approvals;
     var l = leaderById(state.leader);
     var codes = l.projs.map(function(i){ return PROJECTS[i].code; });
@@ -6009,21 +6093,30 @@
     }
     $("dlgSubmit").showModal();
   }
-  function doSubmitMonth(){
-    var weeks = activeMonthWeeks();
-    var why = $("subWhy");
-    var note = why ? why.value.trim() : "";
+  /* Submitting is the save: the hours go to approval as they are, there
+     is no second step after it. In Consulting the whole month goes at
+     once, every week of it still open; a week already submitted stays as
+     it was, and Reopen gives back only the weeks this submission took. */
+  function openMonthWeeks(){
+    return activeMonthWeeks().filter(function(w){ return !w.submitted && !(w === WEEKS[weekIdx] && state.submitted); });
+  }
+  function submitMonthNow(note){
+    var weeks = openMonthWeeks();
     weeks.forEach(function(w){ w.deviationNote = note; w.submitted = true; });
     state.submitted = true;
-    state.needsSave = true;
+    state.needsSave = false;
     state.deviationNote = note;
-    $("dlgSubmit").close();
     render();
     toast(plural(weeks.length, "weeks_submitted_approval"), t("ui_reopen"), function(){
       weeks.forEach(function(w){ w.submitted = false; });
-      state.needsSave = false;
+      state.submitted = !!WEEKS[weekIdx].submitted;
       render();
     });
+  }
+  function doSubmitMonth(){
+    var why = $("subWhy");
+    $("dlgSubmit").close();
+    submitMonthNow(why ? why.value.trim() : "");
   }
   /* Who approves the hours: the owner of each project, as for everyone;
      a project manager's hours on their own project, and all of the line
@@ -6042,10 +6135,13 @@
     });
     return names;
   }
-  function submitApproverLine(rowsList){
+  function rowsProjects(rowsList){
     var ps = [];
     rowsList.forEach(function(r){ if(r.h.some(function(v){ return v > 0; }) && ps.indexOf(r.p) === -1) ps.push(r.p); });
-    var names = timesheetApprovers(ps);
+    return ps;
+  }
+  function submitApproverLine(rowsList){
+    var names = timesheetApprovers(rowsProjects(rowsList));
     return names.length ? el("p","sub", t("text_submit_approvers", {names: names.join(", ")})) : null;
   }
   function openSubmit(){
@@ -6100,16 +6196,19 @@
     }
     $("dlgSubmit").showModal();
   }
+  function submitWeekNow(note){
+    state.deviationNote = note;
+    WEEKS[weekIdx].deviationNote = note;
+    state.submitted = true;
+    state.needsSave = false;
+    render();
+    toast(t("toast_week_submitted_approval", {n: isoWeekOf(WEEKS[weekIdx].start)}), t("ui_reopen"), function(){ state.submitted = false; render(); });
+  }
   function doSubmit(){
     if(isMonthly()) return doSubmitMonth();
     var why = $("subWhy");
-    state.deviationNote = why ? why.value.trim() : "";
-    WEEKS[weekIdx].deviationNote = state.deviationNote;
-    state.submitted = true;
-    state.needsSave = true;
     $("dlgSubmit").close();
-    render();
-    toast(t("toast_week_submitted_approval", {n: isoWeekOf(WEEKS[weekIdx].start)}), t("ui_reopen"), function(){ state.submitted = false; state.needsSave = false; render(); });
+    submitWeekNow(why ? why.value.trim() : "");
   }
 
   /* ---------- approvals ---------- */
@@ -6176,7 +6275,13 @@
           dtd.colSpan = 7;
           var wrap = document.createElement("div");
           wrap.className = "apdays";
-          (a.days || []).forEach(function(h, i){
+          if(a.weeks) a.weeks.forEach(function(w){
+            var d = document.createElement("span");
+            d.className = "apday" + (w.h < w.exp ? " empty" : "");
+            d.textContent = t("ap_week_chip", {n: w.n, from: w.from.slice(6,8) + "/" + w.from.slice(4,6), to: w.to.slice(6,8) + "/" + w.to.slice(4,6), h: fmt(w.h), exp: fmt(w.exp)});
+            wrap.appendChild(d);
+          });
+          else (a.days || []).forEach(function(h, i){
             var d = document.createElement("span");
             d.className = "apday" + (h ? "" : " empty");
             d.textContent = WEEKDAY_ABBR[i] + " " + (h ? fmt(h)+"h" : "–");
@@ -6203,7 +6308,12 @@
     $("apAll").disabled = cleanLeft === 0;
     if(!cleanLeft) $("apAll").checked = false;
 
-    if($("apWeekLabel")) $("apWeekLabel").textContent = t("label_approval_week", {n: isoWeekOf(isoAdd(mondayOf(todayISO()), -7))});
+    if($("apWeekLabel")){
+      var aym = approvalMonth();
+      $("apWeekLabel").textContent = IT0001.bukrs === "PT01"
+        ? t("label_approval_month", {month: monthFullName(+aym.slice(4,6) - 1) + " " + aym.slice(0,4)})
+        : t("label_approval_week", {n: isoWeekOf(isoAdd(mondayOf(todayISO()), -7))});
+    }
     var sel = tsQueue().filter(function(a){ return a.sel && !a.approved; }).length;
     $("apSel").textContent = plural(sel, "n_selected");
     $("apApprove").disabled = sel === 0;
@@ -6357,12 +6467,36 @@
   /* One way to change screen, from the tabs, the assistant or Settings. The
      SAP mapping has no tab: it's a technical reference, opened from
      Settings, with a Back button to wherever the person was. */
+  /* Two levels of tabs: the areas on top (the assistant, Timesheet and
+     Leave Request), and under the open area a second row with its own
+     tabs. An area opens on the tab last used in it, or its first one; the
+     second row only shows when the area has more than one tab for this
+     profile, otherwise the area tab alone says where the person is. */
+  var NAV_AREA = {semana:"ts", team:"ts", aprov:"ts", leave:"lv", teamcal:"lv", lvaprov:"lv"};
+  function areaTabs(area){
+    return Array.prototype.filter.call(document.querySelectorAll("#navg-" + area + " button[data-screen]"), function(b){ return !b.hidden; });
+  }
+  function areaEntry(area){
+    var tabs = areaTabs(area), last = state.areaLast[area];
+    if(last && tabs.some(function(b){ return b.dataset.screen === last; })) return last;
+    return tabs.length ? tabs[0].dataset.screen : null;
+  }
+  function syncNavAreas(){
+    var cur = NAV_AREA[state.screen] || null;
+    ["ts","lv"].forEach(function(area){
+      var tabs = areaTabs(area), ab = $("area-" + area), row = $("navg-" + area);
+      if(ab){ ab.hidden = !tabs.length; ab.setAttribute("aria-current", cur === area ? "true" : "false"); ab.setAttribute("aria-expanded", cur === area ? "true" : "false"); }
+      if(row) row.hidden = cur !== area || tabs.length < 2;
+    });
+  }
   function showScreen(s){ return inUiLang(function(){ showScreenNow(s); }); }
   function showScreenNow(s){
     if(s === "cats" && state.screen !== "cats") state.prevScreen = state.screen;
-    Array.prototype.forEach.call(document.querySelectorAll(".nav button"), function(x){ x.setAttribute("aria-current", x.dataset.screen === s ? "true" : "false"); });
+    Array.prototype.forEach.call(document.querySelectorAll("#appbar button[data-screen]"), function(x){ x.setAttribute("aria-current", x.dataset.screen === s ? "true" : "false"); });
     ["home","semana","leave","teamcal","lvaprov","team","aprov","cats"].forEach(function(k){ $("screen-"+k).hidden = k !== s; });
     state.screen = s;
+    if(NAV_AREA[s]) state.areaLast[NAV_AREA[s]] = s;
+    syncNavAreas();
     placeAssistant(s);
     if(s === "cats"){ renderCats(); renderLeaveMap(); }
     if(s === "team") renderTeam();
@@ -6372,8 +6506,11 @@
     if(s === "home") renderHome();
     window.scrollTo({top:0});
   }
-  Array.prototype.forEach.call(document.querySelectorAll(".nav button"), function(b){
+  Array.prototype.forEach.call(document.querySelectorAll("#appbar button[data-screen]"), function(b){
     b.onclick = function(){ showScreen(b.dataset.screen); };
+  });
+  Array.prototype.forEach.call(document.querySelectorAll("#appbar button[data-area]"), function(b){
+    b.onclick = function(){ var s = areaEntry(b.dataset.area); if(s) showScreen(s); };
   });
   if($("openMapping")) $("openMapping").onclick = function(){ $("dlgSettings").close(); showScreen("cats"); };
   if($("catsBack")) $("catsBack").onclick = function(){
@@ -8250,6 +8387,15 @@
   function renderNavBadges(){
     setNavBadge("tab-lvaprov", state.role === "manager" ? leaveQueue().length : 0);
     setNavBadge("tab-aprov", state.role === "pm" ? tsQueue().filter(function(a){ return !a.approved; }).length : 0);
+    /* the area tab repeats its approval count, so it shows while the
+       area is closed and its second row of tabs hidden */
+    [["area-ts","tab-aprov"],["area-lv","tab-lvaprov"]].forEach(function(p){
+      var ab = $(p[0]), src = $(p[1]) && $(p[1]).querySelector(".navbadge");
+      var badge = ab && ab.querySelector(".navbadge");
+      if(!badge) return;
+      badge.hidden = !src;
+      badge.textContent = src ? src.textContent : "";
+    });
   }
   function setNavBadge(id, n){
     var b = $(id);
@@ -8289,13 +8435,11 @@
   }
   function applyProfileChrome(){
     var tabs = PROFILE_TABS[state.role] || PROFILE_TABS.employee;
-    Array.prototype.forEach.call(document.querySelectorAll(".nav button"), function(b){
+    Array.prototype.forEach.call(document.querySelectorAll("#appbar button[data-screen]"), function(b){
       b.hidden = tabs.indexOf(b.dataset.screen) === -1;
     });
     /* an area with none of its tabs in this profile isn't shown at all */
-    Array.prototype.forEach.call(document.querySelectorAll(".navgroup"), function(g){
-      g.hidden = !Array.prototype.some.call(g.querySelectorAll("button"), function(b){ return !b.hidden; });
-    });
+    syncNavAreas();
     /* the project manager under test is fixed; Team's own picker follows it */
     var ls = $("leadSel");
     if(ls){ ls.value = state.leader; ls.disabled = state.role === "pm"; }
@@ -8690,7 +8834,7 @@
       return;
     }
     botSay("bot", t("bot_greeting_home", {name: EMPLOYEE_NAME.split(" ")[0]}));
-    botChips([t("chip_hours_i_have"), t("chip_request_vacation"), t("chip_my_leave"), t("chip_submit_week")]);
+    botChips([t("chip_hours_i_have"), t("chip_request_vacation"), t("chip_my_leave"), chipSubmit()]);
   }
   function assistantEnsureGreeted(){
     /* nobody is greeted before the test has been chosen */
@@ -9595,6 +9739,11 @@
     return -1;
   }
   function weekSummaryText(){
+    if(isMonthly()){
+      var dates = activeMonthDates(), me = monthErrors(dates).length;
+      return t("bot_month_summary", {month: monthSentenceLabel(), tot: fmt(monthTotalHours(dates)), exp: fmt(monthCapacityTotal(dates))}) +
+        (me ? plural(me, "bot_week_errors_block") : t("bot_month_no_errors_submit"));
+    }
     var errs = errors().length;
     return t("bot_week_summary", {tot: fmt(weekTotal()), exp: fmt(weekCapacity())}) +
       (errs ? plural(errs, "bot_week_errors_block") : t("bot_week_no_errors_submit"));
@@ -9625,11 +9774,11 @@
   }
   function showWeekStatus(){
     botSay("bot", weekSummaryText());
-    botChips([t("chip_my_absences"),t("chip_submit_week")]);
+    botChips([t("chip_my_absences"),chipSubmit()]);
   }
   function showHelp(){
     botSay("bot",t("bot_help_text_home"), null, true);
-    botChips([t("chip_hours_i_have"),t("chip_my_absences"),t("chip_copy_last_week"),t("chip_submit_week")]);
+    botChips([t("chip_hours_i_have"),t("chip_my_absences"),t("chip_copy_last_week"),chipSubmit()]);
   }
   function goToScreen(key, label){
     if(!profileHasScreen(key)){
@@ -9677,18 +9826,75 @@
       [[t("label_action"),t("bot_copy_rows_value")],[t("label_durations"),t("bot_stay_zero_value")]],
       t("btn_copy"), function(){ copyWeek(); botSay("bot",t("bot_copy_week_done")); }));
   }
+  /* Submitting follows the period the timesheet shows: the whole month in
+     Consulting (time by duration, monthly view), the week in Building
+     Solutions. When something blocks it, the reply says so before anything
+     else and lists what to fix, instead of offering what wasn't asked. */
+  function chipSubmit(){ return t(isMonthly() ? "chip_submit_month" : "chip_submit_week"); }
+  function monthSentenceLabel(){
+    var ym = monthKeyOf(WEEKS[weekIdx]), name = monthFullName(+ym.slice(4,6) - 1);
+    return t("fmt_month_year", {month: curLang() === "en" ? name : name.toLowerCase(), y: ym.slice(0,4)});
+  }
+  /* the same problem in several weeks of the month is said once, with
+     the weeks it is in */
+  function submitProblems(errs){
+    var out = [], by = {};
+    errs.forEach(function(m){
+      if(!by[m.txt]){ by[m.txt] = {txt:m.txt, weeks:[]}; out.push(by[m.txt]); }
+      var n = m.week && isMonthly() ? isoWeekOf(m.week.start) : null;
+      if(n && by[m.txt].weeks.indexOf(n) === -1) by[m.txt].weeks.push(n);
+    });
+    return out.map(function(g){
+      if(!g.weeks.length) return g.txt;
+      return t(g.weeks.length > 1 ? "val_weeks_label_prefix" : "val_week_label_prefix", {n: g.weeks.join(", "), txt: g.txt});
+    });
+  }
+  function sayCantSubmit(head, probs){
+    var node = el("div","jlist","");
+    probs.slice(0, 4).forEach(function(txt){ node.appendChild(el("div","jrow2", txt)); });
+    if(probs.length > 4) node.appendChild(el("div","jsub", "+" + (probs.length - 4)));
+    botSay("bot", head + " " + t("bot_cant_submit_fix"), node);
+    botChips([t("chip_hours_i_have")]);
+  }
+  function approverNames(rowsList){
+    var names = timesheetApprovers(rowsProjects(rowsList));
+    return (names.length ? names : [approverFor(selfId()).name]).join(", ");
+  }
   function offerSubmit(){
+    if(isMonthly()){ offerSubmitMonth(); return; }
+    var num = isoWeekOf(WEEKS[weekIdx].start);
     if(state.submitted){ botSay("bot",t("bot_week_already_submitted")); return; }
     var errs = errors();
-    if(errs.length){
-      botSay("bot",t("bot_cant_submit_yet", {reason: errs[0].txt}));
-      botChips([t("chip_hours_i_have")]);
-      return;
-    }
+    if(errs.length){ var probs = submitProblems(errs); sayCantSubmit(plural(probs.length, "bot_cant_submit_week", {num: num}), probs); return; }
+    var warns = validate().filter(function(m){ return m.sev === "w"; }).length;
+    var names = approverNames(state.rows);
+    var lines = [[t("th_total"),fmt(weekTotal()) + " h"],[t("label_expected"),fmt(weekCapacity()) + " h"]];
+    if(warns) lines.push([t("label_warnings"), plural(warns, "n_warnings_no_block")]);
+    lines.push([t("label_approver"), names], [t("label_status_after_submit"),t("state_in_approval")]);
     chat.pending = "submit";
-    botSay("bot",t("bot_confirm_submit_week", {num: isoWeekOf(WEEKS[weekIdx].start)}), botCard(
-      [[t("th_total"),fmt(weekTotal()) + " h"],[t("label_expected"),fmt(weekCapacity()) + " h"],[t("label_status_after_submit"),t("state_in_approval")]],
-      t("btn_submit"), function(){ doSubmit(); botSay("bot",t("bot_week_submitted_msg")); }));
+    botSay("bot",t("bot_confirm_submit_week", {num: num}), botCard(lines,
+      t("btn_submit"), function(){ submitWeekNow(""); botSay("bot",t("bot_week_submitted_msg", {num: num, names: names})); }));
+  }
+  function offerSubmitMonth(){
+    var dates = activeMonthDates(), month = monthSentenceLabel();
+    var open = openMonthWeeks();
+    if(!open.length){ botSay("bot", t("bot_month_already_submitted", {month: month})); return; }
+    var errs = monthErrors(dates);
+    if(errs.length){ var probs = submitProblems(errs); sayCantSubmit(plural(probs.length, "bot_cant_submit_month", {month: month}), probs); return; }
+    var warns = 0;
+    open.forEach(function(w){ withWeek(w, function(){ warns += validate().filter(function(m){ return m.sev === "w"; }).length; }); });
+    var names = approverNames(open.reduce(function(a, w){ return a.concat(w.rows); }, []));
+    var lines = [
+      [t("label_month"), month],
+      [t("label_weeks"), open.map(function(w){ return isoWeekOf(w.start); }).join(", ")],
+      [t("th_total"), fmt(monthTotalHours(dates)) + " h"],
+      [t("label_expected"), fmt(monthCapacityTotal(dates)) + " h"]
+    ];
+    if(warns) lines.push([t("label_warnings"), plural(warns, "n_warnings_no_block")]);
+    lines.push([t("label_approver"), names], [t("label_status_after_submit"), t("state_in_approval")]);
+    chat.pending = "submit";
+    botSay("bot", t("bot_confirm_submit_month", {month: month}), botCard(lines,
+      t("btn_submit"), function(){ submitMonthNow(""); botSay("bot", t("bot_month_submitted_msg", {month: month, names: names})); }));
   }
   function offerEntry(day, dur, pIdx, desc){
     var pr = PROJECTS[pIdx];
@@ -9745,7 +9951,7 @@
       render();
       flashCell(row.id, day);
       botSay("bot", t("bot_entry_saved", {dur: fmt(dur), day: DAYS[day], code: pr.code}) + weekSummaryText());
-      botChips([t("chip_submit_week"),t("chip_my_absences")]);
+      botChips([chipSubmit(),t("chip_my_absences")]);
     });
     requireDescOnCard(cardE, holder);
     chat.draft.needsDesc = !descOk;
@@ -9843,7 +10049,7 @@
       render();
       applicable.forEach(function(d){ flashCell(row.id, d); });
       botSay("bot", plural(applicable.length, "bot_entry_saved_days", {dur: fmt(dur), total: fmt(dur * applicable.length), code: pr.code}) + weekSummaryText());
-      botChips([t("chip_submit_week"),t("chip_my_absences")]);
+      botChips([chipSubmit(),t("chip_my_absences")]);
     });
     if(!descOkW) cardW.querySelectorAll('.jrow').forEach(function(r){ if(r.querySelector('.k') && r.querySelector('.k').textContent === t('label_description')) r.remove(); });
     requireDescOnCard(cardW, holderW);
@@ -9902,7 +10108,7 @@
       render();
       plan.forEach(function(x){ flashCell(row.id, x.day); });
       botSay("bot", plural(plan.length, "bot_filled_saved", {total: fmt(total), code: pr.code}) + weekSummaryText());
-      botChips([t("chip_submit_week"),t("chip_my_absences")]);
+      botChips([chipSubmit(),t("chip_my_absences")]);
     });
     requireDescOnCard(cardF, holderF);
     botSay("bot", t(String(holderF.desc || "").trim().length >= 10 ? "bot_confirm_entry" : "bot_confirm_entry_desc"), cardF);
@@ -9945,7 +10151,7 @@
       render();
       var errs = monthErrors(activeMonthDates()).length;
       botSay("bot", plural(plan.length, "bot_filled_saved_month", {total: fmt(total), code: pr.code})
-        + (errs ? plural(errs, "bot_week_errors_block") : t("bot_week_no_errors_submit")));
+        + (errs ? plural(errs, "bot_week_errors_block") : t("bot_month_no_errors_submit")));
       botChips([t("chip_submit_month"),t("chip_my_absences")]);
     });
     requireDescOnCard(cardM, holderM);
@@ -10004,6 +10210,19 @@
                 }).map(function(dateISO){ var wd = weekDayFor(dateISO); return monthDayLabel(wd.week, wd.day); })
               : [0,1,2,3,4].filter(function(d){ return capacity(d) > 0 && dayTotal(d) === 0; }).map(function(d){ return DAYS[d]; }),
             semana: {total: weekTotal(), esperado: weekCapacity(), erros: errors().length, submetida: state.submitted},
+            /* what "submit" sends: the month in Consulting, the week in
+               Building Solutions; for the month, its own totals and what
+               blocks it, so the reply never says it can't submit the month */
+            submissao: isMonthly() ? "mensal" : "semanal",
+            mes: !isMonthly() ? null : (function(){
+              var dates = activeMonthDates(), errs = monthErrors(dates);
+              return {
+                mes: monthSentenceLabel(), total: monthTotalHours(dates), esperado: monthCapacityTotal(dates),
+                semanas_por_submeter: openMonthWeeks().map(function(w){ return isoWeekOf(w.start); }),
+                erros: submitProblems(errs),
+                submetido: !openMonthWeeks().length
+              };
+            })(),
             semanas_anteriores: WEEKS.slice(0, weekIdx).map(function(w){
               var porProjeto = {};
               w.rows.forEach(function(r){
@@ -10408,7 +10627,11 @@
     /* copy week */
     if(/copy|last week|previous week/.test(low)){ offerCopyWeek(); return; }
     /* submit */
-    if(/submit|send the week|close the week/.test(low)){ offerSubmit(); return; }
+    if(/submit|\bsubmet|\bsoumet|send the week|close the week/.test(low)){
+      if(!isMonthly() && /\b(month|m[eê]s|mois)\b/.test(low)) botSay("bot", t("bot_submit_weekly_only"));
+      offerSubmit();
+      return;
+    }
     /* screen navigation */
     if(/mass entry|team entry|team screen|go to team|switch to team|open team/.test(low)){ goToTeamScreen(); return; }
     if(/approval screen|go to approval|switch to approval|open approval/.test(low)){ goToApprovalScreen(); return; }
@@ -11365,9 +11588,17 @@
     var bar = $("appbar");
     if(!bar) return;
     var nav = bar.querySelector(".nav");
-    /* on a phone only the tabs stick (the wrapper has no box of its own) */
-    function measure(){ document.documentElement.style.setProperty("--appbar-h", (bar.offsetHeight || nav.offsetHeight) + "px"); }
-    if(window.ResizeObserver){ var ro = new ResizeObserver(measure); ro.observe(bar); ro.observe(nav); }
+    /* on a phone only the two rows of tabs stick (the wrapper has no box
+       of its own), the second one right under the first */
+    function measure(){
+      var sub = Array.prototype.filter.call(bar.querySelectorAll(".subnav"), function(x){ return !x.hidden; })[0];
+      document.documentElement.style.setProperty("--nav-h", nav.offsetHeight + "px");
+      document.documentElement.style.setProperty("--appbar-h", (bar.offsetHeight || nav.offsetHeight + (sub ? sub.offsetHeight : 0)) + "px");
+    }
+    if(window.ResizeObserver){
+      var ro = new ResizeObserver(measure); ro.observe(bar); ro.observe(nav);
+      Array.prototype.forEach.call(bar.querySelectorAll(".subnav"), function(x){ ro.observe(x); });
+    }
     else window.addEventListener("resize", measure);
     measure();
   })();

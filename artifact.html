@@ -14,21 +14,29 @@
   <button class="btn sm" id="helpBtn" data-i18n="btn_shortcuts" data-i18n-aria="aria_shortcuts" aria-label="Keyboard shortcuts">Shortcuts</button>
 </header>
 
-<nav class="nav" role="tablist">
+<nav class="nav" role="tablist" data-i18n-aria="aria_main_nav" aria-label="Main areas">
   <button role="tab" id="tab-home" class="navhome" aria-current="true" data-screen="home" data-i18n="nav_home">Assistant</button>
-  <div class="navgroup" role="group" id="navg-ts" data-i18n-aria="navg_timesheet" aria-label="Timesheet">
-    <span class="navglabel" data-i18n="navg_timesheet">Timesheet</span>
-    <button role="tab" id="tab-semana" aria-current="false" data-screen="semana" data-i18n="tab_ts_mine">My timesheet</button>
-    <button role="tab" id="tab-team" data-screen="team" data-i18n="tab_ts_team">Mass entry</button>
-    <button role="tab" id="tab-aprov" data-screen="aprov" data-i18n="tab_ts_approval">Approval</button>
-  </div>
-  <div class="navgroup" role="group" id="navg-lv" data-i18n-aria="navg_leave" aria-label="Leave Request">
-    <span class="navglabel" data-i18n="navg_leave">Leave Request</span>
-    <button role="tab" id="tab-leave" aria-current="false" data-screen="leave" data-i18n="tab_lv_mine">My requests</button>
-    <button role="tab" id="tab-teamcal" aria-current="false" data-screen="teamcal" data-i18n="tab_lv_teamcal">Team calendar</button>
-    <button role="tab" id="tab-lvaprov" aria-current="false" data-screen="lvaprov" data-i18n="tab_lv_approval">Approval</button>
-  </div>
+  <button role="tab" id="area-ts" class="navarea" aria-current="false" data-area="ts" aria-controls="navg-ts">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+    <span data-i18n="navg_timesheet">Timesheet</span><span class="navbadge" hidden></span>
+  </button>
+  <button role="tab" id="area-lv" class="navarea" aria-current="false" data-area="lv" aria-controls="navg-lv">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+    <span data-i18n="navg_leave">Leave Request</span><span class="navbadge" hidden></span>
+  </button>
 </nav>
+<div class="subnav" role="tablist" id="navg-ts" data-area="ts" data-i18n-aria="navg_timesheet" aria-label="Timesheet" hidden>
+  <span class="subnavlabel" data-i18n="navg_timesheet">Timesheet</span>
+  <button role="tab" id="tab-semana" aria-current="false" data-screen="semana" data-i18n="tab_ts_mine">My timesheet</button>
+  <button role="tab" id="tab-team" data-screen="team" data-i18n="tab_ts_team">Team entry</button>
+  <button role="tab" id="tab-aprov" data-screen="aprov" data-i18n="tab_ts_approval">Approval</button>
+</div>
+<div class="subnav" role="tablist" id="navg-lv" data-area="lv" data-i18n-aria="navg_leave" aria-label="Leave Request" hidden>
+  <span class="subnavlabel" data-i18n="navg_leave">Leave Request</span>
+  <button role="tab" id="tab-leave" aria-current="false" data-screen="leave" data-i18n="tab_lv_mine">My requests</button>
+  <button role="tab" id="tab-teamcal" aria-current="false" data-screen="teamcal" data-i18n="tab_lv_teamcal">Team calendar</button>
+  <button role="tab" id="tab-lvaprov" aria-current="false" data-screen="lvaprov" data-i18n="tab_lv_approval">Approval</button>
+</div>
 </div>
 
 <div class="wrap">
@@ -178,7 +186,7 @@
         <div><code>E11</code><span data-i18n="spec_e11">Conversational assistant with confirmation before saving</span><em>Joule capability</em></div>
         <div><code>E12</code><span data-i18n="spec_e12">Allowances against a project, wage type and quantity, bonus with an amount</span><em>CATSDB LGART, ANZHL and CATSAMOUNT</em></div>
         <div><code>E13</code><span data-i18n="spec_e13">Start and end by data entry profile, derived from IT0001</span><em>BEGUZ and ENDUZ</em></div>
-        <div><code>E14</code><span data-i18n="spec_e14">Team leader mass entry with partial save and on-behalf-of trace</span><em>sap.ui.table with row states</em></div>
+        <div><code>E14</code><span data-i18n="spec_e14">Team leader team entry with partial save and on-behalf-of trace</span><em>sap.ui.table with row states</em></div>
         <div><code>E15</code><span data-i18n="spec_e15">Leave request and approval, a mask over the standard service</span><em>HCMFAB_LEAVE_REQUEST_CR_SRV</em></div>
         <div><code>E16</code><span data-i18n="spec_e16">Assistant as the entry point, with the data as a secondary view</span><em>Joule capability</em></div>
       </div>
@@ -228,10 +236,10 @@
           <div class="tablescroll" id="alreadyAllowWrap" hidden>
             <div class="tsgrid team readonly" id="alreadyAllowGrid"></div>
           </div>
-          <div class="gridfoot"><button type="button" class="hinttip" id="alreadyHint" data-i18n-title="hint_already" title="From each person's own sheet or an earlier mass entry, plus whatever is staged below but not yet saved. Amber at 8h, red past it.">?</button></div>
+          <div class="gridfoot"><button type="button" class="hinttip" id="alreadyHint" data-i18n-title="hint_already" title="From each person's own sheet or an earlier team entry, plus whatever is staged below but not yet saved. Amber at 8h, red past it.">?</button></div>
         </div>
 
-        <div class="seg teamtabs" role="group" data-i18n-aria="aria_mass_entry_section" aria-label="Mass entry section">
+        <div class="seg teamtabs" role="group" data-i18n-aria="aria_mass_entry_section" aria-label="Team entry section">
           <button id="ttHours" aria-pressed="true" data-i18n="tab_hours">Hours</button>
           <button id="ttAllow" aria-pressed="false" data-i18n="tab_allowances">Allowances</button>
           <button id="ttBonus" aria-pressed="false" data-i18n="tab_bonus">Bonus</button>

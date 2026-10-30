@@ -1321,6 +1321,64 @@
           ]
         }
       ]
+    },
+    {
+      "id": "submit-month-pt01-pm",
+      "lang": "pt",
+      "role": "pm",
+      "leader": "RN",
+      "why": "comment: in PT01 (duration, monthly view) the timesheet is submitted and approved by month",
+      "steps": [
+        {
+          "say": "submeter o mês",
+          "expect": [
+            "outubro de 2026",
+            "Semanas",
+            "40, 41, 42, 43, 44"
+          ],
+          "absent": [
+            "só posso"
+          ]
+        },
+        {
+          "confirm": true,
+          "expect": [
+            "submetido",
+            "Sofia Almeida"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "submit-month-en-employee",
+      "lang": "en",
+      "why": "comment: the assistant submits the month in Consulting instead of saying it can only submit the week",
+      "steps": [
+        {
+          "say": "submit the month",
+          "expect": [
+            "October 2026",
+            "every week of the month"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "submit-month-pt02-weekly",
+      "lang": "pt",
+      "company": "PT02",
+      "why": "comment: in PT02 the timesheet is submitted by week",
+      "steps": [
+        {
+          "say": "submeter o mês",
+          "expect": [
+            "semana 44"
+          ],
+          "absent": [
+            "outubro de 2026"
+          ]
+        }
+      ]
     }
   ]
 }
