@@ -192,7 +192,7 @@
         {
           "say": "approve Ana's leave request",
           "expect": [
-            "Only the direct manager"
+            "approved by the direct manager"
           ]
         }
       ]
@@ -307,17 +307,20 @@
       ]
     },
     {
-      "id": "role-pt-switch",
+      "id": "no-profile-switch-pt",
       "lang": "pt",
       "steps": [
         {
           "say": "ver como chefia",
           "expect": [
-            "Sofia",
-            "pedidos de ausência para aprovar"
+            "Só posso ajudar com os teus próprios registos"
+          ],
+          "absent": [
+            "Sofia"
           ]
         }
-      ]
+      ],
+      "why": "comment: the assistant serves only the person talking to it, no switching profiles"
     },
     {
       "id": "leave-pt02-clock-window",
@@ -473,7 +476,7 @@
         {
           "say": "approve Ana's leave request",
           "expect": [
-            "Only the direct manager"
+            "approved by the direct manager"
           ]
         }
       ]
@@ -527,7 +530,7 @@
         {
           "say": "go to team",
           "expect": [
-            "isn't part of this profile"
+            "isn't available to you"
           ]
         }
       ]
@@ -816,17 +819,19 @@
       ]
     },
     {
-      "id": "km-en-manager-has-no-timesheet",
+      "id": "km-en-manager-own-kilometres",
       "lang": "en",
       "role": "manager",
       "steps": [
         {
           "say": "km from Lisbon to Porto",
           "expect": [
-            "no timesheet in this test"
+            "313 km each way",
+            "AXI-INT"
           ]
         }
-      ]
+      ],
+      "why": "the line manager has a timesheet and records kilometres too"
     },
     {
       "id": "km-en-hours-after-open-km",
@@ -1251,7 +1256,7 @@
       ]
     },
     {
-      "id": "switch-starts-own-conversation",
+      "id": "no-profile-switch-mid-conversation",
       "lang": "pt",
       "why": "comment: no information shared between profiles",
       "steps": [
@@ -1264,10 +1269,10 @@
         {
           "say": "ver como gestor de projeto",
           "expect": [
-            "Ricardo"
+            "Só posso ajudar com os teus próprios registos"
           ],
           "absent": [
-            "BNK-2026 · Banking"
+            "Ricardo"
           ]
         }
       ]

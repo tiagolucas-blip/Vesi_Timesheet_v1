@@ -870,6 +870,7 @@
      messages are a separate follow-up, not covered here yet. */
   var I18N = {
     en: {
+      bot_no_profile_switch:"I can only help with your own records: your hours, your absences and what's yours to approve.",
       attach_doc_0200:"medical certificate",
       attach_doc_0210:"certificate of attendance",
       attach_doc_0400:"supporting document",
@@ -1045,7 +1046,7 @@
       bot_km_no_week:"{date} is outside the weeks available in the timesheet.",
       bot_km_week_submitted:"The week of {date} has already been submitted, so no more allowances can go in.",
       bot_km_period_closed:"The period for {date} is closed, so no more allowances can go in.",
-      bot_km_not_in_profile:"The line manager has no timesheet in this test, so there are no kilometres to record. Switch to employee or project manager with the Test button.",
+      bot_km_not_in_profile:"You have no projects to record kilometres against.",
       warn_km_differs:"You said {given} km; the distance worked out is {calc} km. I'll keep your figure.",
       chip_km_round:"Round trip",
       chip_km_one_way:"One way only",
@@ -1069,11 +1070,11 @@
       setup_manager_desc:"Approves the absence requests of their direct reports, from the org structure.",
       btn_start_test:"Start",
       text_approval_sub_pm:"Timesheets of the people allocated to {projects}, the projects you own. Approval follows project ownership, not the org structure.",
-      bot_greeting_pm:"Hi {name}! You're testing as the project manager of {projects}. I can record your own hours, record hours or allowances for the team (you included), fill in the days still missing, and approve the timesheets.",
+      bot_greeting_pm:"Hi {name}! You're the project manager of {projects}. I can record your own hours, record hours or allowances for the team (you included), fill in the days still missing, and approve the timesheets.",
       bot_alert_ts_pm_one:"You have {n} timesheet to approve, {x} with exceptions.", bot_alert_ts_pm_other:"You have {n} timesheets to approve, {x} with exceptions.",
-      bot_ts_only_pm:"Timesheets are approved by the project manager, who owns the project. To try it, change the test to the project manager profile.",
-      bot_team_only_pm:"Recording for the team is done by the project manager. To try it, change the test to the project manager profile.",
-      bot_screen_not_in_profile:"{screen} isn't part of this profile. Change the test to get there.",
+      bot_ts_only_pm:"Timesheets are approved by the project manager, the person responsible for the project.",
+      bot_team_only_pm:"Entering time for the team is done by the project manager.",
+      bot_screen_not_in_profile:"{screen} isn't available to you.",
       chip_change_test:"Change test", bot_setup_opened:"Choose the new test in the window that just opened.",
       bot_test_changed:"Test changed: {co}, {profile}, {name}.",
       hdr_home_team_week:"Team {project}", btn_open_team:"Open team entry",
@@ -1165,7 +1166,7 @@
       bot_alert_ts_one:"And {n} timesheet waiting, {x} with exceptions.", bot_alert_ts_other:"And {n} timesheets waiting, {x} with exceptions.",
       chip_pending_approvals:"What do I have to approve?", chip_approve_leave_of:"Approve {name}'s leave request", chip_approve_ts_of:"Approve {name}'s timesheet",
       chip_approve_clean_ts:"Approve all timesheets without exceptions", chip_view_as_employee:"View as employee", chip_view_as_manager:"View as manager",
-      bot_leave_only_manager:"Only the direct manager approves leave requests. To try it, change the test to the line manager profile ({name}).",
+      bot_leave_only_manager:"Leave requests are approved by the direct manager ({name}).",
       bot_leave_decide_who:"Whose request? Tell me the name or the request number, or say all.",
       bot_leave_reason_needed:"What's the reason for rejecting {name}'s request? The employee will see it.",
       bot_leave_overlap_warn:"Overlaps in the team: {list}.",
@@ -1558,6 +1559,7 @@
       row_confirm_cell:"Confirm cell and move down", row_show_list:"Show this list"
     },
     pt: {
+      bot_no_profile_switch:"Só posso ajudar com os teus próprios registos: as tuas horas, as tuas ausências e o que te cabe aprovar.",
       attach_doc_0200:"atestado médico",
       attach_doc_0210:"declaração de presença",
       attach_doc_0400:"comprovativo",
@@ -1733,7 +1735,7 @@
       bot_km_no_week:"{date} fica fora das semanas disponíveis na timesheet.",
       bot_km_week_submitted:"A semana de {date} já foi submetida, por isso já não leva mais abonos.",
       bot_km_period_closed:"O período de {date} está fechado, por isso já não leva mais abonos.",
-      bot_km_not_in_profile:"A chefia não tem timesheet neste teste, por isso não há quilómetros a registar. Muda para colaborador ou gestor de projeto no botão Teste.",
+      bot_km_not_in_profile:"Não tens projetos onde registar quilómetros.",
       warn_km_differs:"Indicaste {given} km; a distância calculada é {calc} km. Fica o valor que indicaste.",
       chip_km_round:"Ida e volta",
       chip_km_one_way:"Só ida",
@@ -1757,11 +1759,11 @@
       setup_manager_desc:"Aprova os pedidos de ausência dos colaboradores diretos, de acordo com a estrutura organizativa.",
       btn_start_test:"Começar",
       text_approval_sub_pm:"Timesheets das pessoas alocadas a {projects}, os projetos de que és responsável. A aprovação segue a responsabilidade pelo projeto, não a estrutura organizativa.",
-      bot_greeting_pm:"Olá, {name}! Estás a testar como gestor de projeto de {projects}. Posso registar as tuas horas, lançar horas ou abonos para a equipa (incluindo para ti), preencher os dias em falta e aprovar as timesheets.",
+      bot_greeting_pm:"Olá, {name}! És gestor de projeto de {projects}. Posso registar as tuas horas, lançar horas ou abonos para a equipa (incluindo para ti), preencher os dias em falta e aprovar as timesheets.",
       bot_alert_ts_pm_one:"Tens {n} timesheet para aprovar, {x} com exceções.", bot_alert_ts_pm_other:"Tens {n} timesheets para aprovar, {x} com exceções.",
-      bot_ts_only_pm:"As timesheets são aprovadas pelo gestor de projeto, o responsável pelo projeto. Para experimentar, muda o teste para o perfil de gestor de projeto.",
-      bot_team_only_pm:"O lançamento para a equipa é feito pelo gestor de projeto. Para experimentar, muda o teste para o perfil de gestor de projeto.",
-      bot_screen_not_in_profile:"{screen} não faz parte deste perfil. Muda o teste para lá chegar.",
+      bot_ts_only_pm:"As timesheets são aprovadas pelo gestor de projeto, o responsável pelo projeto.",
+      bot_team_only_pm:"O lançamento para a equipa é feito pelo gestor de projeto.",
+      bot_screen_not_in_profile:"{screen} não está disponível para ti.",
       chip_change_test:"Mudar teste", bot_setup_opened:"Escolhe o novo teste na janela que acabou de abrir.",
       bot_test_changed:"Teste mudado: {co}, {profile}, {name}.",
       hdr_home_team_week:"Equipa {project}", btn_open_team:"Abrir lançamento em massa",
@@ -1853,7 +1855,7 @@
       bot_alert_ts_one:"E {n} timesheet à espera, {x} com exceções.", bot_alert_ts_other:"E {n} timesheets à espera, {x} com exceções.",
       chip_pending_approvals:"O que tenho para aprovar?", chip_approve_leave_of:"Aprovar o pedido de ausência de {name}", chip_approve_ts_of:"Aprovar a timesheet de {name}",
       chip_approve_clean_ts:"Aprovar todas as timesheets sem exceções", chip_view_as_employee:"Ver como colaborador", chip_view_as_manager:"Ver como chefia",
-      bot_leave_only_manager:"Só a chefia direta aprova pedidos de ausência. Para experimentar, muda o teste para o perfil de chefia ({name}).",
+      bot_leave_only_manager:"Os pedidos de ausência são aprovados pela chefia direta ({name}).",
       bot_leave_decide_who:"De quem é o pedido? Diz-me o nome ou o número do pedido, ou diz todos.",
       bot_leave_reason_needed:"Qual é o motivo para rejeitar o pedido de {name}? O colaborador vai vê-lo.",
       bot_leave_overlap_warn:"Sobreposições na equipa: {list}.",
@@ -2239,6 +2241,7 @@
       row_confirm_cell:"Confirmar célula e descer", row_show_list:"Mostrar esta lista"
     },
     fr: {
+      bot_no_profile_switch:"Je ne peux vous aider qu'avec vos propres données : vos heures, vos absences et ce qu'il vous revient d'approuver.",
       attach_doc_0200:"certificat médical",
       attach_doc_0210:"attestation de présence",
       attach_doc_0400:"justificatif",
@@ -2414,7 +2417,7 @@
       bot_km_no_week:"Le {date} est en dehors des semaines disponibles dans le relevé.",
       bot_km_week_submitted:"La semaine du {date} a déjà été soumise, elle ne prend plus d'indemnités.",
       bot_km_period_closed:"La période du {date} est clôturée, elle ne prend plus d'indemnités.",
-      bot_km_not_in_profile:"Le responsable hiérarchique n'a pas de relevé dans ce test, il n'y a donc pas de kilomètres à enregistrer. Passez à collaborateur ou chef de projet avec le bouton Test.",
+      bot_km_not_in_profile:"Vous n'avez pas de projet sur lequel saisir des kilomètres.",
       warn_km_differs:"Vous avez indiqué {given} km ; la distance calculée est de {calc} km. Je garde votre chiffre.",
       chip_km_round:"Aller-retour",
       chip_km_one_way:"Aller simple",
@@ -2438,11 +2441,11 @@
       setup_manager_desc:"Approuve les demandes d'absence de ses collaborateurs directs, selon la structure organisationnelle.",
       btn_start_test:"Commencer",
       text_approval_sub_pm:"Feuilles de temps des personnes affectées à {projects}, les projets dont vous êtes responsable. L'approbation suit la responsabilité du projet, pas la structure organisationnelle.",
-      bot_greeting_pm:"Bonjour {name} ! Vous testez en tant que chef de projet de {projects}. Je peux saisir vos heures, saisir des heures ou des indemnités pour l'équipe (vous compris), compléter les jours manquants et approuver les feuilles de temps.",
+      bot_greeting_pm:"Bonjour {name} ! Vous êtes chef de projet de {projects}. Je peux saisir vos heures, saisir des heures ou des indemnités pour l'équipe (vous compris), compléter les jours manquants et approuver les feuilles de temps.",
       bot_alert_ts_pm_one:"Vous avez {n} feuille de temps à approuver, dont {x} avec exceptions.", bot_alert_ts_pm_other:"Vous avez {n} feuilles de temps à approuver, dont {x} avec exceptions.",
-      bot_ts_only_pm:"Les feuilles de temps sont approuvées par le chef de projet, responsable du projet. Pour essayer, passez le test au profil chef de projet.",
-      bot_team_only_pm:"La saisie pour l'équipe est faite par le chef de projet. Pour essayer, passez le test au profil chef de projet.",
-      bot_screen_not_in_profile:"{screen} ne fait pas partie de ce profil. Changez de test pour y accéder.",
+      bot_ts_only_pm:"Les relevés sont approuvés par le chef de projet, le responsable du projet.",
+      bot_team_only_pm:"La saisie pour l'équipe est faite par le chef de projet.",
+      bot_screen_not_in_profile:"{screen} ne vous est pas accessible.",
       chip_change_test:"Changer de test", bot_setup_opened:"Choisissez le nouveau test dans la fenêtre qui vient de s'ouvrir.",
       bot_test_changed:"Test modifié : {co}, {profile}, {name}.",
       hdr_home_team_week:"Équipe {project}", btn_open_team:"Ouvrir la saisie d'équipe",
@@ -2534,7 +2537,7 @@
       bot_alert_ts_one:"Et {n} feuille de temps en attente, dont {x} avec exceptions.", bot_alert_ts_other:"Et {n} feuilles de temps en attente, dont {x} avec exceptions.",
       chip_pending_approvals:"Qu'est-ce que j'ai à approuver ?", chip_approve_leave_of:"Approuver la demande d'absence de {name}", chip_approve_ts_of:"Approuver la feuille de temps de {name}",
       chip_approve_clean_ts:"Approuver toutes les feuilles de temps sans exception", chip_view_as_employee:"Voir en tant que collaborateur", chip_view_as_manager:"Voir en tant que manager",
-      bot_leave_only_manager:"Seul le responsable direct approuve les demandes d'absence. Pour essayer, passez le test au profil responsable ({name}).",
+      bot_leave_only_manager:"Les demandes d'absence sont approuvées par le responsable direct ({name}).",
       bot_leave_decide_who:"La demande de qui ? Donnez-moi le nom ou le numéro de la demande, ou dites toutes.",
       bot_leave_reason_needed:"Quel est le motif du refus de la demande de {name} ? Le collaborateur le verra.",
       bot_leave_overlap_warn:"Chevauchements dans l'équipe : {list}.",
@@ -8475,7 +8478,6 @@
   function pmChips(){
     var list = [t("chip_pending_approvals")];
     if(tsQueue().some(function(a){ return !a.approved && !a.warn; })) list.push(t("chip_approve_clean_ts"));
-    list.push(t("chip_change_test"));
     return list;
   }
   /* "starting today", "starting in 3 days", or, for a request still
@@ -8490,7 +8492,6 @@
     var q = leaveQueue(), list = [];
     if(q.length) list.push(t("chip_pending_approvals"));
     if(q.length) list.push(t("chip_approve_leave_of", {name: q[0].EmployeeName.split(" ")[0]}));
-    list.push(t("chip_change_test"));
     return list;
   }
   function showPendingApprovals(){
@@ -8526,8 +8527,8 @@
   }
   function offerLeaveDecision(targets, approve, reason){
     if(state.role !== "manager"){
-      botSay("bot", t("bot_leave_only_manager", {name: lineManager().name}));
-      botChips([t("chip_view_as_manager")]);
+      botSay("bot", t("bot_leave_only_manager", {name: approverFor(selfId()).name}));
+      botChips([t("chip_my_leave")]);
       return;
     }
     if(!targets.length){
@@ -8832,10 +8833,8 @@
   /* Returns true when the message was about leave and has been answered. */
   function handleLeaveLocal(txt){
     var low = txt.toLowerCase();
-    if(/mudar (o )?teste|change (the )?test|changer (de |le )?test/.test(low)){ openSetup(); botSay("bot", t("bot_setup_opened")); return true; }
-    if(/ver como (o )?gestor de projeto|view as (the )?project manager|voir en tant que chef de projet/.test(low)){ switchRole("pm"); return true; }
-    if(/ver como (a )?(chefia|manager)|view as (the )?(line )?manager|voir en tant que (manager|responsable)/.test(low)){ switchRole("manager"); return true; }
-    if(/ver como (o )?colaborador|view as (the )?employee|voir en tant que (collaborateur|employ[ée])/.test(low)){ switchRole("employee"); return true; }
+    /* the assistant serves the person talking to it, never another profile */
+    if(/mudar (o |de )?(teste|perfil)|change (the |my )?(test|profile)|changer (de |le )?(test|profil)|ver como|view as|voir en tant que|switch (to|profile)/.test(low)){ botSay("bot", t("bot_no_profile_switch")); botChips([t("chip_hours_i_have"), t("chip_my_leave")]); return true; }
     if(/formul[áa]rio|request form|open the form|formulaire/.test(low)){ openLeaveDialog(chat.leaveFormPrefill || chat.leaveDraft || null); chat.leaveFormPrefill = null; chat.leaveDraft = null; botSay("bot", t("bot_leave_form_opened")); return true; }
 
     var type = detectLeaveType(low);
@@ -9068,12 +9067,6 @@
   function offerKm(d){
     chat.kmDraft = d;
     chat.pending = "km";
-    if(state.role === "manager"){
-      chat.kmDraft = null; chat.pending = null;
-      botSay("bot", t("bot_km_not_in_profile"));
-      botChips([t("chip_change_test")]);
-      return;
-    }
     var known = d.from && d.to;
     if(!d.toLabel || (known && d.from === d.to)){
       botSay("bot", t("bot_km_which_route"));
@@ -9529,7 +9522,7 @@
   function goToScreen(key, label){
     if(!profileHasScreen(key)){
       botSay("bot", t("bot_screen_not_in_profile", {screen: label}));
-      botChips([t("chip_change_test")]);
+      botChips([t("chip_help")]);
       return;
     }
     showScreen(key);
@@ -9995,10 +9988,6 @@
         if(!kd.toLabel && intent.texto){ chat.kmDraft = kd; chat.pending = "km"; botSay("bot", intent.texto); return true; }
         offerKm(kd);
         return true;
-      case "ver_como":
-        switchRole(la.perfil === "chefia" ? "manager" : la.perfil === "gestor_projeto" ? "pm" : "employee");
-        if(!chat.greeted) assistantEnsureGreeted();
-        return true;
       case "listar_ausencias": showAbsences(); return true;
       case "consultar_semana": showWeekStatus(); return true;
       case "aplicar_sugestoes": offerApplyHighConfidence(); return true;
@@ -10010,7 +9999,7 @@
       case "registar_horas_equipa":
       case "preencher_horas_em_falta_equipa":
       case "registar_allowance_equipa":
-        if(state.role !== "pm"){ botSay("bot", t("bot_team_only_pm")); botChips([t("chip_change_test")]); return true; }
+        if(state.role !== "pm"){ botSay("bot", t("bot_team_only_pm")); botChips([t("chip_help")]); return true; }
         if(intent.funcao === "preencher_horas_em_falta_equipa"){
           var fp0 = intent.argumentos || {};
           var durFp0 = round15(Number(fp0.duracao_horas));
@@ -10246,7 +10235,7 @@
     var teamMembers = teamOf(state.leader);
     var ta = botParseTeamAllowance(txt, teamMembers);
     var tp = ta ? null : botParseTeamHours(txt, teamMembers);
-    if((ta || tp) && state.role !== "pm"){ botSay("bot", t("bot_team_only_pm")); botChips([t("chip_change_test")]); return; }
+    if((ta || tp) && state.role !== "pm"){ botSay("bot", t("bot_team_only_pm")); botChips([t("chip_help")]); return; }
     if(ta){ offerTeamAllowance(ta.members, ta.days, ta.code, ta.qty, ta.note); return; }
     if(tp){ offerTeamEntry(tp.members, tp.days, tp.dur, tp.clock); return; }
 
@@ -10383,7 +10372,7 @@
      and a day but no project, the assistant asks, with their projects as
      the answers, and keeps the rest so one click completes the entry. */
   function askProject(draft, prefer, msg){
-    if(!profileProjects().length){ botSay("bot", t("bot_km_not_in_profile")); botChips([t("chip_change_test")]); return; }
+    if(!profileProjects().length){ botSay("bot", t("bot_km_not_in_profile")); botChips([t("chip_help")]); return; }
     chat.projectDraft = draft;
     var when = draft.kind === "week" ? t("text_every_weekday") : draft.kind === "fill" ? t("text_days_missing") : DAYS[draft.day];
     botSay("bot", msg || (draft.kind === "fill" ? t("bot_which_project_fill") : t("bot_which_project_for", {dur: fmt(draft.dur), when: when})));
@@ -10806,7 +10795,7 @@
   function handleApprovalRequest(txt){
     if(state.role !== "pm"){
       botSay("bot", t("bot_ts_only_pm"));
-      botChips([t("chip_change_test")]);
+      botChips([t("chip_help")]);
       return;
     }
     var tgt = matchApprovalTargets(txt);
