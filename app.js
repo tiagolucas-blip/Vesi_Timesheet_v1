@@ -1583,6 +1583,7 @@
       bot_gaps_none:"Nothing missing in {period}: {tot} h of {exp} h recorded.",
       bot_recorded_head:"In {period} you have {tot} h recorded of {exp} h expected:", bot_recorded_none:"You have no hours recorded in {period} yet.",
       chip_fill_missing:"Fill in the missing hours", chip_what_missing:"What is missing?",
+      bot_claude_unavailable:"I can't reach Claude right now, so I can't answer. Try again in a moment.",
       bot_parse_failed:"I couldn't understand what to record. Write the duration and the project, for example <span class=\"num\">2h BNK payroll testing yesterday</span>. I can also show the week's status or your absences.",
       bot_parse_failed_generic:"I didn't catch all the details of that entry. Could you write it another way?",
       bot_which_project:"Which project are those hours for?",
@@ -2358,6 +2359,7 @@
       bot_gaps_none:"Não falta nada em {period}: {tot} h de {exp} h registadas.",
       bot_recorded_head:"Em {period} tens {tot} h registadas de {exp} h esperadas:", bot_recorded_none:"Ainda não tens horas registadas em {period}.",
       chip_fill_missing:"Preencher as horas em falta", chip_what_missing:"O que me falta?",
+      bot_claude_unavailable:"Neste momento não consigo ligar ao Claude, por isso não consigo responder. Tenta de novo daqui a pouco.",
       bot_parse_failed:"Não consegui perceber o que registar. Escreve a duração e o projeto, por exemplo <span class=\"num\">2h BNK payroll testing yesterday</span>. Também posso mostrar o estado da semana ou as tuas ausências.",
       bot_parse_failed_generic:"Não consegui confirmar todos os detalhes desse registo. Podes escrever de outra forma?",
       bot_which_project:"A que projeto se destinam essas horas?",
@@ -3133,6 +3135,7 @@
       bot_gaps_none:"Rien ne manque en {period} : {tot} h sur {exp} h enregistrées.",
       bot_recorded_head:"En {period}, vous avez {tot} h enregistrées sur {exp} h attendues :", bot_recorded_none:"Vous n'avez encore aucune heure enregistrée en {period}.",
       chip_fill_missing:"Compléter les heures manquantes", chip_what_missing:"Que me manque-t-il ?",
+      bot_claude_unavailable:"Je ne parviens pas à joindre Claude pour l'instant, je ne peux donc pas répondre. Réessayez dans un moment.",
       bot_parse_failed:"Je n'ai pas compris ce qu'il fallait enregistrer. Écrivez la durée et le projet, par exemple <span class=\"num\">2h BNK payroll testing yesterday</span>. Je peux aussi afficher le statut de la semaine ou vos absences.",
       bot_parse_failed_generic:"Je n'ai pas saisi tous les détails de cette saisie. Pouvez-vous l'écrire autrement ?",
       bot_which_project:"Pour quel projet sont ces heures ?",
@@ -9767,7 +9770,7 @@
   async function askViaSample(payload){
     if(!learn.sample || learn.sampleOff || !window.VESI_PROMPT) return null;
     try{
-      var r = await learn.sample.json(sampleInput(payload), {modelTier:"default", effort:"low", cache:false});
+      var r = await learn.sample.json(sampleInput(payload), {model:"claude-sonnet-5-5", modelTier:"default", effort:"low", cache:false});
       if(!r || typeof r !== "object") return null;
       var names = window.VESI_PROMPT.FUNCTIONS.map(function(f){ return f.name; });
       var fn = typeof r.funcao === "string" && names.indexOf(r.funcao) !== -1 ? r.funcao : null;
@@ -11206,8 +11209,14 @@
       return;
     }
 
-    botHandleLocal(txt);
+    /* Every answer comes from Claude Sonnet; the regex interpreter below
+       only runs for the automated test suites (engine=local in the
+       address). Without Claude, the assistant says so instead of guessing. */
+    if(LOCAL_ENGINE){ botHandleLocal(txt); return; }
+    if(chat.curTurn) chat.curTurn.path = "claude_unavailable";
+    botSay("bot", t("bot_claude_unavailable"));
   }
+  var LOCAL_ENGINE = /[?&]engine=local\b/.test(location.search);
 
   var FILL_VERB_RE = /preench|complet|\bfill|rempli|compl[eéè]t|acabar de registar|finish (my|the)/;
   var FILL_GAP_RE = /falta|missing|\bgaps?\b|manquant|\bvides?\b|\bburacos?\b|\bo resto\b|\bthe rest\b|\ble reste\b/;

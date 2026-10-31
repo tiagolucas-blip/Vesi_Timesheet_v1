@@ -67,7 +67,7 @@ async function open(o) {
     if (!next) return r.fulfill({ status: 404, body: "" });
     return r.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(next) });
   });
-  let q = "?today=" + TODAY;
+  let q = "?today=" + TODAY + "&engine=local";
   if (o.profile) q += "&company=" + o.company + "&profile=" + o.profile + (o.leader ? "&leader=" + o.leader : "");
   await page.goto(base + "/index.html" + q);
   await page.waitForSelector(o.profile ? "#jlog .jmsg.bot" : "#dlgSetup[open]");

@@ -99,7 +99,7 @@ async function runCase(browser, base, c) {
   /* company, profile and project manager go in the address, which skips
      the test setup window: role is "employee" (default), "pm" or "manager" */
   const setup = "&company=" + (c.company || "PT01") + "&profile=" + (c.role || "employee") + (c.leader ? "&leader=" + c.leader : "");
-  await page.goto(base + "/index.html?today=" + TODAY + setup);
+  await page.goto(base + "/index.html?today=" + TODAY + "&engine=local" + setup);
   await page.waitForSelector(BOT);
 
   const results = [];

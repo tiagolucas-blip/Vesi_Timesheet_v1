@@ -113,7 +113,7 @@ export default async function handler(req, res) {
 
   try {
     const response = await client.messages.create({
-      model: "claude-sonnet-5",
+      model: "claude-sonnet-5-5",
       max_tokens: 1024,
       system: buildSystemPrompt(contexto, idiomaValido),
       tools: toClaudeTools(),

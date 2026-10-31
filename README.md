@@ -95,7 +95,7 @@ Everything below works, with no server and no real data.
 - Recording by conversation, checking the week's status, checking absences, copying the week, applying suggestions, submitting
 - Requesting, checking, changing and cancelling absences, the balance on any date and its movements, a request's status, who approves, what blocks a submission, public holidays and who's off in the team, and for the manager, seeing what's waiting (for a month too), the team's balances, recording an absence for a report and approving or rejecting leave requests
 - The local interpreter reads leave requests in Portuguese, English and French: absence type, date ranges (`3 to 7 November`, `de 3 a 7 de novembro`, `du 3 au 7 novembre`, `03/11`), relative days, part-day windows
-- Interpreted by Claude (`api/chat.js`, function calling), with the browser's regex interpreter as an automatic fallback when the key isn't configured or the call fails
+- Interpreted only by Claude Sonnet (`claude-sonnet-5-5`, function calling, in `api/chat.js` and in the Artifact). When Claude can't be reached the assistant says so and doesn't guess; the browser's regex interpreter runs only for the automated tests (`engine=local` in the address)
 - Never saves without explicit confirmation, and always shows the receiver object and activity type before saving
 - Refuses days with an approved absence and proposes the next free day
 - Entries created by the assistant are marked with origin `Joule`
@@ -145,7 +145,7 @@ python3 -m http.server 8000
 # open http://localhost:8000
 ```
 
-`python3 -m http.server` only serves static files, it doesn't run `api/chat.js`. In that mode the assistant always falls back to the local regex interpreter, which is enough to review the rest of the application. To test the Claude connection locally, run `vercel dev` (needs `@anthropic-ai/sdk` installed with `npm install` and `ANTHROPIC_API_KEY` in the environment).
+`python3 -m http.server` only serves static files, it doesn't run `api/chat.js`. In that mode the assistant can't reach Claude and says so; add `&engine=local` to the address to use the regex interpreter the tests use. To test the Claude connection locally, run `vercel dev` (needs `@anthropic-ai/sdk` installed with `npm install` and `ANTHROPIC_API_KEY` in the environment).
 
 ## Publishing to Vercel
 
@@ -155,7 +155,7 @@ The project is mostly static, with a serverless function at `api/chat.js`. Impor
 
 The mockup improves from being used. It is published as a private Artifact on claude.ai (https://claude.ai/artifact/RQ12tJoHg9FkVy4pKn1xH5), where:
 
-- **Claude answers from the page itself**, on the viewer's own Claude account, with the same functions and instructions as `api/chat.js` (both read `api/_prompt.js`). No API key is needed there. If Claude is unavailable or declined, the local interpreter answers, as on Vercel
+- **Claude answers from the page itself**, on the viewer's own Claude account, with the same functions and instructions as `api/chat.js` (both read `api/_prompt.js`). No API key is needed there. If Claude is unavailable or declined, the assistant says it can't answer right now
 - **Every conversation is kept** in the Artifact's database, one document per visit under `conversations/`: what was typed, which engine read it, the function and arguments chosen, the answers, whether the card was confirmed or cancelled. The header shows `Learning mode` while this is on
 - **Each answer has 👍/👎.** 👎 asks what the assistant should have done, which is the most useful line for the review
 - **Every night (22:37, Lisbon)** a scheduled task reads the conversations since the last run, finds what went wrong, adds a case to `tests/assistant-cases.json` for each failure it fixes, corrects `app.js` or `api/_prompt.js`, runs the whole suite and opens a pull request (or adds to the one already open). Nothing reaches `main` without a merge
@@ -197,12 +197,12 @@ The screens show absence types by name (Vacation, Medical appointment); SAP code
 
 ## Connecting Claude to the assistant
 
-`api/chat.js` already calls Claude (`claude-opus-5`, function calling) to interpret free text. To enable it:
+`api/chat.js` calls Claude Sonnet (`claude-sonnet-5-5`, function calling) to interpret free text. To enable it:
 
 1. Set the `ANTHROPIC_API_KEY` environment variable on the Vercel project (Settings → Environment Variables)
 2. Redeploy
 
-Without the key, the function returns 501 and the client automatically falls back to the browser's regex interpreter, without breaking the demo.
+Without the key, the function returns 501 and the assistant tells the person it can't reach Claude; the rest of the application works as before.
 
 The engine picks one of a closed set of functions, for hours (`registar_horas`, `consultar_semana`, `listar_ausencias`, `copiar_semana`, `aplicar_sugestoes`, `submeter_semana` and the team ones) for leave (`pedir_ausencia`, `consultar_ausencias` with the balance on a date, the account's movements or a request's status, `alterar_ausencia`, `cancelar_ausencia`, `listar_pendentes_aprovacao`, `decidir_ausencia`, `ir_para_ausencias`) and for what the screens show (`quem_aprova`, `verificar_submissao`, `consultar_feriados`, `consultar_calendario_equipa`, `consultar_saldos_equipa`, `registar_abono`), based on the context the client sends with every question: the projects the person is allocated to, the week's absences and capacity per day, the person's leave requests and balance, who approves their timesheet and leave, the public holidays, the team calendar as their profile sees it (a colleague's health related reason is never sent), and for the manager the requests waiting and the team's balances. The local interpreter reads the same questions in Portuguese, English and French, filling in missing hours included. It never writes to the timesheet nor sends a request, it only returns the function and its arguments; saving, sending and confirmation stay on the client side, exactly as in the local interpreter.
 
