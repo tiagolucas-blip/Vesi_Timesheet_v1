@@ -1501,7 +1501,7 @@
       bot_greeting_1:"Hey! What do you need, logging hours, checking the week, or something else?",
       bot_greeting_2:"Hi there. Tell me what you need and I'll sort it.",
       bot_greeting_3:"Hello! Hours to log, or something to check?",
-      chip_confirmed:"confirmed", chip_cancelled:"cancelled",
+      chip_done_saved:"Saved", chip_done_submitted:"Submitted", chip_done_sent:"Sent for approval", chip_done_withdrawn:"Withdrawn", chip_done_approved:"Approved", chip_confirmed:"confirmed", chip_cancelled:"cancelled",
       bot_cancelled_no_save:"No problem, I didn't save anything.",
       bot_week_summary:"You have {tot} h recorded of {exp} h expected, already with absences deducted. ",
       bot_week_errors_block_one:"{n} error blocks submission.", bot_week_errors_block_other:"{n} errors block submission.",
@@ -2277,7 +2277,7 @@
       bot_greeting_1:"Olá! Em que posso ajudar: registar horas, consultar a semana, ou outra coisa?",
       bot_greeting_2:"Olá. Diz-me o que precisas e eu trato disso.",
       bot_greeting_3:"Olá! Horas para registar, ou algo para consultar?",
-      chip_confirmed:"confirmado", chip_cancelled:"cancelado",
+      chip_done_saved:"Gravado", chip_done_submitted:"Submetido", chip_done_sent:"Enviado para aprovação", chip_done_withdrawn:"Retirado", chip_done_approved:"Aprovado", chip_confirmed:"confirmado", chip_cancelled:"cancelado",
       bot_cancelled_no_save:"Sem problema, não gravei nada.",
       bot_week_summary:"Tens {tot} h registadas de {exp} h esperadas, já com as ausências deduzidas. ",
       bot_week_errors_block_one:"{n} erro bloqueia a submissão.", bot_week_errors_block_other:"{n} erros bloqueiam a submissão.",
@@ -3053,7 +3053,7 @@
       bot_greeting_1:"Bonjour ! De quoi avez-vous besoin : saisir des heures, vérifier la semaine, ou autre chose ?",
       bot_greeting_2:"Bonjour. Dites-moi ce qu'il vous faut et je m'en occupe.",
       bot_greeting_3:"Bonjour ! Des heures à saisir, ou quelque chose à vérifier ?",
-      chip_confirmed:"confirmé", chip_cancelled:"annulé",
+      chip_done_saved:"Enregistré", chip_done_submitted:"Soumis", chip_done_sent:"Envoyé pour approbation", chip_done_withdrawn:"Retiré", chip_done_approved:"Approuvé", chip_confirmed:"confirmé", chip_cancelled:"annulé",
       bot_cancelled_no_save:"Pas de problème, je n'ai rien enregistré.",
       bot_week_summary:"Vous avez {tot} h enregistrées sur {exp} h attendues, absences déjà déduites. ",
       bot_week_errors_block_one:"{n} erreur bloque la soumission.", bot_week_errors_block_other:"{n} erreurs bloquent la soumission.",
@@ -10061,6 +10061,15 @@
     var log = $("jlog");
     if(log) log.scrollTop = log.scrollHeight;
   }
+  var CARD_DONE = {btn_save:"chip_done_saved", btn_register:"chip_done_saved", btn_fill_and_register:"chip_done_saved",
+    btn_copy:"chip_done_saved", btn_apply:"chip_done_saved", btn_save_changes:"chip_done_saved", btn_record_leave:"chip_done_saved",
+    btn_submit:"chip_done_submitted", btn_send_request:"chip_done_sent", btn_withdraw:"chip_done_withdrawn",
+    btn_approve:"chip_done_approved", btn_approve_all:"chip_done_approved"};
+  function cardDoneLabel(label){
+    var keys = Object.keys(CARD_DONE);
+    for(var i=0; i<keys.length; i++){ if(t(keys[i]) === label) return "✓ " + t(CARD_DONE[keys[i]]); }
+    return t("chip_confirmed");
+  }
   function botCard(lines, confirmLabel, onConfirm, warn){
     var turn = chat.curTurn;
     if(turn) turn.card = lines.map(function(l){ return l[0] + ": " + l[1]; }).concat(warn ? ["! " + warn] : []);
@@ -10086,11 +10095,14 @@
       chat.draft = null;
       chat.draftWeek = null;
       acts.innerHTML = "";
-      acts.appendChild(el("span","chip green",t("chip_confirmed")));
+      var doneChip = el("span","chip green",t("chip_confirmed"));
+      acts.appendChild(doneChip);
       if(turn) turn.outcome = "confirmed";
       chat.committing = true;
       try{ inTurn(onConfirm); } finally{ chat.committing = false; }
       commitAssistantChanges();
+      /* the card says plainly what happened: saved, submitted, sent... */
+      doneChip.textContent = cardDoneLabel(confirmLabel);
     }));
     acts.appendChild(btn(t("btn_cancel"),"btn sm", function(){
       chat.pending = null;
