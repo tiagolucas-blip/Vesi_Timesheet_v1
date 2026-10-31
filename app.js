@@ -6510,6 +6510,8 @@
     var pend = tsQueue().filter(function(a){ return !a.approved; }).length;
     $("apPend").textContent = pend;
     $("apWarn").textContent = flagged.filter(function(a){ return !a.approved; }).length;
+    /* the tab counts read the same queue: an approval updates them at once */
+    renderNavBadges();
   }
   function td2(txt, cls){ var td = document.createElement("td"); td.className = cls || ""; td.textContent = txt; return td; }
 
@@ -8199,6 +8201,7 @@
     $("laSelClean").disabled = !clean.length;
     $("laAll").disabled = !clean.length;
     laSelSync();
+    renderNavBadges();
   }
   function laSelSync(){
     var q = leaveQueue().filter(function(r){ return !leaveWarnings(r).length; });
