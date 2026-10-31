@@ -537,6 +537,9 @@
   .hsitem{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:9px 14px; background:var(--surface); font-size:var(--fs-sm)}
   .hsitem b{font-weight:600}
   .hsitem .chip{white-space:nowrap; font-size:var(--fs-label)}
+  /* a long note (a warning in French) wraps instead of widening the page */
+  .hsitem > div{min-width:0}
+  .hsitem .chip.amber{white-space:normal; text-align:right; max-width:55%}
   .sub{font-size:var(--fs-sm); color:var(--ink-3)}
 
   /* ---------- Leave Request ---------- */
@@ -597,6 +600,7 @@
   .lvacc dt{color:var(--ink-2)}
   .lvacc dd{margin:0; text-align:right; font-family:var(--f-mono); font-variant-numeric:tabular-nums}
   .lvacc dd.tot{font-weight:600}
+  .lvaccfoot{display:grid; padding:0 14px 14px}
   .lvacc .accnote{font-size:var(--fs-sm); color:var(--ink-2); background:var(--surface-2); border-radius:var(--radius); padding:6px 8px}
   .lvmonthnav{display:flex; align-items:center; gap:6px}
   .lvmonthnav b{min-width:120px; text-align:center; font-size:var(--fs-sm)}

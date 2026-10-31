@@ -1392,6 +1392,9 @@
       n_empty_days_one:"{n} empty working day", n_empty_days_other:"{n} empty working days",
       n_allowances_one:"{n} allowance", n_allowances_other:"{n} allowances",
       n_records_generated_one:"{n} record generated", n_records_generated_other:"{n} records generated",
+      n_lines_left_one:"{n} line stayed", n_lines_left_other:"{n} lines stayed",
+      err_mass_locked:"Week already approved, the line was left untouched.", err_mass_not_allocated:"{name} is not allocated to {code}.", err_mass_absence:"{day} has an approved {type}.",
+      err_mass_closed:"{day} falls in a closed period.", err_mass_24h:"{day} is above 24 hours.", err_mass_capacity:"{day}'s capacity is {cap} h for {name}.", err_mass_window:"{day} needs both a start and an end for {name}.",
       n_people_one:"{n} person", n_people_other:"{n} people",
       n_entries_one:"{n} entry", n_entries_other:"{n} entries",
       n_suggestions_review_one:"{n} suggestion to review", n_suggestions_review_other:"{n} suggestions to review",
@@ -1589,6 +1592,9 @@
       btn_cancel:"Cancel", btn_record_allowance:"Record allowance",
       dlg_quick_add_title:"Quick add", label_write_natural:"Write in natural language",
       placeholder_quick_nl:"3h BNK requirements analysis yesterday", chip_waiting_text:"waiting for text",
+      chip_duration_to_set:"duration to set", chip_project_to_choose:"project to choose", chip_activity_to_set:"activity to set", chip_desc_prefix:"description: {txt}",
+      text_period_closed_paren:"(period closed)", hint_calendar_month:"Overview of the month, read only. Log or edit time on the Grid view.",
+      text_week_already_approved:"week already approved", text_staged_not_saved_short:"staged, not saved", unit_h_per_day:"{h} h/day", text_n_staged:"{n} staged",
       text_quick_hint:"Each resolved field can be corrected. If the text isn't recognized, it goes into the description and nothing is invented.",
       btn_save_entry:"Save entry",
       dlg_entry_detail_title:"Entry detail", label_project_wbs:"Project and WBS",
@@ -2125,6 +2131,9 @@
       n_empty_days_one:"{n} dia útil vazio", n_empty_days_other:"{n} dias úteis vazios",
       n_allowances_one:"{n} abono", n_allowances_other:"{n} abonos",
       n_records_generated_one:"{n} registo gerado", n_records_generated_other:"{n} registos gerados",
+      n_lines_left_one:"{n} linha", n_lines_left_other:"{n} linhas",
+      err_mass_locked:"Semana já aprovada, a linha ficou como estava.", err_mass_not_allocated:"{name} não está alocado a {code}.", err_mass_absence:"{day} tem uma ausência aprovada ({type}).",
+      err_mass_closed:"{day} está num período fechado.", err_mass_24h:"{day} passa das 24 horas.", err_mass_capacity:"A capacidade de {name} em {day} é de {cap} h.", err_mass_window:"{day} precisa de início e fim para {name}.",
       n_people_one:"{n} pessoa", n_people_other:"{n} pessoas",
       n_entries_one:"{n} lançamento", n_entries_other:"{n} lançamentos",
       n_suggestions_review_one:"{n} sugestão a rever", n_suggestions_review_other:"{n} sugestões a rever",
@@ -2315,6 +2324,9 @@
       btn_cancel:"Cancelar", btn_record_allowance:"Registar abono",
       dlg_quick_add_title:"Adicionar rápido", label_write_natural:"Escreve em linguagem natural",
       placeholder_quick_nl:"3h BNK análise de requisitos ontem", chip_waiting_text:"à espera de texto",
+      chip_duration_to_set:"duração por definir", chip_project_to_choose:"projeto por escolher", chip_activity_to_set:"atividade por definir", chip_desc_prefix:"descrição: {txt}",
+      text_period_closed_paren:"(período fechado)", hint_calendar_month:"Vista do mês só de leitura. Lança ou altera horas na vista Grelha.",
+      text_week_already_approved:"semana já aprovada", text_staged_not_saved_short:"em staging, não gravado", unit_h_per_day:"{h} h/dia", text_n_staged:"{n} em staging",
       text_quick_hint:"Cada campo resolvido pode ser corrigido. Se o texto não for reconhecido, vai para a descrição e nada é inventado.",
       btn_save_entry:"Gravar lançamento",
       dlg_entry_detail_title:"Detalhe do lançamento", label_project_wbs:"Projeto e WBS",
@@ -2851,6 +2863,9 @@
       n_empty_days_one:"{n} jour ouvré vide", n_empty_days_other:"{n} jours ouvrés vides",
       n_allowances_one:"{n} indemnité", n_allowances_other:"{n} indemnités",
       n_records_generated_one:"{n} enregistrement généré", n_records_generated_other:"{n} enregistrements générés",
+      n_lines_left_one:"{n} ligne", n_lines_left_other:"{n} lignes",
+      err_mass_locked:"Semaine déjà approuvée, la ligne n'a pas été modifiée.", err_mass_not_allocated:"{name} n'est pas affecté à {code}.", err_mass_absence:"{day} a une absence approuvée ({type}).",
+      err_mass_closed:"{day} tombe dans une période clôturée.", err_mass_24h:"{day} dépasse 24 heures.", err_mass_capacity:"La capacité de {name} le {day} est de {cap} h.", err_mass_window:"{day} demande un début et une fin pour {name}.",
       n_people_one:"{n} personne", n_people_other:"{n} personnes",
       n_entries_one:"{n} saisie", n_entries_other:"{n} saisies",
       n_suggestions_review_one:"{n} suggestion à revoir", n_suggestions_review_other:"{n} suggestions à revoir",
@@ -3041,6 +3056,9 @@
       btn_cancel:"Annuler", btn_record_allowance:"Enregistrer l'indemnité",
       dlg_quick_add_title:"Ajout rapide", label_write_natural:"Écrivez en langage naturel",
       placeholder_quick_nl:"3h BNK analyse des besoins hier", chip_waiting_text:"en attente de texte",
+      chip_duration_to_set:"durée à définir", chip_project_to_choose:"projet à choisir", chip_activity_to_set:"activité à définir", chip_desc_prefix:"description : {txt}",
+      text_period_closed_paren:"(période clôturée)", hint_calendar_month:"Vue du mois en lecture seule. Saisissez ou modifiez le temps dans la vue Grille.",
+      text_week_already_approved:"semaine déjà approuvée", text_staged_not_saved_short:"en attente, non enregistré", unit_h_per_day:"{h} h/jour", text_n_staged:"{n} en attente",
       text_quick_hint:"Chaque champ résolu peut être corrigé. Si le texte n'est pas reconnu, il va dans la description et rien n'est inventé.",
       btn_save_entry:"Enregistrer la saisie",
       dlg_entry_detail_title:"Détail de la saisie", label_project_wbs:"Projet et WBS",
@@ -3506,10 +3524,10 @@
       inp.className = "tinp";
       inp.id = "c-"+r.id+"-"+i+(k === "b" ? "" : "-e");
       inp.value = s ? fmtClock(s[k]) : "";
-      inp.placeholder = k === "b" ? "start" : "end";
+      inp.placeholder = t(k === "b" ? "label_start" : "label_end").toLowerCase();
       inp.inputMode = "numeric";
       inp.disabled = locked;
-      inp.setAttribute("aria-label", (k === "b" ? "Start time, " : "End time, ") + pr.name + ", " + DAYS[i]);
+      inp.setAttribute("aria-label", t(k === "b" ? "aria_start_time_for" : "aria_end_time_for", {name: pr.name, day: DAYS[i]}));
       inp.addEventListener("change", function(){
         var parsed = parseClock(inp.value);
         if(isNaN(parsed)){ toast(t("toast_bad_clock", {v: inp.value})); render(); return; }
@@ -3586,7 +3604,7 @@
       e.innerHTML = '<p><strong>'+t("text_no_hours_week_yet")+'</strong> '+t("text_shortest_path")+'</p>';
       var acts = el("div","acts","");
       acts.appendChild(btn(t("btn_copy_last_week"),"btn primary", copyWeek));
-      acts.appendChild(btn("Review "+state.sugs.length+" suggestions","btn", function(){ $("sugPanel").scrollIntoView({block:"center"}); }));
+      acts.appendChild(btn(plural(state.sugs.length, "n_suggestions_review"),"btn", function(){ $("sugPanel").scrollIntoView({block:"center"}); }));
       acts.appendChild(btn(t("btn_add_first_project"),"btn", addRow));
       e.appendChild(acts);
       g.appendChild(e);
@@ -3761,7 +3779,7 @@
       var w0 = weekDayFor(dates[di]).week;
       var span = 0;
       while(di+span < dates.length && weekDayFor(dates[di+span]).week === w0) span++;
-      var label = el("div","monthweeklabel","Week "+isoWeekOf(w0.start));
+      var label = el("div","monthweeklabel",t("label_week_short", {n: isoWeekOf(w0.start)}));
       label.style.gridColumn = "span " + span;
       sub.appendChild(label);
       di += span;
@@ -3833,6 +3851,9 @@
         weeks.forEach(function(w){
           var r = monthRowIn(w, monthRow.p);
           if(r){ w.rows = w.rows.filter(function(x){ return x.id !== r.id; }); removed.push({week:w, row:r}); }
+          /* the week on show keeps its rows in state.rows too, which a
+             change of month writes back over w.rows */
+          if(w === WEEKS[weekIdx]) state.rows = w.rows;
         });
         render();
         toast(t("toast_row_removed"), t("ui_undo"), function(){
@@ -3925,9 +3946,7 @@
        an empty slot there would be wrong. */
     var calHint = $("calHint");
     if(calHint){
-      calHint.title = monthly
-        ? "Read-only overview for the month. Log or edit time on the Grid view."
-        : "Click an empty slot to log time that day. Absences and public holidays are not editable.";
+      calHint.title = t(monthly ? "hint_calendar_month" : "hint_calendar");
     }
   }
 
@@ -4130,7 +4149,9 @@
     return txt;
   }
   function dropSug(s, notify){
-    state.sugs = state.sugs.filter(function(x){ return x.id !== s.id; });
+    /* in place, like the allowances: the month view reads the week's own list */
+    var ix = state.sugs.indexOf(s);
+    if(ix !== -1) state.sugs.splice(ix, 1);
     render();
     if(notify) toast(t("toast_suggestion_dismissed"), t("ui_undo"), function(){ state.sugs.push(s); render(); });
   }
@@ -4453,7 +4474,10 @@
       var acts = el("div","acts","");
       var rm = btn(t("btn_remove"),"btn sm", function(){
         if(!allowEditable(a)) return;
-        state.allow = state.allow.filter(function(x){ return x.id !== a.id; });
+        /* in place: the week object holds this same list, and the month
+           view validates each week from it */
+        var ix = state.allow.indexOf(a);
+        if(ix !== -1) state.allow.splice(ix, 1);
         render(); toast(t("toast_allowance_removed", {name: wtName(w)}), t("ui_undo"), function(){ state.allow.push(a); render(); });
       });
       rm.disabled = !allowEditable(a);
@@ -4499,7 +4523,7 @@
     dy.innerHTML = "";
     DAYS.forEach(function(d,i){
       var o = document.createElement("option");
-      o.value = String(i); o.textContent = d + (periodOpen(WORKDATES[i]) ? "" : " (period closed)");
+      o.value = String(i); o.textContent = d + (periodOpen(WORKDATES[i]) ? "" : " " + t("text_period_closed_paren"));
       o.disabled = !periodOpen(WORKDATES[i]);
       dy.appendChild(o);
     });
@@ -4521,9 +4545,9 @@
   function saveAllow(){
     var w = wt($("alCode").value);
     var qty = parseDur($("alQty").value);
-    if(isNaN(qty) || qty <= 0){ toast(t("toast_qty_must_be_positive")); return; }
+    if(isNaN(qty) || qty <= 0){ toast(t("toast_qty_must_be_positive")); return false; }
     if(w.code === "KMS"){
-      if(!$("alFrom").value.trim() || !$("alTo").value.trim()){ toast(t("toast_km_route_needed")); return; }
+      if(!$("alFrom").value.trim() || !$("alTo").value.trim()){ toast(t("toast_km_route_needed")); return false; }
       $("alNote").value = $("alFrom").value.trim() + " → " + $("alTo").value.trim() + ($("alRound").checked ? " (" + t("km_round_trip") + ")" : "");
     }
     state.allow.push({
@@ -4540,6 +4564,7 @@
     });
     render();
     toast(t("toast_allowance_recorded", {name: wtName(w), day: DAYS[+$("alDay").value]}));
+    return true;
   }
 
   /* ---------- CATS mapping screen ---------- */
@@ -4942,14 +4967,14 @@
          so everyone in this loop already qualifies - no need to spell out
          which project(s), the roster itself is the answer. */
       var sub = m.role + (isSelfMember(m) ? " · " + t("label_you") : "") + " · " + m.bukrs + " · " + profileFor(WORKDATES[0], m.bukrs).code;
-      if(m.dailyHours) sub += " · " + fmt(m.dailyHours) + "h/dia";
+      if(m.dailyHours) sub += " · " + t("unit_h_per_day", {h: fmt(m.dailyHours)});
       var absDays = isSelfMember(m)
         ? [0,1,2,3,4].filter(function(d){ return memberBlocked(m, d); })
         : Object.keys(m.abs).map(Number).sort(function(a,b){ return a-b; });
       if(absDays.length){
         sub += " · " + absDays.map(function(d){ return DAYS[d] + " " + memberAbsLabel(m, d).toLowerCase(); }).join(", ");
       }
-      if(m.locked) sub += " · week already approved";
+      if(m.locked) sub += " · " + t("text_week_already_approved");
       var s = el("div","s", sub);
       if(m.locked) s.style.color = "var(--warn)";
       meta.appendChild(s);
@@ -4965,7 +4990,7 @@
           var info = fmtAllowCell(lines);
           var cell = el("div","allowcell" + dayExtraClass(i), info.text);
           if(lines.length){
-            cell.title = info.title + " · staged, not saved";
+            cell.title = info.title + " · " + t("text_staged_not_saved_short");
             cell.classList.add("pending");
           }
           row.appendChild(cell);
@@ -5043,7 +5068,7 @@
           var units = {};
           mLines.forEach(function(l){ var u = wt(l.code).unit; units[u] = (units[u]||0) + l.qty; });
           var unitKeys = Object.keys(units);
-          totTxt = unitKeys.length === 1 ? fmt(units[unitKeys[0]]) + " " + unitKeys[0] : mLines.length + " staged";
+          totTxt = unitKeys.length === 1 ? fmt(units[unitKeys[0]]) + " " + unitKeys[0] : t("text_n_staged", {n: mLines.length});
         }
         row.appendChild(el("div","rowtot", totTxt));
       } else {
@@ -5153,26 +5178,26 @@
       var total = st.h.reduce(function(a,b){ return a+(b||0); },0);
       if(total === 0){ st.err = ""; return; }
       var err = "";
-      if(m.locked) err = "Week already approved, the line was left untouched.";
-      else if(!isEligibleForProject(m, pIdx)) err = m.name.split(" ")[0] + " is not allocated to " + PROJECTS[pIdx].code + ".";
+      if(m.locked) err = t("err_mass_locked");
+      else if(!isEligibleForProject(m, pIdx)) err = t("err_mass_not_allocated", {name: m.name.split(" ")[0], code: PROJECTS[pIdx].code});
       else {
         var already = alreadyHoursFor(m, WEEKS[weekIdx].num);
         var cap = teamDailyCap(m);
         for(var d=0; d<7; d++){
           if(!st.h[d]) continue;
-          if(memberBlocked(m,d)){ err = DAYS[d] + " has an approved " + memberAbsLabel(m, d).toLowerCase() + "."; break; }
-          if(!periodOpen(WORKDATES[d], m.bukrs)){ err = DAYS[d] + " falls in a closed period."; break; }
-          if(st.h[d] > 24){ err = DAYS[d] + " is above 24 hours."; break; }
+          if(memberBlocked(m,d)){ err = t("err_mass_absence", {day: DAYS[d], type: memberAbsLabel(m, d).toLowerCase()}); break; }
+          if(!periodOpen(WORKDATES[d], m.bukrs)){ err = t("err_mass_closed", {day: DAYS[d]}); break; }
+          if(st.h[d] > 24){ err = t("err_mass_24h", {day: DAYS[d]}); break; }
           /* The authoritative capacity gate: every path that stages hours
              (a manual cell, Apply to selected, or the chat assistant) ends
              up here before anything is actually saved, so this is the one
              place that has to catch all of them, not just the UI paths
              that already guard themselves on the way in. */
           if(already[d] + st.h[d] > cap){
-            err = DAYS[d] + "'s capacity is " + fmt(cap) + " h for " + m.name.split(" ")[0] + "."; break;
+            err = t("err_mass_capacity", {day: DAYS[d], cap: fmt(cap), name: m.name.split(" ")[0]}); break;
           }
           if(profileFor(WORKDATES[d], m.bukrs).clock && (!st.t[d] || st.t[d].b === null || st.t[d].e === null)){
-            err = DAYS[d] + " needs both a start and an end for " + m.name.split(" ")[0] + "."; break;
+            err = t("err_mass_window", {day: DAYS[d], name: m.name.split(" ")[0]}); break;
           }
         }
       }
@@ -5199,8 +5224,8 @@
     if(saved) state.teamNeedsSave = true;
     if(ownSheetChanged) render(); else renderTeam();
     if(silent) return saved;
-    var who = savedPeople + (savedPeople === 1 ? " person" : " people");
-    var left = kept + (kept === 1 ? " line stayed" : " lines stayed");
+    var who = plural(savedPeople, "n_people");
+    var left = plural(kept, "n_lines_left");
     if(saved && kept) toast(t("toast_team_entries_partial", {saved: saved, who: who, left: left}));
     else if(saved) toast(t("toast_team_entries_all", {saved: saved, who: who}));
     else toast(t("toast_team_entries_none"));
@@ -5743,7 +5768,7 @@
     if(pmq){ rest = rest.replace(pmq.match, " "); if(pmq.notAllowed) notMine = PROJECTS[pmq.p].code; else pIdx = pmq.p; }
     var desc = rest.replace(/\s+/g," ").trim();
 
-    box.appendChild(chipBtn(isNaN(dur) || !dur ? "duration to set" : fmt(dur)+" h", isNaN(dur) || !dur ? "warnc" : "okc", function(){
+    box.appendChild(chipBtn(isNaN(dur) || !dur ? t("chip_duration_to_set") : fmt(dur)+" h", isNaN(dur) || !dur ? "warnc" : "okc", function(){
       /* Edited in the text itself: a window.prompt() is refused inside the
          claude.ai viewer, and the sentence is already the editable form. */
       var q = $("nlq");
@@ -5763,12 +5788,12 @@
         $("nlq").value = nlText(dur, day, +v, desc);
         parseNL();
       },
-      "project to choose"
+      t("chip_project_to_choose")
     ));
     if(notMine) box.appendChild(chip(t("chip_not_your_project", {code: notMine}), "warnc"));
-    box.appendChild(chip(pIdx === -1 ? "activity to set" : PROJECTS[pIdx].act, pIdx === -1 ? "" : "okc"));
-    if(pIdx !== -1) box.appendChild(chip(PROJECTS[pIdx].sap.rproj ? "PEP "+PROJECTS[pIdx].sap.rproj : "cost center "+PROJECTS[pIdx].sap.rkostl, "okc"));
-    if(desc) box.appendChild(chip("description: "+desc.slice(0,42), "okc"));
+    box.appendChild(chip(pIdx === -1 ? t("chip_activity_to_set") : PROJECTS[pIdx].act, pIdx === -1 ? "" : "okc"));
+    if(pIdx !== -1) box.appendChild(chip(PROJECTS[pIdx].sap.rproj ? "PEP "+PROJECTS[pIdx].sap.rproj : t("bot_receiver_cost_center", {code: PROJECTS[pIdx].sap.rkostl}), "okc"));
+    if(desc) box.appendChild(chip(t("chip_desc_prefix", {txt: desc.slice(0,42)}), "okc"));
 
     var rowDesc = pIdx === -1 ? "" : ((state.rows.filter(function(r){ return r.p === pIdx; })[0] || {}).desc || "");
     var descOk = desc.length >= 10 || String(rowDesc).trim().length >= 10;
@@ -5787,6 +5812,15 @@
     if(state.submitted){ toast(t("toast_week_submitted_locked")); return false; }
     if(isBlocked(nlParsed.day)){ toast(t("toast_day_absence_blocked", {day: DAYS[nlParsed.day]})); return false; }
     if(!periodOpen(WORKDATES[nlParsed.day])){ toast(t("toast_day_closed_period", {day: DAYS[nlParsed.day]})); return false; }
+    /* the same daily limit as a grid cell (durCell): refused here, with
+       the dialog left open, rather than flagged after it's saved */
+    var cap = capacity(nlParsed.day), left = Math.max(0, cap - dayTotal(nlParsed.day));
+    if(nlParsed.dur > left){
+      var ap = absOn(nlParsed.day, "approved")[0];
+      toast((ap ? t("msg_day_approved_type", {day: DAYS[nlParsed.day], type: absTypeLabel(ap).toLowerCase()}) : t("msg_day_capacity_simple", {day: DAYS[nlParsed.day], cap: fmt(cap)}))
+        + (left > 0 ? t("toast_only_available", {left: fmt(left)}) : t("toast_no_hours_available")));
+      return false;
+    }
     var row = state.rows.filter(function(r){ return r.p === nlParsed.p; })[0];
     if(!row){ row = {id:nextId++, p:nlParsed.p, desc:nlParsed.desc, h:[0,0,0,0,0,0,0], origin:"Manual"}; state.rows.push(row); }
     if(nlParsed.desc) row.desc = nlParsed.desc;
@@ -6439,7 +6473,7 @@
   $("subOk").onclick = doSubmit;
   $("dataBtn").onclick = function(){ $("dlgData").showModal(); };
   $("dataClose").onclick = function(){ $("dlgData").close(); };
-  $("dataWipe").onclick = function(){ $("dlgData").close(); state.sugs = []; render(); toast(t("toast_timeline_deleted")); };
+  $("dataWipe").onclick = function(){ $("dlgData").close(); state.sugs.length = 0; render(); toast(t("toast_timeline_deleted")); };
   $("helpBtn").onclick = function(){ $("dlgHelp").showModal(); };
   $("helpClose").onclick = function(){ $("dlgHelp").close(); };
   if($("settingsBtn")) $("settingsBtn").onclick = function(){
@@ -7367,9 +7401,6 @@
     box.appendChild(dl);
     if(bal.carryover) box.appendChild(el("div","accsub", t("acc_carryover_note", {n: bal.carryover, y: bal.year - 1})));
     box.appendChild(el("div","accnote", t("text_acc_after_all", {n: fmtDays(bal.available)})));
-    var b = btn(t("btn_view_movements"), "btn sm", openAccountMovements);
-    b.type = "button";
-    box.appendChild(b);
   }
   function openAccountMovements(){
     var bal = leaveBalance(), body = $("acBody");
@@ -11460,7 +11491,8 @@
 
   if($("allowAdd")) $("allowAdd").onclick = openAllow;
   if($("alCode")) $("alCode").onchange = syncAllowForm;
-  if($("alSave")) $("alSave").onclick = function(){ saveAllow(); };
+  /* a <form method="dialog">: kept open when the save is refused, as Quick add */
+  if($("alSave")) $("alSave").onclick = function(ev){ if(!saveAllow()) ev.preventDefault(); };
   ["alFrom","alTo","alRound"].forEach(function(id){
     var n = $(id);
     if(n){ n.addEventListener("input", syncAllowRoute); n.addEventListener("change", syncAllowRoute); }
@@ -11544,6 +11576,9 @@
     state.lvAsOf = iso || "";
     renderAccounts();
   };
+  /* outside lvAccBody, which a changed date redraws: a button drawn
+     inside it was gone by the time the click that blurred the date landed */
+  if($("lvMovements")) $("lvMovements").onclick = openAccountMovements;
   if($("lvCalPrev")) $("lvCalPrev").onclick = function(){ state.lvMonth = monthAdd(state.lvMonth || todayISO().slice(0,6), -1); renderMyCalendar(); };
   if($("lvCalNext")) $("lvCalNext").onclick = function(){ state.lvMonth = monthAdd(state.lvMonth || todayISO().slice(0,6), 1); renderMyCalendar(); };
   if($("lvCalToday")) $("lvCalToday").onclick = function(){ state.lvMonth = todayISO().slice(0,6); state.lvPick = null; renderMyCalendar(); };

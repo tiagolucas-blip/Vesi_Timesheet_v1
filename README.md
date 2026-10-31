@@ -126,7 +126,7 @@ index.html           the complete document, what Vercel serves  (generated)
 artifact.html        the same page without the shell or the company logo, published as an Artifact  (generated)
 assistant-prompt.js  api/_prompt.js for the browser  (generated)
 tools/build.py       generates the three files above
-tests/               the assistant's regression suite
+tests/               the assistant's regression suite and the interface suite
 vercel.json          static site configuration
 ```
 
@@ -167,6 +167,13 @@ Run the regression suite (needs Playwright with Chromium):
 
 ```bash
 node tests/run-assistant-tests.cjs
+```
+
+Run the interface suite (same requirements), which goes through every feature on the screens for PT01 and PT02 and each profile that has it: the setup window and the Test button, the two rows of tabs and their counters, My entries (weeks and months, rows, hours, the 8 hour limit, descriptions, Quick add, allowances and kilometres, suggestions, copy, submit and reopen), Team entry, both approval consoles, Leave Request from request to timesheet, and Settings. It ends by opening every screen in English, Portuguese and French at 1400 and 390 pixels wide, checking that the page never scrolls sideways, that the dialogs fit, that no console error shows, and that the labels that used to stay in English on the Portuguese and French screens (week numbers, start and end, Quick add chips) are translated. It takes about four minutes:
+
+```bash
+node tests/run-ui-tests.cjs            # all cases
+node tests/run-ui-tests.cjs leave      # cases whose id contains "leave"
 ```
 
 ## Data
