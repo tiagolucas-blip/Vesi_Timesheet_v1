@@ -666,7 +666,7 @@ each(BOTH, "team-fill-missing-from-assistant", async (co) => {
   await confirmCard(page);
   await go(page, "team");
   ok((await txt(page, "#massLog")).length > 0, "the entries are in the team's log");
-  eq(await txt(page, "#teamStateChip"), "Save to finish", "waiting for the final save");
+  eq(await txt(page, "#teamStateChip"), "Up to date", "what the assistant records is saved when confirmed");
 });
 
 each(BOTH, "team-entry-bonus", async (co) => {

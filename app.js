@@ -1264,8 +1264,8 @@
       cells_skipped_field_other:" {n} cells skipped, needs the other field for that profile.",
       cells_skipped_capacity_one:" {n} cell skipped, over that person's daily capacity.",
       cells_skipped_capacity_other:" {n} cells skipped, over that person's daily capacity.",
-      toast_team_entries_partial:"{saved} entries recorded for {who}. {left} on screen with the reason. Click Save to finish.",
-      toast_team_entries_all:"{saved} entries recorded for {who}, on their behalf. Click Save to finish.",
+      toast_team_entries_partial:"{saved} entries recorded for {who}. {left} on screen with the reason.",
+      toast_team_entries_all:"{saved} entries recorded for {who}, on their behalf.",
       toast_team_entries_none:"Nothing was recorded. Every line has a reason next to it.",
       toast_give_qty_positive:"Give a quantity above zero.",
       toast_note_required_for:"{note} is required for {name}.",
@@ -1274,8 +1274,8 @@
       toast_allow_skipped_company:" {n} skipped, the shift allowance doesn't apply to their company.",
       toast_allow_skipped_project:" {n} skipped, not allocated to {code}.",
       toast_nothing_staged:"Nothing staged.",
-      allow_lines_recorded_one:"{n} allowance line recorded, on their behalf. Click Save to finish.",
-      allow_lines_recorded_other:"{n} allowance lines recorded, on their behalf. Click Save to finish.",
+      allow_lines_recorded_one:"{n} allowance line recorded, on their behalf.",
+      allow_lines_recorded_other:"{n} allowance lines recorded, on their behalf.",
       toast_nothing_to_save:"Nothing to save.", toast_changes_saved:"Changes saved.",
       toast_amount_must_be_positive:"The amount needs to be a number above zero.",
       toast_bonus_reason_required:"The bonus needs a reason. It is the only trace of why the project carried this cost.",
@@ -1459,7 +1459,7 @@
       privacy_recorded_on_behalf:"Every line keeps CREATED_BY and ON_BEHALF_OF. There is no self-confirmation step: the employee sees the entry marked as recorded by the leader, which informs without blocking. On the CATS side the submitting user still lands in ERNAM.",
       kpi_selected:"Selected", kpi_staged_not_saved:"Staged, not saved", kpi_recorded_on_behalf:"Recorded on behalf",
       label_project:"Project", label_acting_as:"Acting as",
-      chip_up_to_date:"Up to date", chip_save_to_finish:"Save to finish",
+      chip_up_to_date:"Up to date", chip_save_to_finish:"Save to finish", hint_click_save:" Click Save to finish.",
       btn_select_no_warnings:"Select the 4 without warnings", chip_project_team:"Project team", btn_approve_selected:"Approve selected",
       text_approval_sub:"A different person's queue, not your own week. It covers the people on Sofia's consulting projects (Banking, Retail, Airports). Nothing you submit under My Timesheet lands here.",
       text_approval_sub_pt02:"A different person's queue, not your own week. It covers the people on Patrícia's facilities projects (Hospital campus, Airport terminal). Nothing you submit under My Timesheet lands here.",
@@ -2047,8 +2047,8 @@
       cells_skipped_field_other:" {n} células ignoradas, precisam do outro campo para esse perfil.",
       cells_skipped_capacity_one:" {n} célula ignorada, acima da capacidade diária dessa pessoa.",
       cells_skipped_capacity_other:" {n} células ignoradas, acima da capacidade diária dessa pessoa.",
-      toast_team_entries_partial:"{saved} lançamentos registados para {who}. {left} ficaram no ecrã com o motivo. Clica em Gravar para terminar.",
-      toast_team_entries_all:"{saved} lançamentos registados para {who}, em nome deles. Clica em Gravar para terminar.",
+      toast_team_entries_partial:"{saved} lançamentos registados para {who}. {left} ficaram no ecrã com o motivo.",
+      toast_team_entries_all:"{saved} lançamentos registados para {who}, em nome deles.",
       toast_team_entries_none:"Nada foi registado. Cada linha tem um motivo ao lado.",
       toast_give_qty_positive:"Indica uma quantidade acima de zero.",
       toast_note_required_for:"{note} é obrigatório para {name}.",
@@ -2057,8 +2057,8 @@
       toast_allow_skipped_company:" {n} ignorados, o abono de turno não se aplica à empresa deles.",
       toast_allow_skipped_project:" {n} ignorados, não alocados a {code}.",
       toast_nothing_staged:"Nada em staging.",
-      allow_lines_recorded_one:"{n} linha de abono registada, em nome deles. Clica em Gravar para terminar.",
-      allow_lines_recorded_other:"{n} linhas de abono registadas, em nome deles. Clica em Gravar para terminar.",
+      allow_lines_recorded_one:"{n} linha de abono registada, em nome deles.",
+      allow_lines_recorded_other:"{n} linhas de abono registadas, em nome deles.",
       toast_nothing_to_save:"Nada para gravar.", toast_changes_saved:"Alterações gravadas.",
       toast_amount_must_be_positive:"O montante tem de ser um número acima de zero.",
       toast_bonus_reason_required:"O bónus precisa de um motivo. É o único rasto de porque é que o projeto suportou este custo.",
@@ -2242,7 +2242,7 @@
       privacy_recorded_on_behalf:"Cada linha mantém CREATED_BY e ON_BEHALF_OF. Não há passo de autoconfirmação: o colaborador vê o lançamento marcado como registado pelo líder, o que informa sem bloquear. Do lado do CATS, o utilizador que submete continua a ficar em ERNAM.",
       kpi_selected:"Selecionados", kpi_staged_not_saved:"Em staging, não gravado", kpi_recorded_on_behalf:"Registado em nome de",
       label_project:"Projeto", label_acting_as:"A atuar como",
-      chip_up_to_date:"Atualizado", chip_save_to_finish:"Gravar para terminar",
+      chip_up_to_date:"Atualizado", chip_save_to_finish:"Gravar para terminar", hint_click_save:" Clica em Gravar para terminar.",
       btn_select_no_warnings:"Selecionar os 4 sem avisos", chip_project_team:"Equipa do projeto", btn_approve_selected:"Aprovar selecionados",
       text_approval_sub:"A fila de outra pessoa, não a tua própria semana. Cobre as pessoas nos projetos de consultoria da Sofia (Banking, Retail, Airports). Nada do que submetes em A Minha Folha aparece aqui.",
       text_approval_sub_pt02:"A fila de outra pessoa, não a tua própria semana. Cobre as pessoas nos projetos de facilities da Patrícia (Hospital campus, Airport terminal). Nada do que submetes em A Minha Folha aparece aqui.",
@@ -2823,8 +2823,8 @@
       cells_skipped_field_other:" {n} cellules ignorées, ont besoin de l'autre champ pour ce profil.",
       cells_skipped_capacity_one:" {n} cellule ignorée, dépasse la capacité journalière de cette personne.",
       cells_skipped_capacity_other:" {n} cellules ignorées, dépassent la capacité journalière de cette personne.",
-      toast_team_entries_partial:"{saved} saisies enregistrées pour {who}. {left} restent à l'écran avec le motif. Cliquez sur Enregistrer pour terminer.",
-      toast_team_entries_all:"{saved} saisies enregistrées pour {who}, pour leur compte. Cliquez sur Enregistrer pour terminer.",
+      toast_team_entries_partial:"{saved} saisies enregistrées pour {who}. {left} restent à l'écran avec le motif.",
+      toast_team_entries_all:"{saved} saisies enregistrées pour {who}, pour leur compte.",
       toast_team_entries_none:"Rien n'a été enregistré. Chaque ligne a un motif à côté.",
       toast_give_qty_positive:"Indiquez une quantité supérieure à zéro.",
       toast_note_required_for:"{note} est obligatoire pour {name}.",
@@ -2833,8 +2833,8 @@
       toast_allow_skipped_company:" {n} ignorés, l'indemnité de poste ne s'applique pas à leur société.",
       toast_allow_skipped_project:" {n} ignorés, non alloués à {code}.",
       toast_nothing_staged:"Rien en attente.",
-      allow_lines_recorded_one:"{n} ligne d'indemnité enregistrée, pour leur compte. Cliquez sur Enregistrer pour terminer.",
-      allow_lines_recorded_other:"{n} lignes d'indemnité enregistrées, pour leur compte. Cliquez sur Enregistrer pour terminer.",
+      allow_lines_recorded_one:"{n} ligne d'indemnité enregistrée, pour leur compte.",
+      allow_lines_recorded_other:"{n} lignes d'indemnité enregistrées, pour leur compte.",
       toast_nothing_to_save:"Rien à enregistrer.", toast_changes_saved:"Modifications enregistrées.",
       toast_amount_must_be_positive:"Le montant doit être un nombre supérieur à zéro.",
       toast_bonus_reason_required:"La prime a besoin d'un motif. C'est la seule trace de la raison pour laquelle le projet a porté ce coût.",
@@ -3018,7 +3018,7 @@
       privacy_recorded_on_behalf:"Chaque ligne conserve CREATED_BY et ON_BEHALF_OF. Il n'y a pas d'étape d'auto-confirmation : l'employé voit la saisie marquée comme enregistrée par le chef d'équipe, ce qui informe sans bloquer. Côté CATS, l'utilisateur qui soumet reste dans ERNAM.",
       kpi_selected:"Sélectionnés", kpi_staged_not_saved:"En attente, non enregistré", kpi_recorded_on_behalf:"Enregistré pour le compte de",
       label_project:"Projet", label_acting_as:"Agit en tant que",
-      chip_up_to_date:"À jour", chip_save_to_finish:"Enregistrer pour terminer",
+      chip_up_to_date:"À jour", chip_save_to_finish:"Enregistrer pour terminer", hint_click_save:" Cliquez sur Enregistrer pour terminer.",
       btn_select_no_warnings:"Sélectionner les 4 sans avertissement", chip_project_team:"Équipe du projet", btn_approve_selected:"Approuver la sélection",
       text_approval_sub:"La file d'une autre personne, pas votre propre semaine. Couvre les personnes sur les projets de conseil de Sofia (Banking, Retail, Airports). Rien de ce que vous soumettez dans Mon relevé n'apparaît ici.",
       text_approval_sub_pt02:"La file d'une autre personne, pas votre propre semaine. Couvre les personnes sur les projets facilities de Patrícia (Hospital campus, Airport terminal). Rien de ce que vous soumettez dans Mon relevé n'apparaît ici.",
@@ -5358,8 +5358,8 @@
     if(silent) return saved;
     var who = plural(savedPeople, "n_people");
     var left = plural(kept, "n_lines_left");
-    if(saved && kept) toast(t("toast_team_entries_partial", {saved: saved, who: who, left: left}));
-    else if(saved) toast(t("toast_team_entries_all", {saved: saved, who: who}));
+    if(saved && kept) toast(t("toast_team_entries_partial", {saved: saved, who: who, left: left}) + saveHint());
+    else if(saved) toast(t("toast_team_entries_all", {saved: saved, who: who}) + saveHint());
     else toast(t("toast_team_entries_none"));
     return saved;
   }
@@ -5446,7 +5446,7 @@
       : [];
     state.teamNeedsSave = true;
     renderTeam();
-    if(!silent) toast(plural(n, "allow_lines_recorded"));
+    if(!silent) toast(plural(n, "allow_lines_recorded") + saveHint());
     return n;
   }
   /* The header's single Save button: records whatever is still staged
@@ -5455,6 +5455,16 @@
      teamNeedsSave - the step that actually reflects everything already
      recorded on behalf of the team in the database. One safe click that
      always finishes the job, whichever tab it was staged from. */
+  /* What the assistant records is saved as it is confirmed: it isn't on
+     the screen being edited, so there is no Save button to press after it.
+     Changes typed on the screens keep their own Save. */
+  function saveHint(){ return chat.committing ? "" : t("hint_click_save"); }
+  function commitAssistantChanges(){
+    if(state.needsSave) state.needsSave = false;
+    if(state.teamNeedsSave){ state.teamNeedsSave = false; state.teamSavedThrough = state.massLog.length; }
+    render();
+    if($("screen-team") && !$("screen-team").hidden) renderTeam();
+  }
   function saveTeamAll(){
     var hoursSaved = saveMass(null, true);
     var allowSaved = saveMassAllow(null, true);
@@ -10078,7 +10088,9 @@
       acts.innerHTML = "";
       acts.appendChild(el("span","chip green",t("chip_confirmed")));
       if(turn) turn.outcome = "confirmed";
-      inTurn(onConfirm);
+      chat.committing = true;
+      try{ inTurn(onConfirm); } finally{ chat.committing = false; }
+      commitAssistantChanges();
     }));
     acts.appendChild(btn(t("btn_cancel"),"btn sm", function(){
       chat.pending = null;

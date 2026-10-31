@@ -103,6 +103,7 @@ Everything below works, with no server and no real data.
 **Validation and approval**
 - Three severities: error blocks, warning doesn't block, info guides
 - Summary per project and receiver object before submission
+- What the assistant records (hours, allowances, kilometres, team entries) is saved as soon as the card is confirmed; changes typed on the screens keep their own Save
 - Submitting follows the period the timesheet shows: the whole month in Consulting (PT01, time by duration, monthly view), every week of it still open, and the week in Building Solutions (PT02). Submitting is final, with Reopen in the confirmation, and there is no Save step after it
 - The assistant does the same: asked to submit, it shows the month (or the week) with total, expected, warnings and approver for confirmation; when something blocks it, it says so first and lists what to fix, the same problem across several weeks said once
 - Approval screen with bulk approval and exceptions singled out, by month in Consulting (each person's whole month, with the hours per week of the month against the working days, holidays out) and by week in Building Solutions
