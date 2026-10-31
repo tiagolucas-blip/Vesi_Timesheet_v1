@@ -677,6 +677,12 @@
   .tacp .cnt{color:var(--ink-3); font-size:var(--fs-micro)}
   .av{display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%; background:var(--accent-soft); color:var(--accent-ink); font-size:10px; font-weight:700; flex:none}
   .tacfilters{display:flex; flex-wrap:wrap; gap:6px; margin-top:auto; padding-top:8px; border-top:1px solid var(--line-soft)}
+  /* people are picked in the calendar rows, so the filters sit in one bar
+     above it instead of a side column */
+  .tac{grid-template-columns:minmax(0, 1fr)}
+  .tacside{flex-direction:row; flex-wrap:wrap; align-items:center; gap:10px; border-right:none; border-bottom:1px solid var(--line-soft)}
+  .tacside .tacsearch{width:220px; max-width:100%}
+  .tacside .tacfilters{margin-top:0; padding-top:0; border-top:none; margin-left:auto; align-items:center}
   .tacmain{overflow:auto; min-width:0}
   .tacgrid{display:grid; width:100%; position:relative}
   .tacgrid > *{min-width:0}
@@ -690,6 +696,11 @@
   .tcname .who{font-size:var(--fs-sm); font-weight:600; line-height:1.2}
   .tcname small{display:block; color:var(--ink-3); font-size:var(--fs-micro); font-weight:400}
   .tcname.lvl1{padding-left:26px}
+  .tcname input[type=checkbox]{flex:none; width:16px; height:16px; accent-color:var(--accent); cursor:pointer}
+  .tcname .exp{background:none; border:none; padding:0; color:var(--ink-2); cursor:pointer; font-size:12px; width:14px; flex:none}
+  .tcname.off .who, .tcname.off small, .tcname.off .av{opacity:.45}
+  .tcall{display:flex; align-items:center; gap:8px; padding:6px 10px; font-size:var(--fs-sm); font-weight:600; cursor:pointer}
+  .tcall input{width:16px; height:16px; accent-color:var(--accent)}
   .tcd{border-bottom:1px solid var(--line-soft); border-left:1px solid var(--line-soft); min-height:48px}
   .tcd.we{background:var(--surface-3)}
   .tcd.today{background:var(--accent-soft)}

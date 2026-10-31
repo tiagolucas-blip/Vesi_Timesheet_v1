@@ -1036,7 +1036,16 @@ each(BOTH, "leave-team-calendar", async (co) => {
     const page = await open({ company: co, profile: role });
     try {
       await go(page, "teamcal");
-      ok(await page.$$eval("#lvTcList > *", (l) => l.length > 0), role + ": people are listed");
+      ok(await page.$$eval("#lvTcGrid .tcname", (l) => l.length > 0), role + ": people are listed, once, in the calendar");
+      ok(!(await page.$("#lvTcList")), role + ": no second list of the same people beside it");
+      /* the box beside a name hides that person's absences, the row stays */
+      const rows = await page.$$eval("#lvTcGrid .tcname", (l) => l.length);
+      await page.locator("#lvTcGrid .tcname input[type=checkbox]").first().uncheck();
+      await sleep(40);
+      eq(await page.$$eval("#lvTcGrid .tcname", (l) => l.length), rows, role + ": an unticked person keeps their row");
+      ok(await page.$$eval("#lvTcGrid .tcname.off", (l) => l.length === 1), role + ": greyed out");
+      await page.locator("#lvTcGrid .tcname input[type=checkbox]").first().check();
+      await sleep(40);
       for (const v of ["day", "week", "month"]) {
         await page.click('#lvTcView button[data-v="' + v + '"]');
         await sleep(40);
@@ -1047,10 +1056,10 @@ each(BOTH, "leave-team-calendar", async (co) => {
       ok((await txt(page, "#lvTcLabel")) !== label, role + ": the arrows move the period");
       await page.click("#lvTcToday");
       /* only who's absent */
-      const all = await page.$$eval("#lvTcList > *", (l) => l.length);
+      const all = await page.$$eval("#lvTcGrid .tcname", (l) => l.length);
       await page.check("#lvTcAbsent");
       await sleep(40);
-      ok((await page.$$eval("#lvTcList > *", (l) => l.length)) <= all, role + ": Absent keeps only who's off");
+      ok((await page.$$eval("#lvTcGrid .tcname", (l) => l.length)) <= all, role + ": Absent keeps only who's off");
       await page.uncheck("#lvTcAbsent");
       /* a colleague's health related absence shows only as Absent, except to the manager */
       if (role === "employee") ok(!(await txt(page, "#lvTcGrid")).includes("Sick leave"), "the employee doesn't see a colleague's sick leave");

@@ -955,7 +955,7 @@
       aria_fullscreen:"Full screen",
       aria_prev_period:"Previous",
       aria_next_period:"Next",
-      aria_expand_reports:"Show {name}'s direct reports",
+      aria_show_person:"Show {name}'s absences", aria_expand_reports:"Show {name}'s direct reports",
       label_week_short:"Week {n}",
       text_absent_generic:"Absent",
       text_tac_nobody:"Nobody to show with these filters.",
@@ -1738,7 +1738,7 @@
       aria_fullscreen:"Ecrã inteiro",
       aria_prev_period:"Anterior",
       aria_next_period:"Seguinte",
-      aria_expand_reports:"Mostrar os colaboradores diretos de {name}",
+      aria_show_person:"Mostrar as ausências de {name}", aria_expand_reports:"Mostrar os colaboradores diretos de {name}",
       label_week_short:"Semana {n}",
       text_absent_generic:"Ausente",
       text_tac_nobody:"Ninguém a mostrar com estes filtros.",
@@ -2514,7 +2514,7 @@
       aria_fullscreen:"Plein écran",
       aria_prev_period:"Précédent",
       aria_next_period:"Suivant",
-      aria_expand_reports:"Afficher les collaborateurs directs de {name}",
+      aria_show_person:"Afficher les absences de {name}", aria_expand_reports:"Afficher les collaborateurs directs de {name}",
       label_week_short:"Semaine {n}",
       text_absent_generic:"Absent",
       text_tac_nobody:"Personne à afficher avec ces filtres.",
@@ -7960,32 +7960,10 @@
     var absentIds = {};
     matching.forEach(function(pp){ if(tacRequests(pp, st, range).length) absentIds[pp.id] = true; });
     $("lvTcAbsentLbl").textContent = t("label_absent_n", {n: Object.keys(absentIds).length});
-    var list = $("lvTcList");
-    list.innerHTML = "";
-    matching.forEach(function(pp){
-      var row = el("div","tacp" + (st.hidden[pp.id] ? "" : " on") + (pp.level ? " lvl1" : ""), "");
-      if(pp.subs && tacTab(st) === "reports"){
-        var ex = el("button","exp", st.expanded[pp.id] ? "▾" : "▸");
-        ex.type = "button";
-        ex.setAttribute("aria-label", t("aria_expand_reports", {name: pp.name}));
-        ex.onclick = function(){ st.expanded[pp.id] = !st.expanded[pp.id]; renderTeamCalendar(); };
-        row.appendChild(ex);
-      } else row.appendChild(el("span","",""));
-      /* the whole line is the label: the box, the picture or the name all
-         show or hide the person */
-      var lab = el("label","tacpl","");
-      var cb = document.createElement("input");
-      cb.type = "checkbox";
-      cb.checked = !st.hidden[pp.id];
-      cb.onchange = function(){ if(cb.checked) delete st.hidden[pp.id]; else st.hidden[pp.id] = true; renderTeamCalendar(); };
-      lab.appendChild(cb);
-      lab.appendChild(avatar(pp.name));
-      lab.appendChild(el("span","nm", pp.name + (pp.self ? " (" + t("text_you_suffix") + ")" : "")));
-      lab.appendChild(el("span","cnt", pp.subs ? String(pp.subs) : ""));
-      row.appendChild(lab);
-      list.appendChild(row);
-    });
-    var shown = matching.filter(function(pp){ return !st.hidden[pp.id] && (!st.absentOnly || absentIds[pp.id]); });
+    /* each person is listed once, in the calendar itself: the box beside the
+       name shows or hides their absences, and an unticked row stays in place,
+       greyed, so it can be ticked again */
+    var shown = matching.filter(function(pp){ return !st.absentOnly || absentIds[pp.id]; });
 
     /* the grid */
     var days = [];
@@ -8002,7 +7980,15 @@
       grid.appendChild(node);
     }
     /* row 1: days, row 2: weeks */
-    put(el("div","tccorner",""), 1, 1);
+    var allBox = el("label","tccorner tcall","");
+    var allCb = document.createElement("input");
+    allCb.type = "checkbox";
+    allCb.checked = shown.length > 0 && shown.every(function(pp){ return !st.hidden[pp.id]; });
+    allCb.indeterminate = !allCb.checked && shown.some(function(pp){ return !st.hidden[pp.id]; });
+    allCb.onchange = function(){ shown.forEach(function(pp){ if(allCb.checked) delete st.hidden[pp.id]; else st.hidden[pp.id] = true; }); renderTeamCalendar(); };
+    allBox.appendChild(allCb);
+    allBox.appendChild(el("span","", $("lvTcSideHd").textContent));
+    put(allBox, 1, 1);
     put(el("div","tccorner",""), 2, 1);
     days.forEach(function(d, i){
       var hol = holidayOn(d), we = weekdayOf(d) > 4 || !!hol;
@@ -8025,7 +8011,21 @@
     }
     shown.forEach(function(pp, ri){
       var row = ri + 3;
-      var nm = el("div","tcname" + (pp.level ? " lvl1" : ""), "");
+      var off = !!st.hidden[pp.id];
+      var nm = el("div","tcname" + (pp.level ? " lvl1" : "") + (off ? " off" : ""), "");
+      if(pp.subs && tacTab(st) === "reports"){
+        var ex = el("button","exp", st.expanded[pp.id] ? "▾" : "▸");
+        ex.type = "button";
+        ex.setAttribute("aria-label", t("aria_expand_reports", {name: pp.name}));
+        ex.onclick = function(){ st.expanded[pp.id] = !st.expanded[pp.id]; renderTeamCalendar(); };
+        nm.appendChild(ex);
+      }
+      var cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.checked = !off;
+      cb.setAttribute("aria-label", t("aria_show_person", {name: pp.name}));
+      cb.onchange = function(){ if(cb.checked) delete st.hidden[pp.id]; else st.hidden[pp.id] = true; renderTeamCalendar(); };
+      nm.appendChild(cb);
       nm.appendChild(avatar(pp.name));
       var tx = el("div","", "");
       tx.appendChild(el("div","who", pp.name + (pp.self ? " (" + t("text_you_suffix") + ")" : "")));
@@ -8034,14 +8034,18 @@
       put(nm, row, 1);
       days.forEach(function(d, i){
         var hol = holidayOn(d);
-        put(el("div","tcd" + (weekdayOf(d) > 4 || hol ? " we" : "") + (d === today ? " today" : ""), ""), row, i + 2);
-        if(hol){
+        var cell = el("div","tcd" + (weekdayOf(d) > 4 || hol ? " we" : "") + (d === today ? " today" : ""), "");
+        if(hol) cell.title = holidayName(hol);
+        put(cell, row, i + 2);
+        /* in the month the days are too narrow for the name: the shading and
+           the day's tooltip say it */
+        if(hol && st.view !== "month"){
           var tag = el("span","tchol", holidayName(hol));
           tag.title = holidayName(hol);
           put(tag, row, i + 2);
         }
       });
-      tacRequests(pp, st, range).forEach(function(r){
+      if(!off) tacRequests(pp, st, range).forEach(function(r){
         var a = r.StartDate < range.from ? range.from : r.StartDate, z = r.EndDate > range.to ? range.to : r.EndDate;
         var c0 = days.indexOf(a), c1 = days.indexOf(z);
         if(c0 === -1 || c1 === -1) return;
