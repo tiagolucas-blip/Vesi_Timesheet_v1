@@ -1501,7 +1501,7 @@
       bot_greeting_1:"Hey! What do you need, logging hours, checking the week, or something else?",
       bot_greeting_2:"Hi there. Tell me what you need and I'll sort it.",
       bot_greeting_3:"Hello! Hours to log, or something to check?",
-      chip_done_saved:"Saved", chip_done_submitted:"Submitted", chip_done_sent:"Sent for approval", chip_done_withdrawn:"Withdrawn", chip_done_approved:"Approved", chip_confirmed:"confirmed", chip_cancelled:"cancelled",
+      chip_done_saved:"Saved", chip_done_submitted:"Submitted", chip_done_sent:"Sent for approval", chip_done_withdrawn:"Withdrawn", chip_done_approved:"Approved", label_week_card:"Week", fmt_week_range:"week {n} ({from} to {to})", fmt_week_range_bare:"{n} ({from} to {to})", tip_windows_overlap:"Two time windows overlap on this day.", chip_confirmed:"confirmed", chip_cancelled:"cancelled",
       bot_cancelled_no_save:"No problem, I didn't save anything.",
       bot_week_summary:"You have {tot} h recorded of {exp} h expected, already with absences deducted. ",
       bot_week_errors_block_one:"{n} error blocks submission.", bot_week_errors_block_other:"{n} errors block submission.",
@@ -1555,19 +1555,19 @@
       bot_cant_stage:"Can't stage that: {list}.", bot_week_already_approved:"{name} (week already approved)",
       label_people:"People", label_time:"Time", label_duration_each:"Duration each", label_skipped:"Skipped",
       bot_confirm_register_staging:"Record this for the team, on their behalf?", btn_register:"Register",
-      bot_staged_saved:"Recorded and saved for {names}, {days}, {code}, on their behalf.",
+      bot_staged_saved:"Recorded and saved for {names}, {days} of {week}, {code}, on their behalf. You'll find them in Team entry, Hours tab, on that week.",
       bot_staged_nothing:"Nothing was actually recorded.",
       bot_staged_not_saved_suffix:" {names} couldn't take it this way (not allocated to {code}, wrong profile for that field, absence, or closed period), the reason is on the Team screen.",
       bot_note_required:"{noteLabel} is required for {name}. What should it say?",
       label_quantity_each:"Quantity each",
-      bot_staged_saved_allow:"Recorded and saved for {names}, {days}, {name}, on their behalf.",
+      bot_staged_saved_allow:"Recorded and saved for {names}, {days} of {week}, {name}, on their behalf. You'll find them in Team entry, Allowances tab, on that week.",
       bot_staged_not_saved_allow_suffix:" {names} couldn't take it (not allocated to {code}, wrong company for that allowance, or closed period).",
       bot_team_nobody_missing:"Nobody on {code}'s team has missing working days this week.",
       bot_team_already_full:"{names} already at full capacity this week, on {code}'s team.",
       bot_team_person_not_found:"I couldn't find anyone called \"{name}\" on {code}'s team.",
       bot_confirm_fill_team:"Fill in these missing days up to each person's capacity?",
       btn_fill_and_register:"Fill in and register",
-      bot_team_filled_saved:"Missing hours filled in and saved for {names}, on their behalf.",
+      bot_team_filled_saved:"Missing hours filled in and saved for {names}, on their behalf, in {week}. You'll find them in Team entry, Hours tab, on that week.",
       bot_team_filled_nothing:"Nothing was recorded.",
       bot_team_filled_not_saved_suffix:" {names} couldn't take it, the reason is on the Team grid.",
       bot_approval_ask_who:"Tell me who to approve, a name, or “approve everyone” for every timesheet without exceptions.",
@@ -2277,7 +2277,7 @@
       bot_greeting_1:"Olá! Em que posso ajudar: registar horas, consultar a semana, ou outra coisa?",
       bot_greeting_2:"Olá. Diz-me o que precisas e eu trato disso.",
       bot_greeting_3:"Olá! Horas para registar, ou algo para consultar?",
-      chip_done_saved:"Gravado", chip_done_submitted:"Submetido", chip_done_sent:"Enviado para aprovação", chip_done_withdrawn:"Retirado", chip_done_approved:"Aprovado", chip_confirmed:"confirmado", chip_cancelled:"cancelado",
+      chip_done_saved:"Gravado", chip_done_submitted:"Submetido", chip_done_sent:"Enviado para aprovação", chip_done_withdrawn:"Retirado", chip_done_approved:"Aprovado", label_week_card:"Semana", fmt_week_range:"semana {n} ({from} a {to})", fmt_week_range_bare:"{n} ({from} a {to})", tip_windows_overlap:"Há duas janelas horárias sobrepostas neste dia.", chip_confirmed:"confirmado", chip_cancelled:"cancelado",
       bot_cancelled_no_save:"Sem problema, não gravei nada.",
       bot_week_summary:"Tens {tot} h registadas de {exp} h esperadas, já com as ausências deduzidas. ",
       bot_week_errors_block_one:"{n} erro bloqueia a submissão.", bot_week_errors_block_other:"{n} erros bloqueiam a submissão.",
@@ -2331,19 +2331,19 @@
       bot_cant_stage:"Não consigo colocar isso em preparação: {list}.", bot_week_already_approved:"{name} (semana já aprovada)",
       label_people:"Pessoas", label_time:"Horário", label_duration_each:"Duração de cada", label_skipped:"Ignorados",
       bot_confirm_register_staging:"Registar isto para a equipa, em nome de cada pessoa?", btn_register:"Registar",
-      bot_staged_saved:"Registado e gravado para {names}, {days}, {code}, em nome de cada pessoa.",
+      bot_staged_saved:"Registado e gravado para {names}, {days} da {week}, {code}, em nome de cada pessoa. Estão no Lançamento da equipa, separador Horas, nessa semana.",
       bot_staged_nothing:"Não foi registado nada.",
       bot_staged_not_saved_suffix:" {names} não conseguiu(ram) desta forma (não alocado a {code}, perfil errado para esse campo, ausência, ou período fechado), o motivo está no ecrã Equipa.",
       bot_note_required:"{noteLabel} é obrigatório para {name}. O que deve dizer?",
       label_quantity_each:"Quantidade de cada",
-      bot_staged_saved_allow:"Registado e gravado para {names}, {days}, {name}, em nome de cada pessoa.",
+      bot_staged_saved_allow:"Registado e gravado para {names}, {days} da {week}, {name}, em nome de cada pessoa. Estão no Lançamento da equipa, separador Abonos, nessa semana.",
       bot_staged_not_saved_allow_suffix:" {names} não conseguiu(ram) (não alocado a {code}, empresa errada para esse abono, ou período fechado).",
       bot_team_nobody_missing:"Ninguém na equipa de {code} tem dias úteis por preencher esta semana.",
       bot_team_already_full:"{names} já está(ão) com a capacidade completa esta semana, na equipa de {code}.",
       bot_team_person_not_found:"Não encontrei ninguém chamado \"{name}\" na equipa de {code}.",
       bot_confirm_fill_team:"Preencher estes dias em falta até à capacidade de cada pessoa?",
       btn_fill_and_register:"Preencher e registar",
-      bot_team_filled_saved:"Horas em falta preenchidas e gravadas para {names}, em nome de cada pessoa.",
+      bot_team_filled_saved:"Horas em falta preenchidas e gravadas para {names}, em nome de cada pessoa, na {week}. Estão no Lançamento da equipa, separador Horas, nessa semana.",
       bot_team_filled_nothing:"Não foi registado nada.",
       bot_team_filled_not_saved_suffix:" {names} não conseguiu(ram), o motivo está na grelha da Equipa.",
       bot_approval_ask_who:"Diz-me quem aprovar, um nome, ou “aprovar todos” para todas as folhas de horas sem exceções.",
@@ -3053,7 +3053,7 @@
       bot_greeting_1:"Bonjour ! De quoi avez-vous besoin : saisir des heures, vérifier la semaine, ou autre chose ?",
       bot_greeting_2:"Bonjour. Dites-moi ce qu'il vous faut et je m'en occupe.",
       bot_greeting_3:"Bonjour ! Des heures à saisir, ou quelque chose à vérifier ?",
-      chip_done_saved:"Enregistré", chip_done_submitted:"Soumis", chip_done_sent:"Envoyé pour approbation", chip_done_withdrawn:"Retiré", chip_done_approved:"Approuvé", chip_confirmed:"confirmé", chip_cancelled:"annulé",
+      chip_done_saved:"Enregistré", chip_done_submitted:"Soumis", chip_done_sent:"Envoyé pour approbation", chip_done_withdrawn:"Retiré", chip_done_approved:"Approuvé", label_week_card:"Semaine", fmt_week_range:"semaine {n} ({from} au {to})", fmt_week_range_bare:"{n} ({from} au {to})", tip_windows_overlap:"Deux plages horaires se chevauchent ce jour-là.", chip_confirmed:"confirmé", chip_cancelled:"annulé",
       bot_cancelled_no_save:"Pas de problème, je n'ai rien enregistré.",
       bot_week_summary:"Vous avez {tot} h enregistrées sur {exp} h attendues, absences déjà déduites. ",
       bot_week_errors_block_one:"{n} erreur bloque la soumission.", bot_week_errors_block_other:"{n} erreurs bloquent la soumission.",
@@ -3107,19 +3107,19 @@
       bot_cant_stage:"Impossible de mettre ça en préparation : {list}.", bot_week_already_approved:"{name} (semaine déjà approuvée)",
       label_people:"Personnes", label_time:"Horaire", label_duration_each:"Durée de chacun", label_skipped:"Ignorés",
       bot_confirm_register_staging:"Enregistrer ceci pour l'équipe, pour le compte de chaque personne ?", btn_register:"Enregistrer",
-      bot_staged_saved:"Enregistré pour {names}, {days}, {code}, pour le compte de chaque personne.",
+      bot_staged_saved:"Enregistré pour {names}, {days} de la {week}, {code}, pour le compte de chaque personne. Vous les trouverez dans Saisie d'équipe, onglet Heures, sur cette semaine.",
       bot_staged_nothing:"Rien n'a été réellement enregistré.",
       bot_staged_not_saved_suffix:" {names} n'a/ont pas pu de cette façon (non alloué à {code}, mauvais profil pour ce champ, absence, ou période clôturée), la raison est sur l'écran Équipe.",
       bot_note_required:"{noteLabel} est obligatoire pour {name}. Que doit-elle indiquer ?",
       label_quantity_each:"Quantité de chacun",
-      bot_staged_saved_allow:"Enregistré pour {names}, {days}, {name}, pour le compte de chaque personne.",
+      bot_staged_saved_allow:"Enregistré pour {names}, {days} de la {week}, {name}, pour le compte de chaque personne. Vous les trouverez dans Saisie d'équipe, onglet Indemnités, sur cette semaine.",
       bot_staged_not_saved_allow_suffix:" {names} n'a/ont pas pu (non alloué à {code}, mauvaise entreprise pour cette indemnité, ou période clôturée).",
       bot_team_nobody_missing:"Personne dans l'équipe de {code} n'a de jours ouvrés manquants cette semaine.",
       bot_team_already_full:"{names} est/sont déjà à pleine capacité cette semaine, dans l'équipe de {code}.",
       bot_team_person_not_found:"Je n'ai trouvé personne nommé \"{name}\" dans l'équipe de {code}.",
       bot_confirm_fill_team:"Compléter ces jours manquants jusqu'à la capacité de chacun ?",
       btn_fill_and_register:"Compléter et enregistrer",
-      bot_team_filled_saved:"Heures manquantes complétées et enregistrées pour {names}, pour le compte de chaque personne.",
+      bot_team_filled_saved:"Heures manquantes complétées et enregistrées pour {names}, pour le compte de chaque personne, en {week}. Vous les trouverez dans Saisie d'équipe, onglet Heures, sur cette semaine.",
       bot_team_filled_nothing:"Rien n'a été enregistré.",
       bot_team_filled_not_saved_suffix:" {names} n'a/ont pas pu, la raison est sur la grille Équipe.",
       bot_approval_ask_who:"Dites-moi qui approuver, un nom, ou «approuver tout le monde» pour tous les relevés sans exception.",
@@ -3785,11 +3785,16 @@
       for(var d=0; d<7; d++){
         var v = dayTotal(d), cap = capacity(d);
         var cls = "t";
-        if(v > 24 || (d < 5 && v > cap)) cls += " over";
+        /* two windows on top of each other are a collision, shown like
+           a day over its capacity */
+        var clash = isClock() && clockOverlaps(d).length > 0;
+        if(v > 24 || (d < 5 && v > cap) || clash) cls += " over";
         else if(v === 0 && d < 5 && cap > 0) cls += " zero";
         else if(d < 5 && cap === 0) cls += " off";
         cls += dayExtraClass(d);
-        tr.appendChild(el("div", cls, d < 5 && cap === 0 && !v ? "–" : (v ? fmt(v) : "0.0")));
+        var tcell = el("div", cls, d < 5 && cap === 0 && !v ? "–" : (v ? fmt(v) : "0.0"));
+        if(clash) tcell.title = t("tip_windows_overlap");
+        tr.appendChild(tcell);
       }
       tr.appendChild(el("div","t", fmt(weekTotal())));
       tr.appendChild(el("div","",""));
@@ -4890,7 +4895,12 @@
      when that day already holds a window on that row). */
   function addToOwnSheet(pIdx, day, hours, slotT){
     var row = state.rows.filter(function(r){ return r.p === pIdx && !(slotT && r.t && r.t[day]); })[0];
-    if(!row){ row = {id:nextId++, p:pIdx, desc:"", h:[0,0,0,0,0,0,0], origin:"Team entry"}; state.rows.push(row); }
+    if(!row){
+      /* a second line on the same project carries the first one's description */
+      var same = state.rows.filter(function(r){ return r.p === pIdx && r.desc; })[0];
+      row = {id:nextId++, p:pIdx, desc: same ? same.desc : "", h:[0,0,0,0,0,0,0], origin:"Team entry"};
+      state.rows.push(row);
+    }
     row.h[day] = round15((row.h[day] || 0) + hours);
     if(slotT && slotT.b !== null && slotT.e !== null) setSlot(row, day, {b: slotT.b, e: slotT.e});
     state.needsSave = true;
@@ -4898,6 +4908,19 @@
   /* Most of the roster is a standard 8h/day schedule; a few named people
      carry their own reduced dailyHours (see TEAM above), the same idea as
      My week's own daily cap, just per person instead of a single value. */
+  /* where a person's working day currently ends, in minutes: the last
+     window on their own sheet for the project manager under test, and for
+     anyone else the day's recorded hours counted from 09:00, lunch included */
+  function dayEndMin(m, day){
+    var start = parseClock("09:00");
+    if(isSelfMember(m)){
+      var end = start;
+      state.rows.forEach(function(r){ var w = r.t && r.t[day]; if(w && w.e !== null && w.e > end) end = w.e; });
+      return end;
+    }
+    var h = (alreadyHoursFor(m, WEEKS[weekIdx].num) || [])[day] || 0;
+    return h ? start + h*60 + LUNCH_MIN : start;
+  }
   function teamDailyCap(m){ return m.dailyHours || DAYCAP; }
   function massProject(){ return +($("mProj") ? $("mProj").value : 0); }
 
@@ -5458,6 +5481,11 @@
   /* What the assistant records is saved as it is confirmed: it isn't on
      the screen being edited, so there is no Save button to press after it.
      Changes typed on the screens keep their own Save. */
+  /* the week a team entry goes to: the one the Team screen is on */
+  function teamWeekLabel(bare){
+    var w = WEEKS[weekIdx], ds = datesFor(w.start);
+    return t(bare ? "fmt_week_range_bare" : "fmt_week_range", {n: isoWeekOf(w.start), from: isoToDmy(ds[0]).slice(0,5), to: isoToDmy(ds[4]).slice(0,5)});
+  }
   function saveHint(){ return chat.committing ? "" : t("hint_click_save"); }
   function commitAssistantChanges(){
     if(state.needsSave) state.needsSave = false;
@@ -11723,7 +11751,8 @@
       [t("label_people"), selected.map(function(m){ return m.name; }).join(", ")],
       [t("label_days"), dayLabel],
       [clock ? t("label_time") : t("label_duration_each"), amountLabel],
-      [t("label_project"), pr.name]
+      [t("label_project"), pr.name],
+      [t("label_week_card"), teamWeekLabel(true)]
     ];
     if(locked.length) lines.push([t("label_skipped"), locked.map(function(m){ return t("bot_week_already_approved", {name: m.name.split(" ")[0]}); }).join(", ")]);
     botSay("bot",t("bot_confirm_register_staging"), botCard(lines, t("btn_register"), function(){
@@ -11738,12 +11767,14 @@
       var beforeLog = state.massLog.length;
       applyMass();
       saveMass(selected.map(function(m){ return m.pernr; }));
+      /* Team entry opens on what was just recorded */
+      setTeamTab("hours");
       var savedPernrs = {};
       state.massLog.slice(beforeLog).forEach(function(e){ savedPernrs[e.pernr] = true; });
       var saved = selected.filter(function(m){ return savedPernrs[m.pernr]; }).map(function(m){ return m.name.split(" ")[0]; });
       var notSaved = selected.filter(function(m){ return !savedPernrs[m.pernr]; }).map(function(m){ return m.name.split(" ")[0]; });
       var msg = saved.length
-        ? t("bot_staged_saved", {names: saved.join(", "), days: dayLabel, code: pr.code, save: t("btn_save")})
+        ? t("bot_staged_saved", {names: saved.join(", "), days: dayLabel, code: pr.code, week: teamWeekLabel()})
         : t("bot_staged_nothing");
       if(notSaved.length) msg += t("bot_staged_not_saved_suffix", {names: notSaved.join(", "), code: pr.code});
       botSay("bot", msg);
@@ -11850,12 +11881,13 @@
       var beforeLog = state.massLog.length;
       applyMassAllow();
       saveMassAllow(selected.map(function(m){ return m.pernr; }));
+      setTeamTab("allow");
       var savedPernrs = {};
       state.massLog.slice(beforeLog).forEach(function(e){ savedPernrs[e.pernr] = true; });
       var saved = selected.filter(function(m){ return savedPernrs[m.pernr]; }).map(function(m){ return m.name.split(" ")[0]; });
       var notSaved = selected.filter(function(m){ return !savedPernrs[m.pernr]; }).map(function(m){ return m.name.split(" ")[0]; });
       var msg = saved.length
-        ? t("bot_staged_saved_allow", {names: saved.join(", "), days: dayLabel, name: wtName(w), save: t("btn_save")})
+        ? t("bot_staged_saved_allow", {names: saved.join(", "), days: dayLabel, name: wtName(w), week: teamWeekLabel()})
         : t("bot_staged_nothing");
       if(notSaved.length) msg += t("bot_staged_not_saved_allow_suffix", {names: notSaved.join(", "), code: PROJECTS[massProject()].code});
       botSay("bot", msg);
@@ -11898,6 +11930,7 @@
       return [p.member.name, p.days.map(function(x){ return DAYS[x.day] + " +" + fmt(x.add) + "h"; }).join(", ")];
     });
     lines.push([t("label_project"), PROJECTS[massProject()].code]);
+    lines.push([t("label_week_card"), teamWeekLabel(true)]);
     var total = plan.reduce(function(a,p){ return a + p.days.reduce(function(b,x){ return b+x.add; }, 0); }, 0);
     lines.push([t("th_total"), fmt(total) + " h"]);
     botSay("bot", t("bot_confirm_fill_team"), botCard(lines, t("btn_fill_and_register"), function(){
@@ -11909,8 +11942,10 @@
         p.days.forEach(function(x){
           var newTotal = (st.h[x.day] || 0) + x.add;
           if(clock){
-            var startMin = parseClock("09:00");
-            var win = {b:startMin, e:startMin + newTotal*60 + LUNCH_MIN};
+            /* the missing hours go after what the day already holds, never
+               on top of it: a window that starts where the last one ended */
+            var startMin = dayEndMin(p.member, x.day);
+            var win = {b:startMin, e:startMin + x.add*60 + LUNCH_MIN};
             st.t[x.day] = win; st.h[x.day] = slotHours(win);
           } else {
             st.t[x.day] = null; st.h[x.day] = newTotal;
@@ -11919,12 +11954,13 @@
       });
       var beforeLog = state.massLog.length;
       saveMass(plan.map(function(p){ return p.member.pernr; }));
+      setTeamTab("hours");
       var savedPernrs = {};
       state.massLog.slice(beforeLog).forEach(function(e){ savedPernrs[e.pernr] = true; });
       var saved = plan.filter(function(p){ return savedPernrs[p.member.pernr]; }).map(function(p){ return p.member.name.split(" ")[0]; });
       var notSaved = plan.filter(function(p){ return !savedPernrs[p.member.pernr]; }).map(function(p){ return p.member.name.split(" ")[0]; });
       var msg = saved.length
-        ? t("bot_team_filled_saved", {names: saved.join(", "), save: t("btn_save")})
+        ? t("bot_team_filled_saved", {names: saved.join(", "), week: teamWeekLabel()})
         : t("bot_team_filled_nothing");
       if(notSaved.length) msg += t("bot_team_filled_not_saved_suffix", {names: notSaved.join(", ")});
       botSay("bot", msg);

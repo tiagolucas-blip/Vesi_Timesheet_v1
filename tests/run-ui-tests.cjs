@@ -667,6 +667,12 @@ each(BOTH, "team-fill-missing-from-assistant", async (co) => {
   await go(page, "team");
   ok((await txt(page, "#massLog")).length > 0, "the entries are in the team's log");
   eq(await txt(page, "#teamStateChip"), "Up to date", "what the assistant records is saved when confirmed");
+  eq(await page.$eval("#ttHours", (b) => b.getAttribute("aria-pressed")), "true", "Team entry opens on the Hours tab");
+  /* the project manager's own sheet takes their share without a clash or a line missing its description */
+  await go(page, "semana");
+  const own = await txt(page, "#screen-semana");
+  ok(!/overlapping time windows/i.test(own), "no overlapping windows on the own sheet");
+  ok(!/Description required/i.test(own), "the added line keeps the project's description");
 });
 
 each(BOTH, "team-entry-bonus", async (co) => {
