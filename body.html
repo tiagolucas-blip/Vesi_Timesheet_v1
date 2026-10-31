@@ -13,25 +13,25 @@
 </header>
 
 <nav class="nav" role="tablist" data-i18n-aria="aria_main_nav" aria-label="Main areas">
-  <button role="tab" id="tab-home" class="navhome" aria-current="true" data-screen="home" data-i18n="nav_home">Assistant</button>
-  <button role="tab" id="area-ts" class="navarea" aria-current="false" data-area="ts" aria-controls="navg-ts">
+  <button role="tab" id="tab-home" class="navhome" aria-current="true" aria-selected="true" data-screen="home" data-i18n="nav_home">Assistant</button>
+  <button role="tab" id="area-ts" class="navarea" aria-current="false" aria-selected="false" data-area="ts" aria-controls="navg-ts">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
     <span data-i18n="navg_timesheet">Timesheet</span><span class="navbadge" hidden></span>
   </button>
-  <button role="tab" id="area-lv" class="navarea" aria-current="false" data-area="lv" aria-controls="navg-lv">
+  <button role="tab" id="area-lv" class="navarea" aria-current="false" aria-selected="false" data-area="lv" aria-controls="navg-lv">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
     <span data-i18n="navg_leave">Leave Request</span><span class="navbadge" hidden></span>
   </button>
 </nav>
 <div class="subnav" role="tablist" id="navg-ts" data-area="ts" data-i18n-aria="navg_timesheet" aria-label="Timesheet" hidden>
-  <button role="tab" id="tab-semana" aria-current="false" data-screen="semana" data-i18n="tab_ts_mine">My entries</button>
-  <button role="tab" id="tab-team" data-screen="team" data-i18n="tab_ts_team">Team entry</button>
-  <button role="tab" id="tab-aprov" data-screen="aprov" data-i18n="tab_ts_approval">Approval</button>
+  <button role="tab" id="tab-semana" aria-current="false" aria-selected="false" data-screen="semana" data-i18n="tab_ts_mine">My entries</button>
+  <button role="tab" id="tab-team" aria-current="false" aria-selected="false" data-screen="team" data-i18n="tab_ts_team">Team entry</button>
+  <button role="tab" id="tab-aprov" aria-current="false" aria-selected="false" data-screen="aprov" data-i18n="tab_ts_approval">Approval</button>
 </div>
 <div class="subnav" role="tablist" id="navg-lv" data-area="lv" data-i18n-aria="navg_leave" aria-label="Leave Request" hidden>
-  <button role="tab" id="tab-leave" aria-current="false" data-screen="leave" data-i18n="tab_lv_mine">My requests</button>
-  <button role="tab" id="tab-teamcal" aria-current="false" data-screen="teamcal" data-i18n="tab_lv_teamcal">Team calendar</button>
-  <button role="tab" id="tab-lvaprov" aria-current="false" data-screen="lvaprov" data-i18n="tab_lv_approval">Approval</button>
+  <button role="tab" id="tab-leave" aria-current="false" aria-selected="false" data-screen="leave" data-i18n="tab_lv_mine">My requests</button>
+  <button role="tab" id="tab-teamcal" aria-current="false" aria-selected="false" data-screen="teamcal" data-i18n="tab_lv_teamcal">Team calendar</button>
+  <button role="tab" id="tab-lvaprov" aria-current="false" aria-selected="false" data-screen="lvaprov" data-i18n="tab_lv_approval">Approval</button>
 </div>
 </div>
 
@@ -685,7 +685,7 @@
       </div>
     </div>
     <div class="two" id="alRouteWrap" hidden>
-      <div class="field"><label for="alFrom" data-i18n="label_origin">From</label><input type="text" id="alFrom" list="alPlaces" autocomplete="off"></div>
+      <div class="field"><label for="alFrom" data-i18n="label_trip_from">From</label><input type="text" id="alFrom" list="alPlaces" autocomplete="off"></div>
       <div class="field"><label for="alTo" data-i18n="label_destination">To</label><input type="text" id="alTo" list="alPlaces" autocomplete="off"></div>
     </div>
     <label class="lvchk" id="alRoundWrap" hidden><input type="checkbox" id="alRound"> <span data-i18n="label_round_trip">Round trip</span></label>
@@ -798,7 +798,7 @@
   </footer>
 </form></dialog>
 
-<div class="toasts" id="toasts"></div>
+<div class="toasts" id="toasts" role="status" aria-live="polite"></div>
 <div class="abstip" id="absTip" hidden></div>
 
 <!-- dialogs -->

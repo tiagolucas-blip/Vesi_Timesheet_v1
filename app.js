@@ -1062,7 +1062,7 @@
       label_route:"Route",
       label_road_distance:"Road distance",
       label_to_record:"To record",
-      label_origin:"From",
+      label_trip_from:"From",
       label_destination:"To",
       label_round_trip:"Round trip",
       label_office_base:"{city} (office)",
@@ -1345,6 +1345,13 @@
       aria_select_timesheet_for:"Select timesheet for {name}",
       tip_clock_use_fields:"Z_BSRV records start and end. Use the Start/End fields above, for the people this applies to.",
       tip_closed_period_short:"Closed period",
+      tip_week_submitted_n:"Week {n} was already submitted, not editable.", tip_approved_abs:"Approved {type}",
+      aria_dur_cell:"Duration in hours, {proj}, {day}", aria_desc_cell:"Description, {proj}", aria_team_hours:"Hours for {name}, {day}",
+      text_sugs_none_absence:"Nothing to propose. The suggestions that existed fell on days with an approved absence.",
+      text_sugs_none_pending:"No pending suggestions. Good sign, the week is reviewed.",
+      text_bonus_catsamount:"Amount goes to CATSAMOUNT, native CATSDB field. ANZHL goes to CATS as 1.",
+      text_bonus_defined_by:"Defined and approved by {name}, in the same act",
+      aria_voice_lang:"Voice input language: {lang}. Click to switch to {next}.", voice_lang_PT:"Portuguese", voice_lang_EN:"English", voice_lang_FR:"French",
       aria_start_time_for:"Start time, {name}, {day}", aria_end_time_for:"End time, {name}, {day}",
       sev_error:"ERROR", sev_warning:"WARNING", sev_info:"INFO",
       text_no_allowances_week:"No allowances recorded this week. Per diems, kilometres and shift allowances are recorded here, against a project and a date.",
@@ -1451,8 +1458,8 @@
       label_project:"Project", label_acting_as:"Acting as",
       chip_up_to_date:"Up to date", chip_save_to_finish:"Save to finish",
       btn_select_no_warnings:"Select the 4 without warnings", chip_project_team:"Project team", btn_approve_selected:"Approve selected",
-      text_approval_sub:"A different person's queue, not your own week. It covers the people on Sofia's consulting projects (Banking, Retail, Airports) — nothing you submit under My Timesheet lands here.",
-      text_approval_sub_pt02:"A different person's queue, not your own week. It covers the people on Patrícia's facilities projects (Hospital campus, Airport terminal) — nothing you submit under My Timesheet lands here.",
+      text_approval_sub:"A different person's queue, not your own week. It covers the people on Sofia's consulting projects (Banking, Retail, Airports). Nothing you submit under My Timesheet lands here.",
+      text_approval_sub_pt02:"A different person's queue, not your own week. It covers the people on Patrícia's facilities projects (Hospital campus, Airport terminal). Nothing you submit under My Timesheet lands here.",
       kpi_pending_approval:"Pending approval", kpi_hours_submitted:"Hours submitted",
       kpi_with_warnings:"With warnings", kpi_deviation_from_plan:"Deviation from plan",
       hdr_team_allocated:"Team allocated to my projects", chip_integrates:"Integrates with My Inbox and SAP Task Center",
@@ -1788,7 +1795,7 @@
       label_route:"Percurso",
       label_road_distance:"Distância por estrada",
       label_to_record:"A registar",
-      label_origin:"Origem",
+      label_trip_from:"Origem",
       label_destination:"Destino",
       label_round_trip:"Ida e volta",
       label_office_base:"{city} (escritório)",
@@ -2071,6 +2078,13 @@
       aria_select_timesheet_for:"Selecionar folha de horas de {name}",
       tip_clock_use_fields:"O Z_BSRV regista início e fim. Usa os campos Início/Fim acima, para as pessoas a quem se aplica.",
       tip_closed_period_short:"Período fechado",
+      tip_week_submitted_n:"A semana {n} já foi submetida, não é editável.", tip_approved_abs:"Ausência aprovada: {type}",
+      aria_dur_cell:"Duração em horas, {proj}, {day}", aria_desc_cell:"Descrição, {proj}", aria_team_hours:"Horas de {name}, {day}",
+      text_sugs_none_absence:"Nada a propor. As sugestões que existiam calhavam em dias com ausência aprovada.",
+      text_sugs_none_pending:"Sem sugestões pendentes. Bom sinal, a semana está revista.",
+      text_bonus_catsamount:"O montante vai para CATSAMOUNT, campo nativo do CATSDB. O ANZHL vai para o CATS como 1.",
+      text_bonus_defined_by:"Definido e aprovado por {name}, no mesmo ato",
+      aria_voice_lang:"Língua do ditado: {lang}. Clica para mudar para {next}.", voice_lang_PT:"Português", voice_lang_EN:"Inglês", voice_lang_FR:"Francês",
       aria_start_time_for:"Hora de início, {name}, {day}", aria_end_time_for:"Hora de fim, {name}, {day}",
       sev_error:"ERRO", sev_warning:"AVISO", sev_info:"INFO",
       text_no_allowances_week:"Sem abonos registados esta semana. As ajudas de custo, quilómetros e abonos de turno são registados aqui, contra um projeto e uma data.",
@@ -2177,8 +2191,8 @@
       label_project:"Projeto", label_acting_as:"A atuar como",
       chip_up_to_date:"Atualizado", chip_save_to_finish:"Gravar para terminar",
       btn_select_no_warnings:"Selecionar os 4 sem avisos", chip_project_team:"Equipa do projeto", btn_approve_selected:"Aprovar selecionados",
-      text_approval_sub:"A fila de outra pessoa, não a tua própria semana. Cobre as pessoas nos projetos de consultoria da Sofia (Banking, Retail, Airports) — nada do que submetes em A Minha Folha aparece aqui.",
-      text_approval_sub_pt02:"A fila de outra pessoa, não a tua própria semana. Cobre as pessoas nos projetos de facilities da Patrícia (Hospital campus, Airport terminal) — nada do que submetes em A Minha Folha aparece aqui.",
+      text_approval_sub:"A fila de outra pessoa, não a tua própria semana. Cobre as pessoas nos projetos de consultoria da Sofia (Banking, Retail, Airports). Nada do que submetes em A Minha Folha aparece aqui.",
+      text_approval_sub_pt02:"A fila de outra pessoa, não a tua própria semana. Cobre as pessoas nos projetos de facilities da Patrícia (Hospital campus, Airport terminal). Nada do que submetes em A Minha Folha aparece aqui.",
       kpi_pending_approval:"Pendente de aprovação", kpi_hours_submitted:"Horas submetidas",
       kpi_with_warnings:"Com avisos", kpi_deviation_from_plan:"Desvio face ao plano",
       hdr_team_allocated:"Equipa alocada aos meus projetos", chip_integrates:"Integra com My Inbox e SAP Task Center",
@@ -2507,7 +2521,7 @@
       label_route:"Trajet",
       label_road_distance:"Distance par la route",
       label_to_record:"À enregistrer",
-      label_origin:"Départ",
+      label_trip_from:"Départ",
       label_destination:"Arrivée",
       label_round_trip:"Aller-retour",
       label_office_base:"{city} (bureau)",
@@ -2790,6 +2804,13 @@
       aria_select_timesheet_for:"Sélectionner le relevé de {name}",
       tip_clock_use_fields:"Z_BSRV enregistre le début et la fin. Utilisez les champs Début/Fin ci-dessus, pour les personnes concernées.",
       tip_closed_period_short:"Période clôturée",
+      tip_week_submitted_n:"La semaine {n} a déjà été soumise, elle n'est plus modifiable.", tip_approved_abs:"Absence approuvée : {type}",
+      aria_dur_cell:"Durée en heures, {proj}, {day}", aria_desc_cell:"Description, {proj}", aria_team_hours:"Heures de {name}, {day}",
+      text_sugs_none_absence:"Rien à proposer. Les suggestions existantes tombaient sur des jours avec une absence approuvée.",
+      text_sugs_none_pending:"Aucune suggestion en attente. Bon signe, la semaine est revue.",
+      text_bonus_catsamount:"Le montant va dans CATSAMOUNT, champ natif de CATSDB. ANZHL va dans CATS avec la valeur 1.",
+      text_bonus_defined_by:"Défini et approuvé par {name}, dans le même acte",
+      aria_voice_lang:"Langue de la dictée : {lang}. Cliquez pour choisir : {next}.", voice_lang_PT:"portugais", voice_lang_EN:"anglais", voice_lang_FR:"français",
       aria_start_time_for:"Heure de début, {name}, {day}", aria_end_time_for:"Heure de fin, {name}, {day}",
       sev_error:"ERREUR", sev_warning:"AVERTISSEMENT", sev_info:"INFO",
       text_no_allowances_week:"Aucune indemnité enregistrée cette semaine. Les indemnités journalières, kilométriques et de poste sont enregistrées ici, contre un projet et une date.",
@@ -2896,8 +2917,8 @@
       label_project:"Projet", label_acting_as:"Agit en tant que",
       chip_up_to_date:"À jour", chip_save_to_finish:"Enregistrer pour terminer",
       btn_select_no_warnings:"Sélectionner les 4 sans avertissement", chip_project_team:"Équipe du projet", btn_approve_selected:"Approuver la sélection",
-      text_approval_sub:"La file d'une autre personne, pas votre propre semaine. Couvre les personnes sur les projets de conseil de Sofia (Banking, Retail, Airports) — rien de ce que vous soumettez dans Mon relevé n'apparaît ici.",
-      text_approval_sub_pt02:"La file d'une autre personne, pas votre propre semaine. Couvre les personnes sur les projets facilities de Patrícia (Hospital campus, Airport terminal) — rien de ce que vous soumettez dans Mon relevé n'apparaît ici.",
+      text_approval_sub:"La file d'une autre personne, pas votre propre semaine. Couvre les personnes sur les projets de conseil de Sofia (Banking, Retail, Airports). Rien de ce que vous soumettez dans Mon relevé n'apparaît ici.",
+      text_approval_sub_pt02:"La file d'une autre personne, pas votre propre semaine. Couvre les personnes sur les projets facilities de Patrícia (Hospital campus, Airport terminal). Rien de ce que vous soumettez dans Mon relevé n'apparaît ici.",
       kpi_pending_approval:"En attente d'approbation", kpi_hours_submitted:"Heures soumises",
       kpi_with_warnings:"Avec avertissements", kpi_deviation_from_plan:"Écart par rapport au plan",
       hdr_team_allocated:"Équipe allouée à mes projets", chip_integrates:"S'intègre avec My Inbox et SAP Task Center",
@@ -3434,7 +3455,7 @@
     inp.id = "c-"+r.id+"-"+i;
     inp.value = v ? fmt(v) : "";
     inp.inputMode = "decimal";
-    inp.setAttribute("aria-label","Duration in hours, "+pr.name+", "+DAYS[i]);
+    inp.setAttribute("aria-label", t("aria_dur_cell", {proj: pr.name, day: DAYS[i]}));
     inp.disabled = cellLocked(i, v);
     decorateCell(inp, i, v);
     inp.addEventListener("change", function(){
@@ -3649,7 +3670,7 @@
     if(extra) node.classList.add.apply(node.classList, extra.split(" "));
     if(week.submitted){
       node.classList.add("submitted");
-      node.title = "Week " + isoWeekOf(week.start) + " was already submitted, not editable.";
+      node.title = t("tip_week_submitted_n", {n: isoWeekOf(week.start)});
     } else if(!periodOpen(dates[i])){
       node.classList.add("closed");
       node.title = t("tip_period_closed", {ym: periodFor(dates[i]).ym, bukrs: IT0001.bukrs});
@@ -3669,7 +3690,7 @@
     inp.className = "cell";
     inp.value = v ? fmt(v) : "";
     inp.inputMode = "decimal";
-    inp.setAttribute("aria-label","Duration in hours, "+pr.name+", "+monthDayLabel(week,i));
+    inp.setAttribute("aria-label", t("aria_dur_cell", {proj: pr.name, day: monthDayLabel(week,i)}));
     inp.disabled = cellLockedOf(week, i, v);
     monthDecorateCell(inp, week, i);
     inp.addEventListener("change", function(){
@@ -3788,7 +3809,7 @@
       descInp.placeholder = t("placeholder_desc_required_once");
       descInp.value = monthRow.desc || "";
       descInp.disabled = allSubmitted;
-      descInp.setAttribute("aria-label","Description, "+pr.name);
+      descInp.setAttribute("aria-label", t("aria_desc_cell", {proj: pr.name}));
       descInp.addEventListener("change", function(){
         var val = descInp.value;
         weeks.forEach(function(w){ var r = monthRowIn(w, monthRow.p); if(r) r.desc = val; });
@@ -4045,7 +4066,7 @@
       return;
     }
     if(vis.length === 0){
-      box.appendChild(el("div","paused", hidden ? "Nothing to propose. The suggestions that existed fell on days with an approved absence." : "No pending suggestions. Good sign, the week is reviewed."));
+      box.appendChild(el("div","paused", t(hidden ? "text_sugs_none_absence" : "text_sugs_none_pending")));
       return;
     }
     if(hidden){
@@ -4428,7 +4449,7 @@
       c.appendChild(el("div","why", DAYS[a.day] + " · " + PROJECTS[a.p].code + " · " + t("text_wage_type_label", {code: w.lgart})));
       if(a.note) c.appendChild(el("div","why", a.note));
       if(a.by !== a.onBehalf) c.appendChild(el("div","why", t("text_recorded_by_behalf", {name: a.byName})));
-      if(w.amount) c.appendChild(el("div","why", "Amount goes to CATSAMOUNT, native CATSDB field. ANZHL goes to CATS as 1."));
+      if(w.amount) c.appendChild(el("div","why", t("text_bonus_catsamount")));
       var acts = el("div","acts","");
       var rm = btn(t("btn_remove"),"btn sm", function(){
         if(!allowEditable(a)) return;
@@ -4990,9 +5011,9 @@
         inp.inputMode = "decimal";
         inp.disabled = m.locked || memberBlocked(m,i) || !periodOpen(WORKDATES[i], m.bukrs);
         inp.title = v ? (PROJECTS[massProject()].code + " · " + fmt(v) + " h") : "";
-        inp.setAttribute("aria-label","Hours for "+m.name+", "+DAYS[i]);
-        if(memberBlocked(m,i)){ inp.classList.add("abs"); inp.title = "Approved "+memberAbsLabel(m, i).toLowerCase(); }
-        if(!periodOpen(WORKDATES[i], m.bukrs)){ inp.classList.add("closed"); inp.title = "Closed period"; }
+        inp.setAttribute("aria-label", t("aria_team_hours", {name: m.name, day: DAYS[i]}));
+        if(memberBlocked(m,i)){ inp.classList.add("abs"); inp.title = t("tip_approved_abs", {type: memberAbsLabel(m, i).toLowerCase()}); }
+        if(!periodOpen(WORKDATES[i], m.bukrs)){ inp.classList.add("closed"); inp.title = t("tip_closed_period_short"); }
         inp.addEventListener("change", function(){
           var parsed = parseDur(inp.value);
           if(isNaN(parsed)){ toast(t("toast_bad_number", {v: inp.value})); renderTeam(); return; }
@@ -5402,7 +5423,7 @@
       c.appendChild(h);
       c.appendChild(el("div","why", DAYS[a.day] + " · " + PROJECTS[a.p].code + " · " + t("text_wage_type_label", {code: wt(a.code).lgart})));
       c.appendChild(el("div","why", a.note));
-      c.appendChild(el("div","why", "Defined and approved by " + a.byName + ", in the same act"));
+      c.appendChild(el("div","why", t("text_bonus_defined_by", {name: a.byName})));
       box.appendChild(c);
     });
   }
@@ -5680,7 +5701,6 @@
     var cap = $("capture");
     cap.classList.toggle("off", state.privateMode);
     $("captureTxt").textContent = state.privateMode ? t("capture_off") : t("capture_on");
-    if($("privBtn")) $("privBtn").textContent = state.privateMode ? "Resume capture" : "Private mode";
     render();
   }
 
@@ -6038,14 +6058,19 @@
     var y = ym.slice(0,4), mIdx = +ym.slice(4,6) - 1;
     var monthName = monthFullName(mIdx);
     $("subTitle").textContent = t("dlg_submit_month_title", {month: monthName, y: y});
-    var byP = {};
-    weeks.forEach(function(w){
-      w.rows.forEach(function(r){
-        var t = rowTotal(r);
-        if(!t) return;
+    /* only the days of this month, so the lines add up to the month total
+       even when a week at either end runs into the next or previous month */
+    var byP = {}, monthProj = 0;
+    dates.forEach(function(d){
+      var wd = weekDayFor(d);
+      if(!wd) return;
+      wd.week.rows.forEach(function(r){
+        var h = r.h[wd.day] || 0;
+        if(!h) return;
         var k = PROJECTS[r.p].code;
         if(!byP[k]) byP[k] = {name:PROJECTS[r.p].name, t:0, b:PROJECTS[r.p].proj, wbs:PROJECTS[r.p].sap.rproj || PROJECTS[r.p].sap.rkostl};
-        byP[k].t += t;
+        byP[k].t += h;
+        if(PROJECTS[r.p].proj) monthProj += h;
       });
     });
     var body = $("subBody");
@@ -6059,7 +6084,6 @@
       r.appendChild(el("span","n", fmt(o.t)+" h"));
       sum.appendChild(r);
     });
-    var monthProj = weeks.reduce(function(a,w){ return a + w.rows.reduce(function(x,r){ return x + (PROJECTS[r.p].proj ? rowTotal(r) : 0); }, 0); }, 0);
     var tr = el("div","r t","");
     tr.appendChild(el("span","",t("label_month_total")));
     tr.appendChild(el("span","", t("text_h_in_project", {h: fmt(monthProj)})));
@@ -6485,14 +6509,14 @@
     var cur = NAV_AREA[state.screen] || null;
     ["ts","lv"].forEach(function(area){
       var tabs = areaTabs(area), ab = $("area-" + area), row = $("navg-" + area);
-      if(ab){ ab.hidden = !tabs.length; ab.setAttribute("aria-current", cur === area ? "true" : "false"); ab.setAttribute("aria-expanded", cur === area ? "true" : "false"); }
+      if(ab){ ab.hidden = !tabs.length; ab.setAttribute("aria-current", cur === area ? "true" : "false"); ab.setAttribute("aria-selected", cur === area ? "true" : "false"); ab.setAttribute("aria-expanded", cur === area ? "true" : "false"); }
       if(row) row.hidden = cur !== area || tabs.length < 2;
     });
   }
   function showScreen(s){ return inUiLang(function(){ showScreenNow(s); }); }
   function showScreenNow(s){
     if(s === "cats" && state.screen !== "cats") state.prevScreen = state.screen;
-    Array.prototype.forEach.call(document.querySelectorAll("#appbar button[data-screen]"), function(x){ x.setAttribute("aria-current", x.dataset.screen === s ? "true" : "false"); });
+    Array.prototype.forEach.call(document.querySelectorAll("#appbar button[data-screen]"), function(x){ x.setAttribute("aria-current", x.dataset.screen === s ? "true" : "false"); x.setAttribute("aria-selected", x.dataset.screen === s ? "true" : "false"); });
     ["home","semana","leave","teamcal","lvaprov","team","aprov","cats"].forEach(function(k){ $("screen-"+k).hidden = k !== s; });
     state.screen = s;
     if(NAV_AREA[s]) state.areaLast[NAV_AREA[s]] = s;
@@ -7272,14 +7296,6 @@
   }
 
   /* ---------- Leave Request screen ---------- */
-  function lvKpi(label, value, small){
-    var k = el("div","kpi","");
-    k.appendChild(el("span","k", label));
-    var v = el("span","v", String(value));
-    if(small) v.appendChild(el("small",""," " + small));
-    k.appendChild(v);
-    return k;
-  }
   function renderLeave(){
     if(!$("screen-leave")) return;
     var mgrView = state.role === "manager";
@@ -7306,11 +7322,6 @@
     return "" + y + (m < 9 ? "0" : "") + (m + 1);
   }
   function monthLabelOf(key){ return monthFullName(+key.slice(4,6) - 1) + " " + key.slice(0,4); }
-  function monthDays(key){
-    var out = [], d = key + "01";
-    while(d.slice(0,6) === key){ out.push(d); d = isoAdd(d, 1); }
-    return out;
-  }
   function leaveStateKey(r){ return r.cancelRequested ? "cancel" : r.StatusID === "SENT" ? "pending" : "approved"; }
   function onLeaveDay(r, d){
     if(!(leaveActive(r) || r.cancelRequested) || d < r.StartDate || d > r.EndDate) return false;
@@ -7428,7 +7439,7 @@
           if(out.length){
             var names = out.slice(0, 2).map(function(r){ return shortName(r.EmployeeName); }).join(", ") + (out.length > 2 ? " +" + (out.length - 2) : "");
             var tm = el("span","lvteam", names);
-            tm.title = out.map(function(r){ return r.EmployeeName + ", " + absTypeLabel(r) + " (" + leaveStatusLabel(r) + ")"; }).join("\n");
+            tm.title = out.map(function(r){ return r.EmployeeName + ", " + colleagueTypeLabel(r) + " (" + leaveStatusLabel(r) + ")"; }).join("\n");
             cell.appendChild(tm);
           }
         }
@@ -7542,6 +7553,7 @@
       var wrap = el("span","","");
       var inp = document.createElement("input");
       inp.type = "file";
+      inp.setAttribute("aria-label", t("label_attachment") + ", " + attachDoc(ty));
       inp.onchange = function(){
         if(!inp.files || !inp.files[0]) return;
         r.Attachment = inp.files[0].name;
@@ -7575,7 +7587,7 @@
       ov.forEach(function(o){
         var li = el("li", o.StatusID === "SENT" ? "wait" : "ok", "");
         li.appendChild(el("span","dot",""));
-        var tx = el("div","", o.EmployeeName + " · " + absTypeLabel(o));
+        var tx = el("div","", o.EmployeeName + " · " + colleagueTypeLabel(o));
         tx.appendChild(el("small","", leavePeriodLabel(o) + " · " + leaveStatusLabel(o)));
         li.appendChild(tx);
         ol.appendChild(li);
@@ -7692,6 +7704,10 @@
      and the public holidays marked on every row. A colleague's health
      related absence shows only as an absence, without the reason. */
   var SENSITIVE_TYPES = ["0200","0210"];
+  /* a colleague's absence as anyone but their line manager may see it */
+  function colleagueTypeLabel(r){
+    return state.role === "manager" || r.EmployeeID === selfId() || SENSITIVE_TYPES.indexOf(r.AbsenceTypeCode) === -1 ? absTypeLabel(r) : t("text_absent_generic");
+  }
   function tacState(){
     if(!state.tac) state.tac = {view:"month", anchor:todayISO(), tab:"reports", hidden:{}, expanded:{}, absentOnly:false, q:"", status:"all", type:"", full:false};
     return state.tac;
@@ -8056,22 +8072,6 @@
       var act = document.createElement("td");
       act.appendChild(btn(t("btn_record_leave"), "btn sm", function(){ openLeaveDialog({EmployeeID: m.EmployeeID}); }));
       tr.appendChild(act);
-      body.appendChild(tr);
-    });
-  }
-  function renderLeaveDone(list){
-    var body = $("lvDoneBody");
-    body.innerHTML = "";
-    list.forEach(function(r){
-      var tr = document.createElement("tr");
-      tr.appendChild(td2(r.EmployeeName, "who"));
-      tr.appendChild(td2(absTypeLabel(r) + (r.decisionKind === "cancel" ? " · " + t("text_cancellation") : ""), ""));
-      tr.appendChild(td2(leavePeriodLabel(r), ""));
-      var st = document.createElement("td");
-      st.appendChild(el("span","chip " + (r.decision === "approved" ? "green" : "grey"), t(r.decision === "approved" ? "chip_approved" : "chip_rejected")));
-      if(r.ApproverComment) st.appendChild(el("div","sub", "“" + r.ApproverComment + "”"));
-      tr.appendChild(st);
-      tr.appendChild(td2(r.decidedAt || "", "sub"));
       body.appendChild(tr);
     });
   }
@@ -8486,8 +8486,6 @@
       restoreConvo(convoKey());
     }
   }
-  /* kept for the assistant's own "view as" requests */
-  function switchRole(role){ applyTestSetup(IT0001.bukrs, role, state.leader); }
 
   /* The setup window: the first thing on screen, prefilled with the last
      test this browser ran (a convenience only, the app works without it). */
@@ -8918,13 +8916,6 @@
     var a = currentActor();
     $("jlog").appendChild(el("div","jdivider", IT0001.bukrs + " · " + a.label + " · " + a.name));
     assistantEnsureGreeted();
-  }
-  function assistantRoleChanged(){
-    var a = currentActor();
-    var log = $("jlog");
-    if(log) log.appendChild(el("div","jdivider", IT0001.bukrs + " · " + a.label + " · " + a.name));
-    botSay("bot", t("bot_test_changed", {co: IT0001.bukrs, profile: a.label.toLowerCase(), name: a.name}));
-    assistantGreet();
   }
   /* What the manager decided reaches the employee the next time the
      employee is the one using the app, the way a workflow notification
@@ -9572,7 +9563,6 @@
   /* ---------- conversational assistant, Joule pattern ---------- */
   var chat = {pending:null, greeted:false, draft:null, draftWeek:null, history:[], busy:false};
   var VOICE_LANGS = {PT:"pt-PT", EN:"en-US", FR:"fr-FR"};
-  var VOICE_LANG_NAMES = {PT:"Portuguese", EN:"English", FR:"French"};
   var VOICE_LANG_ORDER = ["PT","EN","FR"];
   /* Starts aligned with the app's own language (state.lang) instead of a
      hardcoded default - setLang() keeps it in sync when that changes, via
@@ -9584,7 +9574,8 @@
     if(!langBtn) return;
     langBtn.textContent = voice.lang;
     var next = VOICE_LANG_ORDER[(VOICE_LANG_ORDER.indexOf(voice.lang) + 1) % VOICE_LANG_ORDER.length];
-    langBtn.title = "Voice input language: " + VOICE_LANG_NAMES[voice.lang] + " (click to switch to " + VOICE_LANG_NAMES[next] + ")";
+    langBtn.title = t("aria_voice_lang", {lang: t("voice_lang_" + voice.lang), next: t("voice_lang_" + next)});
+    langBtn.setAttribute("aria-label", langBtn.title);
   }
   function speakText(txt){
     if(!voice.speakReply || !window.speechSynthesis) return;
@@ -11336,6 +11327,7 @@
       botSay("bot", t(key));
       $("jinput").focus();
     }
+    syncVoiceLangBtn();
     if(!SR || !micAllowed()){
       langBtn.disabled = true;
       micBtn.title = t(SR ? "voice_blocked_short" : "voice_not_supported");
@@ -11343,7 +11335,6 @@
       return;
     }
     function nextLang(l){ return VOICE_LANG_ORDER[(VOICE_LANG_ORDER.indexOf(l) + 1) % VOICE_LANG_ORDER.length]; }
-    syncVoiceLangBtn();
     langBtn.onclick = function(){
       voice.lang = nextLang(voice.lang);
       syncVoiceLangBtn();
@@ -11393,6 +11384,16 @@
   })();
 
   document.addEventListener("keydown", function(ev){
+    /* in either row of tabs, the arrows and Home/End move along the row,
+       as in any tablist, instead of changing the week */
+    var tabRow = ev.target.getAttribute && ev.target.getAttribute("role") === "tab" ? ev.target.parentNode : null;
+    if(tabRow && /^(ArrowLeft|ArrowRight|Home|End)$/.test(ev.key)){
+      var tabs = Array.prototype.filter.call(tabRow.querySelectorAll('[role="tab"]'), function(b){ return !b.hidden; });
+      var ti = tabs.indexOf(ev.target), tn = tabs.length;
+      ev.preventDefault();
+      if(tn) tabs[ev.key === "Home" ? 0 : ev.key === "End" ? tn - 1 : (ti + (ev.key === "ArrowRight" ? 1 : -1) + tn) % tn].focus();
+      return;
+    }
     var tag = (ev.target.tagName || "").toLowerCase();
     var typing = tag === "input" || tag === "textarea" || tag === "select";
     if(ev.key === "Enter" && (ev.ctrlKey || ev.metaKey)){ ev.preventDefault(); if(!$("submitBtn").disabled) openSubmit(); return; }
@@ -11424,11 +11425,17 @@
     }
   })();
   function setPanelOpen(panelId, togId, open){
-    var p = $(panelId), t = $(togId);
-    if(!p || !t) return;
+    var p = $(panelId), tg = $(togId);
+    if(!p || !tg) return;
     p.classList.toggle("collapsed", !open);
-    t.textContent = open ? "▾" : "▸";
-    t.setAttribute("aria-expanded", open ? "true" : "false");
+    tg.textContent = open ? "▾" : "▸";
+    tg.setAttribute("aria-expanded", open ? "true" : "false");
+    /* the name says what a click does next, and follows a language change */
+    var ak = tg.dataset.i18nAria;
+    if(ak && /^aria_(expand|collapse)_/.test(ak)){
+      tg.dataset.i18nAria = ak.replace(/^aria_(expand|collapse)_/, open ? "aria_collapse_" : "aria_expand_");
+      tg.setAttribute("aria-label", t(tg.dataset.i18nAria));
+    }
   }
   function setTeamTab(tab){
     state.teamTab = tab;
