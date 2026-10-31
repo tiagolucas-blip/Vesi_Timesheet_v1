@@ -10858,7 +10858,11 @@
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify(payload)
       });
-      if(!res.ok) return null;
+      if(!res.ok){
+        /* what the server said, for whoever opens the browser console */
+        try{ console.warn("assistant /api/chat", res.status, await res.text()); }catch(e){}
+        return null;
+      }
       var data = await res.json();
       if(!data || data.error) return null;
       if(chat.curTurn) chat.curTurn.engine = "api";

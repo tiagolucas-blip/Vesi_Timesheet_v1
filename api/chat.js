@@ -25,8 +25,11 @@ function toClaudeTools() {
       properties: f.parameters.properties,
       required: f.parameters.required || [],
       additionalProperties: false
-    },
-    strict: true
+    }
+    /* no strict: true here. Strict tool use caps how many tools and
+       optional parameters one request may carry, and this list (29 tools,
+       most arguments optional) is past those caps, so the API refused
+       every request. The page validates every argument before acting. */
   }));
 }
 
@@ -142,7 +145,9 @@ export default async function handler(req, res) {
     });
     res.status(502).json({
       error: "falha_motor_linguagem",
-      detalhe: "O assistente não respondeu. Os detalhes ficaram no registo do servidor."
+      detalhe: "O assistente não respondeu. Os detalhes ficaram no registo do servidor.",
+      estado: (err && err.status) || null,
+      motivo: String((err && err.message) || "").slice(0, 300)
     });
   }
 }
