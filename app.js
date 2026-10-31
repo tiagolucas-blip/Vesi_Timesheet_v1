@@ -437,7 +437,8 @@
     var hour = 8 + (seed % 10);
     var minute = (seed * 7) % 60;
     var hh = (hour < 10 ? "0" : "") + hour, mm = (minute < 10 ? "0" : "") + minute;
-    return EMPLOYEE_NAME + ", " + day + " " + MONTHS[8] + " 2026 " + hh + ":" + mm;
+    /* the person whose sheet this is, not always the sample employee */
+    return currentActor().name + ", " + day + " " + MONTHS[8] + " 2026 " + hh + ":" + mm;
   }
   function setDetailBudgetAndAudit(pIdx, seedParts){
     var pr = PROJECTS[pIdx];
@@ -6060,6 +6061,7 @@
        independent field that could disagree with it. */
     pj.onchange = function(){ $("dtAct").value = PROJECTS[+pj.value].act; setDetailBudgetAndAudit(+pj.value, ["row", r.id]); updateDescPlaceholder(+pj.value); };
     $("dtDur").value = fmt(rowTotal(r));
+    showDurField(true);
     $("dtDesc").value = r.desc;
     $("dtAct").value = pr.act;
     $("dtOrigin").textContent = originLabel(r.origin);
@@ -6104,6 +6106,7 @@
       return a + (r ? rowTotal(r) : 0);
     }, 0);
     $("dtDur").value = fmt(total);
+    showDurField(true);
     $("dtDesc").value = monthRow.desc || "";
     $("dtAct").value = pr.act;
     $("dtOrigin").textContent = t("val_manual");
@@ -6147,6 +6150,7 @@
     st.className = "chip grey";
     $("dtDesc").readOnly = false;
     $("dtDur").readOnly = true;
+    showDurField(false);
     $("dtSave").disabled = false;
     $("dlgDetail").showModal();
   }
@@ -6173,9 +6177,13 @@
     st.className = "chip grey";
     $("dtDesc").readOnly = false;
     $("dtDur").readOnly = true;
+    showDurField(false);
     $("dtSave").disabled = false;
     $("dlgDetail").showModal();
   }
+  /* A new line is the project and its description; the hours go in the
+     grid afterwards, day by day, so the dialog asks for no duration then. */
+  function showDurField(on){ var f = $("dtDur") && $("dtDur").closest(".field"); if(f) f.hidden = !on; }
   function saveNewRow(){
     var ctx = dtNewRow;
     if(!ctx) return;
