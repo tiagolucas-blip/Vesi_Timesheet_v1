@@ -1578,6 +1578,11 @@
       bot_has_exception:"{name}'s timesheet has an exception ({note}) and needs individual review on the Approval screen, that one can't be bulk-approved.",
       bot_confirm_approve_one:"Approve {name}'s timesheet?", label_in_project:"In project", btn_approve:"Approve",
       bot_approved_one_msg:"{name}'s timesheet approved.",
+      fmt_week_n:"week {n}", bot_gap_row:"{day}: {h} of {cap} h, {left} h missing",
+      bot_gaps_head_one:"In {period} you still have {n} day to complete, {h} h in total. You have {tot} h of {exp} h:", bot_gaps_head_other:"In {period} you still have {n} days to complete, {h} h in total. You have {tot} h of {exp} h:",
+      bot_gaps_none:"Nothing missing in {period}: {tot} h of {exp} h recorded.",
+      bot_recorded_head:"In {period} you have {tot} h recorded of {exp} h expected:", bot_recorded_none:"You have no hours recorded in {period} yet.",
+      chip_fill_missing:"Fill in the missing hours", chip_what_missing:"What is missing?",
       bot_parse_failed:"I couldn't understand what to record. Write the duration and the project, for example <span class=\"num\">2h BNK payroll testing yesterday</span>. I can also show the week's status or your absences.",
       bot_parse_failed_generic:"I didn't catch all the details of that entry. Could you write it another way?",
       bot_which_project:"Which project are those hours for?",
@@ -2348,6 +2353,11 @@
       bot_has_exception:"A folha de horas de {name} tem uma exceção ({note}) e precisa de revisão individual no ecrã de Aprovação, essa não pode ser aprovada em bloco.",
       bot_confirm_approve_one:"Aprovar a folha de horas de {name}?", label_in_project:"No projeto", btn_approve:"Aprovar",
       bot_approved_one_msg:"Folha de horas de {name} aprovada.",
+      fmt_week_n:"semana {n}", bot_gap_row:"{day}: {h} de {cap} h, faltam {left} h",
+      bot_gaps_head_one:"Em {period} ainda tens {n} dia por completar, {h} h no total. Tens {tot} h de {exp} h:", bot_gaps_head_other:"Em {period} ainda tens {n} dias por completar, {h} h no total. Tens {tot} h de {exp} h:",
+      bot_gaps_none:"Não falta nada em {period}: {tot} h de {exp} h registadas.",
+      bot_recorded_head:"Em {period} tens {tot} h registadas de {exp} h esperadas:", bot_recorded_none:"Ainda não tens horas registadas em {period}.",
+      chip_fill_missing:"Preencher as horas em falta", chip_what_missing:"O que me falta?",
       bot_parse_failed:"Não consegui perceber o que registar. Escreve a duração e o projeto, por exemplo <span class=\"num\">2h BNK payroll testing yesterday</span>. Também posso mostrar o estado da semana ou as tuas ausências.",
       bot_parse_failed_generic:"Não consegui confirmar todos os detalhes desse registo. Podes escrever de outra forma?",
       bot_which_project:"A que projeto se destinam essas horas?",
@@ -3118,6 +3128,11 @@
       bot_has_exception:"Le relevé de {name} a une exception ({note}) et nécessite une revue individuelle sur l'écran Approbation, celui-là ne peut pas être approuvé en bloc.",
       bot_confirm_approve_one:"Approuver le relevé de {name} ?", label_in_project:"Sur le projet", btn_approve:"Approuver",
       bot_approved_one_msg:"Relevé de {name} approuvé.",
+      fmt_week_n:"semaine {n}", bot_gap_row:"{day} : {h} sur {cap} h, il manque {left} h",
+      bot_gaps_head_one:"En {period}, il vous reste {n} jour à compléter, {h} h au total. Vous avez {tot} h sur {exp} h :", bot_gaps_head_other:"En {period}, il vous reste {n} jours à compléter, {h} h au total. Vous avez {tot} h sur {exp} h :",
+      bot_gaps_none:"Rien ne manque en {period} : {tot} h sur {exp} h enregistrées.",
+      bot_recorded_head:"En {period}, vous avez {tot} h enregistrées sur {exp} h attendues :", bot_recorded_none:"Vous n'avez encore aucune heure enregistrée en {period}.",
+      chip_fill_missing:"Compléter les heures manquantes", chip_what_missing:"Que me manque-t-il ?",
       bot_parse_failed:"Je n'ai pas compris ce qu'il fallait enregistrer. Écrivez la durée et le projet, par exemple <span class=\"num\">2h BNK payroll testing yesterday</span>. Je peux aussi afficher le statut de la semaine ou vos absences.",
       bot_parse_failed_generic:"Je n'ai pas saisi tous les détails de cette saisie. Pouvez-vous l'écrire autrement ?",
       bot_which_project:"Pour quel projet sont ces heures ?",
@@ -9269,10 +9284,65 @@
   var WHO_APPROVES_RE = /quem (é que )?(me )?aprova|quem (é )?(o |a )?(meu |minha )?aprovador|who approves|who('s| is) my approver|who (do|should) i (send|submit)|who does (it|my \w+) go to|qui (m')?approuve|qui valide|mon approbateur|(a|para) quem (vai|v[ãa]o|envio|submeto|mando)|[àa] qui (va|vont|j'envoie)/;
   var WHY_SUBMIT_RE = /(porque|por que|porqu[êe]|why).{0,30}(n[ãa]o|can'?t|cannot|can not|isn'?t|won'?t|doesn'?t).{0,30}(submeter|submeto|submit|submiss)|o que (é que )?(falta|bloqueia|impede|me impede).{0,30}(submeter|submiss)|what('s| is) (blocking|stopping|missing).{0,30}submi|pourquoi.{0,40}soumettre|qu'est-ce qui (bloque|emp[êe]che)|^\s*(posso|j[áa] posso) submeter|^\s*can i submit|^\s*(puis-je|est-ce que je peux) soumettre/;
   var CHANGE_LEAVE_RE = /\b(alterar|altera|altere|mudar|muda|mude|modificar|modifica|change|modify|move|reschedule|modifier|modifie[rz]?|changer|change[rz]?|d[ée]placer|d[ée]place[rz]?)\b.{0,40}(pedido|request|demande|f[ée]rias|vacation|cong[ée]s|aus[êe]ncia|absence|\b45\d{5}\b)/;
+  /* "what is missing this month", "list the hours I recorded in October":
+     read from the period the timesheet shows, the month in Consulting and
+     the week in Building Solutions */
+  var GAPS_Q_RE = /(\bwhat('s| is)?\b|\bo que\b|qu'est.ce qui|\bque\b(?! (horas|heures))).{0,40}(missing|left to (record|log)|falta|manque|reste)|missing (hours|days)|(horas|dias) em falta|heures manquantes|jours manquants|what (do i|have i) (still )?(need|got|have) to (record|log)|il me manque/;
+  var RECORDED_Q_RE = /(list|show|lista|mostra|quais|que|which|what|affiche|liste|quelles).{0,40}(hours|horas|heures).{0,50}(recorded|logged|registad|registei|lancei|lan[çc]ad|saisi|enregistr)|(hours|horas|heures) (per|por|par) (project|projeto|projet)|o que (é que )?(registei|lancei)|what (have i|did i) (record|log)|qu'est.ce que j'ai (saisi|enregistr)/;
+  function periodDates(){
+    return isMonthly() ? activeMonthDates() : datesFor(WEEKS[weekIdx].start).slice(0, 5);
+  }
+  function periodLabel(){ return isMonthly() ? monthSentenceLabel() : t("fmt_week_n", {n: isoWeekOf(WEEKS[weekIdx].start)}); }
+  function showGaps(){
+    var gaps = [], miss = 0, tot = 0, exp = 0;
+    periodDates().forEach(function(d){
+      var wd = weekDayFor(d);
+      if(!wd || wd.day > 4) return;
+      var cap = capacityOf(wd.week, wd.day), done = dayTotalOf(wd.week, wd.day);
+      tot += done; exp += cap;
+      if(wd.week.submitted || done >= cap) return;
+      gaps.push(t("bot_gap_row", {day: monthDayLabel(wd.week, wd.day), h: fmt(done), cap: fmt(cap), left: fmt(cap - done)}));
+      miss += cap - done;
+    });
+    if(!gaps.length){ botSay("bot", t("bot_gaps_none", {period: periodLabel(), tot: fmt(tot), exp: fmt(exp)})); botChips([chipSubmit()]); return; }
+    var node = el("div","jlist","");
+    gaps.forEach(function(g){ node.appendChild(el("div","jrow2", g)); });
+    botSay("bot", plural(gaps.length, "bot_gaps_head", {period: periodLabel(), h: fmt(miss), tot: fmt(tot), exp: fmt(exp)}), node);
+    botChips([t("chip_fill_missing"), chipSubmit()]);
+  }
+  function showRecorded(){
+    var byP = {}, order = [], byW = {}, wOrder = [], tot = 0, exp = 0;
+    periodDates().forEach(function(d){
+      var wd = weekDayFor(d);
+      if(!wd) return;
+      exp += capacityOf(wd.week, wd.day);
+      var n = isoWeekOf(wd.week.start);
+      wd.week.rows.forEach(function(r){
+        var h = r.h[wd.day] || 0;
+        if(!h) return;
+        var k = PROJECTS[r.p].code;
+        if(!byP[k]){ byP[k] = {name: PROJECTS[r.p].name, h: 0}; order.push(k); }
+        byP[k].h += h; tot += h;
+        if(!byW[n]){ byW[n] = 0; wOrder.push(n); }
+        byW[n] += h;
+      });
+    });
+    if(!tot){ botSay("bot", t("bot_recorded_none", {period: periodLabel()})); return; }
+    var node = el("div","jlist","");
+    order.forEach(function(k){ node.appendChild(el("div","jrow2", k + " · " + byP[k].name + " · " + fmt(byP[k].h) + " h")); });
+    if(isMonthly() && wOrder.length > 1){
+      node.appendChild(el("div","jsub", t("label_weeks")));
+      wOrder.forEach(function(n){ node.appendChild(el("div","jrow2", t("fmt_week_n", {n: n}) + " · " + fmt(byW[n]) + " h")); });
+    }
+    botSay("bot", t("bot_recorded_head", {period: periodLabel(), tot: fmt(tot), exp: fmt(exp)}), node);
+    botChips([t("chip_what_missing"), chipSubmit()]);
+  }
   function answerInfoLocal(txt){
     var low = txt.toLowerCase();
     var tsWord = /timesheet|folha|horas\b|hours\b|heures\b/.test(low);
     if(WHY_SUBMIT_RE.test(low)){ explainSubmit(); return true; }
+    if(GAPS_Q_RE.test(low) && !FILL_VERB_RE.test(low)){ showGaps(); return true; }
+    if(RECORDED_Q_RE.test(low)){ showRecorded(); return true; }
     if(WHO_APPROVES_RE.test(low)){ showApprovers(); return true; }
     if(HOLIDAY_Q_RE.test(low)){ showHolidays(monthFromText(low)); return true; }
     /* "holidays in December", a month and no request: the public ones */

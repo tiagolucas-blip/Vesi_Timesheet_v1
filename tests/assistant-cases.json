@@ -2832,6 +2832,57 @@
           ]
         }
       ]
+    },
+    {
+      "id": "local-en-what-missing-month",
+      "lang": "en",
+      "why": "user on Vercel (no Claude): what is missing in October",
+      "steps": [
+        {
+          "say": "I have to have all hours recorded in October. Please let me know what is missing.",
+          "expect": [
+            "October 2026",
+            "to complete"
+          ],
+          "absent": [
+            "couldn't understand"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "local-en-list-recorded-month",
+      "lang": "en",
+      "why": "user on Vercel (no Claude): list the hours recorded in October",
+      "steps": [
+        {
+          "say": "Please list the hours that I have recorded on my timesheet in October",
+          "expect": [
+            "recorded of",
+            "BNK-2026"
+          ],
+          "absent": [
+            "couldn't understand"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "local-pt-what-missing-week-pt02",
+      "lang": "pt",
+      "company": "PT02",
+      "why": "PT02 gaps are read from the visible week",
+      "steps": [
+        {
+          "say": "o que me falta registar?",
+          "expect": [
+            "semana 44"
+          ],
+          "absent": [
+            "Não consegui perceber"
+          ]
+        }
+      ]
     }
   ]
 }
