@@ -9467,7 +9467,52 @@
     {name:"Beja", alias:["beja"], lat:38.0151, lon:-7.8632},
     {name:"Sines", alias:["sines"], lat:37.9560, lon:-8.8698},
     {name:"Portimão", alias:["portimao"], lat:37.1386, lon:-8.5370},
-    {name:"Faro", alias:["faro"], lat:37.0194, lon:-7.9322}
+    {name:"Faro", alias:["faro"], lat:37.0194, lon:-7.9322},
+    /* the places abroad a consultant most often travels between, so a trip
+       in France or Spain works like one in Portugal; anywhere else, Claude
+       sends the place's coordinates and the page estimates the road */
+    {name:"Paris", alias:["paris"], lat:48.8566, lon:2.3522},
+    {name:"Lyon", alias:["lyon","lyons"], lat:45.7640, lon:4.8357},
+    {name:"Marseille", alias:["marseille","marselha","marseilles"], lat:43.2965, lon:5.3698},
+    {name:"Bordeaux", alias:["bordeaux","bordeus"], lat:44.8378, lon:-0.5792},
+    {name:"Arcachon", alias:["arcachon"], lat:44.6586, lon:-1.1689},
+    {name:"Toulouse", alias:["toulouse"], lat:43.6047, lon:1.4442},
+    {name:"Nantes", alias:["nantes"], lat:47.2184, lon:-1.5536},
+    {name:"Lille", alias:["lille"], lat:50.6292, lon:3.0573},
+    {name:"Nice", alias:["nice"], lat:43.7102, lon:7.2620},
+    {name:"Strasbourg", alias:["strasbourg","estrasburgo"], lat:48.5734, lon:7.7521},
+    {name:"Montpellier", alias:["montpellier"], lat:43.6108, lon:3.8767},
+    {name:"Rennes", alias:["rennes"], lat:48.1173, lon:-1.6778},
+    {name:"Grenoble", alias:["grenoble"], lat:45.1885, lon:5.7245},
+    {name:"Tours", alias:["tours"], lat:47.3941, lon:0.6848},
+    {name:"Orléans", alias:["orleans"], lat:47.9030, lon:1.9093},
+    {name:"Poitiers", alias:["poitiers"], lat:46.5802, lon:0.3404},
+    {name:"La Rochelle", alias:["la rochelle"], lat:46.1603, lon:-1.1511},
+    {name:"Limoges", alias:["limoges"], lat:45.8336, lon:1.2611},
+    {name:"Clermont-Ferrand", alias:["clermont-ferrand","clermont ferrand"], lat:45.7772, lon:3.0870},
+    {name:"Dijon", alias:["dijon"], lat:47.3220, lon:5.0415},
+    {name:"Reims", alias:["reims"], lat:49.2583, lon:4.0317},
+    {name:"Metz", alias:["metz"], lat:49.1193, lon:6.1757},
+    {name:"Nancy", alias:["nancy"], lat:48.6921, lon:6.1844},
+    {name:"Rouen", alias:["rouen"], lat:49.4432, lon:1.0999},
+    {name:"Le Havre", alias:["le havre"], lat:49.4944, lon:0.1079},
+    {name:"Toulon", alias:["toulon"], lat:43.1242, lon:5.9280},
+    {name:"Perpignan", alias:["perpignan"], lat:42.6887, lon:2.8948},
+    {name:"Pau", alias:["pau"], lat:43.2951, lon:-0.3708},
+    {name:"Bayonne", alias:["bayonne"], lat:43.4929, lon:-1.4748},
+    {name:"Biarritz", alias:["biarritz"], lat:43.4832, lon:-1.5586},
+    {name:"Madrid", alias:["madrid"], lat:40.4168, lon:-3.7038},
+    {name:"Barcelona", en:"Barcelona", fr:"Barcelone", alias:["barcelona","barcelone"], lat:41.3874, lon:2.1686},
+    {name:"Sevilha", en:"Seville", fr:"Séville", alias:["sevilha","sevilla","seville"], lat:37.3891, lon:-5.9845},
+    {name:"Valência", en:"Valencia", fr:"Valence (Espagne)", alias:["valencia"], lat:39.4699, lon:-0.3763},
+    {name:"Bilbau", en:"Bilbao", fr:"Bilbao", alias:["bilbau","bilbao"], lat:43.2630, lon:-2.9350},
+    {name:"Vigo", alias:["vigo"], lat:42.2406, lon:-8.7207},
+    {name:"Corunha", en:"A Coruña", fr:"La Corogne", alias:["corunha","coruna","a coruna","la coruna","la corogne"], lat:43.3623, lon:-8.4115},
+    {name:"Salamanca", alias:["salamanca","salamanque"], lat:40.9701, lon:-5.6635},
+    {name:"Badajoz", alias:["badajoz"], lat:38.8794, lon:-6.9707},
+    {name:"Bruxelas", en:"Brussels", fr:"Bruxelles", alias:["bruxelas","brussels","bruxelles"], lat:50.8503, lon:4.3517},
+    {name:"Luxemburgo", en:"Luxembourg", fr:"Luxembourg", alias:["luxemburgo","luxembourg"], lat:49.6116, lon:6.1319},
+    {name:"Genebra", en:"Geneva", fr:"Genève", alias:["genebra","geneva","geneve"], lat:46.2044, lon:6.1432}
   ];
   function kmKey(a, b){ return [a, b].sort().join("|"); }
   var ROAD_KM = {};
@@ -9481,7 +9526,14 @@
     ["Porto","Viseu",128], ["Porto","Vila Real",95], ["Porto","Viana do Castelo",72], ["Porto","Matosinhos",9],
     ["Porto","Vila Nova de Gaia",5], ["Porto","Faro",555], ["Porto","Leiria",190], ["Porto","Bragança",210],
     ["Coimbra","Aveiro",62], ["Coimbra","Leiria",72], ["Coimbra","Viseu",92], ["Faro","Portimão",67],
-    ["Braga","Guimarães",25]
+    ["Braga","Guimarães",25],
+    ["Paris","Lyon",465], ["Paris","Bordeaux",585], ["Paris","Arcachon",645], ["Bordeaux","Arcachon",65],
+    ["Paris","Marseille",775], ["Paris","Lille",225], ["Paris","Nantes",385], ["Paris","Toulouse",680],
+    ["Paris","Strasbourg",490], ["Paris","Rennes",350], ["Paris","Tours",240], ["Paris","Orléans",130],
+    ["Paris","Nice",930], ["Paris","Reims",145], ["Paris","Rouen",135], ["Lyon","Marseille",315],
+    ["Lyon","Grenoble",110], ["Bordeaux","Toulouse",245], ["Bordeaux","Biarritz",190], ["Marseille","Nice",200],
+    ["Lisboa","Madrid",625], ["Lisboa","Badajoz",225], ["Lisboa","Sevilha",460], ["Lisboa","Paris",1735],
+    ["Porto","Vigo",150], ["Porto","Madrid",560], ["Madrid","Barcelona",620], ["Porto","Salamanca",320]
   ].forEach(function(r){ ROAD_KM[kmKey(r[0], r[1])] = r[2]; });
   /* where a trip starts when only the destination is said */
   var OFFICE_PLACE = {PT01:"Lisboa", PT02:"Porto"};
@@ -9566,8 +9618,12 @@
     var any = (week.rows || []).filter(function(r){ return allowed.indexOf(r.p) !== -1; })[0];
     return any ? any.p : (allowed.length ? allowed[0] : 0);
   }
-  function setKmEnd(d, end, raw){
+  function setKmEnd(d, end, raw, lat, lon){
     var place = placeByName(raw);
+    if(!place && isFinite(lat) && isFinite(lon) && Math.abs(lat) <= 90 && Math.abs(lon) <= 180 && (lat || lon)){
+      var label = String(raw).trim().replace(/\b\w/g, function(c){ return c.toUpperCase(); });
+      place = {name: label, alias: [], lat: Number(lat), lon: Number(lon), adhoc: true};
+    }
     d[end] = place;
     d[end + "Label"] = place ? placeLabel(place) : String(raw).trim().replace(/\b\w/g, function(c){ return c.toUpperCase(); });
     if(!place) d.unknown = d[end + "Label"];
@@ -10997,8 +11053,8 @@
         return true;
       case "registar_quilometros":
         var kd = {round: !!la.ida_e_volta};
-        if(la.destino) setKmEnd(kd, "to", la.destino);
-        if(la.origem) setKmEnd(kd, "from", la.origem);
+        if(la.destino) setKmEnd(kd, "to", la.destino, la.destino_lat, la.destino_lon);
+        if(la.origem) setKmEnd(kd, "from", la.origem, la.origem_lat, la.origem_lon);
         else if(kd.toLabel){ var ko = officePlace(); kd.from = ko; kd.fromLabel = t("label_office_base", {city: placeLabel(ko)}); kd.fromOffice = true; }
         if(Number(la.km) > 0) kd.given = Math.round(Number(la.km));
         if(isoArg(la.data)) kd.date = isoArg(la.data);

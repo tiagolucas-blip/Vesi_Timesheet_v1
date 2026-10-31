@@ -2883,6 +2883,51 @@
           ]
         }
       ]
+    },
+    {
+      "id": "km-pt-france-known",
+      "lang": "pt",
+      "why": "user: km in France, Paris to Arcachon",
+      "steps": [
+        {
+          "say": "km de Paris a Arcachon ontem",
+          "expect": [
+            "Paris → Arcachon",
+            "645 km"
+          ],
+          "absent": [
+            "Não tenho a distância"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "claude-intent-km-abroad-coords",
+      "lang": "pt",
+      "why": "places outside the list come with coordinates from Claude, the page estimates the road",
+      "steps": [
+        {
+          "say": "km de Lille a Gand ontem",
+          "intent": {
+            "funcao": "registar_quilometros",
+            "argumentos": {
+              "origem": "Lille",
+              "destino": "Gand",
+              "data": "2026-10-27",
+              "destino_lat": 51.0543,
+              "destino_lon": 3.7174
+            },
+            "texto": null
+          },
+          "expect": [
+            "Lille → Gand",
+            "estimativa"
+          ],
+          "absent": [
+            "Não tenho a distância"
+          ]
+        }
+      ]
     }
   ]
 }
