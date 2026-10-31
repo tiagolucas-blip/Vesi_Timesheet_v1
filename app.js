@@ -1224,7 +1224,7 @@
       chip_leave_tomorrow:"Tomorrow", chip_leave_next_week:"Next week", bot_leave_form_opened:"Here's the form, already filled with what you told me.",
       bot_leave_ambiguous:"{name} has a leave request and a timesheet waiting. Which one?",
       bot_leave_need_more:"I need the type of absence and the dates.",
-      bot_help_text_home:"A few things I can do: log your hours (<span class=\"num\">2h BNK payroll testing yesterday</span>), request an absence (<span class=\"num\">vacation 3 to 6 November</span>, <span class=\"num\">doctor tomorrow 14h to 17h</span>), record kilometres with the distance worked out (<span class=\"num\">km from Lisbon to Porto yesterday</span>), check or cancel your requests and your vacation balance, check the week, submit it, and, as a manager, see what's waiting and approve or reject. Just say it in plain language.",
+      bot_help_text_home:"A few things I can do: log your hours (<span class=\"num\">2h BNK payroll testing yesterday</span>), request an absence (<span class=\"num\">vacation 3 to 6 November</span>, <span class=\"num\">doctor tomorrow 14h to 17h</span>), record kilometres with the distance worked out (<span class=\"num\">km from Lisbon to Porto yesterday</span>), check, change or cancel your requests, your vacation balance on any date and its movements, tell you who approves, what blocks a submission, the public holidays and who's off in your team, fill in your missing hours, check the week, submit it, and, as a manager, see what's waiting and approve or reject. Just say it in plain language.",
       brand_title:"Time Recording", brand_subtitle:"Fiori Prototype",
       capture_on:"Suggestions on, private timeline", capture_off:"Capture paused",
       aria_it0001:"Company of the employee, from IT0001",
@@ -1615,7 +1615,45 @@
       dlg_shortcuts_title:"Keyboard shortcuts",
       row_open_close_assistant:"Go to the assistant", row_new_quick_add:"New quick add",
       row_copy_previous_week:"Copy previous week", row_prev_next_week:"Previous and next week",
-      row_confirm_cell:"Confirm cell and move down", row_show_list:"Show this list"
+      row_confirm_cell:"Confirm cell and move down", row_show_list:"Show this list",
+      bot_balance_asof:"On {date} your vacation balance will be {avail} days: {total} of entitlement, {used} taken or approved by then and {req} requested and waiting.",
+      bot_movements_intro:"Your vacation account for {y}, movement by movement. Available now: {avail} days.",
+      bot_request_status:"Request {id}: {who}{type}, {period}. Status: {status}.",
+      bot_request_not_found:"I can't find request {id} among yours. These are your requests:",
+      bot_request_which:"Which request? These are yours:",
+      bot_approvers_ts_month:"Your timesheet is submitted by month and approved by {names}.",
+      bot_approvers_ts_week:"Your timesheet is submitted by week and approved by {names}.",
+      bot_approvers_leave:"Your absences go to {name}.",
+      bot_submit_check_ok_month:"Nothing blocks {month}: {total} h of {exp} h expected. It goes to {names} when you submit it.",
+      bot_submit_check_ok_week:"Nothing blocks week {num}: {total} h of {exp} h expected. It goes to {names} when you submit it.",
+      bot_holidays_next:"The next public holidays ({office} calendar), with no hours expected and not deducted from leave:",
+      bot_holidays_month:"Public holidays in {month} ({office} calendar), with no hours expected and not deducted from leave:",
+      bot_holidays_none:"No public holidays in {month} ({office} calendar).",
+      bot_teamcal_intro:"Who's off, {when}:",
+      bot_teamcal_none:"Nobody in your team calendar is off, {when}.",
+      bot_team_balances_only_manager:"The team's balances are seen by the line manager ({name}). I can tell you your own.",
+      bot_team_balances_intro:"Your team's vacation balances for {y}:",
+      text_team_balance_row:"{name} · {avail} days available, {req} pending",
+      bot_leave_nothing_to_change:"You have no pending request to change. An approved one is cancelled and requested again.",
+      bot_leave_which_change:"Which request do you want to change? Only pending ones can be changed:",
+      bot_leave_cannot_change:"Request {id} can't be changed any more ({status}). Only a pending request can; an approved one is cancelled and requested again.",
+      bot_leave_change_what:"What should change in request {id}? Tell me the new dates or type, or open the form.",
+      bot_leave_confirm_change:"Here's request {id} with the change. It goes back to {name} for approval.",
+      bot_leave_changed_msg:"Changed. Request {id} is back with {name} for approval.",
+      bot_leave_onbehalf_only_manager:"Only the line manager records an absence for someone else ({name}, for your team). I can request your own.",
+      bot_leave_onbehalf_who:"Who is it for? I can record it for one of your direct reports: {list}.",
+      bot_leave_onbehalf_confirm:"Recording this absence for {name}, approved as it's recorded.",
+      bot_leave_onbehalf_done:"Recorded for {name}, already approved.",
+      bot_allow_bonus_owner:"The project bonus is recorded by the project owner for the team, on Team entry, never on your own timesheet.",
+      bot_allow_turno_pt02:"The shift allowance only exists in Building Solutions (PT02).",
+      bot_allow_country:"Which country? The foreign per diem needs it.",
+      bot_allow_which_project:"Which project is the {name} for?",
+      bot_allow_confirm:"Here's the allowance to record. Nothing is saved until you confirm.",
+      bot_allow_recorded:"Recorded: {name} on {day}, {qty} days.",
+      bot_pending_in_month_one:"{n} leave request to decide touching {month}:", bot_pending_in_month_other:"{n} leave requests to decide touching {month}:",
+      bot_pending_in_month_none:"Nothing waiting for you in {month}.",
+      bot_ts_queue_month:"In Consulting each timesheet is the person's whole month, here {month}.",
+      bot_ts_queue_week:"In Building Solutions each timesheet is one week."
     },
     pt: {
       navg_timesheet:"Timesheet",
@@ -1963,7 +2001,7 @@
       chip_leave_tomorrow:"Amanhã", chip_leave_next_week:"Próxima semana", bot_leave_form_opened:"Aqui está o formulário, já preenchido com o que me disseste.",
       bot_leave_ambiguous:"{name} tem um pedido de ausência e uma timesheet à espera. Qual dos dois?",
       bot_leave_need_more:"Preciso do tipo de ausência e das datas.",
-      bot_help_text_home:"Algumas coisas que posso fazer: registar as tuas horas (<span class=\"num\">2h BNK testes de payroll ontem</span>), pedir uma ausência (<span class=\"num\">férias de 3 a 6 de novembro</span>, <span class=\"num\">consulta médica amanhã das 14h às 17h</span>), registar quilómetros com a distância calculada (<span class=\"num\">km de Lisboa para o Porto ontem</span>), consultar ou cancelar os teus pedidos e o saldo de férias, ver a semana e submetê-la e, como chefia, ver o que está à espera e aprovar ou rejeitar. Escreve em linguagem normal.",
+      bot_help_text_home:"Algumas coisas que posso fazer: registar as tuas horas (<span class=\"num\">2h BNK testes de payroll ontem</span>), pedir uma ausência (<span class=\"num\">férias de 3 a 6 de novembro</span>, <span class=\"num\">consulta médica amanhã das 14h às 17h</span>), registar quilómetros com a distância calculada (<span class=\"num\">km de Lisboa para o Porto ontem</span>), consultar, alterar ou cancelar os teus pedidos, o saldo de férias em qualquer data e os seus movimentos, dizer quem aprova, o que bloqueia uma submissão, os feriados e quem está ausente na equipa, preencher as horas em falta, ver a semana e submetê-la e, como chefia, ver o que está à espera e aprovar ou rejeitar. Escreve em linguagem normal.",
       brand_title:"Registo de Horas", brand_subtitle:"Protótipo Fiori",
       capture_on:"Sugestões ativas, linha do tempo privada", capture_off:"Captura em pausa",
       aria_it0001:"Empresa do colaborador, a partir do IT0001",
@@ -2347,7 +2385,45 @@
       dlg_shortcuts_title:"Atalhos de teclado",
       row_open_close_assistant:"Ir para o assistente", row_new_quick_add:"Novo adicionar rápido",
       row_copy_previous_week:"Copiar semana anterior", row_prev_next_week:"Semana anterior e seguinte",
-      row_confirm_cell:"Confirmar célula e descer", row_show_list:"Mostrar esta lista"
+      row_confirm_cell:"Confirmar célula e descer", row_show_list:"Mostrar esta lista",
+      bot_balance_asof:"A {date} o teu saldo de férias será de {avail} dias: {total} de direito, {used} gozados ou aprovados até lá e {req} pedidos à espera.",
+      bot_movements_intro:"A tua conta de férias de {y}, movimento a movimento. Disponível agora: {avail} dias.",
+      bot_request_status:"Pedido {id}: {who}{type}, {period}. Estado: {status}.",
+      bot_request_not_found:"Não encontro o pedido {id} entre os teus. Estes são os teus pedidos:",
+      bot_request_which:"Qual pedido? Estes são os teus:",
+      bot_approvers_ts_month:"A tua timesheet é submetida ao mês e aprovada por {names}.",
+      bot_approvers_ts_week:"A tua timesheet é submetida à semana e aprovada por {names}.",
+      bot_approvers_leave:"As tuas ausências vão para {name}.",
+      bot_submit_check_ok_month:"Nada bloqueia o mês de {month}: {total} h de {exp} h esperadas. Quando o submeteres, vai para {names}.",
+      bot_submit_check_ok_week:"Nada bloqueia a semana {num}: {total} h de {exp} h esperadas. Quando a submeteres, vai para {names}.",
+      bot_holidays_next:"Os próximos feriados (calendário de {office}), sem horas esperadas e sem desconto nas férias:",
+      bot_holidays_month:"Feriados em {month} (calendário de {office}), sem horas esperadas e sem desconto nas férias:",
+      bot_holidays_none:"Não há feriados em {month} (calendário de {office}).",
+      bot_teamcal_intro:"Quem está ausente, {when}:",
+      bot_teamcal_none:"Ninguém do teu calendário da equipa está ausente, {when}.",
+      bot_team_balances_only_manager:"Os saldos da equipa são vistos pela chefia ({name}). Posso dizer-te o teu.",
+      bot_team_balances_intro:"Saldos de férias da tua equipa em {y}:",
+      text_team_balance_row:"{name} · {avail} dias disponíveis, {req} pendentes",
+      bot_leave_nothing_to_change:"Não tens nenhum pedido pendente para alterar. Um pedido aprovado cancela-se e pede-se de novo.",
+      bot_leave_which_change:"Que pedido queres alterar? Só os pendentes podem ser alterados:",
+      bot_leave_cannot_change:"O pedido {id} já não pode ser alterado ({status}). Só um pedido pendente pode; um aprovado cancela-se e pede-se de novo.",
+      bot_leave_change_what:"O que muda no pedido {id}? Diz-me as novas datas ou o tipo, ou abre o formulário.",
+      bot_leave_confirm_change:"Aqui está o pedido {id} com a alteração. Volta para {name} aprovar.",
+      bot_leave_changed_msg:"Alterado. O pedido {id} voltou para {name} aprovar.",
+      bot_leave_onbehalf_only_manager:"Só a chefia regista uma ausência em nome de outra pessoa ({name}, na tua equipa). Posso pedir a tua.",
+      bot_leave_onbehalf_who:"Para quem é? Posso registá-la para alguém que reporta diretamente a ti: {list}.",
+      bot_leave_onbehalf_confirm:"Vou registar esta ausência para {name}, aprovada no momento do registo.",
+      bot_leave_onbehalf_done:"Registada para {name}, já aprovada.",
+      bot_allow_bonus_owner:"O bónus de projeto é registado pelo responsável do projeto para a equipa, no Lançamento da equipa, nunca na tua própria timesheet.",
+      bot_allow_turno_pt02:"O subsídio de turno só existe na Building Solutions (PT02).",
+      bot_allow_country:"Em que país? A ajuda de custo no estrangeiro precisa dele.",
+      bot_allow_which_project:"Para que projeto é a {name}?",
+      bot_allow_confirm:"Aqui está o abono a registar. Nada é gravado sem confirmares.",
+      bot_allow_recorded:"Registado: {name} em {day}, {qty} dias.",
+      bot_pending_in_month_one:"{n} pedido de ausência por decidir em {month}:", bot_pending_in_month_other:"{n} pedidos de ausência por decidir em {month}:",
+      bot_pending_in_month_none:"Nada à tua espera em {month}.",
+      bot_ts_queue_month:"Na Consultoria cada timesheet é o mês inteiro da pessoa, aqui {month}.",
+      bot_ts_queue_week:"Na Building Solutions cada timesheet é uma semana."
     },
     fr: {
       navg_timesheet:"Feuille de temps",
@@ -2695,7 +2771,7 @@
       chip_leave_tomorrow:"Demain", chip_leave_next_week:"La semaine prochaine", bot_leave_form_opened:"Voici le formulaire, déjà rempli avec ce que vous m'avez dit.",
       bot_leave_ambiguous:"{name} a une demande d'absence et une feuille de temps en attente. Laquelle ?",
       bot_leave_need_more:"J'ai besoin du type d'absence et des dates.",
-      bot_help_text_home:"Voici ce que je peux faire : saisir vos heures (<span class=\"num\">2h BNK tests de paie hier</span>), demander une absence (<span class=\"num\">congés du 3 au 6 novembre</span>, <span class=\"num\">médecin demain de 14h à 17h</span>), enregistrer des kilomètres avec la distance calculée (<span class=\"num\">km de Lisbonne à Porto hier</span>), consulter ou annuler vos demandes et votre solde de congés, voir la semaine et la soumettre et, en tant que responsable, voir ce qui attend et approuver ou refuser. Écrivez simplement en langage naturel.",
+      bot_help_text_home:"Voici ce que je peux faire : saisir vos heures (<span class=\"num\">2h BNK tests de paie hier</span>), demander une absence (<span class=\"num\">congés du 3 au 6 novembre</span>, <span class=\"num\">médecin demain de 14h à 17h</span>), enregistrer des kilomètres avec la distance calculée (<span class=\"num\">km de Lisbonne à Porto hier</span>), consulter, modifier ou annuler vos demandes, votre solde de congés à n'importe quelle date et ses mouvements, dire qui approuve, ce qui bloque une soumission, les jours fériés et qui est absent dans l'équipe, compléter vos heures manquantes, voir la semaine et la soumettre et, en tant que responsable, voir ce qui attend et approuver ou refuser. Écrivez simplement en langage naturel.",
       brand_title:"Saisie des temps", brand_subtitle:"Prototype Fiori",
       capture_on:"Suggestions activées, historique privé", capture_off:"Capture en pause",
       aria_it0001:"Société de l'employé, à partir de l'IT0001",
@@ -3079,7 +3155,45 @@
       dlg_shortcuts_title:"Raccourcis clavier",
       row_open_close_assistant:"Aller à l'assistant", row_new_quick_add:"Nouvel ajout rapide",
       row_copy_previous_week:"Copier la semaine précédente", row_prev_next_week:"Semaine précédente et suivante",
-      row_confirm_cell:"Valider la cellule et descendre", row_show_list:"Afficher cette liste"
+      row_confirm_cell:"Valider la cellule et descendre", row_show_list:"Afficher cette liste",
+      bot_balance_asof:"Au {date}, votre solde de congés sera de {avail} jours : {total} de droits, {used} pris ou approuvés d'ici là et {req} demandés en attente.",
+      bot_movements_intro:"Votre compte de congés {y}, mouvement par mouvement. Disponible maintenant : {avail} jours.",
+      bot_request_status:"Demande {id} : {who}{type}, {period}. Statut : {status}.",
+      bot_request_not_found:"Je ne trouve pas la demande {id} parmi les vôtres. Voici vos demandes :",
+      bot_request_which:"Quelle demande ? Voici les vôtres :",
+      bot_approvers_ts_month:"Votre feuille de temps est soumise au mois et approuvée par {names}.",
+      bot_approvers_ts_week:"Votre feuille de temps est soumise à la semaine et approuvée par {names}.",
+      bot_approvers_leave:"Vos absences vont chez {name}.",
+      bot_submit_check_ok_month:"Rien ne bloque le mois de {month} : {total} h sur {exp} h attendues. Une fois soumis, il part chez {names}.",
+      bot_submit_check_ok_week:"Rien ne bloque la semaine {num} : {total} h sur {exp} h attendues. Une fois soumise, elle part chez {names}.",
+      bot_holidays_next:"Les prochains jours fériés (calendrier de {office}), sans heures attendues et non décomptés des congés :",
+      bot_holidays_month:"Jours fériés en {month} (calendrier de {office}), sans heures attendues et non décomptés des congés :",
+      bot_holidays_none:"Aucun jour férié en {month} (calendrier de {office}).",
+      bot_teamcal_intro:"Qui est absent, {when} :",
+      bot_teamcal_none:"Personne de votre calendrier d'équipe n'est absent, {when}.",
+      bot_team_balances_only_manager:"Les soldes de l'équipe sont visibles par le responsable ({name}). Je peux vous donner le vôtre.",
+      bot_team_balances_intro:"Soldes de congés de votre équipe en {y} :",
+      text_team_balance_row:"{name} · {avail} jours disponibles, {req} en attente",
+      bot_leave_nothing_to_change:"Vous n'avez aucune demande en attente à modifier. Une demande approuvée s'annule et se redemande.",
+      bot_leave_which_change:"Quelle demande voulez-vous modifier ? Seules celles en attente peuvent l'être :",
+      bot_leave_cannot_change:"La demande {id} ne peut plus être modifiée ({status}). Seule une demande en attente peut l'être ; une demande approuvée s'annule et se redemande.",
+      bot_leave_change_what:"Que faut-il changer dans la demande {id} ? Donnez-moi les nouvelles dates ou le type, ou ouvrez le formulaire.",
+      bot_leave_confirm_change:"Voici la demande {id} avec la modification. Elle repart chez {name} pour approbation.",
+      bot_leave_changed_msg:"Modifiée. La demande {id} est de nouveau chez {name} pour approbation.",
+      bot_leave_onbehalf_only_manager:"Seul le responsable saisit une absence pour quelqu'un d'autre ({name}, pour votre équipe). Je peux demander la vôtre.",
+      bot_leave_onbehalf_who:"Pour qui ? Je peux la saisir pour l'un de vos collaborateurs directs : {list}.",
+      bot_leave_onbehalf_confirm:"Je saisis cette absence pour {name}, approuvée dès la saisie.",
+      bot_leave_onbehalf_done:"Saisie pour {name}, déjà approuvée.",
+      bot_allow_bonus_owner:"La prime de projet est saisie par le responsable du projet pour l'équipe, dans Saisie d'équipe, jamais dans votre propre feuille de temps.",
+      bot_allow_turno_pt02:"La prime d'équipe n'existe que chez Building Solutions (PT02).",
+      bot_allow_country:"Dans quel pays ? L'indemnité à l'étranger en a besoin.",
+      bot_allow_which_project:"Pour quel projet est cette {name} ?",
+      bot_allow_confirm:"Voici l'indemnité à saisir. Rien n'est enregistré sans votre confirmation.",
+      bot_allow_recorded:"Saisi : {name} le {day}, {qty} jours.",
+      bot_pending_in_month_one:"{n} demande d'absence à décider en {month} :", bot_pending_in_month_other:"{n} demandes d'absence à décider en {month} :",
+      bot_pending_in_month_none:"Rien ne vous attend en {month}.",
+      bot_ts_queue_month:"Chez Consulting, chaque feuille de temps est le mois entier de la personne, ici {month}.",
+      bot_ts_queue_week:"Chez Building Solutions, chaque feuille de temps est une semaine."
     }
   };
   /* Two languages, kept apart: the screens use the one chosen in Settings
@@ -7385,7 +7499,7 @@
     box.innerHTML = "";
     var asOf = state.lvAsOf || todayISO();
     $("lvAsOf").value = isoToDmy(asOf);
-    var bal = leaveBalance(), at = balanceOf(PERNR, null, asOf);
+    var bal = leaveBalance(), at = balanceOf(selfId(), null, asOf);
     box.appendChild(el("div","accname", t("acc_vacation", {y: bal.year})));
     var big = el("div","accbig", fmtDays(at.available));
     big.appendChild(el("small","", t("unit_days")));
@@ -8635,11 +8749,13 @@
       [t("label_period"), leavePeriodLabel(d)],
       [t("label_duration"), d.partial ? fmt(d.hours) + " h" : plural(leaveWorkdays(d), "n_workdays")]
     ];
-    if(ty.quota){
-      var bal = leaveBalance(d.bukrs);
-      lines.push([t("label_balance_after"), fmtDays(bal.available - leaveDays(d)) + " " + t("unit_days")]);
+    /* a changed request gives its old days back before taking the new ones */
+    if(ty.quota) lines.push([t("label_balance_after"), fmtDays(leaveAvailableFor(d) - leaveDays(d)) + " " + t("unit_days")]);
+    if(d.onBehalf){
+      lines.unshift([t("th_employee"), (reportById(d.EmployeeID, d.bukrs) || {}).name || ""]);
+      lines.push([t("th_status"), t("lr_status_approved")]);
     }
-    lines.push([t("label_approver"), approverFor(selfId(), d.bukrs).name + " · " + t("role_manager")]);
+    else lines.push([t("label_approver"), approverFor(selfId(), d.bukrs).name + " · " + t("role_manager")]);
     if(d.Notes) lines.push([t("label_note"), d.Notes]);
     return lines;
   }
@@ -8661,10 +8777,10 @@
       return;
     }
     chat.pending = "leave";
-    var card = botCard(leaveCardLines(d), t("btn_send_request"), function(){
+    var card = botCard(leaveCardLines(d), t(d.RequestID ? "btn_save_changes" : d.onBehalf ? "btn_record_leave" : "btn_send_request"), function(){
       var r = createLeave(d, "Joule");
-      botSay("bot", t("bot_leave_sent", {id: r.RequestID, name: r.ApproverName}));
-      botChips([t("chip_my_leave"), t("chip_hours_i_have")]);
+      botSay("bot", t(d.RequestID ? "bot_leave_changed_msg" : d.onBehalf ? "bot_leave_onbehalf_done" : "bot_leave_sent", {id: r.RequestID, name: d.onBehalf ? r.EmployeeName : r.ApproverName}));
+      botChips(d.onBehalf ? managerChips() : [t("chip_my_leave"), t("chip_hours_i_have")]);
     }, notes.length ? notes.join(" ") : null);
     if(needAttach){
       var ty = absType(d.AbsenceTypeCode), send = card.querySelector(".acts .btn.primary");
@@ -8684,7 +8800,9 @@
         if(send){ send.disabled = !d.Attachment; send.title = ""; }
       };
     }
-    botSay("bot", needAttach ? t("bot_leave_confirm_attach", {doc: attachDoc(absType(d.AbsenceTypeCode))}) : t("bot_leave_confirm"), card);
+    var lead = d.RequestID ? t("bot_leave_confirm_change", {id: d.RequestID, name: approverFor(selfId(), d.bukrs).name})
+      : d.onBehalf ? t("bot_leave_onbehalf_confirm", {name: (reportById(d.EmployeeID, d.bukrs) || {}).name || ""}) : "";
+    botSay("bot", (lead ? lead + " " : "") + (needAttach ? t("bot_leave_confirm_attach", {doc: attachDoc(absType(d.AbsenceTypeCode))}) : lead ? "" : t("bot_leave_confirm")), card);
     chat.history.push({role:"assistant", content:"Proposed leave request: " + d.AbsenceTypeCode + ", " + d.StartDate + " to " + d.EndDate + ". Waiting for confirmation."});
   }
   function upcomingLeave(){
@@ -8779,10 +8897,20 @@
     if(q.length) list.push(t("chip_approve_leave_of", {name: q[0].EmployeeName.split(" ")[0]}));
     return list;
   }
-  function showPendingApprovals(){
+  function showPendingApprovals(ym){
     if(state.role === "employee"){ showMyLeave(); return; }
     if(state.role === "pm"){ showTimesheetQueue(); return; }
     var q = leaveQueue();
+    /* "what's waiting for November": the requests touching that month */
+    if(ym){
+      q = q.filter(function(r){ return r.StartDate.slice(0,6) <= ym && r.EndDate.slice(0,6) >= ym; });
+      var mLbl = monthSentenceOf(ym);
+      var nodeM = el("div","jlist","");
+      q.forEach(function(r){ nodeM.appendChild(el("div","jrow2", r.RequestID + " · " + r.EmployeeName + " · " + (r.cancelRequested ? t("text_cancellation") + ", " : "") + absTypeLabel(r) + " · " + leavePeriodLabel(r))); });
+      botSay("bot", q.length ? plural(q.length, "bot_pending_in_month", {month: mLbl}) : t("bot_pending_in_month_none", {month: mLbl}), q.length ? nodeM : null);
+      botChips(managerChips());
+      return;
+    }
     var node = el("div","jlist","");
     q.forEach(function(r){
       var ov = leaveOverlaps(r);
@@ -8797,7 +8925,11 @@
     q.forEach(function(a){
       node.appendChild(el("div","jrow2", a.who + " · " + a.proj + " · " + fmt(a.tot) + " h" + (a.warn ? " · " + approvalNoteLabel(a.note) : "")));
     });
-    botSay("bot", pmAlertText(), q.length ? node : null);
+    /* Consulting approves each person's month, Building Solutions the week */
+    var period = state.approvals === APPROVALS_PT01
+      ? t("bot_ts_queue_month", {month: monthSentenceOf(approvalMonth())})
+      : t("bot_ts_queue_week");
+    botSay("bot", pmAlertText() + " " + period, q.length ? node : null);
     botChips(pmChips());
   }
   function matchLeaveTargets(txt){
@@ -9107,6 +9239,67 @@
     else askLeaveMissing(d);
     return true;
   }
+  /* A month named in a question ("feriados em dezembro", "this month"):
+     full names only, since "out", "set" or "mar" are words too. No year
+     given means the next time that month comes round. */
+  function monthFromText(low){
+    var cur = todayISO().slice(0,6);
+    if(/este m[eê]s|this month|ce mois/.test(low)) return cur;
+    if(/pr[óo]ximo m[eê]s|m[eê]s que vem|next month|mois prochain/.test(low)) return monthAdd(cur, 1);
+    var words = low.split(/[^a-zà-ÿ]+/), yr = low.match(/\b(20\d\d)\b/);
+    for(var i=0; i<words.length; i++){
+      var w = words[i], mi = monthIndexOf(w);
+      if(mi === -1 || (w.length < 4 && !(w === "mai" && /\b(en|de|em) mai\b/.test(low)))) continue;
+      var ym = (yr ? yr[1] : cur.slice(0,4)) + (mi < 9 ? "0" : "") + (mi + 1);
+      if(!yr && ym < cur) ym = monthAdd(ym, 12);
+      return ym;
+    }
+    return "";
+  }
+  /* Questions about what the screens show, read ahead of the leave
+     request parser: public holidays, the team calendar, balances (on a
+     date, the team's), the account's movements, a request's status, who
+     approves, what blocks the submission. Returns true when answered. */
+  var HOLIDAY_Q_RE = /feriado|public holiday|bank holiday|national holiday|\bf[ée]ri[ée]s?(?![a-zà-ÿ])/;
+  var TEAMCAL_Q_RE = /calend[áa]rio da equipa|team calendar|calendrier de l'[ée]quipe|quem (é que )?(est[áa]|vai estar|anda|fica) (de f[ée]rias|ausente|fora|de baixa)|quem (é que )?(falta|est[áa] fora)|who('s| is| will be|s going to be) (off|out|away|absent|on (vacation|leave|holiday))|qui (est|sera|va [êe]tre) (absent|en cong[ée]s?|en vacances)|aus[êe]ncias da equipa|f[ée]rias da equipa|team('s)? absences|absences de l'[ée]quipe|colegas (de f[ée]rias|ausentes)|colleagues (off|away|absent)|coll[èe]gues absents/;
+  var TEAM_BAL_Q_RE = /(saldos?|balances?|soldes?)( de f[ée]rias| de cong[ée]s| of vacation)? (da|de l'|of the|of my|de mon|de mon [ée]quipe|de la) ?(equipa|team|[ée]quipe)|team('s)? (vacation |leave )?balances?|saldos da equipa/;
+  var MOVES_Q_RE = /movimentos|movements|mouvements|extrato|account history|hist[óo]rico (da conta|do saldo|das f[ée]rias)|historique (du compte|des cong[ée]s)/;
+  var BAL_Q_RE = /\b(saldo|balance|solde)\b/;
+  var STATUS_WORD_RE = /estado|status|statut|situa[çc][ãa]o|como (est[áa]|vai)|em que p[ée]|where('s| is)|o[uù] en est|what happened|o que aconteceu|qu'est devenue?|j[áa] (foi )?aprovad|been approved|est.elle approuv|workflow/;
+  var WHO_APPROVES_RE = /quem (é que )?(me )?aprova|quem (é )?(o |a )?(meu |minha )?aprovador|who approves|who('s| is) my approver|who (do|should) i (send|submit)|who does (it|my \w+) go to|qui (m')?approuve|qui valide|mon approbateur|(a|para) quem (vai|v[ãa]o|envio|submeto|mando)|[àa] qui (va|vont|j'envoie)/;
+  var WHY_SUBMIT_RE = /(porque|por que|porqu[êe]|why).{0,30}(n[ãa]o|can'?t|cannot|can not|isn'?t|won'?t|doesn'?t).{0,30}(submeter|submeto|submit|submiss)|o que (é que )?(falta|bloqueia|impede|me impede).{0,30}(submeter|submiss)|what('s| is) (blocking|stopping|missing).{0,30}submi|pourquoi.{0,40}soumettre|qu'est-ce qui (bloque|emp[êe]che)|^\s*(posso|j[áa] posso) submeter|^\s*can i submit|^\s*(puis-je|est-ce que je peux) soumettre/;
+  var CHANGE_LEAVE_RE = /\b(alterar|altera|altere|mudar|muda|mude|modificar|modifica|change|modify|move|reschedule|modifier|modifie[rz]?|changer|change[rz]?|d[ée]placer|d[ée]place[rz]?)\b.{0,40}(pedido|request|demande|f[ée]rias|vacation|cong[ée]s|aus[êe]ncia|absence|\b45\d{5}\b)/;
+  function answerInfoLocal(txt){
+    var low = txt.toLowerCase();
+    var tsWord = /timesheet|folha|horas\b|hours\b|heures\b/.test(low);
+    if(WHY_SUBMIT_RE.test(low)){ explainSubmit(); return true; }
+    if(WHO_APPROVES_RE.test(low)){ showApprovers(); return true; }
+    if(HOLIDAY_Q_RE.test(low)){ showHolidays(monthFromText(low)); return true; }
+    /* "holidays in December", a month and no request: the public ones */
+    if(/\bholidays\b/.test(low) && monthFromText(low) && !LEAVE_REQUEST_VERB_RE.test(low) && !/\d/.test(low)){ showHolidays(monthFromText(low)); return true; }
+    if(TEAM_BAL_Q_RE.test(low)){ showTeamBalances(); return true; }
+    if(TEAMCAL_Q_RE.test(low)){
+      var ym = monthFromText(low), dd = ym ? null : parseLeaveDates(low);
+      if(ym) showTeamCalendar(ym + "01", isoAdd(monthAdd(ym, 1) + "01", -1));
+      else showTeamCalendar(dd ? dd.start : "", dd ? dd.end : "");
+      return true;
+    }
+    if(MOVES_Q_RE.test(low)){ showMovements(); return true; }
+    var num = (low.match(/\b(45\d{5})\b/) || [])[1] || "";
+    if(CHANGE_LEAVE_RE.test(low)){
+      var p = parseLeaveText(txt.replace(/\b45\d{5}\b/g, " "));
+      var ch = leaveDraftFrom(p, null);
+      offerChangeLeave(num, ch);
+      return true;
+    }
+    if(STATUS_WORD_RE.test(low) && (num || /pedido|request|demande/.test(low))){ showRequestStatus(num); return true; }
+    if(BAL_Q_RE.test(low) && !tsWord){
+      var bd = parseLeaveDates(low);
+      if(bd && !/\bhoje\b|\btoday\b|aujourd'hui/.test(low)) showBalanceAsOf(bd.end); else showLeaveBalance();
+      return true;
+    }
+    return false;
+  }
   var LEAVE_REQUEST_VERB_RE = /\b(quero|queria|gostava|pedir|pe[çc]o|marcar|preciso|tirar|request|book|take|need|want|poser|demander|prendre)\b|would like|je veux|je voudrais|j'aimerais/;
   /* Returns true when the message was about leave and has been answered. */
   function handleLeaveLocal(txt){
@@ -9114,14 +9307,15 @@
     /* the assistant serves the person talking to it, never another profile */
     if(/mudar (o |de )?(teste|perfil)|change (the |my )?(test|profile)|changer (de |le )?(test|profil)|ver como|view as|voir en tant que|switch (to|profile)/.test(low)){ botSay("bot", t("bot_no_profile_switch")); botChips([t("chip_hours_i_have"), t("chip_my_leave")]); return true; }
     if(/formul[áa]rio|request form|open the form|formulaire/.test(low)){ openLeaveDialog(chat.leaveFormPrefill || chat.leaveDraft || null); chat.leaveFormPrefill = null; chat.leaveDraft = null; botSay("bot", t("bot_leave_form_opened")); return true; }
+    if(answerInfoLocal(txt)) return true;
 
     var type = detectLeaveType(low);
     var hasLeave = !!type || LEAVE_GENERIC_RE.test(low);
     var tsWord = /timesheet|folha|horas\b|relev[ée]|hours\b/.test(low);
 
     /* the manager's inbox */
-    if(/para aprovar|por aprovar|pendentes?\b|pending|to approve|[àa] approuver|en attente|o que (é que )?tenho|what do i have|qu'est-ce que j'ai/.test(low) && !tsWord){
-      if(state.role !== "employee" || hasLeave){ showPendingApprovals(); return true; }
+    if(/para aprovar|por aprovar|pendentes?\b|pending|to approve|[àa] approuver|en attente|o que (é que )?tenho|what do i have|qu'est-ce que j'ai|what('s| is) waiting|waiting for me|[àa] minha espera|m'attend/.test(low) && !tsWord){
+      if(state.role !== "employee" || hasLeave){ showPendingApprovals(state.role === "manager" ? monthFromText(low) : ""); return true; }
     }
     var targets = matchLeaveTargets(txt);
     /* "all" on its own still means the timesheets, as it always has; it
@@ -9146,7 +9340,17 @@
     if(!hasLeave) return false;
 
     if(/cancel|anul|retir|withdraw|annul|desmarc/.test(low)){ offerWithdraw(findLeaveTarget(txt)); return true; }
-    if(/saldo|balance|solde|quantos dias|how many (\w+ )?days|combien de jours|dias dispon|days (do i have )?left|restam|sobram|me restent/.test(low)){ showLeaveBalance(); return true; }
+    /* "vacation for Ana 3 to 5 November": an absence for someone else,
+       which only the line manager records, for a direct report */
+    var forWho = txt.match(/\b(?:para|for|pour)\s+(?:o\s+|a\s+|the\s+)?([A-ZÀ-Ý][a-zà-ÿ]+(?:\s+[A-ZÀ-Ý][a-zà-ÿ]+)?)/);
+    var forReport = forWho && reportsOf().filter(function(m){ return m.EmployeeID !== selfId() && foldText(m.name.split(" ")[0]) === foldText(forWho[1].split(" ")[0]); })[0];
+    if(forReport){ offerLeaveOnBehalf(forReport.name, leaveDraftFrom(parseLeaveText(txt), null)); return true; }
+    if(/saldo|balance|solde|quantos dias|how many (\w+ )?days|combien de jours|dias dispon|days (do i have )?left|restam|sobram|me restent/.test(low)){
+      /* with a date, the balance as it will stand that day */
+      var bd = parseLeaveDates(low);
+      if(bd && !/\bhoje\b|\btoday\b|aujourd'hui/.test(low)) showBalanceAsOf(bd.end); else showLeaveBalance();
+      return true;
+    }
 
     var p = parseLeaveText(txt);
     if(p.dates || (LEAVE_REQUEST_VERB_RE.test(low) && type)){
@@ -9802,6 +10006,279 @@
     botSay("bot",t("bot_help_text_home"), null, true);
     botChips([t("chip_hours_i_have"),t("chip_my_absences"),t("chip_copy_last_week"),chipSubmit()]);
   }
+
+  /* ---------- what the screens show, asked in the chat ----------
+     Each answer reads the same data as its screen and stays inside the
+     profile: the person's own account and requests, the colleagues the
+     team calendar shows them (health related reasons masked for anyone
+     but the line manager), and the line manager's team balances. */
+  function myRequestRow(r){ return r.RequestID + " · " + absTypeLabel(r) + " · " + leavePeriodLabel(r) + " · " + leaveStatusLabel(r); }
+  function showBalanceAsOf(dateISO){
+    var b = balanceOf(selfId(), null, dateISO);
+    botSay("bot", t("bot_balance_asof", {date: fmtDate(dateISO), avail: fmtDays(b.available), total: fmtDays(b.total), used: fmtDays(b.used), req: fmtDays(b.requested)}));
+    botChips([t("chip_request_vacation"), t("chip_my_leave")]);
+  }
+  function showMovements(){
+    var bal = leaveBalance(), node = el("div","jlist","");
+    node.appendChild(el("div","jrow2", fmtDate(bal.year + "0101") + " · " + t("mv_entitlement") + " · +" + fmtDays(bal.entitlement)));
+    if(bal.carryover) node.appendChild(el("div","jrow2", fmtDate(bal.year + "0101") + " · " + t("mv_carryover", {y: bal.year - 1}) + " · +" + fmtDays(bal.carryover)));
+    if(bal.usedBefore) node.appendChild(el("div","jrow2", t("mv_used_before") + " · −" + fmtDays(bal.usedBefore)));
+    myLeave().filter(function(r){ var ty = absType(r.AbsenceTypeCode); return ty && ty.quota; })
+      .sort(function(x, y){ return x.StartDate < y.StartDate ? -1 : 1; })
+      .forEach(function(r){
+        node.appendChild(el("div","jrow2", leavePeriodLabel(r) + " · " + absTypeLabel(r) + " " + r.RequestID + " · " + (leaveActive(r) ? "−" + fmtDays(leaveDays(r)) : "0") + " · " + leaveStatusLabel(r)));
+      });
+    botSay("bot", t("bot_movements_intro", {y: bal.year, avail: fmtDays(bal.available)}), node);
+    botChips([t("chip_request_vacation"), t("chip_my_leave")]);
+  }
+  /* A request's status and workflow: the person's own, or for the line
+     manager one of the requests their console shows. */
+  function visibleRequest(id){
+    var r = leaveById(id);
+    if(!r) return null;
+    if(r.EmployeeID === selfId()) return r;
+    if(state.role === "manager" && (reportById(r.EmployeeID) || leaveQueue().indexOf(r) !== -1)) return r;
+    return null;
+  }
+  function showRequestStatus(id){
+    var r = id ? visibleRequest(id) : null;
+    if(!r){
+      var mine = myLeave().filter(function(x){ return x.StatusID === "SENT" || x.cancelRequested; });
+      if(!id && mine.length === 1) r = mine[0];
+      else {
+        var node = el("div","jlist",""), list = upcomingLeave();
+        if(!list.length) node.appendChild(el("div","jrow2", t("text_no_upcoming_leave")));
+        list.forEach(function(x){ node.appendChild(el("div","jrow2", myRequestRow(x))); });
+        botSay("bot", id ? t("bot_request_not_found", {id: id}) : t("bot_request_which"), node);
+        botChips([t("chip_my_leave")]);
+        return;
+      }
+    }
+    var steps = el("div","jlist","");
+    leaveWorkflow(r).forEach(function(s){ steps.appendChild(el("div","jrow2", s.txt + (s.when ? " · " + s.when : "") + (s.note ? " · “" + s.note + "”" : ""))); });
+    botSay("bot", t("bot_request_status", {id: r.RequestID, who: r.EmployeeID === selfId() ? "" : r.EmployeeName + ", ", type: absTypeLabel(r), period: leavePeriodLabel(r), status: leaveStatusLabel(r)}), steps);
+    botChips(canEditLeave(r) ? [t("chip_my_leave"), t("chip_leave_form")] : [t("chip_my_leave")]);
+  }
+  /* who approves what this person sends: the timesheet by project (owner
+     of each, or one level up), per month in PT01 and per week in PT02,
+     and the absences, always the direct manager */
+  function periodRows(){
+    return isMonthly() ? openMonthWeeks().reduce(function(a, w){ return a.concat(w.rows); }, []) : state.rows;
+  }
+  function approverByProject(){
+    var ps = rowsProjects(periodRows());
+    if(!ps.length) ps = profileProjects();
+    return ps.map(function(p){ return {code: PROJECTS[p].code, name: timesheetApprovers([p])[0]}; });
+  }
+  function showApprovers(){
+    var rows = approverByProject(), names = [];
+    rows.forEach(function(x){ if(names.indexOf(x.name) === -1) names.push(x.name); });
+    var node = el("div","jlist","");
+    rows.forEach(function(x){ node.appendChild(el("div","jrow2", x.code + " · " + x.name)); });
+    botSay("bot", t(isMonthly() ? "bot_approvers_ts_month" : "bot_approvers_ts_week", {names: names.join(", ")}) + " " + t("bot_approvers_leave", {name: approverFor(selfId()).name}), node);
+    botChips([chipSubmit(), t("chip_my_leave")]);
+  }
+  /* "why can't I submit?": what blocks the period, or that nothing does,
+     without submitting anything */
+  function explainSubmit(){
+    if(isMonthly()){
+      var dates = activeMonthDates(), month = monthSentenceLabel(), open = openMonthWeeks();
+      if(!open.length){ botSay("bot", t("bot_month_already_submitted", {month: month})); return; }
+      var mErrs = monthErrors(dates);
+      if(mErrs.length){ var mp = submitProblems(mErrs); sayCantSubmit(plural(mp.length, "bot_cant_submit_month", {month: month}), mp); return; }
+      var mWarns = 0;
+      open.forEach(function(w){ withWeek(w, function(){ mWarns += validate().filter(function(m){ return m.sev === "w"; }).length; }); });
+      botSay("bot", t("bot_submit_check_ok_month", {month: month, total: fmt(monthTotalHours(dates)), exp: fmt(monthCapacityTotal(dates)), names: approverNames(periodRows())}) + (mWarns ? " " + plural(mWarns, "n_warnings_no_block") + "." : ""));
+      botChips([chipSubmit()]);
+      return;
+    }
+    var num = isoWeekOf(WEEKS[weekIdx].start);
+    if(state.submitted){ botSay("bot", t("bot_week_already_submitted")); return; }
+    var errs = errors();
+    if(errs.length){ var wp = submitProblems(errs); sayCantSubmit(plural(wp.length, "bot_cant_submit_week", {num: num}), wp); return; }
+    var warns = validate().filter(function(m){ return m.sev === "w"; }).length;
+    botSay("bot", t("bot_submit_check_ok_week", {num: num, total: fmt(weekTotal()), exp: fmt(weekCapacity()), names: approverNames(state.rows)}) + (warns ? " " + plural(warns, "n_warnings_no_block") + "." : ""));
+    botChips([chipSubmit()]);
+  }
+  /* the company's public holidays: those in a month, or the next ones */
+  function showHolidays(ym){
+    var today = todayISO(), office = placeLabel(officePlace());
+    var list = HOLIDAYS.filter(function(h){
+      if(h[4] && h[4] !== IT0001.bukrs) return false;
+      return ym ? h[0].slice(0,6) === ym : h[0] >= today;
+    });
+    if(!ym) list = list.slice(0, 6);
+    var monthLbl = ym ? monthSentenceOf(ym) : "";
+    if(!list.length){ botSay("bot", t("bot_holidays_none", {month: monthLbl, office: office})); botChips([t("chip_request_vacation")]); return; }
+    var node = el("div","jlist","");
+    list.forEach(function(h){ node.appendChild(el("div","jrow2", fmtDateShort(h[0]) + " " + h[0].slice(0,4) + " · " + holidayName(h))); });
+    botSay("bot", t(ym ? "bot_holidays_month" : "bot_holidays_next", {month: monthLbl, office: office}), node);
+    botChips([t("chip_request_vacation")]);
+  }
+  /* The people the team calendar shows this profile: colleagues under the
+     same manager, or for the line manager the reports (one level further
+     down included) and the peers. */
+  function calendarPeople(){
+    var b = IT0001.bukrs, me = selfId(), out = [];
+    if(state.role === "manager"){
+      reportsOf(b).forEach(function(m){
+        out.push({id:m.EmployeeID, name:m.name});
+        (SUB_REPORTS[m.EmployeeID] || []).forEach(function(x){ out.push({id:x.EmployeeID, name:x.name}); });
+      });
+      MANAGER_PEERS[b].forEach(function(m){ out.push({id:m.EmployeeID, name:m.name}); });
+    } else {
+      reportsOf(b).forEach(function(m){ if(m.EmployeeID !== me) out.push({id:m.EmployeeID, name:m.name}); });
+    }
+    return out;
+  }
+  function calendarAbsences(from, to){
+    var out = [];
+    calendarPeople().forEach(function(pp){
+      requestsOf(pp.id).forEach(function(r){
+        if(!(leaveActive(r) || r.cancelRequested) || r.EndDate < from || r.StartDate > to) return;
+        out.push({name: pp.name, r: r});
+      });
+    });
+    return out.sort(function(x, y){ return x.r.StartDate < y.r.StartDate ? -1 : x.r.StartDate > y.r.StartDate ? 1 : 0; });
+  }
+  function showTeamCalendar(from, to){
+    if(!from){ from = mondayOf(todayISO()); to = isoAdd(from, 6); }
+    if(!to || to < from) to = from;
+    var list = calendarAbsences(from, to);
+    var when = from === to ? fmtDate(from) : t("leave_range", {from: fmtDate(from), to: fmtDate(to)});
+    if(!list.length){ botSay("bot", t("bot_teamcal_none", {when: when})); botChips([t("chip_request_vacation")]); return; }
+    var masked = false, node = el("div","jlist","");
+    list.forEach(function(x){
+      var lbl = colleagueTypeLabel(x.r);
+      if(lbl === t("text_absent_generic")) masked = true;
+      node.appendChild(el("div","jrow2", x.name + " · " + lbl + " · " + leavePeriodLabel(x.r) + " · " + leaveStatusLabel(x.r)));
+    });
+    botSay("bot", t("bot_teamcal_intro", {when: when}) + (masked ? " " + t("text_tac_privacy") : ""), node);
+    botChips([t("chip_request_vacation")]);
+  }
+  /* the line manager's view of the team's vacation accounts */
+  function showTeamBalances(){
+    if(state.role !== "manager"){
+      botSay("bot", t("bot_team_balances_only_manager", {name: approverFor(selfId()).name}));
+      botChips([t("chip_my_leave")]);
+      return;
+    }
+    var node = el("div","jlist","");
+    reportsOf().forEach(function(m){
+      var b = balanceOf(m.EmployeeID);
+      node.appendChild(el("div","jrow2", t("text_team_balance_row", {name: m.name, avail: fmtDays(b.available), req: fmtDays(b.requested)})));
+    });
+    botSay("bot", t("bot_team_balances_intro", {y: leaveBalance().year}), node);
+    botChips(managerChips());
+  }
+  /* "change request 4500400 to 5 to 7 November": the same card as a new
+     request, carrying the request number, so it goes back to the approver */
+  function offerChangeLeave(id, changes){
+    var r = id ? leaveById(id) : null;
+    if(r && r.EmployeeID !== selfId()) r = null;
+    if(!r){
+      var cands = myLeave().filter(canEditLeave);
+      if(!cands.length){ botSay("bot", t("bot_leave_nothing_to_change")); botChips([t("chip_my_leave")]); return; }
+      if(cands.length === 1 && !id) r = cands[0];
+      else {
+        var node = el("div","jlist","");
+        cands.forEach(function(c){ node.appendChild(el("div","jrow2", myRequestRow(c))); });
+        botSay("bot", t("bot_leave_which_change"), node);
+        return;
+      }
+    }
+    if(!canEditLeave(r)){
+      botSay("bot", t("bot_leave_cannot_change", {id: r.RequestID, status: leaveStatusLabel(r).toLowerCase()}));
+      botChips([t("chip_my_leave")]);
+      return;
+    }
+    var d = {RequestID: r.RequestID, AbsenceTypeCode: r.AbsenceTypeCode, StartDate: r.StartDate, EndDate: r.EndDate, partial: r.partial, hours: r.hours,
+      StartTime: r.StartTime, EndTime: r.EndTime, Notes: r.Notes || "", Attachment: r.Attachment || ""};
+    var c = changes || {};
+    if(c.AbsenceTypeCode) d.AbsenceTypeCode = c.AbsenceTypeCode;
+    if(c.StartDate){ d.StartDate = c.StartDate; d.EndDate = c.EndDate || c.StartDate; if(!c.partial){ d.partial = false; } }
+    if(c.partial){ d.partial = true; d.StartTime = c.StartTime; d.EndTime = c.EndTime; d.hours = c.hours; }
+    if(c.Notes) d.Notes = c.Notes;
+    if(d.StartDate === r.StartDate && d.EndDate === r.EndDate && d.AbsenceTypeCode === r.AbsenceTypeCode && d.partial === r.partial && d.StartTime === r.StartTime && d.Notes === (r.Notes || "")){
+      botSay("bot", t("bot_leave_change_what", {id: r.RequestID}));
+      botChips([t("chip_leave_form")]);
+      chat.leaveFormPrefill = r;
+      return;
+    }
+    offerLeave(d);
+  }
+  /* The line manager records an absence for a direct report, approved as
+     it's recorded, as on the Leave Request screen. Nobody else can. */
+  function offerLeaveOnBehalf(name, d){
+    if(state.role !== "manager"){
+      botSay("bot", t("bot_leave_onbehalf_only_manager", {name: approverFor(selfId()).name}));
+      botChips([t("chip_request_vacation")]);
+      return;
+    }
+    var low = foldText(name).trim();
+    var hits = reportsOf().filter(function(m){ return m.EmployeeID !== selfId() && low && (foldText(m.name).indexOf(low) !== -1 || foldText(m.name.split(" ")[0]) === low.split(" ")[0]); });
+    if(hits.length !== 1){
+      botSay("bot", t("bot_leave_onbehalf_who", {list: reportsOf().map(function(m){ return m.name; }).join(", ")}));
+      return;
+    }
+    d.EmployeeID = hits[0].EmployeeID;
+    d.onBehalf = true;
+    if(!d.AbsenceTypeCode || !d.StartDate){ askLeaveMissing(d); return; }
+    offerLeave(d);
+  }
+  /* The person's own per diem or shift allowance on a day of the visible
+     week (kilometres have their own card, with the distance worked out;
+     the bonus is the project owner's, on Team entry). */
+  function offerOwnAllowance(code, day, qty, note, pIdx){
+    var w = wt(code);
+    if(!w || code === "BONUS"){ botSay("bot", t("bot_allow_bonus_owner")); botChips([t("chip_help")]); return; }
+    if(code === "KMS"){ offerKm({}); return; }
+    if(wtFor().indexOf(w) === -1){ botSay("bot", t("bot_allow_turno_pt02")); botChips([t("chip_help")]); return; }
+    if(state.submitted){ botSay("bot", t("bot_week_locked")); return; }
+    if(day == null || day === -1){ botSay("bot", t("bot_day_outside_week")); botChips([t("chip_help")]); return; }
+    if(!periodOpen(WORKDATES[day])){ botSay("bot", t("bot_day_closed", {day: DAYS[day]})); return; }
+    if(w.noteLabel && !note){ botSay("bot", t("bot_allow_country")); return; }
+    var allowed = profileProjects();
+    if(w.needProj){
+      if(pIdx !== -1 && pIdx != null && allowed.indexOf(pIdx) === -1){ sayNotAllocated(pIdx, null); return; }
+      if(pIdx === -1 || pIdx == null){
+        if(allowed.length !== 1){ botSay("bot", t("bot_allow_which_project", {name: wtName(w)})); botChips(projectChoices(-1).map(function(i){ return PROJECTS[i].code; })); return; }
+        pIdx = allowed[0];
+      }
+    }
+    var q = qty > 0 ? qty : 1;
+    var lines = [[t("label_allowance"), wtName(w) + " · " + w.lgart], [t("label_day"), DAYS[day]], [t("label_to_record"), fmt(q) + " " + t("unit_days")]];
+    if(w.needProj) lines.push([t("label_project"), PROJECTS[pIdx].code + " · " + PROJECTS[pIdx].name]);
+    if(note) lines.push([t("label_note"), note]);
+    lines.push([t("label_origin"), "Joule"]);
+    chat.pending = "allow";
+    botSay("bot", t("bot_allow_confirm"), botCard(lines, t("btn_register"), function(){
+      state.allow.push({id:"al" + (nextId++), day:day, p: w.needProj ? pIdx : 3, code:code, qty:q, amount:0, note:note || "",
+        by:IT0001.pernr, onBehalf:IT0001.pernr, byName:"self", origin:"Joule"});
+      render();
+      botSay("bot", t("bot_allow_recorded", {name: wtName(w), day: DAYS[day], qty: fmt(q)}));
+      botChips([t("chip_hours_i_have"), chipSubmit()]);
+    }));
+  }
+  /* the local reading of "per diem yesterday on BNK", "subsídio de turno hoje" */
+  var OWN_ALLOW_RE = [
+    ["AJC_INT", /ajudas? de custo (no )?estrangeiro|di[áa]ria (no )?estrangeiro|foreign per\s*diem|indemnit[ée]s? (de d[ée]placement )?(à l'|a l')?[ée]tranger|per\s*diem (à l'|a l')?[ée]tranger/],
+    ["AJC_NAC", /ajudas? de custo|di[áa]ria|per\s*diem|daily allowance|indemnit[ée]s? de d[ée]placement|frais de mission/],
+    ["TURNO", /subs[íi]dio de turno|shift allowance|prime (de travail post[ée]|de quart|d'[ée]quipe|de [ée]quipe)/],
+    ["BONUS", /b[óo]nus|prime de projet|project bonus/]
+  ];
+  function ownAllowanceFromText(txt){
+    var low = txt.toLowerCase(), code = null;
+    for(var i=0; i<OWN_ALLOW_RE.length; i++){ if(OWN_ALLOW_RE[i][1].test(low)){ code = OWN_ALLOW_RE[i][0]; break; } }
+    if(!code) return null;
+    var rest = " " + txt + " ";
+    var dm = matchDayMention(rest);
+    var day = dm ? dm.day : todayDayIdx();
+    var qm = rest.match(/(\d+(?:[.,]\d+)?)\s*(?:dias?|days?|jours?)\b/i);
+    var pm = matchProject(rest);
+    var cm = txt.match(/(?:pa[íi]s|country|pays)\s*:?\s*([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ ]+)$/i) || txt.match(/\b(?:em|in|en|au)\s+(Espanha|Spain|Espagne|Fran[çc]a|France|Alemanha|Germany|Allemagne|Angola|Brasil|Brazil|Br[ée]sil|Mo[çc]ambique|Mozambique|Reino Unido|United Kingdom|Royaume.Uni)\b/i);
+    return {code:code, day:day, qty: qm ? parseDur(qm[1]) : 1, p: pm ? pm.p : -1, note: cm ? cm[1].trim() : ""};
+  }
   function goToScreen(key, label){
     if(!profileHasScreen(key)){
       botSay("bot", t("bot_screen_not_in_profile", {screen: label}));
@@ -9853,8 +10330,9 @@
      Solutions. When something blocks it, the reply says so before anything
      else and lists what to fix, instead of offering what wasn't asked. */
   function chipSubmit(){ return t(isMonthly() ? "chip_submit_month" : "chip_submit_week"); }
-  function monthSentenceLabel(){
-    var ym = monthKeyOf(WEEKS[weekIdx]), name = monthFullName(+ym.slice(4,6) - 1);
+  function monthSentenceLabel(){ return monthSentenceOf(monthKeyOf(WEEKS[weekIdx])); }
+  function monthSentenceOf(ym){
+    var name = monthFullName(+ym.slice(4,6) - 1);
     return t("fmt_month_year", {month: curLang() === "en" ? name : name.toLowerCase(), y: ym.slice(0,4)});
   }
   /* the same problem in several weeks of the month is said once, with
@@ -10188,9 +10666,8 @@
       var payload = {
           mensagem: txt,
           historico: chat.history.slice(0, -1).slice(-12),
-          /* The assistant always replies in the app's own language setting, not
-             whatever language the message happens to be written in - same rule
-             the rest of the UI follows (one selector, in Settings, for everything). */
+          /* the language of this message (botHandle set it as the reply
+             language), not the screens': the assistant answers in it */
           idioma: curLang(),
           contexto: {
             ecra_atual: {home:"Assistant", semana:"My Timesheet", leave:"Leave Request", team:"Team", aprov:"Approval", cats:"CATS mapping"}[state.screen] || "My Timesheet",
@@ -10201,8 +10678,20 @@
             tipos_ausencia: ABSENCE_TYPES.map(function(ty){ return {codigo: ty.code, nome: t("abs_" + ty.code), parte_do_dia: ty.partial, desconta_ferias: ty.quota}; }),
             saldo_ferias: (function(){ var b = leaveBalance(); return {direito: b.total, gozados: b.used, pedidos: b.requested, disponivel: b.available}; })(),
             pedidos_ausencia: myLeave().filter(function(r){ return r.EndDate >= isoAdd(todayISO(), -30) || r.StatusID === "SENT"; }).map(function(r){
-              return {pedido: r.RequestID, tipo: r.AbsenceTypeCode, inicio: isoToInput(r.StartDate), fim: isoToInput(r.EndDate), horas: r.partial ? r.hours : null, estado: r.StatusID, cancelamento_pendente: !!r.cancelRequested, pode_cancelar: canWithdraw(r)};
+              return {pedido: r.RequestID, tipo: r.AbsenceTypeCode, inicio: isoToInput(r.StartDate), fim: isoToInput(r.EndDate), horas: r.partial ? r.hours : null, estado: r.StatusID, cancelamento_pendente: !!r.cancelRequested, pode_cancelar: canWithdraw(r), pode_alterar: canEditLeave(r), aprovador: r.ApproverName || approverFor(selfId()).name, motivo_rejeicao: r.StatusID === "REJECTED" ? (r.ApproverComment || "") : null};
             }),
+            /* who approves what this person sends, and the company's public
+               holidays from today on (no hours expected, not deducted) */
+            aprovadores: {horas: approverByProject().map(function(x){ return {projeto: x.code, aprovador: x.name}; }), periodo: isMonthly() ? "mensal" : "semanal", ausencias: approverFor(selfId()).name},
+            feriados: HOLIDAYS.filter(function(h){ return (!h[4] || h[4] === IT0001.bukrs) && h[0] >= todayISO(); }).slice(0, 10).map(function(h){ return {data: isoToInput(h[0]), nome: holidayName(h)}; }),
+            /* the team calendar as this profile sees it, two weeks back and
+               twelve ahead: a colleague's health related reason is never
+               sent, only that they're absent, except to the line manager */
+            calendario_equipa: calendarAbsences(isoAdd(todayISO(), -14), isoAdd(todayISO(), 84)).map(function(x){
+              var masked = state.role !== "manager" && SENSITIVE_TYPES.indexOf(x.r.AbsenceTypeCode) !== -1;
+              return {nome: x.name, tipo: masked ? "ausente" : x.r.AbsenceTypeCode, inicio: isoToInput(x.r.StartDate), fim: isoToInput(x.r.EndDate), estado: x.r.StatusID};
+            }),
+            saldos_equipa: state.role !== "manager" ? [] : reportsOf().map(function(m){ var b = balanceOf(m.EmployeeID); return {nome: m.name, disponivel: b.available, pedidos: b.requested}; }),
             /* only what this profile has: approvals of leave for the line
                manager, the team and timesheet approvals for the project
                manager, and everyone's own timesheet and leave */
@@ -10228,10 +10717,10 @@
               ? activeMonthDates().filter(function(dateISO){
                   var wd = weekDayFor(dateISO);
                   return wd && wd.day <= 4 && !wd.week.submitted && periodOpen(dateISO)
-                    && capacityOf(wd.week, wd.day) > 0 && dayTotalOf(wd.week, wd.day) === 0;
+                    && capacityOf(wd.week, wd.day) - dayTotalOf(wd.week, wd.day) > 0;
                 }).map(function(dateISO){ var wd = weekDayFor(dateISO); return monthDayLabel(wd.week, wd.day); })
-              : [0,1,2,3,4].filter(function(d){ return capacity(d) > 0 && dayTotal(d) === 0; }).map(function(d){ return DAYS[d]; }),
-            semana: {total: weekTotal(), esperado: weekCapacity(), erros: errors().length, submetida: state.submitted},
+              : state.submitted ? [] : [0,1,2,3,4].filter(function(d){ return periodOpen(WORKDATES[d]) && capacity(d) - dayTotal(d) > 0; }).map(function(d){ return DAYS[d]; }),
+            semana: {total: weekTotal(), esperado: weekCapacity(), erros: errors().length, problemas: submitProblems(errors()), submetida: state.submitted},
             /* what "submit" sends: the month in Consulting, the week in
                Building Solutions; for the month, its own totals and what
                blocks it, so the reply never says it can't submit the month */
@@ -10277,6 +10766,7 @@
                 regista: profileFor(WORKDATES[0], m.bukrs).clock ? "relogio" : "duracao"
               };
             }),
+            periodo_aprovacao: state.role !== "pm" ? null : state.approvals === APPROVALS_PT01 ? {tipo: "mensal", mes: monthSentenceOf(approvalMonth())} : {tipo: "semanal"},
             aprovacoes: state.role !== "pm" ? [] : tsQueue().map(function(a){ return {nome: a.who, tem_excecao: !!a.warn, nota: a.note || null, aprovado: !!a.approved}; }),
             pedido_por_confirmar: chat.pending === "entry" && chat.draft
               ? {dia: DAYS[chat.draft.day], duracao_horas: chat.draft.dur, projeto: PROJECTS[chat.draft.p].code.split("-")[0], descricao: chat.draft.desc}
@@ -10377,6 +10867,8 @@
           StartTime: la.hora_inicio || "", EndTime: la.hora_fim || "", Notes: String(la.nota || "").trim()
         };
         if(dl.partial && !dl.StartTime){ dl.StartTime = "09:00"; dl.EndTime = fmtClock(9*60 + Math.round(dl.hours*60)); }
+        /* on behalf of someone else: only the line manager, for a report */
+        if(String(la.pessoa || "").trim()){ offerLeaveOnBehalf(String(la.pessoa), dl); return true; }
         if(!dl.AbsenceTypeCode || !dl.StartDate){
           if(intent.texto){ chat.leaveDraft = dl; botSay("bot", intent.texto); }
           else askLeaveMissing(dl);
@@ -10385,19 +10877,47 @@
         offerLeave(dl);
         return true;
       case "consultar_ausencias":
-        if(la.saldo) showLeaveBalance(); else showMyLeave();
+        if(la.pedido) showRequestStatus(String(la.pedido).replace(/\D/g, ""));
+        else if(la.movimentos) showMovements();
+        else if(isoArg(la.data)) showBalanceAsOf(isoArg(la.data));
+        else if(la.saldo) showLeaveBalance(); else showMyLeave();
+        return true;
+      case "alterar_ausencia":
+        var ch = {AbsenceTypeCode: absType(la.tipo) ? la.tipo : "", StartDate: isoArg(la.data_inicio), EndDate: isoArg(la.data_fim || la.data_inicio), Notes: String(la.nota || "").trim()};
+        if(Number(la.horas) > 0 || (la.hora_inicio && la.hora_fim)){
+          ch.partial = true; ch.hours = round15(Number(la.horas) || 0); ch.StartTime = la.hora_inicio || "09:00";
+          ch.EndTime = la.hora_fim || fmtClock(9*60 + Math.round(ch.hours*60));
+        }
+        offerChangeLeave(String(la.pedido || "").replace(/\D/g, ""), ch);
+        return true;
+      case "quem_aprova": showApprovers(); return true;
+      case "verificar_submissao": explainSubmit(); return true;
+      case "consultar_feriados":
+        var hm = String(la.mes || "").match(/^(\d{4})-?(\d{2})/);
+        showHolidays(hm ? hm[1] + hm[2] : "");
+        return true;
+      case "consultar_calendario_equipa": showTeamCalendar(isoArg(la.data_inicio), isoArg(la.data_fim || la.data_inicio)); return true;
+      case "consultar_saldos_equipa": showTeamBalances(); return true;
+      case "registar_abono":
+        var abDays = la.dia ? resolveDayArg(la.dia) : todayDayIdx();
+        offerOwnAllowance(la.rubrica, abDays, round15(Number(la.quantidade) || 1), String(la.nota || "").trim(), la.projeto ? matchProjectCodePrefix(la.projeto) : -1);
         return true;
       case "cancelar_ausencia":
         offerWithdraw(findLeaveTarget(String(la.pedido || ""), isoArg(la.data)));
         return true;
       case "listar_pendentes_aprovacao":
-        showPendingApprovals();
+        var pm0 = String(la.mes || "").match(/^(\d{4})-?(\d{2})/);
+        showPendingApprovals(pm0 ? pm0[1] + pm0[2] : "");
         return true;
       case "decidir_ausencia":
         var who = String(la.pedido || la.pessoa || "");
         offerLeaveDecision(/^(todos|todas|all|tous|toutes)$/i.test(who.trim()) ? leaveQueue() : matchLeaveTargets(who), la.decisao !== "rejeitar", String(la.motivo || "").trim());
         return true;
-      case "ir_para_ausencias": goToScreen("leave", t("nav_leave")); return true;
+      case "ir_para_ausencias":
+        if(la.separador === "calendario_equipa") goToScreen("teamcal", t("nav_team_calendar"));
+        else if(la.separador === "aprovacao") goToScreen("lvaprov", t("nav_leave_approval"));
+        else goToScreen("leave", t("nav_leave"));
+        return true;
       case "registar_quilometros":
         var kd = {round: !!la.ida_e_volta};
         if(la.destino) setKmEnd(kd, "to", la.destino);
@@ -10619,6 +11139,9 @@
     botHandleLocal(txt);
   }
 
+  var FILL_VERB_RE = /preench|complet|\bfill|rempli|compl[eéè]t|acabar de registar|finish (my|the)/;
+  var FILL_GAP_RE = /falta|missing|\bgaps?\b|manquant|\bvides?\b|\bburacos?\b|\bo resto\b|\bthe rest\b|\ble reste\b/;
+  var FILL_SCOPE_RE = /semana|\bweek\b|semaine|m[eê]s\b|\bmonth\b|\bmois\b|timesheet|folha|relev[ée]/;
   /* local regex interpreter, used when Claude isn't configured or fails.
      The pending-entry correction is checked earlier, in botHandle, ahead of
      Claude, so it isn't repeated here. */
@@ -10671,6 +11194,25 @@
        safer signal than the bare-number fallback the hours parser falls
        back to, which would otherwise misread "2 km" as "2 hours". */
     var teamMembers = teamOf(state.leader);
+    /* "fill in my missing hours on BNK", "completa a semana da equipa":
+       the person's own gaps, or on the Team screen (or naming the team)
+       the project manager's team, each day up to its own capacity */
+    if(FILL_VERB_RE.test(low) && (FILL_GAP_RE.test(low) || (FILL_SCOPE_RE.test(low) && !/\d\s*(h|horas?|hours?|heures?)\b|\d:\d\d/.test(low)))){
+      var fd = (low.match(/(\d+(?:[.,]\d+)?)\s*(?:h|horas?|hours?|heures?)\b/) || [])[1];
+      var fDur = fd ? round15(parseDur(fd)) : 0;
+      var named = teamMembers.filter(function(m){ return new RegExp("\\b" + foldText(m.name.split(" ")[0]) + "\\b").test(foldText(txt)); })[0];
+      var forTeam = !/\b(my|minhas?|meus?|mes)\b/.test(low) && (named || /equipa|\bteam\b|[ée]quipe|everyone|todos|\btous\b/.test(low) || (state.role === "pm" && state.screen === "team"));
+      if(forTeam){
+        if(state.role !== "pm"){ botSay("bot", t("bot_team_only_pm")); botChips([t("chip_help")]); return; }
+        offerFillMissingTeam(named ? named.name : "", fDur);
+        return;
+      }
+      var fp = matchProject(" " + txt + " ");
+      if(fp && fp.notAllowed){ sayNotAllocated(fp.p, {kind:"fill", dur:fDur}); return; }
+      if(!fp){ askProject({kind:"fill", dur:fDur}, projectFromNameWord(txt)); return; }
+      offerFillMissing(fp.p, fDur);
+      return;
+    }
     var ta = botParseTeamAllowance(txt, teamMembers);
     var tp = ta ? null : botParseTeamHours(txt, teamMembers);
     if((ta || tp) && state.role !== "pm"){ botSay("bot", t("bot_team_only_pm")); botChips([t("chip_help")]); return; }
@@ -10679,6 +11221,9 @@
 
     /* the person's own kilometres, with the distance worked out */
     if(KM_WORD_RE.test(foldText(txt))){ offerKm(kmDraftFromText(txt, null) || {}); return; }
+    /* the person's own per diem or shift allowance */
+    var oa = ownAllowanceFromText(txt);
+    if(oa){ offerOwnAllowance(oa.code, oa.day, oa.qty, oa.note, oa.p); return; }
 
     /* a request for every working day ("8h RTL-TT all days this week"),
        checked ahead of the single-day parser since it matches a duration

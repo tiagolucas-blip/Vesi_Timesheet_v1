@@ -1379,6 +1379,1459 @@
           ]
         }
       ]
+    },
+    {
+      "id": "cov-balance-date-en-employee",
+      "lang": "en",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "what will my balance be on 31 December?",
+          "expect": [
+            "On 31 Dec 2026",
+            "11 days"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-balance-date-pt-pm",
+      "lang": "pt",
+      "role": "pm",
+      "leader": "RN",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "quantos dias de férias terei a 15/12?",
+          "expect": [
+            "A 15 Dez 2026",
+            "saldo de férias"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-balance-date-fr-manager-pt02",
+      "lang": "fr",
+      "company": "PT02",
+      "role": "manager",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "quel sera mon solde au 31 décembre ?",
+          "expect": [
+            "Au 31 Déc 2026",
+            "10 jours"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-balance-date-intent-pt02",
+      "lang": "pt",
+      "company": "PT02",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "e no fim do ano, quantos dias me sobram?",
+          "intent": {
+            "funcao": "consultar_ausencias",
+            "argumentos": {
+              "data": "2026-12-31"
+            },
+            "texto": null
+          },
+          "expect": [
+            "A 31 Dez 2026"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-balance-today-ambiguous-en",
+      "lang": "en",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "what's my balance?",
+          "expect": [
+            "You can still request"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-movements-en-employee-pt02",
+      "lang": "en",
+      "company": "PT02",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "show my vacation account movements",
+          "expect": [
+            "movement by movement",
+            "Annual entitlement"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-movements-pt-manager",
+      "lang": "pt",
+      "role": "manager",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "mostra os movimentos da minha conta de férias",
+          "expect": [
+            "movimento a movimento",
+            "Direito anual"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-movements-fr-pm-pt02",
+      "lang": "fr",
+      "company": "PT02",
+      "role": "pm",
+      "leader": "CP",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "montre les mouvements de mon compte de congés",
+          "expect": [
+            "mouvement par mouvement",
+            "4500343"
+          ],
+          "absent": [
+            "4500396"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-movements-intent-en",
+      "lang": "en",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "where did my vacation days go?",
+          "intent": {
+            "funcao": "consultar_ausencias",
+            "argumentos": {
+              "movimentos": true
+            },
+            "texto": null
+          },
+          "expect": [
+            "movement by movement",
+            "4500230"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-status-en-ambiguous",
+      "lang": "en",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "what's the status of my request?",
+          "expect": [
+            "Which request?",
+            "4500230",
+            "4500255"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-status-pt-own",
+      "lang": "pt",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "estado do pedido 4500230",
+          "expect": [
+            "Pedido 4500230",
+            "Pendente de aprovação",
+            "À espera de aprovação de Sofia Almeida"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-status-fr-other-refused-pt02",
+      "lang": "fr",
+      "company": "PT02",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "où en est ma demande 4500396 ?",
+          "expect": [
+            "Je ne trouve pas la demande 4500396"
+          ],
+          "absent": [
+            "Nuno Dias"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-status-en-manager-report",
+      "lang": "en",
+      "role": "manager",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "status of request 4500391",
+          "expect": [
+            "Ana Ferreira",
+            "Waiting for approval by Sofia Almeida"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-status-intent-other-refused",
+      "lang": "en",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "has Ana's request been approved?",
+          "intent": {
+            "funcao": "consultar_ausencias",
+            "argumentos": {
+              "pedido": "4500391"
+            },
+            "texto": null
+          },
+          "expect": [
+            "can't find request 4500391"
+          ],
+          "absent": [
+            "Ana Ferreira"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-status-intent-pm-own",
+      "lang": "pt",
+      "role": "pm",
+      "leader": "RN",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "o meu pedido já foi aprovado?",
+          "intent": {
+            "funcao": "consultar_ausencias",
+            "argumentos": {
+              "pedido": "4500341"
+            },
+            "texto": null
+          },
+          "expect": [
+            "Pedido 4500341",
+            "Pendente de aprovação"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-approvers-en-employee",
+      "lang": "en",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "who approves my timesheet?",
+          "expect": [
+            "submitted by month",
+            "Ana Ferreira",
+            "Ricardo Nunes",
+            "Your absences go to Sofia Almeida"
+          ],
+          "expectContext": {
+            "aprovadores.ausencias": "Sofia Almeida",
+            "aprovadores.periodo": "mensal"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cov-approvers-pt-pm-own-project",
+      "lang": "pt",
+      "role": "pm",
+      "leader": "RN",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "quem aprova as minhas horas?",
+          "expect": [
+            "submetida ao mês",
+            "Sofia Almeida"
+          ],
+          "absent": [
+            "Ricardo Nunes ·"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-approvers-fr-manager-pt02",
+      "lang": "fr",
+      "company": "PT02",
+      "role": "manager",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "qui approuve ma feuille de temps ?",
+          "expect": [
+            "à la semaine",
+            "Teresa Moura"
+          ],
+          "absent": [
+            "Patrícia Gomes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-approvers-pt-employee-pt02",
+      "lang": "pt",
+      "company": "PT02",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "a quem vão as minhas férias?",
+          "expect": [
+            "à semana",
+            "Carlos Pinto",
+            "Patrícia Gomes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-approvers-intent-pm-pt02",
+      "lang": "en",
+      "company": "PT02",
+      "role": "pm",
+      "leader": "CP",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "who signs off my hours?",
+          "intent": {
+            "funcao": "quem_aprova",
+            "argumentos": {},
+            "texto": null
+          },
+          "expect": [
+            "Patrícia Gomes",
+            "by week"
+          ],
+          "absent": [
+            "Carlos Pinto"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-submit-check-en-employee",
+      "lang": "en",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "why can't I submit?",
+          "expect": [
+            "Nothing blocks October 2026",
+            "Ana Ferreira"
+          ],
+          "absent": [
+            "Submitted"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-submit-check-fr-pt02",
+      "lang": "fr",
+      "company": "PT02",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "pourquoi je ne peux pas soumettre ?",
+          "expect": [
+            "Rien ne bloque la semaine 44",
+            "Carlos Pinto"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-submit-check-pt-already",
+      "lang": "pt",
+      "role": "pm",
+      "leader": "RN",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "submeter o mês",
+          "expect": [
+            "outubro de 2026"
+          ]
+        },
+        {
+          "confirm": true,
+          "expect": [
+            "submetido"
+          ]
+        },
+        {
+          "say": "porque é que não consigo submeter?",
+          "expect": [
+            "já está submetido"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-submit-check-ambiguous-en",
+      "lang": "en",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "can I submit?",
+          "expect": [
+            "Nothing blocks"
+          ],
+          "absent": [
+            "Confirm submitting"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-submit-check-intent-manager",
+      "lang": "pt",
+      "role": "manager",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "o que falta para fechar o mês?",
+          "intent": {
+            "funcao": "verificar_submissao",
+            "argumentos": {},
+            "texto": null
+          },
+          "expect": [
+            "Nada bloqueia o mês de outubro de 2026",
+            "Henrique Vaz"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-submit-check-week-context-pt02",
+      "lang": "en",
+      "company": "PT02",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "what's left before I can submit?",
+          "intent": {
+            "funcao": "verificar_submissao",
+            "argumentos": {},
+            "texto": null
+          },
+          "expect": [
+            "Nothing blocks week 44"
+          ],
+          "expectContext": {
+            "submissao": "semanal",
+            "semana.problemas": []
+          }
+        }
+      ]
+    },
+    {
+      "id": "cov-holidays-en-pt01-december",
+      "lang": "en",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "public holidays in December",
+          "expect": [
+            "Restoration of Independence",
+            "Lisbon"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-holidays-pt-pm-pt02-june",
+      "lang": "pt",
+      "company": "PT02",
+      "role": "pm",
+      "leader": "CP",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "feriados em junho",
+          "expect": [
+            "São João",
+            "Porto"
+          ],
+          "absent": [
+            "Santo António"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-holidays-fr-manager-pt01-june",
+      "lang": "fr",
+      "role": "manager",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "jours fériés en juin",
+          "expect": [
+            "Saint-Antoine",
+            "Lisbonne"
+          ],
+          "absent": [
+            "Saint-Jean"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-holidays-en-next",
+      "lang": "en",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "next public holidays",
+          "expect": [
+            "All Saints' Day",
+            "Christmas Day"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-holidays-ambiguous-en",
+      "lang": "en",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "holidays in December",
+          "expect": [
+            "Public holidays in December 2026"
+          ],
+          "absent": [
+            "MY LEAVE REQUESTS"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-holidays-intent-pt",
+      "lang": "pt",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "há algum feriado em dezembro?",
+          "intent": {
+            "funcao": "consultar_feriados",
+            "argumentos": {
+              "mes": "2026-12"
+            },
+            "texto": null
+          },
+          "expect": [
+            "Feriados em dezembro de 2026",
+            "Natal"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-teamcal-en-employee-privacy",
+      "lang": "en",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "who's off next week?",
+          "expect": [
+            "Bruno Matos",
+            "Absent",
+            "show only as Absent"
+          ],
+          "absent": [
+            "Medical appointment"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-teamcal-pt-manager-reasons",
+      "lang": "pt",
+      "role": "manager",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "quem está ausente na próxima semana?",
+          "expect": [
+            "Consulta médica",
+            "Rui Marques"
+          ],
+          "absent": [
+            "só como Ausente"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-teamcal-fr-pm-pt02",
+      "lang": "fr",
+      "company": "PT02",
+      "role": "pm",
+      "leader": "CP",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "qui est absent en novembre ?",
+          "expect": [
+            "Nuno Dias",
+            "Absent"
+          ],
+          "absent": [
+            "Physiotherapy",
+            "Consultation"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-teamcal-intent-en-employee",
+      "lang": "en",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "is anyone out the first week of November?",
+          "intent": {
+            "funcao": "consultar_calendario_equipa",
+            "argumentos": {
+              "data_inicio": "2026-11-02",
+              "data_fim": "2026-11-06"
+            },
+            "texto": null
+          },
+          "expect": [
+            "Bruno Matos",
+            "Absent"
+          ],
+          "absent": [
+            "Medical appointment"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-teamcal-context-privacy",
+      "lang": "pt",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "quem falta amanhã?",
+          "expect": [
+            "Ninguém"
+          ],
+          "expectContext": {
+            "saldos_equipa": [],
+            "calendario_equipa[].tipo": [
+              "0100",
+              "0300",
+              "ausente",
+              "ausente",
+              "0300",
+              "0100",
+              "0100",
+              "0100",
+              "0100"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "cov-teambal-en-manager",
+      "lang": "en",
+      "role": "manager",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "team balances",
+          "expect": [
+            "vacation balances",
+            "Ana Ferreira · 14 days available"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-teambal-pt-employee-refused",
+      "lang": "pt",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "saldos da equipa",
+          "expect": [
+            "vistos pela chefia",
+            "Sofia Almeida"
+          ],
+          "absent": [
+            "Ana Ferreira ·"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-teambal-fr-pm-refused-pt02",
+      "lang": "fr",
+      "company": "PT02",
+      "role": "pm",
+      "leader": "CP",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "soldes de l'équipe",
+          "expect": [
+            "visibles par le responsable",
+            "Patrícia Gomes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-teambal-intent-employee-refused",
+      "lang": "en",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "how many days does Ana have left?",
+          "intent": {
+            "funcao": "consultar_saldos_equipa",
+            "argumentos": {},
+            "texto": null
+          },
+          "expect": [
+            "seen by the line manager"
+          ],
+          "absent": [
+            "14 days"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-teambal-intent-manager-pt02",
+      "lang": "pt",
+      "company": "PT02",
+      "role": "manager",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "saldos de férias da equipa",
+          "intent": {
+            "funcao": "consultar_saldos_equipa",
+            "argumentos": {},
+            "texto": null
+          },
+          "expect": [
+            "Saldos de férias da tua equipa",
+            "Nuno Dias"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-pending-month-en-manager",
+      "lang": "en",
+      "role": "manager",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "what's waiting for me in December?",
+          "expect": [
+            "4 leave requests to decide touching December 2026",
+            "Carla Nunes"
+          ],
+          "absent": [
+            "Ana Ferreira"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-pending-month-fr-manager-pt02",
+      "lang": "fr",
+      "company": "PT02",
+      "role": "manager",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "qu'est-ce qui m'attend en décembre ?",
+          "expect": [
+            "décembre 2026",
+            "Ana Pires"
+          ],
+          "absent": [
+            "Nuno Dias"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-pending-month-pt-pm",
+      "lang": "pt",
+      "role": "pm",
+      "leader": "RN",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "o que tenho para aprovar este mês?",
+          "expect": [
+            "outubro de 2026",
+            "Bruno Matos"
+          ],
+          "expectContext": {
+            "periodo_aprovacao.tipo": "mensal"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cov-pending-week-en-pm-pt02",
+      "lang": "en",
+      "company": "PT02",
+      "role": "pm",
+      "leader": "CP",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "what do I have to approve?",
+          "expect": [
+            "each timesheet is one week",
+            "Nuno Dias"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-pending-month-intent-manager",
+      "lang": "en",
+      "role": "manager",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "anything for November?",
+          "intent": {
+            "funcao": "listar_pendentes_aprovacao",
+            "argumentos": {
+              "mes": "2026-11"
+            },
+            "texto": null
+          },
+          "expect": [
+            "leave requests to decide touching November 2026",
+            "Bruno Matos"
+          ],
+          "absent": [
+            "Carla Nunes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-change-en-number",
+      "lang": "en",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "vacation 10 to 12 November",
+          "expect": [
+            "Vacation"
+          ]
+        },
+        {
+          "confirm": true,
+          "expect": [
+            "4500401"
+          ]
+        },
+        {
+          "say": "change request 4500401 to 17 to 19 November",
+          "expect": [
+            "request 4500401 with the change",
+            "17 Nov 2026 to 19 Nov 2026",
+            "Sofia Almeida"
+          ]
+        },
+        {
+          "confirm": true,
+          "expect": [
+            "Changed. Request 4500401"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-change-pt-single-day",
+      "lang": "pt",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "altera o pedido 4500230 para 4 de dezembro",
+          "expect": [
+            "pedido 4500230 com a alteração",
+            "4 Dez 2026"
+          ]
+        },
+        {
+          "confirm": true,
+          "expect": [
+            "Alterado"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-change-fr-pt02",
+      "lang": "fr",
+      "company": "PT02",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "modifier la demande 4500255 au 9 décembre",
+          "expect": [
+            "demande 4500255 avec la modification",
+            "9 Déc 2026",
+            "Patrícia Gomes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-change-ambiguous-en",
+      "lang": "en",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "change my vacation request",
+          "expect": [
+            "Which request do you want to change?",
+            "4500230",
+            "4500255"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-change-approved-refused",
+      "lang": "en",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "change request 4500301 to 20 November",
+          "expect": [
+            "can't be changed any more",
+            "cancelled and requested again"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-change-intent-pm",
+      "lang": "pt",
+      "role": "pm",
+      "leader": "RN",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "muda as minhas férias para a semana de 7 de dezembro",
+          "intent": {
+            "funcao": "alterar_ausencia",
+            "argumentos": {
+              "pedido": "4500341",
+              "data_inicio": "2026-12-07",
+              "data_fim": "2026-12-11"
+            },
+            "texto": null
+          },
+          "expect": [
+            "pedido 4500341 com a alteração",
+            "7 Dez 2026 a 11 Dez 2026"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-change-intent-other-refused",
+      "lang": "en",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "move Ana's vacation to December",
+          "intent": {
+            "funcao": "alterar_ausencia",
+            "argumentos": {
+              "pedido": "4500391",
+              "data_inicio": "2026-12-07"
+            },
+            "texto": null
+          },
+          "expect": [
+            "Only pending ones"
+          ],
+          "absent": [
+            "Ana Ferreira"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-onbehalf-en-manager",
+      "lang": "en",
+      "role": "manager",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "vacation for Bruno 14 to 16 December",
+          "expect": [
+            "Bruno Matos",
+            "Approved",
+            "Record absence"
+          ]
+        },
+        {
+          "confirm": true,
+          "expect": [
+            "Recorded for Bruno Matos"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-onbehalf-fr-manager-pt02",
+      "lang": "fr",
+      "company": "PT02",
+      "role": "manager",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "congés pour Nuno du 14 au 16 décembre",
+          "expect": [
+            "Nuno Dias",
+            "approuvée dès la saisie"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-onbehalf-pt-employee-refused",
+      "lang": "pt",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "férias para a Ana de 3 a 5 de dezembro",
+          "expect": [
+            "Só a chefia regista",
+            "Sofia Almeida"
+          ],
+          "absent": [
+            "Ana Ferreira"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-onbehalf-intent-pm-refused",
+      "lang": "en",
+      "role": "pm",
+      "leader": "RN",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "book vacation for Bruno next week",
+          "intent": {
+            "funcao": "pedir_ausencia",
+            "argumentos": {
+              "pessoa": "Bruno Matos",
+              "tipo": "0100",
+              "data_inicio": "2026-11-02",
+              "data_fim": "2026-11-06"
+            },
+            "texto": null
+          },
+          "expect": [
+            "Only the line manager records"
+          ],
+          "absent": [
+            "Record absence"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-onbehalf-intent-manager-pt",
+      "lang": "pt",
+      "role": "manager",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "regista formação para o Diogo a 2 de dezembro",
+          "intent": {
+            "funcao": "pedir_ausencia",
+            "argumentos": {
+              "pessoa": "Diogo",
+              "tipo": "0300",
+              "data_inicio": "2026-12-02",
+              "data_fim": "2026-12-02"
+            },
+            "texto": null
+          },
+          "expect": [
+            "Diogo Sousa",
+            "Aprovado"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-allow-en-per-diem",
+      "lang": "en",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "per diem yesterday on BNK",
+          "expect": [
+            "Domestic per diem",
+            "Tue 27",
+            "BNK-2026"
+          ]
+        },
+        {
+          "confirm": true,
+          "expect": [
+            "Recorded: Domestic per diem"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-allow-pt-shift-pt02",
+      "lang": "pt",
+      "company": "PT02",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "subsídio de turno ontem",
+          "expect": [
+            "Subsídio de turno",
+            "Ter 27"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-allow-fr-shift-pt01-refused",
+      "lang": "fr",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "prime d'équipe aujourd'hui",
+          "expect": [
+            "n'existe que chez Building Solutions"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-allow-en-foreign-needs-country",
+      "lang": "en",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "foreign per diem yesterday BNK",
+          "expect": [
+            "Which country?"
+          ]
+        },
+        {
+          "say": "foreign per diem yesterday BNK in Spain",
+          "expect": [
+            "Foreign per diem",
+            "Spain"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-allow-en-bonus-refused",
+      "lang": "en",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "project bonus for me",
+          "expect": [
+            "recorded by the project owner"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-allow-intent-en",
+      "lang": "en",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "I was on a client site in Porto yesterday, log the daily allowance on BNK",
+          "intent": {
+            "funcao": "registar_abono",
+            "argumentos": {
+              "rubrica": "AJC_NAC",
+              "dia": "2026-10-27",
+              "projeto": "BNK"
+            },
+            "texto": null
+          },
+          "expect": [
+            "Domestic per diem",
+            "BNK-2026"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-allow-intent-pm-pt02",
+      "lang": "pt",
+      "company": "PT02",
+      "role": "pm",
+      "leader": "CP",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "subsídio de turno hoje",
+          "intent": {
+            "funcao": "registar_abono",
+            "argumentos": {
+              "rubrica": "TURNO",
+              "dia": "2026-10-28"
+            },
+            "texto": null
+          },
+          "expect": [
+            "Subsídio de turno",
+            "Qua 28"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-fill-en-own-project",
+      "lang": "en",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "fill in my missing hours on BNK",
+          "expect": [
+            "BNK-2026",
+            "Total 28.0 h"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-fill-pt-asks-project",
+      "lang": "pt",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "preenche as horas em falta",
+          "expect": [
+            "Em que projeto"
+          ]
+        },
+        {
+          "say": "BNK",
+          "expect": [
+            "BNK-2026",
+            "Total 28.0 h"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-fill-fr-pt02",
+      "lang": "fr",
+      "company": "PT02",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "complète mes heures manquantes sur HSP",
+          "expect": [
+            "HSP-FAC",
+            "Total 28.0 h"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-fill-en-pm-team",
+      "lang": "en",
+      "role": "pm",
+      "leader": "RN",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "fill the team's missing hours",
+          "expect": [
+            "up to each person's capacity",
+            "João Costa",
+            "RTL-TT"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-fill-en-employee-team-refused",
+      "lang": "en",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "fill the team's missing hours",
+          "expect": [
+            "done by the project manager"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-fill-en-not-allocated",
+      "lang": "en",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "fill in my missing hours on HSP",
+          "expect": [
+            "not allocated to HSP-FAC"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-fill-pt-manager-own",
+      "lang": "pt",
+      "role": "manager",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "completa as minhas horas em falta no BNK",
+          "expect": [
+            "BNK-2026"
+          ],
+          "absent": [
+            "capacidade de cada pessoa"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-lang-pt-message-en-ui",
+      "lang": "en",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "quem aprova as minhas horas?",
+          "expect": [
+            "submetida ao mês",
+            "Sofia Almeida"
+          ],
+          "absent": [
+            "submitted by month"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-lang-fr-message-pt-ui",
+      "lang": "pt",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "quels sont les prochains jours fériés ?",
+          "expect": [
+            "prochains jours fériés",
+            "Toussaint"
+          ],
+          "absent": [
+            "próximos feriados"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-lang-en-message-fr-ui-manager",
+      "lang": "fr",
+      "role": "manager",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "who's off next week?",
+          "expect": [
+            "Who's off",
+            "Rui Marques"
+          ],
+          "absent": [
+            "Qui est absent"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-no-switch-pt-pm",
+      "lang": "pt",
+      "company": "PT02",
+      "role": "pm",
+      "leader": "CP",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "ver como a chefia",
+          "expect": [
+            "Só posso ajudar com os teus próprios registos"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cov-no-switch-fr-manager",
+      "lang": "fr",
+      "role": "manager",
+      "why": "coverage: the assistant answers what the screens show and do, in each profile",
+      "steps": [
+        {
+          "say": "voir en tant que Tiago",
+          "expect": [
+            "vos propres données"
+          ]
+        }
+      ]
     }
   ]
 }
