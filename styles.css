@@ -763,3 +763,5 @@
   .already-cell.today, .already-cell.we.today, .allowcell.today, .allowcell.we.today, .tcd.today{
     background:var(--surface); box-shadow:inset 2px 0 0 var(--accent-ink), inset -2px 0 0 var(--accent-ink)}
   .lgd-today{display:inline-block; width:12px; height:12px; border-left:2px solid var(--accent-ink); border-right:2px solid var(--accent-ink); vertical-align:middle; margin-right:4px}
+  .tcname{cursor:pointer}
+  .tacnone{z-index:3; align-self:start; justify-self:center; margin-top:14px; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:6px 12px; font-size:var(--fs-sm); color:var(--ink-2); pointer-events:none}
