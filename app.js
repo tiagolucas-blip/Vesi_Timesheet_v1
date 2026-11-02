@@ -1502,7 +1502,7 @@
       bot_greeting_1:"Hey! What do you need, logging hours, checking the week, or something else?",
       bot_greeting_2:"Hi there. Tell me what you need and I'll sort it.",
       bot_greeting_3:"Hello! Hours to log, or something to check?",
-      chip_done_saved:"Saved", chip_done_submitted:"Submitted", chip_done_sent:"Sent for approval", chip_done_withdrawn:"Withdrawn", chip_done_approved:"Approved", label_week_card:"Week", bot_bonus_day_outside:"{date} isn't in the week on Team entry ({week}). Move Team entry to that week and ask again.", label_amount:"Amount", label_currency:"Currency", hdr_already_bonus:"Bonuses recorded this week", hint_already_bonus:"Project bonuses already recorded and approved for this team this week, in euros, on the day they were recorded.", bot_bonus_who:"Who is the bonus for? Name the people on {code}, or say the whole team.", bot_bonus_amount:"How much is the bonus per person? In euros unless you say another currency.", bot_bonus_reason:"What is the bonus for? The reason is recorded with it.", bot_bonus_confirm:"Record and approve this project bonus?", bot_bonus_saved:"Bonus of {amount} recorded and approved for {names}, on their behalf, on {week}. You'll find it in Team entry, Bonus tab.", btn_record_approve:"Record and approve", text_each:"each", text_tac_tick_people:"Tick the people whose absences you want to see.", text_schedule_h_day:"{h} h/day schedule", fmt_week_range:"week {n} ({from} to {to})", fmt_week_range_bare:"{n} ({from} to {to})", tip_windows_overlap:"Two time windows overlap on this day.", chip_confirmed:"confirmed", chip_cancelled:"cancelled",
+      chip_done_saved:"Saved", chip_done_submitted:"Submitted", chip_done_sent:"Sent for approval", chip_done_withdrawn:"Withdrawn", chip_done_approved:"Approved", label_week_card:"Week", bot_already_done:"That's already recorded, a moment ago. Tell me what you'd like to do next.", bot_bonus_day_outside:"{date} isn't in the week on Team entry ({week}). Move Team entry to that week and ask again.", label_amount:"Amount", label_currency:"Currency", hdr_already_bonus:"Bonuses recorded this week", hint_already_bonus:"Project bonuses already recorded and approved for this team this week, in euros, on the day they were recorded.", bot_bonus_who:"Who is the bonus for? Name the people on {code}, or say the whole team.", bot_bonus_amount:"How much is the bonus per person? In euros unless you say another currency.", bot_bonus_reason:"What is the bonus for? The reason is recorded with it.", bot_bonus_confirm:"Record and approve this project bonus?", bot_bonus_saved:"Bonus of {amount} recorded and approved for {names}, on their behalf, on {week}. You'll find it in Team entry, Bonus tab.", btn_record_approve:"Record and approve", text_each:"each", text_tac_tick_people:"Tick the people whose absences you want to see.", text_schedule_h_day:"{h} h/day schedule", fmt_week_range:"week {n} ({from} to {to})", fmt_week_range_bare:"{n} ({from} to {to})", tip_windows_overlap:"Two time windows overlap on this day.", chip_confirmed:"confirmed", chip_cancelled:"cancelled",
       bot_cancelled_no_save:"No problem, I didn't save anything.",
       bot_week_summary:"You have {tot} h recorded of {exp} h expected, already with absences deducted. ",
       bot_week_errors_block_one:"{n} error blocks submission.", bot_week_errors_block_other:"{n} errors block submission.",
@@ -2278,7 +2278,7 @@
       bot_greeting_1:"Olá! Em que posso ajudar: registar horas, consultar a semana, ou outra coisa?",
       bot_greeting_2:"Olá. Diz-me o que precisas e eu trato disso.",
       bot_greeting_3:"Olá! Horas para registar, ou algo para consultar?",
-      chip_done_saved:"Gravado", chip_done_submitted:"Submetido", chip_done_sent:"Enviado para aprovação", chip_done_withdrawn:"Retirado", chip_done_approved:"Aprovado", label_week_card:"Semana", bot_bonus_day_outside:"{date} não está na semana do Lançamento da equipa ({week}). Muda o Lançamento da equipa para essa semana e pede de novo.", label_amount:"Montante", label_currency:"Moeda", hdr_already_bonus:"Bónus registados esta semana", hint_already_bonus:"Bónus de projeto já registados e aprovados para esta equipa esta semana, em euros, no dia em que foram registados.", bot_bonus_who:"Para quem é o bónus? Diz os nomes das pessoas do {code}, ou a equipa toda.", bot_bonus_amount:"De quanto é o bónus por pessoa? Em euros, salvo se disseres outra moeda.", bot_bonus_reason:"Qual é o motivo do bónus? Fica registado com ele.", bot_bonus_confirm:"Registar e aprovar este bónus de projeto?", bot_bonus_saved:"Bónus de {amount} registado e aprovado para {names}, em nome de cada pessoa, no dia {week}. Está no Lançamento da equipa, separador Bónus.", btn_record_approve:"Registar e aprovar", text_each:"cada", text_tac_tick_people:"Marca as pessoas cujas ausências queres ver.", text_schedule_h_day:"horário de {h} h/dia", fmt_week_range:"semana {n} ({from} a {to})", fmt_week_range_bare:"{n} ({from} a {to})", tip_windows_overlap:"Há duas janelas horárias sobrepostas neste dia.", chip_confirmed:"confirmado", chip_cancelled:"cancelado",
+      chip_done_saved:"Gravado", chip_done_submitted:"Submetido", chip_done_sent:"Enviado para aprovação", chip_done_withdrawn:"Retirado", chip_done_approved:"Aprovado", label_week_card:"Semana", bot_already_done:"Isso já ficou registado há pouco. Diz-me o que queres fazer a seguir.", bot_bonus_day_outside:"{date} não está na semana do Lançamento da equipa ({week}). Muda o Lançamento da equipa para essa semana e pede de novo.", label_amount:"Montante", label_currency:"Moeda", hdr_already_bonus:"Bónus registados esta semana", hint_already_bonus:"Bónus de projeto já registados e aprovados para esta equipa esta semana, em euros, no dia em que foram registados.", bot_bonus_who:"Para quem é o bónus? Diz os nomes das pessoas do {code}, ou a equipa toda.", bot_bonus_amount:"De quanto é o bónus por pessoa? Em euros, salvo se disseres outra moeda.", bot_bonus_reason:"Qual é o motivo do bónus? Fica registado com ele.", bot_bonus_confirm:"Registar e aprovar este bónus de projeto?", bot_bonus_saved:"Bónus de {amount} registado e aprovado para {names}, em nome de cada pessoa, no dia {week}. Está no Lançamento da equipa, separador Bónus.", btn_record_approve:"Registar e aprovar", text_each:"cada", text_tac_tick_people:"Marca as pessoas cujas ausências queres ver.", text_schedule_h_day:"horário de {h} h/dia", fmt_week_range:"semana {n} ({from} a {to})", fmt_week_range_bare:"{n} ({from} a {to})", tip_windows_overlap:"Há duas janelas horárias sobrepostas neste dia.", chip_confirmed:"confirmado", chip_cancelled:"cancelado",
       bot_cancelled_no_save:"Sem problema, não gravei nada.",
       bot_week_summary:"Tens {tot} h registadas de {exp} h esperadas, já com as ausências deduzidas. ",
       bot_week_errors_block_one:"{n} erro bloqueia a submissão.", bot_week_errors_block_other:"{n} erros bloqueiam a submissão.",
@@ -3054,7 +3054,7 @@
       bot_greeting_1:"Bonjour ! De quoi avez-vous besoin : saisir des heures, vérifier la semaine, ou autre chose ?",
       bot_greeting_2:"Bonjour. Dites-moi ce qu'il vous faut et je m'en occupe.",
       bot_greeting_3:"Bonjour ! Des heures à saisir, ou quelque chose à vérifier ?",
-      chip_done_saved:"Enregistré", chip_done_submitted:"Soumis", chip_done_sent:"Envoyé pour approbation", chip_done_withdrawn:"Retiré", chip_done_approved:"Approuvé", label_week_card:"Semaine", bot_bonus_day_outside:"{date} n'est pas dans la semaine de Saisie d'équipe ({week}). Passez Saisie d'équipe à cette semaine et redemandez.", label_amount:"Montant", label_currency:"Devise", hdr_already_bonus:"Primes enregistrées cette semaine", hint_already_bonus:"Primes de projet déjà enregistrées et approuvées pour cette équipe cette semaine, en euros, le jour de leur saisie.", bot_bonus_who:"Pour qui est la prime ? Nommez les personnes de {code}, ou toute l'équipe.", bot_bonus_amount:"Quel est le montant de la prime par personne ? En euros, sauf si vous indiquez une autre devise.", bot_bonus_reason:"Quel est le motif de la prime ? Il est enregistré avec elle.", bot_bonus_confirm:"Enregistrer et approuver cette prime de projet ?", bot_bonus_saved:"Prime de {amount} enregistrée et approuvée pour {names}, pour le compte de chaque personne, le {week}. Vous la trouverez dans Saisie d'équipe, onglet Prime.", btn_record_approve:"Enregistrer et approuver", text_each:"chacun", text_tac_tick_people:"Cochez les personnes dont vous voulez voir les absences.", text_schedule_h_day:"horaire de {h} h/jour", fmt_week_range:"semaine {n} ({from} au {to})", fmt_week_range_bare:"{n} ({from} au {to})", tip_windows_overlap:"Deux plages horaires se chevauchent ce jour-là.", chip_confirmed:"confirmé", chip_cancelled:"annulé",
+      chip_done_saved:"Enregistré", chip_done_submitted:"Soumis", chip_done_sent:"Envoyé pour approbation", chip_done_withdrawn:"Retiré", chip_done_approved:"Approuvé", label_week_card:"Semaine", bot_already_done:"C'est déjà enregistré, il y a un instant. Dites-moi ce que vous voulez faire ensuite.", bot_bonus_day_outside:"{date} n'est pas dans la semaine de Saisie d'équipe ({week}). Passez Saisie d'équipe à cette semaine et redemandez.", label_amount:"Montant", label_currency:"Devise", hdr_already_bonus:"Primes enregistrées cette semaine", hint_already_bonus:"Primes de projet déjà enregistrées et approuvées pour cette équipe cette semaine, en euros, le jour de leur saisie.", bot_bonus_who:"Pour qui est la prime ? Nommez les personnes de {code}, ou toute l'équipe.", bot_bonus_amount:"Quel est le montant de la prime par personne ? En euros, sauf si vous indiquez une autre devise.", bot_bonus_reason:"Quel est le motif de la prime ? Il est enregistré avec elle.", bot_bonus_confirm:"Enregistrer et approuver cette prime de projet ?", bot_bonus_saved:"Prime de {amount} enregistrée et approuvée pour {names}, pour le compte de chaque personne, le {week}. Vous la trouverez dans Saisie d'équipe, onglet Prime.", btn_record_approve:"Enregistrer et approuver", text_each:"chacun", text_tac_tick_people:"Cochez les personnes dont vous voulez voir les absences.", text_schedule_h_day:"horaire de {h} h/jour", fmt_week_range:"semaine {n} ({from} au {to})", fmt_week_range_bare:"{n} ({from} au {to})", tip_windows_overlap:"Deux plages horaires se chevauchent ce jour-là.", chip_confirmed:"confirmé", chip_cancelled:"annulé",
       bot_cancelled_no_save:"Pas de problème, je n'ai rien enregistré.",
       bot_week_summary:"Vous avez {tot} h enregistrées sur {exp} h attendues, absences déjà déduites. ",
       bot_week_errors_block_one:"{n} erreur bloque la soumission.", bot_week_errors_block_other:"{n} erreurs bloquent la soumission.",
@@ -10240,6 +10240,10 @@
       commitAssistantChanges();
       /* the card says plainly what happened: saved, submitted, sent... */
       doneChip.textContent = cardDoneLabel(confirmLabel);
+      /* and Claude is told it's done, so a next request ("and also fill the
+         timesheet") is read as new, never as this one again */
+      if(chat.lastIntentKey) chat.lastDone = chat.lastIntentKey;
+      chat.history.push({role:"assistant", content:"DONE, confirmed by the person and already recorded, do not repeat it: " + lines.map(function(l){ return l[0] + ": " + l[1]; }).join("; ")});
     }));
     acts.appendChild(btn(t("btn_cancel"),"btn sm", function(){
       chat.pending = null;
@@ -10248,6 +10252,7 @@
       acts.innerHTML = "";
       acts.appendChild(el("span","chip grey",t("chip_cancelled")));
       if(turn) turn.outcome = "cancelled";
+      chat.history.push({role:"assistant", content:"CANCELLED by the person, nothing recorded: " + lines.map(function(l){ return l[0] + ": " + l[1]; }).join("; ")});
       inTurn(function(){ botSay("bot",t("bot_cancelled_no_save")); });
     }));
     c.appendChild(acts);
@@ -11529,7 +11534,15 @@
     var intentP = askAssistant(txt);
     var intent = (await Promise.all([intentP, thinkingDelay()]))[0];
     hideTyping();
+    /* the same action as the one just confirmed, asked again by a message
+       that isn't asking to repeat it: say it's done instead of a second card */
+    if(intent && intent.funcao && chat.lastDone && chat.lastDone === doneKey(intent) && !/\b(outra vez|de novo|repet|again|encore|à nouveau)\b/i.test(txt)){
+      if(chat.curTurn) chat.curTurn.path = "already_done";
+      botSay("bot", t("bot_already_done"));
+      return;
+    }
     if(intent && botDispatch(intent)){
+      chat.lastIntentKey = intent.funcao ? doneKey(intent) : null;
       hist.push({role:"assistant", content: intent.texto || ("Called " + intent.funcao + ".")});
       return;
     }
@@ -11542,6 +11555,11 @@
     botSay("bot", t("bot_claude_unavailable"));
   }
   var LOCAL_ENGINE = /[?&]engine=local\b/.test(location.search);
+  function doneKey(intent){
+    var a = Object.assign({}, intent.argumentos || {});
+    delete a.data; delete a.dia;
+    return intent.funcao + ":" + JSON.stringify(Object.keys(a).sort().map(function(k){ return [k, a[k]]; }));
+  }
 
   var FILL_VERB_RE = /preench|complet|\bfill|rempli|compl[eéè]t|acabar de registar|finish (my|the)/;
   var FILL_GAP_RE = /falta|missing|\bgaps?\b|manquant|\bvides?\b|\bburacos?\b|\bo resto\b|\bthe rest\b|\ble reste\b/;

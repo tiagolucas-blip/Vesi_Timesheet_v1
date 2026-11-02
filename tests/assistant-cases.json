@@ -3060,6 +3060,56 @@
           ]
         }
       ]
+    },
+    {
+      "id": "no-repeat-confirmed-bonus",
+      "lang": "pt",
+      "role": "pm",
+      "leader": "RN",
+      "why": "comment: asked to fill the timesheet after a bonus, Claude repeated the bonus",
+      "steps": [
+        {
+          "say": "bónus de 50 euros para a equipa toda pelo go-live do projeto",
+          "intent": {
+            "funcao": "registar_bonus_equipa",
+            "argumentos": {
+              "pessoa": "todos",
+              "valor": 50,
+              "moeda": "EUR",
+              "motivo": "go-live do projeto"
+            },
+            "texto": null
+          },
+          "expect": [
+            "50.0 EUR"
+          ]
+        },
+        {
+          "confirm": true,
+          "expect": [
+            "registado e aprovado"
+          ]
+        },
+        {
+          "say": "e já agora preenche a timesheet da minha equipa até ao limite",
+          "intent": {
+            "funcao": "registar_bonus_equipa",
+            "argumentos": {
+              "pessoa": "todos",
+              "valor": 50,
+              "moeda": "EUR",
+              "motivo": "go-live do projeto"
+            },
+            "texto": null
+          },
+          "expect": [
+            "já ficou registado"
+          ],
+          "absent": [
+            "Registar e aprovar este bónus"
+          ]
+        }
+      ]
     }
   ]
 }
