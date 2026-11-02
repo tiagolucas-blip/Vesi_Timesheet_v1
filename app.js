@@ -5094,7 +5094,7 @@
       function byCur(list){
         var sums = {}, order = [];
         list.forEach(function(e){ var c = e.currency || companyCurrency(); if(!(c in sums)){ sums[c] = 0; order.push(c); } sums[c] += e.amount || 0; });
-        return order.map(function(c){ return money(sums[c], c); }).join(" + ");
+        return order.map(function(c){ return moneyShort(sums[c], c); }).join(" + ");
       }
       DAYS.forEach(function(d,i){
         var lines = entries.filter(function(e){ return e.day === i; });
@@ -5309,6 +5309,9 @@
       $("mStaged").innerHTML = fmt(staged) + "<small> " + t("h_staged_suffix") + "</small>";
     }
     $("mSave").disabled = staged === 0;
+    /* Save is only on offer when something waits for it: the bonus, and
+       whatever the assistant records, are saved as they are confirmed */
+    if($("teamSaveAll")) $("teamSaveAll").disabled = !state.teamNeedsSave && staged === 0 && !state.stagedAllow.length;
 
     renderMassLog();
     renderBonusPanel();
@@ -10535,6 +10538,14 @@
   }
   function companyCurrency(){ return "EUR"; }
   function money(v, cur){ return fmt(v) + " " + (cur || companyCurrency()); }
+  /* for narrow grid cells: whole amounts without decimals, the symbol when
+     there is a common one, the code otherwise */
+  var CUR_SYMBOL = {EUR:"€", USD:"$", GBP:"£"};
+  function moneyShort(v, cur){
+    var c = cur || companyCurrency(), n = Math.round(v * 100) / 100;
+    var num = n % 1 === 0 ? String(n) : n.toFixed(2);
+    return CUR_SYMBOL[c] ? num + " " + CUR_SYMBOL[c] : num + " " + c;
+  }
   /* The project bonus, recorded and approved by the project owner for people
      on the team, the same act as the Bonus tab of Team entry (saveBonus):
      who, how much and why, then a card to confirm. */
