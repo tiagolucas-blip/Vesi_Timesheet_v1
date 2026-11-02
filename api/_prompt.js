@@ -152,7 +152,8 @@ export const FUNCTIONS = [
         pessoa: { type: "string", description: "nome ou nomes das pessoas da lista 'equipa', ou 'todos' para a equipa toda" },
         valor: { type: "number", description: "montante do bónus por pessoa, na moeda indicada" },
         moeda: { type: "string", enum: ["EUR","USD","GBP","CHF","BRL","AOA","MZN","MAD","XOF","CAD","PLN"], description: "código ISO da moeda; EUR se a pessoa não disser outra" },
-        motivo: { type: "string", description: "o motivo do bónus, como a pessoa o disse" }
+        motivo: { type: "string", description: "o motivo do bónus, como a pessoa o disse" },
+        data: { type: "string", description: "data ISO, YYYY-MM-DD, do dia em que o bónus fica registado, se a pessoa o disser; omitir para hoje" }
       },
       required: ["pessoa"]
     }

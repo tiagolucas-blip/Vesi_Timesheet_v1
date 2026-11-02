@@ -3044,6 +3044,22 @@
           ]
         }
       ]
+    },
+    {
+      "id": "bonus-pt-pm-with-day",
+      "lang": "pt",
+      "role": "pm",
+      "leader": "RN",
+      "why": "user: a bonus needs a date, as every CATS record (WORKDATE)",
+      "steps": [
+        {
+          "say": "bónus de 300 euros para a Vera na quarta pelo go-live",
+          "expect": [
+            "Qua 28 Out",
+            "300.0 EUR"
+          ]
+        }
+      ]
     }
   ]
 }
