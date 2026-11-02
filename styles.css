@@ -751,3 +751,15 @@
   .subnav button[aria-current="true"]{background:var(--accent); border-color:var(--accent); color:#fff}
   .subnav button[aria-current="true"] .navbadge{background:#fff; color:var(--accent-ink)}
   @media (max-width:480px){ .nav button{padding:10px 10px; gap:6px} .subnav{padding:8px 12px} }
+
+  /* today is marked by shape, not only by a tint, so it reads apart from
+     weekends and holidays for anyone who doesn't tell the colours apart:
+     the date in a solid circle on the header, and the column framed by two
+     strong lines instead of filled */
+  .row.head div.today{background:transparent; box-shadow:none}
+  .row.head div.today .dnum{display:grid; place-items:center; width:fit-content; margin:0 auto; min-width:24px; height:24px; padding:0 4px; border-radius:999px; background:var(--accent-ink); color:#fff; font-weight:700}
+  .row.head div.today .dname{color:var(--accent-ink); font-weight:700}
+  .cell.today, .cell.we.today, .clockcell.today, .clockcell.we.today, .row.totals .t.today, .row.totals .t.we.today,
+  .already-cell.today, .already-cell.we.today, .allowcell.today, .allowcell.we.today, .tcd.today{
+    background:var(--surface); box-shadow:inset 2px 0 0 var(--accent-ink), inset -2px 0 0 var(--accent-ink)}
+  .lgd-today{display:inline-block; width:12px; height:12px; border-left:2px solid var(--accent-ink); border-right:2px solid var(--accent-ink); vertical-align:middle; margin-right:4px}
