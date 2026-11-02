@@ -165,9 +165,6 @@
         <div class="gridfoot">
           <button class="btn" id="allowAdd" data-i18n="btn_add_allowance">Add allowance</button>
         </div>
-        <div class="privacy" data-i18n="privacy_allowances">
-          Per diems, kilometres and shift allowances are recorded against a project and a date, as quantity and unit. No value is calculated here. The project bonus is the exception: it carries an amount and only the project owner records it.
-        </div>
       </aside>
 
       <aside class="panel" id="sugPanel">
@@ -177,10 +174,6 @@
           <button class="btn sm" id="acceptHi" data-i18n="btn_accept_high_confidence">Accept high-confidence ones</button>
         </header>
         <div class="sugs" id="sugs"></div>
-        <div class="privacy">
-          <span data-i18n="privacy_suggestions_intro">Nothing enters the timesheet without confirmation.</span>
-          <button id="dataBtn" data-i18n="btn_data_collected">What's collected and where it's stored</button>
-        </div>
       </aside>
       </div>
     </div>
@@ -351,9 +344,6 @@
           <h2 data-i18n="hdr_recorded_on_behalf">Recorded on behalf</h2>
         </header>
         <div class="sugs" id="massLog"></div>
-        <div class="privacy" data-i18n="privacy_recorded_on_behalf">
-          Every line keeps CREATED_BY and ON_BEHALF_OF. There is no self-confirmation step: the employee sees the entry marked as recorded by the leader, which informs without blocking. On the CATS side the submitting user still lands in ERNAM.
-        </div>
       </aside>
     </div>
   </section>
@@ -919,6 +909,7 @@
       <label data-i18n="settings_reference">Technical reference</label>
       <p class="sub" style="margin:0" data-i18n="text_mapping_hint">Field by field, what each screen writes to CATS and to the standard Leave Request.</p>
       <div><button type="button" class="btn" id="openMapping" data-i18n="btn_open_mapping">Open the SAP mapping</button></div>
+      <div><button type="button" class="btn" id="dataBtn" data-i18n="btn_data_collected">What's collected and where it's stored</button></div>
     </div>
   </div>
   <footer><button class="btn primary" id="settingsClose" data-i18n="btn_close">Close</button></footer>

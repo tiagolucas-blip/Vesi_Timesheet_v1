@@ -2928,6 +2928,74 @@
           ]
         }
       ]
+    },
+    {
+      "id": "bonus-pt-pm-local",
+      "lang": "pt",
+      "role": "pm",
+      "leader": "RN",
+      "why": "comment: the assistant records the project bonus",
+      "steps": [
+        {
+          "say": "bónus de 300 euros para a Vera pelo go-live",
+          "expect": [
+            "Vera Antunes",
+            "300.0 EUR",
+            "go-live"
+          ]
+        },
+        {
+          "confirm": true,
+          "expect": [
+            "registado e aprovado",
+            "Bónus"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bonus-en-pm-intent-asks-reason",
+      "lang": "en",
+      "role": "pm",
+      "leader": "RN",
+      "why": "a bonus without a reason asks for it",
+      "steps": [
+        {
+          "say": "give João a 150 euro bonus",
+          "intent": {
+            "funcao": "registar_bonus_equipa",
+            "argumentos": {
+              "pessoa": "João",
+              "valor_eur": 150
+            },
+            "texto": null
+          },
+          "expect": [
+            "What is the bonus for"
+          ]
+        },
+        {
+          "say": "weekend go-live support",
+          "expect": [
+            "João Costa",
+            "150.0 EUR",
+            "weekend go-live support"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bonus-pt-employee-refused",
+      "lang": "pt",
+      "why": "only the project owner records a bonus",
+      "steps": [
+        {
+          "say": "bónus de 100 euros para mim",
+          "expect": [
+            "responsável do projeto"
+          ]
+        }
+      ]
     }
   ]
 }

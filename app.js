@@ -1502,7 +1502,7 @@
       bot_greeting_1:"Hey! What do you need, logging hours, checking the week, or something else?",
       bot_greeting_2:"Hi there. Tell me what you need and I'll sort it.",
       bot_greeting_3:"Hello! Hours to log, or something to check?",
-      chip_done_saved:"Saved", chip_done_submitted:"Submitted", chip_done_sent:"Sent for approval", chip_done_withdrawn:"Withdrawn", chip_done_approved:"Approved", label_week_card:"Week", text_tac_tick_people:"Tick the people whose absences you want to see.", text_schedule_h_day:"{h} h/day schedule", fmt_week_range:"week {n} ({from} to {to})", fmt_week_range_bare:"{n} ({from} to {to})", tip_windows_overlap:"Two time windows overlap on this day.", chip_confirmed:"confirmed", chip_cancelled:"cancelled",
+      chip_done_saved:"Saved", chip_done_submitted:"Submitted", chip_done_sent:"Sent for approval", chip_done_withdrawn:"Withdrawn", chip_done_approved:"Approved", label_week_card:"Week", bot_bonus_who:"Who is the bonus for? Name the people on {code}, or say the whole team.", bot_bonus_amount:"How much is the bonus, in euros, per person?", bot_bonus_reason:"What is the bonus for? The reason is recorded with it.", bot_bonus_confirm:"Record and approve this project bonus?", bot_bonus_saved:"Bonus of {amount} EUR recorded and approved for {names}, on their behalf, in {week}. You'll find it in Team entry, Bonus tab.", btn_record_approve:"Record and approve", text_each:"each", text_tac_tick_people:"Tick the people whose absences you want to see.", text_schedule_h_day:"{h} h/day schedule", fmt_week_range:"week {n} ({from} to {to})", fmt_week_range_bare:"{n} ({from} to {to})", tip_windows_overlap:"Two time windows overlap on this day.", chip_confirmed:"confirmed", chip_cancelled:"cancelled",
       bot_cancelled_no_save:"No problem, I didn't save anything.",
       bot_week_summary:"You have {tot} h recorded of {exp} h expected, already with absences deducted. ",
       bot_week_errors_block_one:"{n} error blocks submission.", bot_week_errors_block_other:"{n} errors block submission.",
@@ -2278,7 +2278,7 @@
       bot_greeting_1:"Olá! Em que posso ajudar: registar horas, consultar a semana, ou outra coisa?",
       bot_greeting_2:"Olá. Diz-me o que precisas e eu trato disso.",
       bot_greeting_3:"Olá! Horas para registar, ou algo para consultar?",
-      chip_done_saved:"Gravado", chip_done_submitted:"Submetido", chip_done_sent:"Enviado para aprovação", chip_done_withdrawn:"Retirado", chip_done_approved:"Aprovado", label_week_card:"Semana", text_tac_tick_people:"Marca as pessoas cujas ausências queres ver.", text_schedule_h_day:"horário de {h} h/dia", fmt_week_range:"semana {n} ({from} a {to})", fmt_week_range_bare:"{n} ({from} a {to})", tip_windows_overlap:"Há duas janelas horárias sobrepostas neste dia.", chip_confirmed:"confirmado", chip_cancelled:"cancelado",
+      chip_done_saved:"Gravado", chip_done_submitted:"Submetido", chip_done_sent:"Enviado para aprovação", chip_done_withdrawn:"Retirado", chip_done_approved:"Aprovado", label_week_card:"Semana", bot_bonus_who:"Para quem é o bónus? Diz os nomes das pessoas do {code}, ou a equipa toda.", bot_bonus_amount:"De quanto é o bónus, em euros, por pessoa?", bot_bonus_reason:"Qual é o motivo do bónus? Fica registado com ele.", bot_bonus_confirm:"Registar e aprovar este bónus de projeto?", bot_bonus_saved:"Bónus de {amount} EUR registado e aprovado para {names}, em nome de cada pessoa, na {week}. Está no Lançamento da equipa, separador Bónus.", btn_record_approve:"Registar e aprovar", text_each:"cada", text_tac_tick_people:"Marca as pessoas cujas ausências queres ver.", text_schedule_h_day:"horário de {h} h/dia", fmt_week_range:"semana {n} ({from} a {to})", fmt_week_range_bare:"{n} ({from} a {to})", tip_windows_overlap:"Há duas janelas horárias sobrepostas neste dia.", chip_confirmed:"confirmado", chip_cancelled:"cancelado",
       bot_cancelled_no_save:"Sem problema, não gravei nada.",
       bot_week_summary:"Tens {tot} h registadas de {exp} h esperadas, já com as ausências deduzidas. ",
       bot_week_errors_block_one:"{n} erro bloqueia a submissão.", bot_week_errors_block_other:"{n} erros bloqueiam a submissão.",
@@ -3054,7 +3054,7 @@
       bot_greeting_1:"Bonjour ! De quoi avez-vous besoin : saisir des heures, vérifier la semaine, ou autre chose ?",
       bot_greeting_2:"Bonjour. Dites-moi ce qu'il vous faut et je m'en occupe.",
       bot_greeting_3:"Bonjour ! Des heures à saisir, ou quelque chose à vérifier ?",
-      chip_done_saved:"Enregistré", chip_done_submitted:"Soumis", chip_done_sent:"Envoyé pour approbation", chip_done_withdrawn:"Retiré", chip_done_approved:"Approuvé", label_week_card:"Semaine", text_tac_tick_people:"Cochez les personnes dont vous voulez voir les absences.", text_schedule_h_day:"horaire de {h} h/jour", fmt_week_range:"semaine {n} ({from} au {to})", fmt_week_range_bare:"{n} ({from} au {to})", tip_windows_overlap:"Deux plages horaires se chevauchent ce jour-là.", chip_confirmed:"confirmé", chip_cancelled:"annulé",
+      chip_done_saved:"Enregistré", chip_done_submitted:"Soumis", chip_done_sent:"Envoyé pour approbation", chip_done_withdrawn:"Retiré", chip_done_approved:"Approuvé", label_week_card:"Semaine", bot_bonus_who:"Pour qui est la prime ? Nommez les personnes de {code}, ou toute l'équipe.", bot_bonus_amount:"Quel est le montant de la prime, en euros, par personne ?", bot_bonus_reason:"Quel est le motif de la prime ? Il est enregistré avec elle.", bot_bonus_confirm:"Enregistrer et approuver cette prime de projet ?", bot_bonus_saved:"Prime de {amount} EUR enregistrée et approuvée pour {names}, pour le compte de chaque personne, en {week}. Vous la trouverez dans Saisie d'équipe, onglet Prime.", btn_record_approve:"Enregistrer et approuver", text_each:"chacun", text_tac_tick_people:"Cochez les personnes dont vous voulez voir les absences.", text_schedule_h_day:"horaire de {h} h/jour", fmt_week_range:"semaine {n} ({from} au {to})", fmt_week_range_bare:"{n} ({from} au {to})", tip_windows_overlap:"Deux plages horaires se chevauchent ce jour-là.", chip_confirmed:"confirmé", chip_cancelled:"annulé",
       bot_cancelled_no_save:"Pas de problème, je n'ai rien enregistré.",
       bot_week_summary:"Vous avez {tot} h enregistrées sur {exp} h attendues, absences déjà déduites. ",
       bot_week_errors_block_one:"{n} erreur bloque la soumission.", bot_week_errors_block_other:"{n} erreurs bloquent la soumission.",
@@ -6670,7 +6670,7 @@
   $("dtCancel").onclick = function(){ dtNewRow = null; $("dlgDetail").close(); };
   $("subCancel").onclick = function(){ $("dlgSubmit").close(); };
   $("subOk").onclick = doSubmit;
-  $("dataBtn").onclick = function(){ $("dlgData").showModal(); };
+  $("dataBtn").onclick = function(){ if($("dlgSettings").open) $("dlgSettings").close(); $("dlgData").showModal(); };
   $("dataClose").onclick = function(){ $("dlgData").close(); };
   $("dataWipe").onclick = function(){ $("dlgData").close(); state.sugs.length = 0; render(); toast(t("toast_timeline_deleted")); };
   $("helpBtn").onclick = function(){ $("dlgHelp").showModal(); };
@@ -10129,7 +10129,7 @@
     if(log) log.scrollTop = log.scrollHeight;
   }
   var CARD_DONE = {btn_save:"chip_done_saved", btn_register:"chip_done_saved", btn_fill_and_register:"chip_done_saved",
-    btn_copy:"chip_done_saved", btn_apply:"chip_done_saved", btn_save_changes:"chip_done_saved", btn_record_leave:"chip_done_saved",
+    btn_copy:"chip_done_saved", btn_apply:"chip_done_saved", btn_record_approve:"chip_done_approved", btn_save_changes:"chip_done_saved", btn_record_leave:"chip_done_saved",
     btn_submit:"chip_done_submitted", btn_send_request:"chip_done_sent", btn_withdraw:"chip_done_withdrawn",
     btn_approve:"chip_done_approved", btn_approve_all:"chip_done_approved"};
   function cardDoneLabel(label){
@@ -10456,9 +10456,50 @@
      happens to be on: in the monthly view the anchor week is often not
      today's, and the day used to be read against it, landing in the wrong
      week. Same as the kilometres (recordKm). */
+  /* The project bonus, recorded and approved by the project owner for people
+     on the team, the same act as the Bonus tab of Team entry (saveBonus):
+     who, how much and why, then a card to confirm. */
+  function bonusTargets(who){
+    var team = teamOf(state.leader), f = foldText(who || "");
+    if(!f.trim()) return [];
+    if(/\b(todos|toda a equipa|equipa|everyone|whole team|team|tous|equipe)\b/.test(f)) return team.filter(function(m){ return !m.locked; });
+    return team.filter(function(m){ return f.indexOf(foldText(m.name.split(" ")[0])) !== -1 || f.indexOf(foldText(m.name)) !== -1; });
+  }
+  function bonusFromText(txt){
+    var am = String(txt).match(/(\d+(?:[.,]\d+)?)\s*(?:€|eur\b|euros?\b)/i) || String(txt).match(/(?:€)\s*(\d+(?:[.,]\d+)?)/);
+    var rm = String(txt).match(/\b(?:por|pelo|pela|pelos|pelas|for|pour|motivo:?|reason:?|raison:?)\s+(.{3,})$/i);
+    return {who: txt, amount: am ? parseFloat(am[1].replace(",", ".")) : 0, note: rm ? rm[1].trim() : ""};
+  }
+  function offerTeamBonus(who, amount, note){
+    if(state.role !== "pm"){ botSay("bot", t("bot_allow_bonus_owner")); botChips([t("chip_help")]); return; }
+    var targets = bonusTargets(who), pIdx = massProject();
+    if(!targets.length){ chat.bonusDraft = {amount: amount, note: note}; botSay("bot", t("bot_bonus_who", {code: PROJECTS[pIdx].code})); return; }
+    if(!(amount > 0)){ chat.bonusDraft = {who: who, note: note}; botSay("bot", t("bot_bonus_amount")); return; }
+    if(!note || note.length < 3){ chat.bonusDraft = {who: who, amount: amount}; botSay("bot", t("bot_bonus_reason")); return; }
+    chat.bonusDraft = null;
+    var lines = [
+      [t("label_people"), targets.map(function(m){ return m.name; }).join(", ")],
+      [t("label_amount_eur"), fmt(amount) + " EUR " + t("text_each")],
+      [t("label_reason"), note],
+      [t("label_project"), PROJECTS[pIdx].code + " · " + PROJECTS[pIdx].name],
+      [t("label_week_card"), teamWeekLabel(true)]
+    ];
+    botSay("bot", t("bot_bonus_confirm"), botCard(lines, t("btn_record_approve"), function(){
+      teamOf(state.leader).forEach(function(m){ stagedOf(m.pernr).sel = false; });
+      targets.forEach(function(m){ stagedOf(m.pernr).sel = true; });
+      var before = state.massLog.length;
+      $("bAmount").value = String(amount); $("bNote").value = note;
+      saveBonus();
+      setTeamTab("bonus");
+      var got = state.massLog.slice(before).filter(function(e){ return e.kind === "bonus"; }).map(function(e){ return e.name.split(" ")[0]; });
+      botSay("bot", got.length ? t("bot_bonus_saved", {amount: fmt(amount), names: got.join(", "), week: teamWeekLabel()}) : t("toast_bonus_none_recorded"));
+      botChips([t("chip_help")]);
+    }));
+  }
   function weekIsSubmitted(w){ return w === WEEKS[weekIdx] ? state.submitted : !!w.submitted; }
   function offerOwnAllowance(code, dateISO, qty, note, pIdx){
     var w = wt(code);
+    if(code === "BONUS" && state.role === "pm"){ offerTeamBonus("", qty > 1 ? qty : 0, note); return; }
     if(!w || code === "BONUS"){ botSay("bot", t("bot_allow_bonus_owner")); botChips([t("chip_help")]); return; }
     if(code === "KMS"){ offerKm({}); return; }
     if(wtFor().indexOf(w) === -1){ botSay("bot", t("bot_allow_turno_pt02")); botChips([t("chip_help")]); return; }
@@ -11136,6 +11177,9 @@
         return true;
       case "consultar_calendario_equipa": showTeamCalendar(isoArg(la.data_inicio), isoArg(la.data_fim || la.data_inicio)); return true;
       case "consultar_saldos_equipa": showTeamBalances(); return true;
+      case "registar_bonus_equipa":
+        offerTeamBonus(String(la.pessoa || ""), Number(la.valor_eur) || 0, String(la.motivo || "").trim());
+        return true;
       case "registar_abono":
         var abDate = la.dia ? (isoArg(la.dia) || kmDateFrom(String(la.dia))) : todayISO();
         offerOwnAllowance(la.rubrica, abDate, round15(Number(la.quantidade) || 1), String(la.nota || "").trim(), la.projeto ? matchProjectCodePrefix(la.projeto) : -1);
@@ -11346,6 +11390,16 @@
       return;
     }
 
+    /* A bonus still missing who, how much or why: this message completes it. */
+    if(chat.bonusDraft && state.role === "pm"){
+      var bd = chat.bonusDraft, bt = bonusFromText(txt);
+      await thinkingDelay();
+      hideTyping();
+      if(chat.curTurn) chat.curTurn.path = "bonus_draft";
+      offerTeamBonus(bd.who || txt, bd.amount > 0 ? bd.amount : (bt.amount || parseFloat(String(txt).replace(",", ".")) || 0),
+        bd.note || (bd.who && bd.amount > 0 ? txt.trim() : bt.note));
+      return;
+    }
     /* A rejection waiting for its reason: this message is the reason. */
     if(chat.rejectDraft){
       if(chat.curTurn) chat.curTurn.path = "reject_reason";
@@ -11467,6 +11521,7 @@
     if(KM_WORD_RE.test(foldText(txt))){ offerKm(kmDraftFromText(txt, null) || {}); return; }
     /* the person's own per diem or shift allowance */
     var oa = ownAllowanceFromText(txt);
+    if(oa && oa.code === "BONUS" && state.role === "pm"){ var bp = bonusFromText(txt); offerTeamBonus(bp.who, bp.amount, bp.note); return; }
     if(oa){ offerOwnAllowance(oa.code, oa.day, oa.qty, oa.note, oa.p); return; }
 
     /* a request for every working day ("8h RTL-TT all days this week"),
