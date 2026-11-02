@@ -4582,13 +4582,26 @@
   }
   function allowLabel(a){
     var w = wt(a.code);
-    return w.amount ? fmt(a.amount) + " EUR" : fmt(a.qty) + " " + w.unit;
+    return w.amount ? fmt(a.amount) + " EUR" : fmt(a.qty) + " " + (w.unit === "days" ? t("unit_days") : w.unit);
+  }
+  /* The person's own allowances on screen: the week, or in the monthly view
+     every week of the month, each with the week it belongs to. */
+  function myAllowShown(){
+    var self = function(a){ return (a.onBehalf || IT0001.pernr) === IT0001.pernr; };
+    if(!isMonthly()) return myAllow().map(function(a){ return {a:a, week:WEEKS[weekIdx]}; });
+    var dates = activeMonthDates(), out = [];
+    activeMonthWeeks().forEach(function(w){
+      var list = w === WEEKS[weekIdx] ? state.allow : (w.allow || []);
+      list.filter(self).forEach(function(a){ if(dates.indexOf(datesFor(w.start)[a.day]) !== -1) out.push({a:a, week:w}); });
+    });
+    return out;
   }
   function renderAllow(){
     var box = $("allowList");
     if(!box) return;
     box.innerHTML = "";
-    var mine = myAllow();
+    var shown = myAllowShown();
+    var mine = shown.map(function(x){ return x.a; });
     $("allowCount").textContent = plural(mine.length, "n_allowances");
     /* Collapsed when there's nothing recorded, open when there is - unless
        the person has already toggled it themselves this session, which
@@ -4598,32 +4611,38 @@
       box.appendChild(el("div","paused",t("text_no_allowances_week")));
       return;
     }
-    mine.slice().sort(function(x,y){ return x.day - y.day; }).forEach(function(a){
+    shown.slice().sort(function(x,y){ return datesFor(x.week.start)[x.a.day] < datesFor(y.week.start)[y.a.day] ? -1 : 1; }).forEach(function(it){
+      var a = it.a, wk = it.week, list = wk === WEEKS[weekIdx] ? state.allow : wk.allow;
       var w = wt(a.code);
       var c = el("div","abscard" + (w.amount ? " bonus" : ""), "");
       var h = el("div","h","");
       h.appendChild(el("b","", wtName(w)));
       h.appendChild(el("span","chip " + (w.amount ? "green" : "grey"), allowLabel(a)));
       c.appendChild(h);
-      c.appendChild(el("div","why", DAYS[a.day] + " · " + PROJECTS[a.p].code + " · " + t("text_wage_type_label", {code: w.lgart})));
+      c.appendChild(el("div","why", monthDayLabel(wk, a.day) + " · " + PROJECTS[a.p].code + " · " + t("text_wage_type_label", {code: w.lgart})));
       if(a.note) c.appendChild(el("div","why", a.note));
       if(a.by !== a.onBehalf) c.appendChild(el("div","why", t("text_recorded_by_behalf", {name: a.byName})));
       if(w.amount) c.appendChild(el("div","why", t("text_bonus_catsamount")));
       var acts = el("div","acts","");
       var rm = btn(t("btn_remove"),"btn sm", function(){
-        if(!allowEditable(a)) return;
+        if(!allowEditableIn(a, wk)) return;
         /* in place: the week object holds this same list, and the month
            view validates each week from it */
-        var ix = state.allow.indexOf(a);
-        if(ix !== -1) state.allow.splice(ix, 1);
-        render(); toast(t("toast_allowance_removed", {name: wtName(w)}), t("ui_undo"), function(){ state.allow.push(a); render(); });
+        var ix = list.indexOf(a);
+        if(ix !== -1) list.splice(ix, 1);
+        render(); toast(t("toast_allowance_removed", {name: wtName(w)}), t("ui_undo"), function(){ list.push(a); render(); });
       });
-      rm.disabled = !allowEditable(a);
+      rm.disabled = !allowEditableIn(a, wk);
       if(w.amount) rm.title = t("tip_bonus_remove_restricted");
       acts.appendChild(rm);
       c.appendChild(acts);
       box.appendChild(c);
     });
+  }
+  function allowEditableIn(a, week){
+    if(weekIsSubmitted(week)) return false;
+    if(!periodOpen(datesFor(week.start)[a.day])) return false;
+    return !wt(a.code).amount;
   }
   function allowEditable(a){
     var w = wt(a.code);
@@ -9756,6 +9775,8 @@
     else if(wd.week.submitted) stop = t("bot_km_week_submitted", {date: fmtDate(d.date)});
     else if(!periodOpen(d.date)) stop = t("bot_km_period_closed", {date: fmtDate(d.date)});
     if(stop){
+      /* nothing left to complete: the next message is a new request */
+      chat.pending = null; chat.kmDraft = null;
       botSay("bot", stop);
       botChips([t("chip_km_example")]);
       return;
@@ -10431,14 +10452,21 @@
   /* The person's own per diem or shift allowance on a day of the visible
      week (kilometres have their own card, with the distance worked out;
      the bonus is the project owner's, on Team entry). */
-  function offerOwnAllowance(code, day, qty, note, pIdx){
+  /* An allowance goes to the week its date is in, whichever week the screen
+     happens to be on: in the monthly view the anchor week is often not
+     today's, and the day used to be read against it, landing in the wrong
+     week. Same as the kilometres (recordKm). */
+  function weekIsSubmitted(w){ return w === WEEKS[weekIdx] ? state.submitted : !!w.submitted; }
+  function offerOwnAllowance(code, dateISO, qty, note, pIdx){
     var w = wt(code);
     if(!w || code === "BONUS"){ botSay("bot", t("bot_allow_bonus_owner")); botChips([t("chip_help")]); return; }
     if(code === "KMS"){ offerKm({}); return; }
     if(wtFor().indexOf(w) === -1){ botSay("bot", t("bot_allow_turno_pt02")); botChips([t("chip_help")]); return; }
-    if(state.submitted){ botSay("bot", t("bot_week_locked")); return; }
-    if(day == null || day === -1){ botSay("bot", t("bot_day_outside_week")); botChips([t("chip_help")]); return; }
-    if(!periodOpen(WORKDATES[day])){ botSay("bot", t("bot_day_closed", {day: DAYS[day]})); return; }
+    var wd = dateISO ? weekDayIn(WEEKS, dateISO) : null;
+    if(!wd){ botSay("bot", t("bot_day_outside_week")); botChips([t("chip_help")]); return; }
+    var dayLbl = fmtDateShort(dateISO);
+    if(weekIsSubmitted(wd.week)){ botSay("bot", t("bot_km_week_submitted", {date: fmtDate(dateISO)})); return; }
+    if(!periodOpen(dateISO)){ botSay("bot", t("bot_day_closed", {day: dayLbl})); return; }
     if(w.noteLabel && !note){ botSay("bot", t("bot_allow_country")); return; }
     var allowed = profileProjects();
     if(w.needProj){
@@ -10449,16 +10477,19 @@
       }
     }
     var q = qty > 0 ? qty : 1;
-    var lines = [[t("label_allowance"), wtName(w) + " · " + w.lgart], [t("label_day"), DAYS[day]], [t("label_to_record"), fmt(q) + " " + t("unit_days")]];
+    var lines = [[t("label_allowance"), wtName(w) + " · " + w.lgart], [t("label_day"), dayLbl], [t("label_to_record"), fmt(q) + " " + t("unit_days")]];
     if(w.needProj) lines.push([t("label_project"), PROJECTS[pIdx].code + " · " + PROJECTS[pIdx].name]);
     if(note) lines.push([t("label_note"), note]);
     lines.push([t("label_origin"), "Joule"]);
     chat.pending = "allow";
     botSay("bot", t("bot_allow_confirm"), botCard(lines, t("btn_register"), function(){
-      state.allow.push({id:"al" + (nextId++), day:day, p: w.needProj ? pIdx : 3, code:code, qty:q, amount:0, note:note || "",
+      var week = wd.week;
+      if(!week.allow) week.allow = [];
+      week.allow.push({id:"al" + (nextId++), day:wd.day, p: w.needProj ? pIdx : 3, code:code, qty:q, amount:0, note:note || "",
         by:IT0001.pernr, onBehalf:IT0001.pernr, byName:"self", origin:"Joule"});
+      if(week === WEEKS[weekIdx]) state.allow = week.allow;
       render();
-      botSay("bot", t("bot_allow_recorded", {name: wtName(w), day: DAYS[day], qty: fmt(q)}));
+      botSay("bot", t("bot_allow_recorded", {name: wtName(w), day: dayLbl, qty: fmt(q)}));
       botChips([t("chip_hours_i_have"), chipSubmit()]);
     }));
   }
@@ -10474,9 +10505,10 @@
     for(var i=0; i<OWN_ALLOW_RE.length; i++){ if(OWN_ALLOW_RE[i][1].test(low)){ code = OWN_ALLOW_RE[i][0]; break; } }
     if(!code) return null;
     var rest = " " + txt + " ";
-    var dm = matchDayMention(rest);
-    var day = dm ? dm.day : todayDayIdx();
     var qm = rest.match(/(\d+(?:[.,]\d+)?)\s*(?:dias?|days?|jours?)\b/i);
+    /* the day as a date, not an index into the week on screen; "3 dias"
+       is the quantity, not a date */
+    var day = kmDateFrom(qm ? txt.replace(qm[0], " ") : txt) || todayISO();
     var pm = matchProject(rest);
     var cm = txt.match(/(?:pa[íi]s|country|pays)\s*:?\s*([A-Za-zÀ-ÿ][A-Za-zÀ-ÿ ]+)$/i) || txt.match(/\b(?:em|in|en|au)\s+(Espanha|Spain|Espagne|Fran[çc]a|France|Alemanha|Germany|Allemagne|Angola|Brasil|Brazil|Br[ée]sil|Mo[çc]ambique|Mozambique|Reino Unido|United Kingdom|Royaume.Uni)\b/i);
     return {code:code, day:day, qty: qm ? parseDur(qm[1]) : 1, p: pm ? pm.p : -1, note: cm ? cm[1].trim() : ""};
@@ -11105,8 +11137,8 @@
       case "consultar_calendario_equipa": showTeamCalendar(isoArg(la.data_inicio), isoArg(la.data_fim || la.data_inicio)); return true;
       case "consultar_saldos_equipa": showTeamBalances(); return true;
       case "registar_abono":
-        var abDays = la.dia ? resolveDayArg(la.dia) : todayDayIdx();
-        offerOwnAllowance(la.rubrica, abDays, round15(Number(la.quantidade) || 1), String(la.nota || "").trim(), la.projeto ? matchProjectCodePrefix(la.projeto) : -1);
+        var abDate = la.dia ? (isoArg(la.dia) || kmDateFrom(String(la.dia))) : todayISO();
+        offerOwnAllowance(la.rubrica, abDate, round15(Number(la.quantidade) || 1), String(la.nota || "").trim(), la.projeto ? matchProjectCodePrefix(la.projeto) : -1);
         return true;
       case "cancelar_ausencia":
         offerWithdraw(findLeaveTarget(String(la.pedido || ""), isoArg(la.data)));
