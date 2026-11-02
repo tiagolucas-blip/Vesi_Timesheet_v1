@@ -86,7 +86,7 @@ Everything below works, with no server and no real data.
 - The save is partial on purpose: lines that fail keep their reason on screen, the rest are written
 - Every line keeps `CREATED_BY` and `ON_BEHALF_OF`. There is no self-confirmation step
 - Allowances can be mass entered too, staged as a list rather than a grid since each one is a single occurrence, not a per-day cell
-- The project owner records and approves the bonus in the same act, on the same screen, or through the assistant ("300 euro bonus for Vera for the go-live"), which asks for who, how much or why when one is missing
+- The project owner records and approves the bonus in the same act, on the same screen; the amount carries its currency (EUR by default, or USD, GBP, CHF, BRL, AOA, MZN and others for work abroad), written with the amount to CATS, or through the assistant ("300 euro bonus for Vera for the go-live"), which asks for who, how much or why when one is missing
 
 **Period control**
 - Monthly, per company. A closed period rejects entries and changes, in the personal sheet and in mass entry

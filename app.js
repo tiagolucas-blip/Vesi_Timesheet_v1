@@ -1281,7 +1281,7 @@
       toast_amount_must_be_positive:"The amount needs to be a number above zero.",
       toast_bonus_reason_required:"The bonus needs a reason. It is the only trace of why the project carried this cost.",
       toast_none_allocated:"None of the selected people are allocated to {code}.",
-      toast_bonus_recorded:"{amount} EUR bonus recorded for {names}, approved in the same act.",
+      toast_bonus_recorded:"{amount} bonus recorded for {names}, approved in the same act.",
       toast_bonus_none_recorded:"Nothing was actually recorded.",
       toast_bonus_skipped_ineligible:" {names} skipped, not allocated to {code}.",
       toast_bonus_skipped_closed:" {names} skipped, every day this week falls in a closed period.",
@@ -1502,7 +1502,7 @@
       bot_greeting_1:"Hey! What do you need, logging hours, checking the week, or something else?",
       bot_greeting_2:"Hi there. Tell me what you need and I'll sort it.",
       bot_greeting_3:"Hello! Hours to log, or something to check?",
-      chip_done_saved:"Saved", chip_done_submitted:"Submitted", chip_done_sent:"Sent for approval", chip_done_withdrawn:"Withdrawn", chip_done_approved:"Approved", label_week_card:"Week", hdr_already_bonus:"Bonuses recorded this week", hint_already_bonus:"Project bonuses already recorded and approved for this team this week, in euros, on the day they were recorded.", bot_bonus_who:"Who is the bonus for? Name the people on {code}, or say the whole team.", bot_bonus_amount:"How much is the bonus, in euros, per person?", bot_bonus_reason:"What is the bonus for? The reason is recorded with it.", bot_bonus_confirm:"Record and approve this project bonus?", bot_bonus_saved:"Bonus of {amount} EUR recorded and approved for {names}, on their behalf, in {week}. You'll find it in Team entry, Bonus tab.", btn_record_approve:"Record and approve", text_each:"each", text_tac_tick_people:"Tick the people whose absences you want to see.", text_schedule_h_day:"{h} h/day schedule", fmt_week_range:"week {n} ({from} to {to})", fmt_week_range_bare:"{n} ({from} to {to})", tip_windows_overlap:"Two time windows overlap on this day.", chip_confirmed:"confirmed", chip_cancelled:"cancelled",
+      chip_done_saved:"Saved", chip_done_submitted:"Submitted", chip_done_sent:"Sent for approval", chip_done_withdrawn:"Withdrawn", chip_done_approved:"Approved", label_week_card:"Week", label_amount:"Amount", label_currency:"Currency", hdr_already_bonus:"Bonuses recorded this week", hint_already_bonus:"Project bonuses already recorded and approved for this team this week, in euros, on the day they were recorded.", bot_bonus_who:"Who is the bonus for? Name the people on {code}, or say the whole team.", bot_bonus_amount:"How much is the bonus per person? In euros unless you say another currency.", bot_bonus_reason:"What is the bonus for? The reason is recorded with it.", bot_bonus_confirm:"Record and approve this project bonus?", bot_bonus_saved:"Bonus of {amount} recorded and approved for {names}, on their behalf, in {week}. You'll find it in Team entry, Bonus tab.", btn_record_approve:"Record and approve", text_each:"each", text_tac_tick_people:"Tick the people whose absences you want to see.", text_schedule_h_day:"{h} h/day schedule", fmt_week_range:"week {n} ({from} to {to})", fmt_week_range_bare:"{n} ({from} to {to})", tip_windows_overlap:"Two time windows overlap on this day.", chip_confirmed:"confirmed", chip_cancelled:"cancelled",
       bot_cancelled_no_save:"No problem, I didn't save anything.",
       bot_week_summary:"You have {tot} h recorded of {exp} h expected, already with absences deducted. ",
       bot_week_errors_block_one:"{n} error blocks submission.", bot_week_errors_block_other:"{n} errors block submission.",
@@ -2064,7 +2064,7 @@
       toast_amount_must_be_positive:"O montante tem de ser um número acima de zero.",
       toast_bonus_reason_required:"O bónus precisa de um motivo. É o único rasto de porque é que o projeto suportou este custo.",
       toast_none_allocated:"Nenhuma das pessoas selecionadas está alocada a {code}.",
-      toast_bonus_recorded:"Bónus de {amount} EUR registado para {names}, aprovado no mesmo ato.",
+      toast_bonus_recorded:"Bónus de {amount} registado para {names}, aprovado no mesmo ato.",
       toast_bonus_none_recorded:"Nada foi efetivamente registado.",
       toast_bonus_skipped_ineligible:" {names} ignorados, não alocados a {code}.",
       toast_bonus_skipped_closed:" {names} ignorados, todos os dias desta semana caem num período fechado.",
@@ -2278,7 +2278,7 @@
       bot_greeting_1:"Olá! Em que posso ajudar: registar horas, consultar a semana, ou outra coisa?",
       bot_greeting_2:"Olá. Diz-me o que precisas e eu trato disso.",
       bot_greeting_3:"Olá! Horas para registar, ou algo para consultar?",
-      chip_done_saved:"Gravado", chip_done_submitted:"Submetido", chip_done_sent:"Enviado para aprovação", chip_done_withdrawn:"Retirado", chip_done_approved:"Aprovado", label_week_card:"Semana", hdr_already_bonus:"Bónus registados esta semana", hint_already_bonus:"Bónus de projeto já registados e aprovados para esta equipa esta semana, em euros, no dia em que foram registados.", bot_bonus_who:"Para quem é o bónus? Diz os nomes das pessoas do {code}, ou a equipa toda.", bot_bonus_amount:"De quanto é o bónus, em euros, por pessoa?", bot_bonus_reason:"Qual é o motivo do bónus? Fica registado com ele.", bot_bonus_confirm:"Registar e aprovar este bónus de projeto?", bot_bonus_saved:"Bónus de {amount} EUR registado e aprovado para {names}, em nome de cada pessoa, na {week}. Está no Lançamento da equipa, separador Bónus.", btn_record_approve:"Registar e aprovar", text_each:"cada", text_tac_tick_people:"Marca as pessoas cujas ausências queres ver.", text_schedule_h_day:"horário de {h} h/dia", fmt_week_range:"semana {n} ({from} a {to})", fmt_week_range_bare:"{n} ({from} a {to})", tip_windows_overlap:"Há duas janelas horárias sobrepostas neste dia.", chip_confirmed:"confirmado", chip_cancelled:"cancelado",
+      chip_done_saved:"Gravado", chip_done_submitted:"Submetido", chip_done_sent:"Enviado para aprovação", chip_done_withdrawn:"Retirado", chip_done_approved:"Aprovado", label_week_card:"Semana", label_amount:"Montante", label_currency:"Moeda", hdr_already_bonus:"Bónus registados esta semana", hint_already_bonus:"Bónus de projeto já registados e aprovados para esta equipa esta semana, em euros, no dia em que foram registados.", bot_bonus_who:"Para quem é o bónus? Diz os nomes das pessoas do {code}, ou a equipa toda.", bot_bonus_amount:"De quanto é o bónus por pessoa? Em euros, salvo se disseres outra moeda.", bot_bonus_reason:"Qual é o motivo do bónus? Fica registado com ele.", bot_bonus_confirm:"Registar e aprovar este bónus de projeto?", bot_bonus_saved:"Bónus de {amount} registado e aprovado para {names}, em nome de cada pessoa, na {week}. Está no Lançamento da equipa, separador Bónus.", btn_record_approve:"Registar e aprovar", text_each:"cada", text_tac_tick_people:"Marca as pessoas cujas ausências queres ver.", text_schedule_h_day:"horário de {h} h/dia", fmt_week_range:"semana {n} ({from} a {to})", fmt_week_range_bare:"{n} ({from} a {to})", tip_windows_overlap:"Há duas janelas horárias sobrepostas neste dia.", chip_confirmed:"confirmado", chip_cancelled:"cancelado",
       bot_cancelled_no_save:"Sem problema, não gravei nada.",
       bot_week_summary:"Tens {tot} h registadas de {exp} h esperadas, já com as ausências deduzidas. ",
       bot_week_errors_block_one:"{n} erro bloqueia a submissão.", bot_week_errors_block_other:"{n} erros bloqueiam a submissão.",
@@ -2840,7 +2840,7 @@
       toast_amount_must_be_positive:"Le montant doit être un nombre supérieur à zéro.",
       toast_bonus_reason_required:"La prime a besoin d'un motif. C'est la seule trace de la raison pour laquelle le projet a porté ce coût.",
       toast_none_allocated:"Aucune des personnes sélectionnées n'est allouée à {code}.",
-      toast_bonus_recorded:"Prime de {amount} EUR enregistrée pour {names}, approuvée dans le même acte.",
+      toast_bonus_recorded:"Prime de {amount} enregistrée pour {names}, approuvée dans le même acte.",
       toast_bonus_none_recorded:"Rien n'a réellement été enregistré.",
       toast_bonus_skipped_ineligible:" {names} ignorés, non alloués à {code}.",
       toast_bonus_skipped_closed:" {names} ignorés, tous les jours de cette semaine tombent dans une période clôturée.",
@@ -3054,7 +3054,7 @@
       bot_greeting_1:"Bonjour ! De quoi avez-vous besoin : saisir des heures, vérifier la semaine, ou autre chose ?",
       bot_greeting_2:"Bonjour. Dites-moi ce qu'il vous faut et je m'en occupe.",
       bot_greeting_3:"Bonjour ! Des heures à saisir, ou quelque chose à vérifier ?",
-      chip_done_saved:"Enregistré", chip_done_submitted:"Soumis", chip_done_sent:"Envoyé pour approbation", chip_done_withdrawn:"Retiré", chip_done_approved:"Approuvé", label_week_card:"Semaine", hdr_already_bonus:"Primes enregistrées cette semaine", hint_already_bonus:"Primes de projet déjà enregistrées et approuvées pour cette équipe cette semaine, en euros, le jour de leur saisie.", bot_bonus_who:"Pour qui est la prime ? Nommez les personnes de {code}, ou toute l'équipe.", bot_bonus_amount:"Quel est le montant de la prime, en euros, par personne ?", bot_bonus_reason:"Quel est le motif de la prime ? Il est enregistré avec elle.", bot_bonus_confirm:"Enregistrer et approuver cette prime de projet ?", bot_bonus_saved:"Prime de {amount} EUR enregistrée et approuvée pour {names}, pour le compte de chaque personne, en {week}. Vous la trouverez dans Saisie d'équipe, onglet Prime.", btn_record_approve:"Enregistrer et approuver", text_each:"chacun", text_tac_tick_people:"Cochez les personnes dont vous voulez voir les absences.", text_schedule_h_day:"horaire de {h} h/jour", fmt_week_range:"semaine {n} ({from} au {to})", fmt_week_range_bare:"{n} ({from} au {to})", tip_windows_overlap:"Deux plages horaires se chevauchent ce jour-là.", chip_confirmed:"confirmé", chip_cancelled:"annulé",
+      chip_done_saved:"Enregistré", chip_done_submitted:"Soumis", chip_done_sent:"Envoyé pour approbation", chip_done_withdrawn:"Retiré", chip_done_approved:"Approuvé", label_week_card:"Semaine", label_amount:"Montant", label_currency:"Devise", hdr_already_bonus:"Primes enregistrées cette semaine", hint_already_bonus:"Primes de projet déjà enregistrées et approuvées pour cette équipe cette semaine, en euros, le jour de leur saisie.", bot_bonus_who:"Pour qui est la prime ? Nommez les personnes de {code}, ou toute l'équipe.", bot_bonus_amount:"Quel est le montant de la prime par personne ? En euros, sauf si vous indiquez une autre devise.", bot_bonus_reason:"Quel est le motif de la prime ? Il est enregistré avec elle.", bot_bonus_confirm:"Enregistrer et approuver cette prime de projet ?", bot_bonus_saved:"Prime de {amount} enregistrée et approuvée pour {names}, pour le compte de chaque personne, en {week}. Vous la trouverez dans Saisie d'équipe, onglet Prime.", btn_record_approve:"Enregistrer et approuver", text_each:"chacun", text_tac_tick_people:"Cochez les personnes dont vous voulez voir les absences.", text_schedule_h_day:"horaire de {h} h/jour", fmt_week_range:"semaine {n} ({from} au {to})", fmt_week_range_bare:"{n} ({from} au {to})", tip_windows_overlap:"Deux plages horaires se chevauchent ce jour-là.", chip_confirmed:"confirmé", chip_cancelled:"annulé",
       bot_cancelled_no_save:"Pas de problème, je n'ai rien enregistré.",
       bot_week_summary:"Vous avez {tot} h enregistrées sur {exp} h attendues, absences déjà déduites. ",
       bot_week_errors_block_one:"{n} erreur bloque la soumission.", bot_week_errors_block_other:"{n} erreurs bloquent la soumission.",
@@ -4582,7 +4582,7 @@
   }
   function allowLabel(a){
     var w = wt(a.code);
-    return w.amount ? fmt(a.amount) + " EUR" : fmt(a.qty) + " " + (w.unit === "days" ? t("unit_days") : w.unit);
+    return w.amount ? money(a.amount, a.currency) : fmt(a.qty) + " " + (w.unit === "days" ? t("unit_days") : w.unit);
   }
   /* The person's own allowances on screen: the week, or in the monthly view
      every week of the month, each with the week it belongs to. */
@@ -4735,7 +4735,8 @@
     ["Allowance recorded against a project","Wage type","LGART","cats","Has to exist in T512Z and be authorised in the profile"],
     ["Own-car kilometres, origin and destination","Quantity and short text","ANZHL, LTXA1","cats","Wage type 1300. The distance between the two places comes from a routing service and is shown for confirmation before it's recorded; the mockup uses a table of road distances and, for other pairs, an estimate from the map. The route goes to LTXA1"],
     ["Allowance quantity","Number, with unit","ANZHL, ZEINH","cats","Days, kilometres. The bonus goes in with ANZHL 1"],
-    ["Bonus amount","Amount","CATSAMOUNT","cats","Native CATSDB field, CURR 13.2. Confirm with the client whether the standard CAT6 transfer maps it to IT2010 BETRG, or whether that needs configuring"],
+    ["Bonus currency","Currency","WAERS","cats","Currency key of the amount, the company's currency by default (EUR) and any other for work abroad (USD, GBP, CHF, BRL, AOA, MZN...). Confirm the field name in the client's CATS data entry profile"],
+    ["Bonus amount","Amount","CATSAMOUNT","cats","Native CATSDB field, CURR 13.2, read with its currency key. Confirm with the client whether the standard CAT6 transfer maps it to IT2010 BETRG, or whether that needs configuring"],
     ["Transfer to payroll","Standard transfer","CAT6 to IT2010","cats","No bespoke interface. CAT5 and CAT7 cover PS and CO"],
     ["Recorded on behalf of someone","No equivalent","ON_BEHALF_OF","btp","Team entry. The submitting user still lands in ERNAM, by standard behaviour"],
     ["Period open or closed","No equivalent","ZTIME_PERIOD_CTRL","btp","Monthly, per company. Reopening is an HR action and is recorded"],
@@ -4822,6 +4823,7 @@
         LGART: w.lgart,
         ANZHL: w.amount ? "1.0" : fmt(a.qty),
         CATSAMOUNT: w.amount ? fmt(a.amount) : "",
+        WAERS: w.amount ? (a.currency || companyCurrency()) : "",
         LSTAR: pr.sap.lstar,
         RPROJ: pr.sap.rproj || "",
         SKOSTL: pr.sap.skostl,
@@ -4841,7 +4843,7 @@
     body.innerHTML = "";
     recs.forEach(function(rec){
       var tr = document.createElement("tr");
-      ["PERNR","WORKDATE","CATSHOURS","BEGUZ","ENDUZ","LGART","ANZHL","CATSAMOUNT","LSTAR","RPROJ","LTXA1","STATUS"].forEach(function(k){
+      ["PERNR","WORKDATE","CATSHOURS","BEGUZ","ENDUZ","LGART","ANZHL","CATSAMOUNT","WAERS","LSTAR","RPROJ","LTXA1","STATUS"].forEach(function(k){
         var td = td2(rec[k] || "–");
         if(k !== "LTXA1") td.className = "f";
         if(k === "LGART" && rec[k]) td.className = "f wt";
@@ -5087,16 +5089,19 @@
       var row = document.createElement("div");
       row.className = "row";
       row.appendChild(el("div","rowmeta", m.name));
-      var tot = 0;
+      /* amounts add up per currency, never across currencies */
+      function byCur(list){
+        var sums = {}, order = [];
+        list.forEach(function(e){ var c = e.currency || companyCurrency(); if(!(c in sums)){ sums[c] = 0; order.push(c); } sums[c] += e.amount || 0; });
+        return order.map(function(c){ return money(sums[c], c); }).join(" + ");
+      }
       DAYS.forEach(function(d,i){
         var lines = entries.filter(function(e){ return e.day === i; });
-        var sum = lines.reduce(function(a,e){ return a + (e.amount || 0); }, 0);
-        tot += sum;
-        var cell = el("div", "already-cell" + dayExtraClass(i), sum ? fmt(sum) + " €" : "–");
-        if(lines.length) cell.title = lines.map(function(e){ return fmt(e.amount) + " € · " + e.note; }).join("\n");
+        var cell = el("div", "already-cell" + dayExtraClass(i), lines.length ? byCur(lines) : "–");
+        if(lines.length) cell.title = lines.map(function(e){ return money(e.amount, e.currency) + " · " + e.note; }).join("\n");
         row.appendChild(cell);
       });
-      row.appendChild(el("div","rowtot", tot ? fmt(tot) + " €" : "–"));
+      row.appendChild(el("div","rowtot", entries.length ? byCur(entries) : "–"));
       row.appendChild(el("div","",""));
       wrap.appendChild(row);
     });
@@ -5650,6 +5655,11 @@
      is a project owner (scope is by project, never by line hierarchy), so the
      panel is always available here. */
   function renderBonusPanel(){
+    var cs = $("bCurrency");
+    if(cs && !cs.options.length){
+      CURRENCIES.forEach(function(c){ var o = document.createElement("option"); o.value = c; o.textContent = c; cs.appendChild(o); });
+      cs.value = companyCurrency();
+    }
     var panel = $("bonusPanel");
     if(!panel) return;
     var leader = leaderById(state.leader);
@@ -5667,7 +5677,7 @@
       var c = el("div","abscard bonus","");
       var h = el("div","h","");
       h.appendChild(el("b","", a.forName || t("th_employee")));
-      h.appendChild(el("span","chip green", fmt(a.amount) + " EUR"));
+      h.appendChild(el("span","chip green", money(a.amount, a.currency)));
       c.appendChild(h);
       c.appendChild(el("div","why", DAYS[a.day] + " · " + PROJECTS[a.p].code + " · " + t("text_wage_type_label", {code: wt(a.code).lgart})));
       c.appendChild(el("div","why", a.note));
@@ -5681,6 +5691,7 @@
     var members = teamOf(state.leader).filter(function(m){ return stagedOf(m.pernr).sel && !m.locked; });
     if(!members.length){ toast(t("toast_select_person_first")); return; }
     var amount = parseDur($("bAmount").value);
+    var cur = ($("bCurrency") && $("bCurrency").value) || companyCurrency();
     var note = $("bNote").value.trim();
     if(isNaN(amount) || amount <= 0){ toast(t("toast_amount_must_be_positive")); return; }
     if(!note){ toast(t("toast_bonus_reason_required")); return; }
@@ -5700,12 +5711,12 @@
          write to whatever day the loop happened to start from. */
       if(day === -1){ noOpenDay.push(who); return; }
       state.allow.push({
-        id:"al"+(nextId++), day:day, p:pIdx, code:"BONUS", qty:1, amount:amount,
+        id:"al"+(nextId++), day:day, p:pIdx, code:"BONUS", qty:1, amount:amount, currency:cur,
         note:note, by:leader.id, onBehalf:who.pernr, byName:leader.name, forName:who.name
       });
       state.massLog.push({
         kind:"bonus", pernr:who.pernr, name:who.name, date:WORKDATES[day], day:day,
-        code:"BONUS", amount:amount, note:note, p:pIdx,
+        code:"BONUS", amount:amount, currency:cur, note:note, p:pIdx,
         createdBy:leader.name, onBehalf:who.pernr
       });
       recorded.push(who);
@@ -5713,7 +5724,7 @@
     $("bAmount").value = ""; $("bNote").value = "";
     render();
     var msg = recorded.length
-      ? t("toast_bonus_recorded", {amount: fmt(amount), names: recorded.map(function(m){ return m.name; }).join(", ")})
+      ? t("toast_bonus_recorded", {amount: money(amount, cur), names: recorded.map(function(m){ return m.name; }).join(", ")})
       : t("toast_bonus_none_recorded");
     if(ineligible.length) msg += t("toast_bonus_skipped_ineligible", {names: ineligible.map(function(m){ return m.name.split(" ")[0]; }).join(", "), code: PROJECTS[pIdx].code});
     if(noOpenDay.length) msg += t("toast_bonus_skipped_closed", {names: noOpenDay.map(function(m){ return m.name.split(" ")[0]; }).join(", ")});
@@ -10489,6 +10500,18 @@
      happens to be on: in the monthly view the anchor week is often not
      today's, and the day used to be read against it, landing in the wrong
      week. Same as the kilometres (recordKm). */
+  /* The bonus amount carries its currency, as CATS does (CATSAMOUNT with its
+     currency key): the company's own by default, any other for work abroad. */
+  var CURRENCIES = ["EUR","USD","GBP","CHF","BRL","AOA","MZN","MAD","XOF","CAD","PLN"];
+  var CURRENCY_WORDS = [["EUR",/€|\beur\b|\beuros?\b/i],["USD",/\$|\busd\b|d[óo]lar(es)?|dollars?/i],["GBP",/£|\bgbp\b|libras?|pounds?|livres?/i],
+    ["CHF",/\bchf\b|francos? su[íi][çc]os?|swiss francs?|francs? suisses?/i],["BRL",/\bbrl\b|reais|\breal\b|r\$/i],["AOA",/\baoa\b|kwanzas?/i],
+    ["MZN",/\bmzn\b|meticais|metical/i],["MAD",/\bmad\b|dirhams?/i],["XOF",/\bxof\b|cfa/i],["CAD",/\bcad\b|canadian dollars?/i],["PLN",/\bpln\b|z[łl]oty/i]];
+  function currencyFromText(txt){
+    for(var i=1; i<CURRENCY_WORDS.length; i++){ if(CURRENCY_WORDS[i][1].test(txt)) return CURRENCY_WORDS[i][0]; }
+    return CURRENCY_WORDS[0][1].test(txt) ? "EUR" : "";
+  }
+  function companyCurrency(){ return "EUR"; }
+  function money(v, cur){ return fmt(v) + " " + (cur || companyCurrency()); }
   /* The project bonus, recorded and approved by the project owner for people
      on the team, the same act as the Bonus tab of Team entry (saveBonus):
      who, how much and why, then a card to confirm. */
@@ -10499,20 +10522,21 @@
     return team.filter(function(m){ return f.indexOf(foldText(m.name.split(" ")[0])) !== -1 || f.indexOf(foldText(m.name)) !== -1; });
   }
   function bonusFromText(txt){
-    var am = String(txt).match(/(\d+(?:[.,]\d+)?)\s*(?:€|eur\b|euros?\b)/i) || String(txt).match(/(?:€)\s*(\d+(?:[.,]\d+)?)/);
+    var am = String(txt).match(/(\d+(?:[.,]\d+)?)\s*(?:€|\$|£|[a-z]{3}\b|euros?\b|d[óo]lar(?:es)?|dollars?|libras?|pounds?|reais|kwanzas?|meticais|francos?|francs?)/i) || String(txt).match(/(?:€|\$|£)\s*(\d+(?:[.,]\d+)?)/);
     var rm = String(txt).match(/\b(?:por|pelo|pela|pelos|pelas|for|pour|motivo:?|reason:?|raison:?)\s+(.{3,})$/i);
-    return {who: txt, amount: am ? parseFloat(am[1].replace(",", ".")) : 0, note: rm ? rm[1].trim() : ""};
+    return {who: txt, amount: am ? parseFloat(am[1].replace(",", ".")) : 0, note: rm ? rm[1].trim() : "", cur: currencyFromText(txt)};
   }
-  function offerTeamBonus(who, amount, note){
+  function offerTeamBonus(who, amount, note, cur){
+    cur = CURRENCIES.indexOf(String(cur || "").toUpperCase()) !== -1 ? String(cur).toUpperCase() : companyCurrency();
     if(state.role !== "pm"){ botSay("bot", t("bot_allow_bonus_owner")); botChips([t("chip_help")]); return; }
     var targets = bonusTargets(who), pIdx = massProject();
-    if(!targets.length){ chat.bonusDraft = {amount: amount, note: note}; botSay("bot", t("bot_bonus_who", {code: PROJECTS[pIdx].code})); return; }
-    if(!(amount > 0)){ chat.bonusDraft = {who: who, note: note}; botSay("bot", t("bot_bonus_amount")); return; }
-    if(!note || note.length < 3){ chat.bonusDraft = {who: who, amount: amount}; botSay("bot", t("bot_bonus_reason")); return; }
+    if(!targets.length){ chat.bonusDraft = {amount: amount, note: note, cur: cur}; botSay("bot", t("bot_bonus_who", {code: PROJECTS[pIdx].code})); return; }
+    if(!(amount > 0)){ chat.bonusDraft = {who: who, note: note, cur: cur}; botSay("bot", t("bot_bonus_amount")); return; }
+    if(!note || note.length < 3){ chat.bonusDraft = {who: who, amount: amount, cur: cur}; botSay("bot", t("bot_bonus_reason")); return; }
     chat.bonusDraft = null;
     var lines = [
       [t("label_people"), targets.map(function(m){ return m.name; }).join(", ")],
-      [t("label_amount_eur"), fmt(amount) + " EUR " + t("text_each")],
+      [t("label_amount"), money(amount, cur) + " " + t("text_each")],
       [t("label_reason"), note],
       [t("label_project"), PROJECTS[pIdx].code + " · " + PROJECTS[pIdx].name],
       [t("label_week_card"), teamWeekLabel(true)]
@@ -10522,10 +10546,11 @@
       targets.forEach(function(m){ stagedOf(m.pernr).sel = true; });
       var before = state.massLog.length;
       $("bAmount").value = String(amount); $("bNote").value = note;
+      if($("bCurrency")) $("bCurrency").value = cur;
       saveBonus();
       setTeamTab("bonus");
       var got = state.massLog.slice(before).filter(function(e){ return e.kind === "bonus"; }).map(function(e){ return e.name.split(" ")[0]; });
-      botSay("bot", got.length ? t("bot_bonus_saved", {amount: fmt(amount), names: got.join(", "), week: teamWeekLabel()}) : t("toast_bonus_none_recorded"));
+      botSay("bot", got.length ? t("bot_bonus_saved", {amount: money(amount, cur), names: got.join(", "), week: teamWeekLabel()}) : t("toast_bonus_none_recorded"));
       botChips([t("chip_help")]);
     }));
   }
@@ -11211,7 +11236,7 @@
       case "consultar_calendario_equipa": showTeamCalendar(isoArg(la.data_inicio), isoArg(la.data_fim || la.data_inicio)); return true;
       case "consultar_saldos_equipa": showTeamBalances(); return true;
       case "registar_bonus_equipa":
-        offerTeamBonus(String(la.pessoa || ""), Number(la.valor_eur) || 0, String(la.motivo || "").trim());
+        offerTeamBonus(String(la.pessoa || ""), Number(la.valor) || Number(la.valor_eur) || 0, String(la.motivo || "").trim(), String(la.moeda || ""));
         return true;
       case "registar_abono":
         var abDate = la.dia ? (isoArg(la.dia) || kmDateFrom(String(la.dia))) : todayISO();
@@ -11430,7 +11455,7 @@
       hideTyping();
       if(chat.curTurn) chat.curTurn.path = "bonus_draft";
       offerTeamBonus(bd.who || txt, bd.amount > 0 ? bd.amount : (bt.amount || parseFloat(String(txt).replace(",", ".")) || 0),
-        bd.note || (bd.who && bd.amount > 0 ? txt.trim() : bt.note));
+        bd.note || (bd.who && bd.amount > 0 ? txt.trim() : bt.note), bt.cur || bd.cur);
       return;
     }
     /* A rejection waiting for its reason: this message is the reason. */
@@ -11554,7 +11579,7 @@
     if(KM_WORD_RE.test(foldText(txt))){ offerKm(kmDraftFromText(txt, null) || {}); return; }
     /* the person's own per diem or shift allowance */
     var oa = ownAllowanceFromText(txt);
-    if(oa && oa.code === "BONUS" && state.role === "pm"){ var bp = bonusFromText(txt); offerTeamBonus(bp.who, bp.amount, bp.note); return; }
+    if(oa && oa.code === "BONUS" && state.role === "pm"){ var bp = bonusFromText(txt); offerTeamBonus(bp.who, bp.amount, bp.note, bp.cur); return; }
     if(oa){ offerOwnAllowance(oa.code, oa.day, oa.qty, oa.note, oa.p); return; }
 
     /* a request for every working day ("8h RTL-TT all days this week"),

@@ -2996,6 +2996,54 @@
           ]
         }
       ]
+    },
+    {
+      "id": "bonus-pt-pm-other-currency",
+      "lang": "pt",
+      "role": "pm",
+      "leader": "RN",
+      "why": "user: bonus amounts in other currencies, as in CATS",
+      "steps": [
+        {
+          "say": "bónus de 400 dólares para a Vera pelo go-live em Nova Iorque",
+          "expect": [
+            "400.0 USD",
+            "Vera Antunes"
+          ]
+        },
+        {
+          "confirm": true,
+          "expect": [
+            "400.0 USD"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bonus-en-pm-intent-currency",
+      "lang": "en",
+      "role": "pm",
+      "leader": "RN",
+      "why": "Claude passes the currency code",
+      "steps": [
+        {
+          "say": "250 pound bonus for Teresa for the London cutover",
+          "intent": {
+            "funcao": "registar_bonus_equipa",
+            "argumentos": {
+              "pessoa": "Teresa",
+              "valor": 250,
+              "moeda": "GBP",
+              "motivo": "London cutover"
+            },
+            "texto": null
+          },
+          "expect": [
+            "250.0 GBP",
+            "Teresa Correia"
+          ]
+        }
+      ]
     }
   ]
 }

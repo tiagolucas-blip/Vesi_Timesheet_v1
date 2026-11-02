@@ -314,7 +314,8 @@
             <span class="chip green" id="bProj">Project</span>
           </header>
           <div class="massbar">
-            <label class="f"><span data-i18n="label_amount_eur">Amount, EUR</span><input type="text" id="bAmount" inputmode="decimal" placeholder="500"></label>
+            <label class="f"><span data-i18n="label_amount">Amount</span><input type="text" id="bAmount" inputmode="decimal" placeholder="500"></label>
+            <label class="f"><span data-i18n="label_currency">Currency</span><select id="bCurrency"></select></label>
             <label class="f wide"><span data-i18n="label_reason">Reason</span><input type="text" id="bNote" data-i18n-placeholder="placeholder_bonus_reason" placeholder="Go-live weekend, payroll cutover"></label>
             <button class="btn primary" id="bSave" data-i18n="btn_record_approve_selected">Record and approve for selected</button>
           </div>
@@ -600,7 +601,7 @@
         <table class="maptbl" id="catsTbl">
           <thead><tr>
             <th>PERNR</th><th>WORKDATE</th><th>CATSHOURS</th><th>BEGUZ</th><th>ENDUZ</th>
-            <th>LGART</th><th>ANZHL</th><th>CATSAMOUNT</th><th>LSTAR</th><th>RPROJ</th><th>LTXA1</th><th>STATUS</th>
+            <th>LGART</th><th>ANZHL</th><th>CATSAMOUNT</th><th>WAERS</th><th>LSTAR</th><th>RPROJ</th><th>LTXA1</th><th>STATUS</th>
           </tr></thead>
           <tbody id="catsBody"></tbody>
         </table>
