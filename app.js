@@ -5659,7 +5659,7 @@
      otherwise the week's last open working day */
   function defaultBonusDay(){
     var i = WORKDATES.indexOf(todayISO());
-    if(i !== -1 && i < 5 && periodOpen(WORKDATES[i])) return i;
+    if(i !== -1 && periodOpen(WORKDATES[i])) return i;
     for(var d=4; d>=0; d--){ if(periodOpen(WORKDATES[d])) return d; }
     return 4;
   }
@@ -5667,7 +5667,8 @@
     var ds = $("bDay");
     if(ds && ds.dataset.week !== WORKDATES[0]){
       ds.innerHTML = "";
-      for(var di=0; di<5; di++){
+      /* all seven days: a go-live weekend bonus belongs on the weekend */
+      for(var di=0; di<7; di++){
         var o = document.createElement("option");
         o.value = String(di); o.textContent = DAYS[di] + (periodOpen(WORKDATES[di]) ? "" : " " + t("text_period_closed_paren"));
         o.disabled = !periodOpen(WORKDATES[di]);
@@ -10546,8 +10547,8 @@
   /* a weekday named for a bonus is that day of the week on Team entry, not
      the last one gone by as for a trip */
   function bonusDateFrom(txt){
-    var f = foldText(txt), WD = [/segunda|monday|lundi/, /terca|tuesday|mardi/, /quarta|wednesday|mercredi/, /quinta|thursday|jeudi/, /sexta|friday|vendredi/];
-    for(var i=0; i<5; i++){ if(WD[i].test(f)) return WORKDATES[i]; }
+    var f = foldText(txt), WD = [/segunda|monday|lundi/, /terca|tuesday|mardi/, /quarta|wednesday|mercredi/, /quinta|thursday|jeudi/, /sexta|friday|vendredi/, /sabado|saturday|samedi/, /domingo|sunday|dimanche/];
+    for(var i=0; i<7; i++){ if(WD[i].test(f)) return WORKDATES[i]; }
     return kmDateFrom(txt);
   }
   function bonusFromText(txt){
@@ -10560,7 +10561,7 @@
     cur = CURRENCIES.indexOf(String(cur || "").toUpperCase()) !== -1 ? String(cur).toUpperCase() : companyCurrency();
     /* the day it goes on: the one asked for, inside the week on Team entry */
     var bDay = dateISO ? WORKDATES.indexOf(dateISO) : defaultBonusDay();
-    if(dateISO && (bDay === -1 || bDay > 4)){ botSay("bot", t("bot_bonus_day_outside", {date: fmtDate(dateISO), week: teamWeekLabel()})); return; }
+    if(dateISO && bDay === -1){ botSay("bot", t("bot_bonus_day_outside", {date: fmtDate(dateISO), week: teamWeekLabel()})); return; }
     if(!periodOpen(WORKDATES[bDay])){ botSay("bot", t("bot_day_closed", {day: DAYS[bDay]})); return; }
     if(state.role !== "pm"){ botSay("bot", t("bot_allow_bonus_owner")); botChips([t("chip_help")]); return; }
     var targets = bonusTargets(who), pIdx = massProject();
